@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/img/cecytem.png" type="image/x-icon">
+    <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
+    <title>CRUD contactos</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="./assets/img/cecytem.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                CRUD contactos
+
+            </a>
+            <div class="d-flex" role="search">
+                <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        (NAME USER)
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"> <i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="card text-center m-4">
+        <div class="card-header">
+            CRUD contactos
+        </div>
+        <div class="card-body">
+            <div class="text-start">
+                <button class="btn btn-danger mb-4"> <i class="bi bi-person-plus p-1"></i> New Contact</button>
+            </div>
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Apellido 1</td>
+                        <td>Apellido 2</td>
+                        <td>Telefono</td>
+                        <td>Correo</td>
+                        <td>Editar</td>
+                        <td>Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Alejandro</td>
+                        <td>Test 1</td>
+                        <td>Test 2</td>
+                        <td>900000000</td>
+                        <td>Test@test.com</td>
+                        <td><button class="btn btn-success"> <i class="bi bi-pencil-square p-1" ></i> Editar</button></td>
+                        <td><button class="btn btn-danger"> <i class="bi bi-trash p-1" ></i> Eliminar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5 class="card-title"></h5>
+            <p class="card-text"></p>
+        </div>
+        <div class="card-footer text-muted">
+            Design by Alejandro Rodriguez 2022
+        </div>
+    </div>
+
+
+    <script src=" ./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/sweetalert2.all.min.js"></script>
+</body>
+
+</html>
