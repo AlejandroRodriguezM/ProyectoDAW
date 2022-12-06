@@ -11,7 +11,7 @@
     <title>CRUD contactos</title>
 </head>
 
-<body>
+<body onload="checkSesion();">
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -21,12 +21,13 @@
             </a>
             <div class="d-flex" role="search">
                 <div class="dropdown">
-                    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        (NAME USER)
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#"> <i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
+                        <li>
+                            <button class="dropdown-item" onclick="closeSesion()"> <i class="bi bi-box-arrow-right p-1"></i>Cerrarsesion</button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -60,8 +61,9 @@
                         <td>Test 2</td>
                         <td>900000000</td>
                         <td>Test@test.com</td>
-                        <td><button class="btn btn-success"> <i class="bi bi-pencil-square p-1" ></i> Editar</button></td>
-                        <td><button class="btn btn-danger"> <i class="bi bi-trash p-1" ></i> Eliminar</button></td>
+                        <td><button class="btn btn-success"> <i class="bi bi-pencil-square p-1"></i> Editar</button>
+                        </td>
+                        <td><button class="btn btn-danger"> <i class="bi bi-trash p-1"></i> Eliminar</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -73,7 +75,7 @@
         </div>
     </div>
 
-
+    <script src="./assets/js/appCRUD.js"></script>
     <script src=" ./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
 </body>

@@ -10,3 +10,7 @@ Creadas las alertas de usuario a la hora de registrarlo(y a su vez, comprobar lo
 El usuairo creado correctamente se guarda correctamente en la base de datos.
 Primeras conexiones entre front end y backend usando js y php
 
+06/12/2022
+Desde index se puede controlar el acceso de usuario y creando variables de session en javaScript(Posiblemente lo cambie a php, segun vea el uso)
+Una vez el usuario esta loggeado, no puede acceder a registro de nuevos usuarios.
+Es posible salir de sesion y ya no es posible regresar a no ser que se introduzcan los datos nuevamente.
