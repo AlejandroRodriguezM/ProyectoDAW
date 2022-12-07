@@ -16,16 +16,19 @@
 
 <body onload="checkSesion();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
-            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="btn btn-secondary btn-lg active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            WebComics
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Mi perfil</a>
+            <a class="dropdown-item" href="#">Sobre WebComics</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" onclick="closeSesion()"><i class="bi bi-box-arrow-right p-1"></i>Salir de sesion</a>
+        </div>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#">WebComics</a>
+            <a class="navbar-brand" href="#">Inicio</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Mi colección</a>
                 </li>
@@ -53,8 +56,8 @@
                 </ul>
             </div>
         </div>
-
     </nav>
+
 
     <div class="card text-center m-4">
         <div class="card-header">
