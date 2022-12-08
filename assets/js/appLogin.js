@@ -1,14 +1,38 @@
 
 var sesion = localStorage.getItem('UserName');
-
-const checkSesion=()=>{
-    if(sesion != null){
-        window.location.href="inicio.html";
+var image;
+const checkSesion = () => {
+    if (sesion != null) {
+        window.location.href = "inicio.html";
     }
-    
+}
+
+// Check for the File API support.
+if (window.File && window.FileReader && window.FileList && window.Blob) {
+    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+} else {
+    alert('The File APIs are not fully supported in this browser.');
+}
+
+function handleFileSelect(evt) {
+    var f = evt.target.files[0]; // FileList object
+    var reader = new FileReader();
+    // Closure to capture the file information.
+    reader.onload = (function (theFile) {
+        return function (e) {
+            var binaryData = e.target.result;
+            //Converting Binary Data to base 64
+            var base64String = window.btoa(binaryData);
+            //save into var globally string
+            image = base64String;
+        };
+    })(f);
+    // Read in the image file as a data URL
+    reader.readAsBinaryString(f);
 }
 
 const new_User = async () => {
+
     var email = document.querySelector("#correo").value;
     var password = document.querySelector("#password").value;
     var name = document.querySelector("#name").value;
@@ -58,6 +82,7 @@ const new_User = async () => {
     data.append("email", email);
     data.append("pass", password);
     data.append("userName", name);
+    data.append("userPicture", image);
 
     //pass data to php file
     var respond = await fetch("php/user/new_user.php", {
@@ -74,10 +99,10 @@ const new_User = async () => {
             text: result.message,
             footer: "CRUD CONTACTOS"
         })
-        document.querySelector('#formInsert').reset();
+        document.querySelector('#formInserta').reset();
         setTimeout(() => {
             window.location.href = "index.html";
-        },2000);
+        }, 2000);
     } else {
         Swal.fire({
             icon: "error",
@@ -143,10 +168,10 @@ const login_User = async () => {
             footer: "CRUD CONTACTOS"
         })
         document.querySelector('#formIniciar').reset();
-        localStorage.setItem('UserName',result.userName);
+        localStorage.setItem('UserName', result.userName);
         setTimeout(() => {
             window.location.href = "inicio.html";
-        },2000);
+        }, 2000);
     } else {
         Swal.fire({
             icon: "error",

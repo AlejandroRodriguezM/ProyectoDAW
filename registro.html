@@ -16,7 +16,7 @@
         <div class="text-center">
             <img src="./assets/img/cecytem.png" class="mt-5" width="150px" alt="">
             <h3 class="mt-2">REGISTER SYSTEM</h3>
-            <form id="formIniciar">
+            <form id="formInsert" method="post">
                 <div class="mb-3">
                     <label for="correo" class="form-label">Email Address</label>
                     <input type="email" class="form-control" id="correo" placeholder="name@test.com">
@@ -28,6 +28,10 @@
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                </div>
+                <div class="mb-3">
+                    <input type="file" name="files" id="files" accept=".jpg, .jpeg, .png" onchange="loadFile(event)" >
+                    <img id="output"/>
                 </div>
                 <div class="mb-3">
                     <input type="button" class="btn btn-danger form-control" onclick="new_User()" value="Registrar">
