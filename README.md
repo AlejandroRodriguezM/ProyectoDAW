@@ -14,3 +14,8 @@ Primeras conexiones entre front end y backend usando js y php
 Desde index se puede controlar el acceso de usuario y creando variables de session en javaScript(Posiblemente lo cambie a php, segun vea el uso)
 Una vez el usuario esta loggeado, no puede acceder a registro de nuevos usuarios.
 Es posible salir de sesion y ya no es posible regresar a no ser que se introduzcan los datos nuevamente.
+
+09/12/2022
+Ahora es posible agregar imagen de perfil de usuario.
+Se ha modificado la base de datos para añadir nuevos campos como "imagen de perfil usuario" y "privilage"
+Todas las paginas son html, es posible que se cambiar a php para añadir funcionalidad y dinamismo.
