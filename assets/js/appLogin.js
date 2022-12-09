@@ -1,40 +1,53 @@
 
 var sesion = localStorage.getItem('UserName');
 var image;
+var imageData;
 const checkSesion = () => {
     if (sesion != null) {
         window.location.href = "inicio.html";
     }
 }
 
-// Check for the File API support.
-if (window.File && window.FileReader && window.FileList && window.Blob) {
-    document.getElementById('files').addEventListener('change', handleFileSelect, false);
-} else {
-    alert('The File APIs are not fully supported in this browser.');
-}
+// transform code to function
 
-function handleFileSelect(evt) {
-    var f = evt.target.files[0]; // FileList object
-    var reader = new FileReader();
-    // Closure to capture the file information.
-    reader.onload = (function (theFile) {
-        return function (e) {
-            var binaryData = e.target.result;
-            //Converting Binary Data to base 64
-            var base64String = window.btoa(binaryData);
-            //save into var globally string
-            image = base64String;
-        };
-    })(f);
-    // Read in the image file as a data URL
-    reader.readAsBinaryString(f);
-}
+// if (window.File && window.FileReader && window.FileList && window.Blob) {
+//     document.getElementById('files').addEventListener('change', handleFileSelect, false);
+// } else {
+//     alert('The File APIs are not fully supported in this browser.');
+// }
+
+// function checkFileAPI() {
+//     if (window.File && window.FileReader && window.FileList && window.Blob) {
+//         document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//     } else {
+//         alert('The File APIs are not fully supported in this browser.');
+//     }
+// }
+
+
+// function handleFileSelect(evt) {
+//     var f = evt.target.files[0]; // FileList object
+//     var reader = new FileReader();
+//     // Closure to capture the file information.
+//     reader.onload = (function (theFile) {
+//         return function (e) {
+//             var binaryData = e.target.result;
+//             //Converting Binary Data to base 64
+//             var base64String = window.btoa(binaryData);
+//             //save into var globally string
+//             image = base64String;
+//         };
+//     })(f);
+//     // Read in the image file as a data URL
+//     reader.readAsBinaryString(f);
+// }
+
 
 const new_User = async () => {
 
     var email = document.querySelector("#correo").value;
     var password = document.querySelector("#password").value;
+    var repassword = document.querySelector("#repassword").value;
     var name = document.querySelector("#name").value;
 
     if (email.trim() === '' | password.trim() === '' | name.trim() === '') {
@@ -77,6 +90,21 @@ const new_User = async () => {
         return;
     }
 
+    if (password != repassword) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "The password dosnt match",
+            footer: "CRUD CONTACTOS"
+        })
+        //input password border red
+        document.querySelector("#password").style.border = "1px solid red";
+        document.querySelector("#repassword").style.border = "1px solid red";
+        document.querySelector("#password").value = "";
+        document.querySelector("#repassword").value = "";
+        return;
+    }
+
     //insert to data base in case of everything go correct.
     const data = new FormData();
     data.append("email", email);
@@ -99,7 +127,7 @@ const new_User = async () => {
             text: result.message,
             footer: "CRUD CONTACTOS"
         })
-        document.querySelector('#formInserta').reset();
+        document.querySelector('#formInsert').reset();
         setTimeout(() => {
             window.location.href = "index.html";
         }, 2000);
@@ -113,10 +141,10 @@ const new_User = async () => {
     }
 }
 
+
 const login_User = async () => {
     var email = document.querySelector("#correo").value;
     var password = document.querySelector("#password").value;
-
     if (email.trim() === '' | password.trim() === '') {
         Swal.fire({
             icon: "error",
