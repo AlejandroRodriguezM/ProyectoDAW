@@ -25,3 +25,12 @@ Los ficheros HTML ahora son php.
 Se ha añadido nuevos metodos para comprobar la contraseña y la codificacion de esta.
 Ahora se crean cookies en php y se eliminan al salir de sesion
 Se ha modificado el css con nuevos fondos background y he cambiado el tipo de cursos para añadir algo mas fresco.
+
+16/12/2022
+Se ha creado un usuario default llamado "Guest" que permitira ver la web, pero no acceder a sus funcionalidades(aun en diseño)
+Ahora las imagenes no se guardan como blob, si no como URL en forma de varchar en la base de datos.
+Ahora las imagenes se recrean en una carpeta especial para cada usuario, en caso de no escoger una imagen de eprfil, se proporciona una default
+Se han añadido nuevos metodos para acceder al "inicio.php"(posible nombre provisional).
+Se han añadido nuevos metodos para crear a los usuarios, crear las imagenes de perfil y las carpetas individuales de cada usuario.
+Se han corregido errores de seguridad.
+Metodo en functions.inc.php que permite guardar palabras claves de sistema para evitar que se introduzca codigo sql en la base de datos y modificarla.
