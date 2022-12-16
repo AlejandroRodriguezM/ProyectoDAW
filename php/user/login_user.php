@@ -11,7 +11,7 @@ if ($_POST) {
     $pass = $_POST['pass'];
     $pass_encrypted = obtain_password($email);
     $reservedWords = reservedWords();
-    if (in_array($userName, $reservedWords) || in_array($password, $reservedWords) || in_array($email, $reservedWords)) {
+    if (in_array($pass, $reservedWords) || in_array($email, $reservedWords)) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
     } else {
