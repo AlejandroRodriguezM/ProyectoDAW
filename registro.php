@@ -40,7 +40,7 @@ include_once 'php/inc/header.inc.php';
                 </div>
                 <div class="mb-3">
                     <img class="chosenUserProfile mb-2" id="output" src="./assets/img/chosePicture.png" />
-                    <input class="form-control" type="file" name="files" id="files" accept=".jpg, .jpeg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                    <input class="form-control" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
                     <input type="button" class="btn btn-danger form-control" onclick="new_User();" value="Registrar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">

@@ -8,40 +8,6 @@ const checkSesion = () => {
     }
 }
 
-// transform code to function
-
-// if (window.File && window.FileReader && window.FileList && window.Blob) {
-//     document.getElementById('files').addEventListener('change', handleFileSelect, false);
-// } else {
-//     alert('The File APIs are not fully supported in this browser.');
-// }
-
-// function checkFileAPI() {
-//     if (window.File && window.FileReader && window.FileList && window.Blob) {
-//         document.getElementById('files').addEventListener('change', handleFileSelect, false);
-//     } else {
-//         alert('The File APIs are not fully supported in this browser.');
-//     }
-// }
-
-
-// function handleFileSelect(evt) {
-//     var f = evt.target.files[0]; // FileList object
-//     var reader = new FileReader();
-//     // Closure to capture the file information.
-//     reader.onload = (function (theFile) {
-//         return function (e) {
-//             var binaryData = e.target.result;
-//             //Converting Binary Data to base 64
-//             var base64String = window.btoa(binaryData);
-//             //save into var globally string
-//             image = base64String;
-//         };
-//     })(f);
-//     // Read in the image file as a data URL
-//     reader.readAsBinaryString(f);
-// }
-
 
 const new_User = async () => {
 
@@ -110,35 +76,41 @@ const new_User = async () => {
     data.append("email", email);
     data.append("pass", password);
     data.append("userName", name);
-    data.append("userPicture", image);
-
-    //pass data to php file
-    var respond = await fetch("php/user/new_user.php", {
-        method: 'POST',
-        body: data
-    });
-
-    var result = await respond.json();
-
-    if (result.success == true) {
-        Swal.fire({
-            icon: "success",
-            title: "GREAT",
-            text: result.message,
-            footer: "CRUD CONTACTOS"
-        })
-        document.querySelector('#formInsert').reset();
-        setTimeout(() => {
-            window.location.href = "index.php";
-        }, 2000);
-    } else {
-        Swal.fire({
-            icon: "error",
-            title: "ERROR.",
-            text: result.message,
-            footer: "CRUD CONTACTOS"
-        })
+    //if image is unvaliable, send 0
+    if (image == null) {
+        data.append("userPicture", "");
+    } else{
+        data.append("userPicture", image);
+        console.log(image);
     }
+
+//pass data to php file
+var respond = await fetch("php/user/new_user.php", {
+    method: 'POST',
+    body: data
+});
+
+var result = await respond.json();
+
+if (result.success == true) {
+    Swal.fire({
+        icon: "success",
+        title: "GREAT",
+        text: result.message,
+        footer: "CRUD CONTACTOS"
+    })
+    document.querySelector('#formInsert').reset();
+    setTimeout(() => {
+        window.location.href = "index.php";
+    }, 2000);
+} else {
+    Swal.fire({
+        icon: "error",
+        title: "ERROR.",
+        text: result.message,
+        footer: "CRUD CONTACTOS"
+    })
+}
 }
 
 
@@ -229,7 +201,7 @@ const login_User = async () => {
 const guest_User = async () => {
 
     var email = "guest@webComics.com";
-    var password = "";
+    var password = "guest";
 
     const data = new FormData();
     data.append('email', email);

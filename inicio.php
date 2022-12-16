@@ -50,11 +50,14 @@ include_once 'php/inc/header.inc.php';
             </form>
         </div>
         <div class="dropdown">
-            <?php
 
+            <?php
+            $email = $_SESSION['email'];
+            $dataUser = getUserData($email);
+            $profilePicture = $dataUser['userPicture'];
+            echo "<img src='$profilePicture' id='avatar' alt='Avatar' class='avatar'>";
             ?>
-            <!-- //Hay que modificar esta linea para que aparezca la imagen de perfil del usuario como tal  -->
-            <img src="./assets/img/chosePicture.png" id="avatar" alt="Avatar" class="avatar">
+
             <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 (NAME USER)
             </button>
@@ -102,9 +105,9 @@ include_once 'php/inc/header.inc.php';
             <h5 class="card-title"></h5>
             <p class="card-text"></p>
         </div> -->
-        <div class="card-footer text-muted">
-            Design by Alejandro Rodriguez 2022
-        </div>
+    <div class="card-footer text-muted">
+        Design by Alejandro Rodriguez 2022
+    </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

@@ -1,7 +1,6 @@
 <?php
-
+session_start();
 include_once '../inc/header.inc.php';
-
 
 $validate['success'] = array('success' => false, 'message' => "", "userName" => "");
 
@@ -12,6 +11,7 @@ if ($_POST) {
     $validate['message'] = 'Welcome to the internet guest user!';
     $validate['userName'] = "Guest";
     $_SESSION['hour'] = date("H:i", time());
+    $_SESSION['email'] = $email;
     createCookies($email, $pass);
 }
 

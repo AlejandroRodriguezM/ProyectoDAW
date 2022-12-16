@@ -1,14 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.2.0
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 16-12-2022 a las 17:16:43
--- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 8.1.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -67,13 +56,19 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `IDuser` int(11) NOT NULL AUTO_INCREMENT,
   `privilege` enum('user','admin') NOT NULL DEFAULT 'user',
-  `userName` varchar(120) NOT NULL,
+  `userName` varchar(250) NOT NULL,
   `password` varchar(150) NOT NULL,
-  `email` varchar(60) NOT NULL,
-  `userPicture` blob NOT NULL,
+  `email` varchar(250) NOT NULL,
+  `userPicture` varchar(250) NOT NULL,
   PRIMARY KEY (`IDuser`)
-) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`IDuser`, `privilege`, `userName`, `password`, `email`, `userPicture`) VALUES
+(1, 'user', 'guest', 'guest', 'guest@webComics.com', 'assets/pictureProfile/default/default.jpg');
 
 -- --------------------------------------------------------
 

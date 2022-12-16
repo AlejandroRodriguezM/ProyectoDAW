@@ -2,22 +2,20 @@
 
 function errorLogin($email_userName, $password_user)
 {
-    $error = '';
-    if (empty($email_userName)) {
-        $error = "<div class='alert alert-danger'>Error. You must fill the user name/email.</div>";
-    }
-    if (empty($password_user)) {
-        $error = "<div class='alert alert-danger'>Error. You must fill the password </div>";
-    }
-    return $error;
+	$error = '';
+	if (empty($email_userName)) {
+		$error = "<div class='alert alert-danger'>Error. You must fill the user name/email.</div>";
+	}
+	if (empty($password_user)) {
+		$error = "<div class='alert alert-danger'>Error. You must fill the password </div>";
+	}
+	return $error;
 }
 
 function createCookies($email, $password)
 {
-    if (checkUser($email, $password)) {
-        setcookie('loginUser', $email, time() + 3600, '/');
-        setcookie('passwordUser', $password, time() + 3600, '/');
-    }
+	setcookie('loginUser', $email, time() + 3600, '/');
+	setcookie('passwordUser', $password, time() + 3600, '/');
 }
 
 /**
@@ -69,4 +67,39 @@ function reservedWords()
 	return $palabras;
 }
 
-?>
+function saveImage()
+{
+	$email = $_POST['email'];
+	$userData = getUserData($email);
+	$email = explode("@", $email);
+	$email = $email[0];
+	$image = $_POST['userPicture'];
+	$idUser = $userData['IDuser'];
+	createDirectory();
+	if (empty($image)) {
+		$pathDefault = '../../assets/pictureProfile/default/default.jpg';
+		$type = pathinfo($pathDefault, PATHINFO_EXTENSION);
+		$data = file_get_contents($pathDefault);
+		$image = 'data:image/' . $type . ';base64,' . base64_encode($data);
+	} else {
+		$image = $_POST['userPicture'];
+	}
+	$file_path = '../../assets/pictureProfile/' . $idUser . "-" . $email;
+	$blob = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
+	$file = fopen($file_path . "/profile.jpg", "w");
+	fwrite($file, $blob);
+	fclose($file);
+}
+
+function createDirectory()
+{
+	$email = $_POST['email'];
+	$userData = getUserData($email);
+	$email = explode("@", $email);
+	$email = $email[0];
+	$idUser = $userData['IDuser'];
+	$file_path = '../../assets/pictureProfile/' . $idUser . "-" . $email;
+	if (!file_exists($file_path)) {
+		mkdir($file_path, 0777, true);
+	}
+}
