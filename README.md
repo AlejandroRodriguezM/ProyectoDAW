@@ -19,3 +19,9 @@ Es posible salir de sesion y ya no es posible regresar a no ser que se introduzc
 Ahora es posible agregar imagen de perfil de usuario.
 Se ha modificado la base de datos para añadir nuevos campos como "imagen de perfil usuario" y "privilage"
 Todas las paginas son html, es posible que se cambiar a php para añadir funcionalidad y dinamismo.
+
+16/12/2022
+Los ficheros HTML ahora son php.
+Se ha añadido nuevos metodos para comprobar la contraseña y la codificacion de esta.
+Ahora se crean cookies en php y se eliminan al salir de sesion
+Se ha modificado el css con nuevos fondos background y he cambiado el tipo de cursos para añadir algo mas fresco.
