@@ -11,19 +11,25 @@ if ($_POST) {
     $imageURL = $_POST['userPicture'];
     $password = password_hash($_POST['pass'], PASSWORD_DEFAULT);
     $email = $_POST['email'];
-
-    if (checkUser($email,$password)) {
+    $reservedWords = reservedWords();
+    if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords) || in_array(strtolower($email), $reservedWords)) {
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. The email is used';
+        $validate['message'] = 'ERROR. You cant use system reserved words';
     } else {
-        if (new_user($userName, $email, $password)) {
-            saveImage();
-            insertURL($email);
-            $validate['success'] = true;
-            $validate['message'] = 'The user save correctly';
-        } else {
+        if (checkUser($email, $password)) {
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. The user dont save correctly';
+            $validate['message'] = 'ERROR. The email is used';
+        } else {
+            if ($userName)
+                if (new_user($userName, $email, $password)) {
+                    saveImage();
+                    insertURL($email);
+                    $validate['success'] = true;
+                    $validate['message'] = 'The user save correctly';
+                } else {
+                    $validate['success'] = false;
+                    $validate['message'] = 'ERROR. The user dont save correctly';
+                }
         }
     }
 } else {

@@ -10,25 +10,30 @@ if ($_POST) {
     $email = $_POST['email'];
     $pass = $_POST['pass'];
     $pass_encrypted = obtain_password($email);
-    if (password_verify($pass, $pass_encrypted)) {
-        $row_count = getUserData($email);
-        if (checkUser($email, $pass_encrypted)) {
-            $row = $result->fetch(PDO::FETCH_ASSOC);
-            $validate['success'] = true;
-            $validate['message'] = 'Welcome to the internet ' . $row['userName'];
-            $validate['userName'] = strtoupper($row['userName']);
-            $_SESSION['hour'] = date("H:i", time());
-            $_SESSION['email'] = $row['email'];
-            createCookies($email, $pass_encrypted);
+    $reservedWords = reservedWords();
+    if (in_array($userName, $reservedWords) || in_array($password, $reservedWords) || in_array($email, $reservedWords)) {
+        $validate['success'] = false;
+        $validate['message'] = 'ERROR. You cant use system reserved words';
+    } else {
+        if (password_verify($pass, $pass_encrypted)) {
+            if (checkUser($email, $pass_encrypted)) {
+                $row = getUserData($email);
+                $validate['success'] = true;
+                $validate['message'] = 'Welcome to the internet ' . $row['userName'];
+                $validate['userName'] = strtoupper($row['userName']);
+                $_SESSION['hour'] = date("H:i", time());
+                $_SESSION['email'] = $row['email'];
+                createCookies($email, $pass_encrypted);
+            } else {
+                $validate['success'] = false;
+                $validate['message'] = 'ERROR. The user is not save in database';
+                deleteCookies();
+            }
         } else {
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. The user is not save in database';
+            $validate['message'] = 'The password dosent match';
             deleteCookies();
         }
-    } else {
-        $validate['success'] = false;
-        $validate['message'] = 'The password dosent match';
-        deleteCookies();
     }
 }
 
