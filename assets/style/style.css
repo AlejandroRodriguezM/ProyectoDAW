@@ -53,3 +53,17 @@ form{
     height: 50px;
     border-radius: 50%;
   }
+
+  .inicio {
+    background-image: url("../img/background.jpg");
+    background-color: #cccccc;
+}
+
+.container {
+    background-color: white;
+    border-radius: 10px;
+    width: 30%;
+    margin: auto;
+    margin-top: 2%;
+    padding: 20px;
+}

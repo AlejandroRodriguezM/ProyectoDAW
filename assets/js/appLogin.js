@@ -4,7 +4,7 @@ var image;
 var imageData;
 const checkSesion = () => {
     if (sesion != null) {
-        window.location.href = "inicio.html";
+        window.location.href = "inicio.php";
     }
 }
 
@@ -94,10 +94,10 @@ const new_User = async () => {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
-            text: "The password dosnt match",
+            text: "The password doesn't match",
             footer: "CRUD CONTACTOS"
         })
-        //input password border red
+
         document.querySelector("#password").style.border = "1px solid red";
         document.querySelector("#repassword").style.border = "1px solid red";
         document.querySelector("#password").value = "";
@@ -129,7 +129,7 @@ const new_User = async () => {
         })
         document.querySelector('#formInsert').reset();
         setTimeout(() => {
-            window.location.href = "index.html";
+            window.location.href = "index.php";
         }, 2000);
     } else {
         Swal.fire({
@@ -144,7 +144,8 @@ const new_User = async () => {
 
 const login_User = async () => {
     var email = document.querySelector("#correo").value;
-    var password = document.querySelector("#password").value;
+    var password = document.querySelector("#password_User").value;
+    var repassword = document.querySelector("#repassword_User").value;
     if (email.trim() === '' | password.trim() === '') {
         Swal.fire({
             icon: "error",
@@ -169,9 +170,23 @@ const login_User = async () => {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
-            text: "You have to introduce a valid password (upperCase,lowerCase,numer and min 8 characters)",
+            text: "You have to introduce a valid password (upperCase,lowerCase,number and min 8 characters)",
             footer: "CRUD CONTACTOS"
         })
+        return;
+    }
+
+    if (password != repassword) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "The password doesn't match",
+            footer: "CRUD CONTACTOS"
+        })
+        document.querySelector("#password").style.border = "1px solid red";
+        document.querySelector("#repassword").style.border = "1px solid red";
+        document.querySelector("#password").value = "";
+        document.querySelector("#repassword").value = "";
         return;
     }
 
@@ -198,7 +213,7 @@ const login_User = async () => {
         document.querySelector('#formIniciar').reset();
         localStorage.setItem('UserName', result.userName);
         setTimeout(() => {
-            window.location.href = "inicio.html";
+            window.location.href = "inicio.php";
         }, 2000);
     } else {
         Swal.fire({
