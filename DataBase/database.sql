@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-12-2022 a las 19:08:53
--- Versión del servidor: 10.4.25-MariaDB
--- Versión de PHP: 8.1.10
+-- Tiempo de generación: 16-12-2022 a las 17:16:43
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -36,11 +36,12 @@ CREATE TABLE IF NOT EXISTS `comics` (
   `NumComic` int(10) NOT NULL,
   `CoverArtist` varchar(150) NOT NULL,
   `publisher` varchar(45) NOT NULL,
+  `date_published` date NOT NULL,
   `Writer` varchar(150) NOT NULL,
   `Penciler` varchar(150) NOT NULL,
   `Cover` blob NOT NULL,
   PRIMARY KEY (`IDcomic`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -54,22 +55,25 @@ CREATE TABLE IF NOT EXISTS `possession` (
   `comic` int(11) NOT NULL,
   PRIMARY KEY (`user`,`comic`),
   KEY `comic_id` (`comic`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `user`
+-- Estructura de tabla para la tabla `users`
 --
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
-  `UserName` varchar(50) NOT NULL,
-  `Pass` varchar(50) NOT NULL,
-  `Email` varchar(60) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
   `IDuser` int(11) NOT NULL AUTO_INCREMENT,
+  `privilege` enum('user','admin') NOT NULL DEFAULT 'user',
+  `userName` varchar(120) NOT NULL,
+  `password` varchar(150) NOT NULL,
+  `email` varchar(60) NOT NULL,
+  `userPicture` blob NOT NULL,
   PRIMARY KEY (`IDuser`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 -- --------------------------------------------------------
 
@@ -83,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `wanted` (
   `user` int(11) NOT NULL,
   PRIMARY KEY (`comic`,`user`),
   KEY `idUser` (`user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Restricciones para tablas volcadas
@@ -94,14 +98,14 @@ CREATE TABLE IF NOT EXISTS `wanted` (
 --
 ALTER TABLE `possession`
   ADD CONSTRAINT `comic_id` FOREIGN KEY (`comic`) REFERENCES `comics` (`IDcomic`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_id` FOREIGN KEY (`user`) REFERENCES `user` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_id` FOREIGN KEY (`user`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `wanted`
 --
 ALTER TABLE `wanted`
   ADD CONSTRAINT `idComic` FOREIGN KEY (`comic`) REFERENCES `comics` (`IDcomic`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `idUser` FOREIGN KEY (`user`) REFERENCES `user` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `idUser` FOREIGN KEY (`user`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

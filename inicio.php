@@ -53,6 +53,7 @@ include_once 'php/inc/header.inc.php';
             <?php
 
             ?>
+            <!-- //Hay que modificar esta linea para que aparezca la imagen de perfil del usuario como tal  -->
             <img src="./assets/img/chosePicture.png" id="avatar" alt="Avatar" class="avatar">
             <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 (NAME USER)

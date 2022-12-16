@@ -26,7 +26,8 @@ if ($_POST) {
             $validate['message'] = 'ERROR. The user is not save in database';
             deleteCookies();
         }
-    } else {
+    }
+     else {
         $validate['success'] = false;
         $validate['message'] = 'The password dosent match';
         deleteCookies();

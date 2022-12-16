@@ -29,13 +29,16 @@ include_once 'php/inc/header.inc.php';
                 </div>
                 <div class="mb-3"">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password_User" placeholder="***********"
+                    <input type="password" class="form-control" id="password_user" placeholder="***********"
                     style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
                     <label for="repassword" class="form-label">RePassword</label>
-                    <input type="password" class="form-control" id="repassword_User" placeholder="***********"
+                    <input type="password" class="form-control" id="repassword_user" placeholder="***********"
                     style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                </div>
+                <div class="mb-3">
+                    <input type="button" name="guest_user" class="btn btn-danger form-control" onclick="guest_User();" value="Guest sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
                     <input type="button" name="enter_sesion" class="btn btn-danger form-control" onclick="login_User();" value="Enter sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">

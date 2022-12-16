@@ -144,9 +144,9 @@ const new_User = async () => {
 
 const login_User = async () => {
     var email = document.querySelector("#correo").value;
-    var password = document.querySelector("#password_User").value;
-    var repassword = document.querySelector("#repassword_User").value;
-    if (email.trim() === '' | password.trim() === '') {
+    var password = document.querySelector('#password_user').value;
+    var repassword = document.querySelector('#repassword_user').value;
+    if (email.trim() === '' | password.trim() === '' | repassword.trim() === '') {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
@@ -192,11 +192,50 @@ const login_User = async () => {
 
     //insert to data base in case of everything go correct.
     const data = new FormData();
-    data.append("email", email);
-    data.append("pass", password);
+    data.append('email', email);
+    data.append('pass', password);
 
     //pass data to php file
     var respond = await fetch("php/user/login_user.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "CRUD CONTACTOS"
+        })
+        document.querySelector('#formIniciar').reset();
+        localStorage.setItem('UserName', result.userName);
+        setTimeout(() => {
+            window.location.href = "inicio.php";
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "CRUD CONTACTOS"
+        })
+    }
+
+}
+
+const guest_User = async () => {
+
+    var email = "guest@webComics.com";
+    var password = "";
+
+    const data = new FormData();
+    data.append('email', email);
+    data.append('pass', password);
+    //pass data to php file
+    var respond = await fetch("php/user/guest_user.php", {
         method: 'POST',
         body: data
     });
