@@ -18,6 +18,7 @@ include_once 'php/inc/header.inc.php';
     <title>Inicio</title>
 </head>
 
+
 <body onload="checkSesion();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="btn btn-secondary btn-lg active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -65,8 +66,7 @@ include_once 'php/inc/header.inc.php';
                     if (isset($_SESSION['email'])) {
                         $email = $_SESSION['email'];
                         if ($email == 'guest@webComics.com') {
-                            echo "<a class='dropdown-item' href='registro.php'><i class='bi bi-person-circle p-1'></i>Crear cuenta</a>";
-                            echo "<a class='dropdown-item' href='index.php'><i class='bi bi-person-circle p-1'></i>Iniciar sesion</a>";
+                            echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
                         } else {
                             echo "<a class='dropdown-item' href='settingsProfile.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                         }

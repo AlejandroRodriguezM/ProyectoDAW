@@ -20,7 +20,6 @@ const closeSesion =()=>{
     window.location.href="logOut.php";
 }
 
-
 const new_User = async () => {
 
     var email = document.querySelector("#correo").value;

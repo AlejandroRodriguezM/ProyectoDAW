@@ -34,3 +34,10 @@ Se han añadido nuevos metodos para acceder al "inicio.php"(posible nombre provi
 Se han añadido nuevos metodos para crear a los usuarios, crear las imagenes de perfil y las carpetas individuales de cada usuario.
 Se han corregido errores de seguridad.
 Metodo en functions.inc.php que permite guardar palabras claves de sistema para evitar que se introduzca codigo sql en la base de datos y modificarla.
+
+
+17/12/2022
+Ahora es posible entrar en la seccion "mi perfil" en el que podras modificar datos de tu usuario.
+Aun no existen mas opciones por ahora.
+El usuario "guest" no podra acceder a dichas opciones, al pulsar para ver las opciones, solamente podra o iniciar sesion o crear cuenta o salir.
+Cuando se loguea con el usuario guest, a la hora de escoger "Iniciar sesion", se borran las cookies y las sessions del usuario.
