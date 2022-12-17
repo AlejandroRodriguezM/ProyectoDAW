@@ -87,6 +87,28 @@ function new_user($userName,$email,$password){
 	}
 }
 
+function update_user($userName,$email,$password){
+
+	global $conection;
+	$update = false;
+	try{
+		$insertData = $conection->prepare("UPDATE users SET userName = ?, password = ? WHERE email = ?");
+		$insertData->bindParam(1, $userName);
+		$insertData->bindParam(2, $password);
+		$insertData->bindParam(3, $email);
+
+		if($insertData->execute()){
+			$update = true;
+		}
+		return $update;
+	}
+	catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+}
+
 function insertURL($email){
 	global $conection;
 	$create = false;

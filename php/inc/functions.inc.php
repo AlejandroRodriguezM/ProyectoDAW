@@ -75,7 +75,7 @@ function saveImage()
 	$email = $email[0];
 	$image = $_POST['userPicture'];
 	$idUser = $userData['IDuser'];
-	createDirectory();
+	
 	if (empty($image)) {
 		$pathDefault = '../../assets/pictureProfile/default/default.jpg';
 		$type = pathinfo($pathDefault, PATHINFO_EXTENSION);
@@ -102,4 +102,10 @@ function createDirectory()
 	if (!file_exists($file_path)) {
 		mkdir($file_path, 0777, true);
 	}
+}
+
+function pictureProfile($email){
+	$dataUser = getUserData($email);
+	$profilePicture = $dataUser['userPicture'];
+	return "<img src='$profilePicture' id='avatar' alt='Avatar' class='avatarPicture'>";
 }

@@ -15,7 +15,7 @@ include_once 'php/inc/header.inc.php';
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>CRUD contactos</title>
+    <title>Inicio</title>
 </head>
 
 <body onload="checkSesion();">
@@ -24,7 +24,7 @@ include_once 'php/inc/header.inc.php';
             WebComics
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
+            <a class="dropdown-item" href="settingsProfile.php"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
             <a class="dropdown-item" href="#"><i class="bi bi-newspaper p-1"></i>
                 Sobre WebComics</a>
             <div class="dropdown-divider"></div>
@@ -43,7 +43,7 @@ include_once 'php/inc/header.inc.php';
             </ul>
         </div>
 
-        <div class="d-flex " role="search">
+        <div class="d-flex" role="search">
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Busqueda</button>
@@ -53,9 +53,7 @@ include_once 'php/inc/header.inc.php';
 
             <?php
             $email = $_SESSION['email'];
-            $dataUser = getUserData($email);
-            $profilePicture = $dataUser['userPicture'];
-            echo "<img src='$profilePicture' id='avatar' alt='Avatar' class='avatar'>";
+            echo pictureProfile($email);
             ?>
 
             <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,7 +61,7 @@ include_once 'php/inc/header.inc.php';
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="dropdown-item" href="#"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
+                    <a class="dropdown-item" href="settingsProfile.php"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
                     <button class="dropdown-item" onclick="closeSesion()" name="closeSesion"> <i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</button>
                 </li>
             </ul>
@@ -71,7 +69,7 @@ include_once 'php/inc/header.inc.php';
     </nav>
     <!-- <div class="card text-center m-4">
         <div class="card-header">
-            CRUD contactos
+            Web Comics
         </div>
         <div class="card-body">
             <div class="text-start">

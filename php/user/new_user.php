@@ -5,8 +5,6 @@ include_once '../inc/header.inc.php';
 $validate['success'] = array('success' => false, 'message' => "");
 
 if ($_POST) {
-    global $conection;
-
     $userName = $_POST['userName'];
     $imageURL = $_POST['userPicture'];
     $password = password_hash($_POST['pass'], PASSWORD_DEFAULT);
@@ -20,16 +18,16 @@ if ($_POST) {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. The email is used';
         } else {
-            if ($userName)
-                if (new_user($userName, $email, $password)) {
-                    saveImage();
-                    insertURL($email);
-                    $validate['success'] = true;
-                    $validate['message'] = 'The user save correctly';
-                } else {
-                    $validate['success'] = false;
-                    $validate['message'] = 'ERROR. The user dont save correctly';
-                }
+            if (new_user($userName, $email, $password)) {
+                createDirectory();
+                saveImage();
+                insertURL($email);
+                $validate['success'] = true;
+                $validate['message'] = 'The user save correctly';
+            } else {
+                $validate['success'] = false;
+                $validate['message'] = 'ERROR. The user dont save correctly';
+            }
         }
     }
 } else {

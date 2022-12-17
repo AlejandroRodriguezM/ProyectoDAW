@@ -13,6 +13,5 @@ const closeSesion =()=>{
     localStorage.clear();
     //window location in php/user
     window.location.href="logOut.php";
-
 }
 

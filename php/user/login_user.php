@@ -6,7 +6,6 @@ include_once '../inc/header.inc.php';
 $validate['success'] = array('success' => false, 'message' => "", "userName" => "");
 
 if ($_POST) {
-    global $conection;
     $email = $_POST['email'];
     $pass = $_POST['pass'];
     $pass_encrypted = obtain_password($email);

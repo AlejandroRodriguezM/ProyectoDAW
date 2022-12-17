@@ -13,7 +13,7 @@ include_once 'php/inc/header.inc.php';
     <link rel="shortcut icon" href="./assets/img/logoWeb.png" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/style/style.css">
-    <title>CRUD contactos</title>
+    <title>Registro</title>
 </head>
 
 <body onload="checkSesion();" class="inicio">
@@ -43,7 +43,7 @@ include_once 'php/inc/header.inc.php';
                     <input class="form-control" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
-                    <input type="button" class="btn btn-danger form-control" onclick="new_User();" value="Registrar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                    <input type="button" class="btn btn-danger form-control" onclick="new_user();" value="Registrar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                     <script>
                         function handleFileSelect(evt) {
                             var f = evt.target.files[0]; // FileList object
@@ -70,11 +70,6 @@ include_once 'php/inc/header.inc.php';
                 </div>
             </form>
         </div>
-
-
-
-
-        
     </div>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/functions.js"></script>
