@@ -26,12 +26,10 @@ if ($_POST) {
             } else {
                 $validate['success'] = false;
                 $validate['message'] = 'ERROR. The user is not save in database';
-                deleteCookies();
             }
         } else {
             $validate['success'] = false;
             $validate['message'] = 'The password dosent match';
-            deleteCookies();
         }
     }
 }

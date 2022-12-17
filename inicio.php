@@ -61,8 +61,19 @@ include_once 'php/inc/header.inc.php';
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="dropdown-item" href="settingsProfile.php"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
-                    <button class="dropdown-item" onclick="closeSesion()" name="closeSesion"> <i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</button>
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        $email = $_SESSION['email'];
+                        if ($email == 'guest@webComics.com') {
+                            echo "<a class='dropdown-item' href='registro.php'><i class='bi bi-person-circle p-1'></i>Crear cuenta</a>";
+                            echo "<a class='dropdown-item' href='index.php'><i class='bi bi-person-circle p-1'></i>Iniciar sesion</a>";
+                        } else {
+                            echo "<a class='dropdown-item' href='settingsProfile.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                        }
+                        echo "<button class='dropdown-item' onclick='closeSesion()' name='closeSesion'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button>";
+                    }
+
+                    ?>
                 </li>
             </ul>
         </div>
