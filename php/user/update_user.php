@@ -17,7 +17,6 @@ if ($_POST) {
         if (update_user($userName, $email, $password)) {
             saveImage();
             insertURL($email);
-            deleteCookies();
             createCookies($email, $password);
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';

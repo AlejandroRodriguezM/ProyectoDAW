@@ -20,7 +20,7 @@ const closeSesion =()=>{
     window.location.href="logOut.php";
 }
 
-const new_User = async () => {
+const new_user = async () => {
 
     var email = document.querySelector("#correo").value;
     var password = document.querySelector("#password").value;
@@ -125,7 +125,7 @@ if (result.success == true) {
 }
 
 
-const login_User = async () => {
+const login_user = async () => {
     var email = document.querySelector("#correo").value;
     var password = document.querySelector('#password_user').value;
     var repassword = document.querySelector('#repassword_user').value;
@@ -209,7 +209,7 @@ const login_User = async () => {
 
 }
 
-const guest_User = async () => {
+const guest_user = async () => {
 
     var email = "guest@webComics.com";
     var password = "guest";

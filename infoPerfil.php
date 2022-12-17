@@ -20,7 +20,7 @@ if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Profile</title>
+    <title>Informacion de perfil</title>
 </head>
 
 <body onload="checkSesionUpdate()">
@@ -112,79 +112,48 @@ if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
                         </div>
                         <nav class="side-menu">
                             <ul class="nav">
-                                <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
-                                <li class="active"><a href="settingsProfile.php"><span class="fa fa-cog"></span> Settings</a></li>
+                                <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
+                                <li><a href="settingsProfile.php"><span class="fa fa-cog"></span> Settings</a></li>
                                 <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
                                 <li><a href="#"><span class="fa fa-envelope"></span> Messages</a></li>
-
                                 <li><a href="user-drive.html"><span class="fa fa-th"></span> Drive</a></li>
                                 <li><a href="#"><span class="fa fa-clock-o"></span> Reminders</a></li>
                             </ul>
                         </nav>
                     </div>
                     <div class="content-panel">
-                        <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                            <fieldset class="fieldset">
-                                <h3 class="fieldset-title">Personal Info</h3>
-                                <div class="form-group avatar">
-                                    <figure>
-                                        <?php
-                                        $email = $_SESSION['email'];
-                                        $dataUser = getUserData($email);
-                                        $profilePicture = $dataUser['userPicture'];
-                                        echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' />";
-                                        ?>
-                                    </figure>
-                                    <div class="form-inline col-md-10 col-sm-9 col-xs-12">
-                                        <input class="form-control" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
-                                    <div class="col-md-10 col-sm-9 col-xs-12">
-                                        <input type="text" class="form-control" id="name" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                        <input type="hidden" id="correo" value="<?php echo $email ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">New Password</label>
-                                    <div class="col-md-10 col-sm-9 col-xs-12">
-                                        <input type="password" class="form-control" id="password" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 col-sm-3 col-xs-12 control-label">Repit new Password</label>
-                                    <div class="col-md-10 col-sm-9 col-xs-12">
-                                        <input type="password" class="form-control" id="repassword" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <hr>
-                            <div class="mb-3">
-                                <div class="col-md-5 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
-                                    <input class="btn btn-primary" type="button" onclick="update_user();" value="Update Profile" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                    <script>
-                                        function handleFileSelect(evt) {
-                                            var f = evt.target.files[0]; // FileList object
-                                            var reader = new FileReader();
-                                            // Closure to capture the file information.
-                                            reader.onload = (function(theFile) {
-                                                return function(e) {
-                                                    var binaryData = e.target.result;
-                                                    //Converting Binary Data to base 64
-                                                    var base64String = window.btoa(binaryData);
-                                                    //save into var globally string
-                                                    image = base64String;
-                                                };
-                                            })(f);
-                                            // Read in the image file as a data URL
-                                            reader.readAsBinaryString(f);
-                                        }
-                                        document.getElementById('files').addEventListener('change', handleFileSelect, false);
-                                    </script>
-                        </form>
-                    </div>
-                </div>
+                        <fieldset class="fieldset">
+                            <h3 class="fieldset-title">Personal Info</h3>
+                            <div class="form-group avatar">
+                            </div>
+
+                            <div class="form-group">
+                                <?php
+                                $email = $_SESSION['email'];
+                                $dataUser = getUserData($email);
+                                $userName = $dataUser['userName'];
+                                echo "<label>Nombre de usuario: </label>";
+                                echo " " . "<span>$userName</span>";
+                                ?>
+                            </div>
+                            <div class="form-group">
+                                <?php
+                                $email = $_SESSION['email'];
+                                $dataUser = getUserData($email);
+                                $email = $dataUser['email'];
+                                echo "<label>Correo electronico: </label>";
+                                echo " " . "<span>$email</span>";
+                                ?>
+                            </div>
+                            <!-- Mas adelante aqui se van a poner mas informacion de cada usuario. Por ahora se queda vacio.  -->
+                            <!-- <div class="form-group">
+                                <?php
+                                ?>
+                            </div> -->
+                        </fieldset>
+                        <hr>
+                        <div class="mb-3">
+                        </div>
             </section>
         </div>
     </div>
