@@ -25,7 +25,17 @@ include_once 'php/inc/header.inc.php';
             WebComics
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="settingsProfile.php"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
+        <?php
+                    if (isset($_SESSION['email'])) {
+                        $email = $_SESSION['email'];
+                        if ($email == 'guest@webComics.com') {
+                            echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
+                        } else {
+                            echo "<a class='dropdown-item' href='settingsProfile.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                        }
+                    }
+
+                    ?>
             <a class="dropdown-item" href="#"><i class="bi bi-newspaper p-1"></i>
                 Sobre WebComics</a>
             <div class="dropdown-divider"></div>
