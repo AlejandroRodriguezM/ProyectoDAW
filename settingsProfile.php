@@ -114,11 +114,10 @@ if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
                             <ul class="nav">
                                 <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
                                 <li class="active"><a href="settingsProfile.php"><span class="fa fa-cog"></span> Settings</a></li>
-                                <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
+                                <!-- <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
                                 <li><a href="#"><span class="fa fa-envelope"></span> Messages</a></li>
-
                                 <li><a href="user-drive.html"><span class="fa fa-th"></span> Drive</a></li>
-                                <li><a href="#"><span class="fa fa-clock-o"></span> Reminders</a></li>
+                                <li><a href="#"><span class="fa fa-clock-o"></span> Reminders</a></li> -->
                             </ul>
                         </nav>
                     </div>

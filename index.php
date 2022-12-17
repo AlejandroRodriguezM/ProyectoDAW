@@ -155,7 +155,7 @@ include_once 'php/inc/header.inc.php';
                     <input type="password" class="form-control" id="repassword_user" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
-                    <input type="button" name="guest_user" class="btn btn-danger form-control" onclick="guest_user();" value="Guest sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                    <input type="button" name="guest_user" class="btn btn-secondary form-control" onclick="guest_User();" value="Guest sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
                     <input type="button" name="enter_sesion" class="btn btn-danger form-control" onclick="login_user();" value="Enter sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">

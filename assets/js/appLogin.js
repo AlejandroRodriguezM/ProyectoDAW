@@ -209,7 +209,7 @@ const login_user = async () => {
 
 }
 
-const guest_user = async () => {
+const guest_User = async () => {
 
     var email = "guest@webComics.com";
     var password = "guest";
