@@ -20,7 +20,7 @@ if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Profile</title>
+    <title>Settings</title>
 </head>
 
 <body onload="checkSesionUpdate()">
@@ -113,7 +113,7 @@ if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
                         <nav class="side-menu">
                             <ul class="nav">
                                 <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
-                                <li class="active"><a href="settingsProfile.php"><span class="fa fa-cog"></span> Settings</a></li>
+                                <li class="active"><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
                                 <!-- <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
                                 <li><a href="#"><span class="fa fa-envelope"></span> Messages</a></li>
                                 <li><a href="user-drive.html"><span class="fa fa-th"></span> Drive</a></li>
