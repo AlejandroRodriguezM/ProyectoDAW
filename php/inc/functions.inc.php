@@ -12,10 +12,29 @@ function errorLogin($email_userName, $password_user)
 	return $error;
 }
 
-function createCookies($email, $password)
+function cookiesUser($email, $password)
 {
 	setcookie('loginUser', $email, time() + 3600, '/');
 	setcookie('passwordUser', $password, time() + 3600, '/');
+}
+
+function cookiesAdmin($email, $password)
+{
+	setcookie('adminUser', $email, time() + 3600, '/');
+	setcookie('passwordAdmin', $password, time() + 3600, '/');
+}
+
+function checkCookiesAdmin()
+{
+	if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser']) || !isset($_COOKIE['adminUser']) || !isset($_COOKIE['passwordAdmin'])) {
+		die("Error. You are not the administrator. Talk to the administrator if you have more problems <a href='logOut.php'>Log in</a>");
+	}
+}
+
+function checkCookiesUser(){
+	if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
+		die("Error. You are not logged <a href='logOut.php'>Log in</a>");
+	}
 }
 
 /**
@@ -75,7 +94,7 @@ function saveImage()
 	$email = $email[0];
 	$image = $_POST['userPicture'];
 	$idUser = $userData['IDuser'];
-	
+
 	if (empty($image)) {
 		$pathDefault = '../../assets/pictureProfile/default/default.jpg';
 		$type = pathinfo($pathDefault, PATHINFO_EXTENSION);
@@ -104,7 +123,8 @@ function createDirectory()
 	}
 }
 
-function pictureProfile($email){
+function pictureProfile($email)
+{
 	$dataUser = getUserData($email);
 	$profilePicture = $dataUser['userPicture'];
 	return "<img src='$profilePicture' id='avatar' alt='Avatar' class='avatarPicture'>";

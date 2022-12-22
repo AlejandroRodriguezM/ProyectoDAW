@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-
+checkCookiesUser();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,16 +25,20 @@ include_once 'php/inc/header.inc.php';
             WebComics
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <?php
+        <?php
             if (isset($_SESSION['email'])) {
                 $email = $_SESSION['email'];
-                if ($email == 'guest@webComics.com') {
+                $userData = getUserData($email);
+                $userPrivilege = $userData['privilege'];
+                if ($userPrivilege == 'guest') {
                     echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
+                } elseif ($userPrivilege == 'admin') {
+                    echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 } else {
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 }
             }
-
             ?>
             <a class="dropdown-item" href="about.php"><i class="bi bi-newspaper p-1"></i>
                 Sobre WebComics</a>
@@ -70,17 +74,24 @@ include_once 'php/inc/header.inc.php';
             <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 (NAME USER)
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" >
                 <li>
+
                     <?php
                     if (isset($_SESSION['email'])) {
                         $email = $_SESSION['email'];
-                        if ($email == 'guest@webComics.com') {
+                        $userData = getUserData($email);
+                        $userPrivilege = $userData['privilege'];
+                        if ($userPrivilege == 'guest') {
                             echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
+                        } elseif ($userPrivilege == 'admin') {
+                            echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                            echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                         } else {
                             echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                         }
                     }
+                    echo "<div class='dropdown-divider'></div>";
                     echo "<button class='dropdown-item' onclick='closeSesion()' name='closeSesion'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button>";
                     ?>
                 </li>

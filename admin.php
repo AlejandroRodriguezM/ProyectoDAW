@@ -2,14 +2,7 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 
-checkCookiesUser();
-
-$email = $_SESSION['email'];
-$userData = getUserData($email);
-$userPrivilege = $userData['privilege'];
-if ($userPrivilege == 'guest') {
-    header('Location: logOut.php');
-}
+checkCookiesAdmin();
 
 ?>
 <!DOCTYPE html>
@@ -25,7 +18,7 @@ if ($userPrivilege == 'guest') {
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Informacion de perfil</title>
+    <title>Panel de administracion</title>
 </head>
 
 <body onload="checkSesionUpdate()">

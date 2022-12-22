@@ -17,12 +17,15 @@ if ($_POST) {
         if (password_verify($pass, $pass_encrypted)) {
             if (checkUser($email, $pass_encrypted)) {
                 $row = getUserData($email);
+                if ($row['privilege'] == 'admin') {
+                    cookiesAdmin($email, $password);
+                }
                 $validate['success'] = true;
                 $validate['message'] = 'Welcome to the internet ' . $row['userName'];
                 $validate['userName'] = strtoupper($row['userName']);
                 $_SESSION['hour'] = date("H:i", time());
                 $_SESSION['email'] = $row['email'];
-                createCookies($email, $pass_encrypted);
+                cookiesUser($email, $pass_encrypted);
             } else {
                 $validate['success'] = false;
                 $validate['message'] = 'ERROR. The user is not save in database';

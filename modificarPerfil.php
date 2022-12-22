@@ -2,9 +2,15 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 
-if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
-    die("Error. You are not the administrator. Talk to the administrator if you have more problems <a href='logOut.php'>Log in</a>");
+checkCookiesUser();
+
+$email = $_SESSION['email'];
+$userData = getUserData($email);
+$userPrivilege = $userData['privilege'];
+if ($userPrivilege == 'guest') {
+    header('Location: logOut.php');
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -29,11 +35,26 @@ if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
             WebComics
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="infoPerfil.php"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
+        <?php
+            if (isset($_SESSION['email'])) {
+                $email = $_SESSION['email'];
+                $userData = getUserData($email);
+                $userPrivilege = $userData['privilege'];
+                if ($userPrivilege == 'guest') {
+                    echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
+                } elseif ($userPrivilege == 'admin') {
+                    echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                } else {
+                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                }
+            }
+            ?>
             <a class="dropdown-item" href="about.php"><i class="bi bi-newspaper p-1"></i>
                 Sobre WebComics</a>
             <div class="dropdown-divider"></div>
-            <button class="dropdown-item" onclick="closeSesion()" name="closeSesion"><i class="bi bi-box-arrow-right p-1"></i>Salir de sesion</a>
+            <button class="dropdown-item" onclick="closeSesion()" name="closeSesion"><i class="bi bi-box-arrow-right p-1"></i>Salir de
+                sesion</a>
         </div>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <a class="navbar-brand" href="inicio.php">Inicio</a>
@@ -66,6 +87,7 @@ if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
             <ul class="dropdown-menu">
                 <li>
                     <a class="dropdown-item" href="#"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
+                    <div class="dropdown-divider"></div>
                     <button class="dropdown-item" onclick="closeSesion()" name="closeSesion"> <i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</button>
                 </li>
             </ul>
