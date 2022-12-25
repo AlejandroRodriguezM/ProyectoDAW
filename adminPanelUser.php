@@ -34,6 +34,12 @@ if(isset($_POST['status'])){
     $email = $_POST['emailUser'];
     changeStatusAccount($email);
 }
+
+if(isset($_POST['del'])){
+    $email = $_POST['emailUser'];
+    $IDuser = $_POST['IDuser'];
+    delete_user($email,$IDuser);
+}
 ?>
 
 
@@ -192,6 +198,7 @@ if(isset($_POST['status'])){
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-success' disabled> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
+                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
                                     <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
                                     <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
                                     <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
@@ -205,6 +212,8 @@ if(isset($_POST['status'])){
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button name='edit' class='btn btn-success'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
+                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
+
                                     <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
                                     <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
                                     <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
@@ -215,6 +224,8 @@ if(isset($_POST['status'])){
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit' id='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres desbloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>
+                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='del' onclick='return confirm("¿Estas seguro que quieres borrar al usuario?")'> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
+
                                     <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
                                     <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
                                     <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
@@ -225,6 +236,7 @@ if(isset($_POST['status'])){
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres bloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
+                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='del' onclick='return confirm("¿Estas seguro que quieres borrar al usuario?")'> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
                                     <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
                                     <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
                                     <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>

@@ -120,6 +120,25 @@ function update_user($userName,$email,$password){
 	}
 }
 
+function delete_user($email, $idUser){
+	
+	global $conection;
+
+	try{
+		$insertData = $conection->prepare("DELETE FROM users WHERE email = ?");
+		$insertData->bindParam(1, $email);
+
+		if($insertData->execute()){
+			deleteDirectory($email, $idUser);
+		}
+	}
+	catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+}
+
 function update_email($new_email,$old_email){
 	
 	global $conection;
