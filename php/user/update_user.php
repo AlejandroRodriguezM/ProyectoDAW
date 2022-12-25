@@ -9,15 +9,22 @@ if ($_POST) {
     $imageURL = $_POST['userPicture'];
     $password = password_hash($_POST['pass'], PASSWORD_DEFAULT);
     $email = $_POST['email'];
+    $row = getUserData($email);
+    $id = $row['IDuser'];
     $reservedWords = reservedWords();
     if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
-    } else {
+    }else {
         if (update_user($userName, $email, $password)) {
-            saveImage();
-            insertURL($email);
-            createCookies($email, $password);
+            saveImage($email,$id);
+            insertURL($email,$id);
+            $row = getUserData($email);
+            if ($row['privilege'] == 'admin') {
+                cookiesAdmin($email, $password);
+            }
+            cookiesUser($email, $password);
+            
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';
         } else {

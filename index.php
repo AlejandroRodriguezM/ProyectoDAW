@@ -17,8 +17,6 @@ include_once 'php/inc/header.inc.php';
     <title>Acces user</title>
 </head>
 
-
-
 <body onload="checkSesion();" class="inicio">
 
     <svg width="117px" height="170px" viewBox="-2 -2 236 342" version="1.1">
@@ -135,8 +133,6 @@ include_once 'php/inc/header.inc.php';
     </svg>
 
 
-
-
     <div class="container" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="text-center">
             <img src="./assets/img/logoWeb.png" class="mt-5" width="250px" alt="logo web">
@@ -147,7 +143,7 @@ include_once 'php/inc/header.inc.php';
                     <input type="email" class="form-control" id="correo" placeholder="name@test.com" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
                 </div>
                 <div class="mb-3"">
-                    <label for=" password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password_user" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">

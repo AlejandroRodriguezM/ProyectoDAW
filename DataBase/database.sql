@@ -1,3 +1,14 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 25-12-2022 a las 04:32:59
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.2.0
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,8 +30,8 @@ USE `webcomics`;
 --
 
 DROP TABLE IF EXISTS `comics`;
-CREATE TABLE IF NOT EXISTS `comics` (
-  `IDcomic` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `comics` (
+  `IDcomic` int(11) NOT NULL,
   `NameComic` varchar(150) NOT NULL,
   `NumComic` int(10) NOT NULL,
   `CoverArtist` varchar(150) NOT NULL,
@@ -28,8 +39,7 @@ CREATE TABLE IF NOT EXISTS `comics` (
   `date_published` date NOT NULL,
   `Writer` varchar(150) NOT NULL,
   `Penciler` varchar(150) NOT NULL,
-  `Cover` blob NOT NULL,
-  PRIMARY KEY (`IDcomic`)
+  `Cover` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -39,11 +49,9 @@ CREATE TABLE IF NOT EXISTS `comics` (
 --
 
 DROP TABLE IF EXISTS `possession`;
-CREATE TABLE IF NOT EXISTS `possession` (
+CREATE TABLE `possession` (
   `user` int(11) NOT NULL,
-  `comic` int(11) NOT NULL,
-  PRIMARY KEY (`user`,`comic`),
-  KEY `comic_id` (`comic`)
+  `comic` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -53,22 +61,22 @@ CREATE TABLE IF NOT EXISTS `possession` (
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `IDuser` int(11) NOT NULL AUTO_INCREMENT,
-  `privilege` enum('user','admin') NOT NULL DEFAULT 'user',
+CREATE TABLE `users` (
+  `IDuser` int(11) NOT NULL,
+  `privilege` enum('user','admin','guest') NOT NULL DEFAULT 'user',
   `userName` varchar(250) NOT NULL,
   `password` varchar(150) NOT NULL,
   `email` varchar(250) NOT NULL,
   `userPicture` varchar(250) NOT NULL,
-  PRIMARY KEY (`IDuser`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `accountStatus` enum('active','block') NOT NULL DEFAULT 'active'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`IDuser`, `privilege`, `userName`, `password`, `email`, `userPicture`) VALUES
-(1, 'user', 'guest', 'guest', 'guest@webComics.com', 'assets/pictureProfile/default/default.jpg');
+INSERT INTO `users` (`IDuser`, `privilege`, `userName`, `password`, `email`, `userPicture`, `accountStatus`) VALUES
+(1, 'guest', 'guest', 'guest', 'guest@webComics.com', 'assets/pictureProfile/default/default.jpg', 'active');
 
 -- --------------------------------------------------------
 
@@ -77,12 +85,56 @@ INSERT INTO `users` (`IDuser`, `privilege`, `userName`, `password`, `email`, `us
 --
 
 DROP TABLE IF EXISTS `wanted`;
-CREATE TABLE IF NOT EXISTS `wanted` (
+CREATE TABLE `wanted` (
   `comic` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
-  PRIMARY KEY (`comic`,`user`),
-  KEY `idUser` (`user`)
+  `user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `comics`
+--
+ALTER TABLE `comics`
+  ADD PRIMARY KEY (`IDcomic`);
+
+--
+-- Indices de la tabla `possession`
+--
+ALTER TABLE `possession`
+  ADD PRIMARY KEY (`user`,`comic`),
+  ADD KEY `comic_id` (`comic`);
+
+--
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`IDuser`);
+
+--
+-- Indices de la tabla `wanted`
+--
+ALTER TABLE `wanted`
+  ADD PRIMARY KEY (`comic`,`user`),
+  ADD KEY `idUser` (`user`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `comics`
+--
+ALTER TABLE `comics`
+  MODIFY `IDcomic` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `IDuser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Restricciones para tablas volcadas

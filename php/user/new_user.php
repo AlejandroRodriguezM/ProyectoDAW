@@ -14,14 +14,16 @@ if ($_POST) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
     } else {
-        if (checkUser($email, $password)) {
+        if (checkEmail($email)) {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. The email is used';
         } else {
             if (new_user($userName, $email, $password)) {
-                createDirectory();
-                saveImage();
-                insertURL($email);
+                $row = getUserData($email);
+                $id = $row['IDuser'];
+                createDirectory($email,$id);
+                saveImage($email,$id);
+                insertURL($email,$id);
                 $validate['success'] = true;
                 $validate['message'] = 'The user save correctly';
             } else {

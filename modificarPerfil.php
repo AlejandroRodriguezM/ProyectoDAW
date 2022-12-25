@@ -35,7 +35,7 @@ if ($userPrivilege == 'guest') {
             WebComics
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <?php
+            <?php
             if (isset($_SESSION['email'])) {
                 $email = $_SESSION['email'];
                 $userData = getUserData($email);
@@ -43,7 +43,7 @@ if ($userPrivilege == 'guest') {
                 if ($userPrivilege == 'guest') {
                     echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
                 } elseif ($userPrivilege == 'admin') {
-                    echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                    echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 } else {
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
@@ -86,9 +86,23 @@ if ($userPrivilege == 'guest') {
             </button>
             <ul class="dropdown-menu">
                 <li>
-                    <a class="dropdown-item" href="#"><i class="bi bi-person-circle p-1"></i>Mi perfil</a>
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        $email = $_SESSION['email'];
+                        $userData = getUserData($email);
+                        $userPrivilege = $userData['privilege'];
+                        if ($userPrivilege == 'guest') {
+                            echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
+                        } elseif ($userPrivilege == 'admin') {
+                            echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                            echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                        } else {
+                            echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                        }
+                    }
+                    ?>
                     <div class="dropdown-divider"></div>
-                    <button class="dropdown-item" onclick="closeSesion()" name="closeSesion"> <i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</button>
+                    <button class='dropdown-item' onclick='closeSesion()' name='closeSesion'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button>
                 </li>
             </ul>
         </div>
@@ -136,10 +150,6 @@ if ($userPrivilege == 'guest') {
                             <ul class="nav">
                                 <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
                                 <li class="active"><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
-                                <!-- <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
-                                <li><a href="#"><span class="fa fa-envelope"></span> Messages</a></li>
-                                <li><a href="user-drive.html"><span class="fa fa-th"></span> Drive</a></li>
-                                <li><a href="#"><span class="fa fa-clock-o"></span> Reminders</a></li> -->
                             </ul>
                         </nav>
                     </div>

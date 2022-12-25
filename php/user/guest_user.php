@@ -12,7 +12,7 @@ if ($_POST) {
     $validate['userName'] = "Guest";
     $_SESSION['hour'] = date("H:i", time());
     $_SESSION['email'] = $email;
-    createCookies($email, $pass);
+    cookiesUser($email, $pass);
 }
 
 echo json_encode($validate);

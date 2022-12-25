@@ -1,11 +1,8 @@
 <?php
+require_once "./php/inc/header.inc.php";
 //destroy cookies and session
 session_start();
 session_destroy();
-if(isset($_COOKIE['loginUser']) && isset($_COOKIE['passwordUser'])){
-    setcookie('loginUser', '', time() - 3600, '/');
-    setcookie('passwordUser', '', time() - 3600, '/');
-}
+deleteCookies();
 header('Location: index.php');
-
 ?>

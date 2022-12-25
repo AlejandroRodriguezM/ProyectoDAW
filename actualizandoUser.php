@@ -2,14 +2,7 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 
-checkCookiesUser();
-
-$email = $_SESSION['email'];
-$userData = getUserData($email);
-$userPrivilege = $userData['privilege'];
-if ($userPrivilege == 'guest') {
-    header('Location: logOut.php');
-}
+checkCookiesAdmin();
 
 ?>
 <!DOCTYPE html>
@@ -25,8 +18,30 @@ if ($userPrivilege == 'guest') {
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Informacion de perfil</title>
+    <title>Editar datos usuario</title>
 </head>
+
+<?php
+if (isset($_COOKIE['loginUser']) && isset($_COOKIE['passwordUser'])) {
+    $emailUser = $_COOKIE['loginUserTemp'];
+    $IDuser = $_COOKIE['idTemp'];
+    $password = $_COOKIE['passwordUserTemp'];
+    $dataUser = getUserData($emailUser);
+    $nameUser = $dataUser['userName'];
+} else {
+    $emailUser = $_POST['email'];
+    $nameUser = $_POST['name'];
+    $IDuser = $_POST['IDuser'];
+    $password = $_POST['password'];
+}
+
+if (isset($_POST['adminPanel'])) {
+    destroyCookiesUserTemporal();
+    header('Location: adminPanelUser.php');
+}
+?>
+
+
 
 <body onload="checkSesionUpdate()">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -34,7 +49,7 @@ if ($userPrivilege == 'guest') {
             WebComics
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <?php
+            <?php
             if (isset($_SESSION['email'])) {
                 $email = $_SESSION['email'];
                 $userData = getUserData($email);
@@ -42,7 +57,7 @@ if ($userPrivilege == 'guest') {
                 if ($userPrivilege == 'guest') {
                     echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
                 } elseif ($userPrivilege == 'admin') {
-                    echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                    echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 } else {
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
@@ -76,8 +91,10 @@ if ($userPrivilege == 'guest') {
         <div class="dropdown">
 
             <?php
-            $email = $_SESSION['email'];
-            echo pictureProfile($email);
+            if (isset($_SESSION['email'])) {
+                $email = $_SESSION['email'];
+                echo pictureProfile($email);
+            }
             ?>
 
             <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -107,6 +124,7 @@ if ($userPrivilege == 'guest') {
         </div>
     </nav>
 
+
     <div class="container">
         <div class="view-account">
             <section class="module">
@@ -114,27 +132,23 @@ if ($userPrivilege == 'guest') {
                     <div class="side-bar">
                         <div class="user-info">
                             <?php
-                            $email = $_SESSION['email'];
-                            $dataUser = getUserData($email);
+                            $dataUser = getUserData($emailUser);
                             $profilePicture = $dataUser['userPicture'];
-                            echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' style='width:100%; height: 100%;' />";
+                            echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' />";
                             ?>
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
-                                    $email = $_SESSION['email'];
-                                    $dataUser = getUserData($email);
+                                    $dataUser = getUserData($emailUser);
                                     $userName = $dataUser['userName'];
                                     echo "$userName";
                                     ?>
                                 </li>
                                 <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                     <?php
-                                    $email = $_SESSION['email'];
-                                    $dataUser = getUserData($email);
+                                    $dataUser = getUserData($emailUser);
                                     $email = $dataUser['email'];
-                                    // echo with style font size 
-                                    echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                    echo " " . "<span style='font-size: 0.7em'>$emailUser</span>";
                                     ?>
                                 </li>
                                 <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
@@ -147,48 +161,74 @@ if ($userPrivilege == 'guest') {
                         </div>
                         <nav class="side-menu">
                             <ul class="nav">
-                                <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
-                                <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
-                                <!-- <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
-                                <li><a href="#"><span class="fa fa-envelope"></span> Messages</a></li>
-                                <li><a href="user-drive.html"><span class="fa fa-th"></span> Drive</a></li>
-                                <li><a href="#"><span class="fa fa-clock-o"></span> Reminders</a></li> -->
+                                <li class="active"><a href="update_user.php"><span class="fa fa-cog"></span>Updating user data</a></li>
                             </ul>
                         </nav>
                     </div>
                     <div class="content-panel">
-                        <fieldset class="fieldset">
-                            <h3 class="fieldset-title">Personal Info</h3>
-                            <div class="form-group avatar">
-                            </div>
-
-                            <div class="form-group">
-                                <?php
-                                $email = $_SESSION['email'];
-                                $dataUser = getUserData($email);
-                                $userName = $dataUser['userName'];
-                                echo "<label>Nombre de usuario: </label>";
-                                echo " " . "<span>$userName</span>";
-                                ?>
-                            </div>
-                            <div class="form-group">
-                                <?php
-                                $email = $_SESSION['email'];
-                                $dataUser = getUserData($email);
-                                $email = $dataUser['email'];
-                                echo "<label>Correo electronico: </label>";
-                                echo " " . "<span>$email</span>";
-                                ?>
-                            </div>
-                            <!-- Mas adelante aqui se van a poner mas informacion de cada usuario. Por ahora se queda vacio.  -->
-                            <!-- <div class="form-group">
-                                <?php
-                                ?>
-                            </div> -->
-                        </fieldset>
-                        <hr>
-                        <div class="mb-3">
-                        </div>
+                        <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <fieldset class="fieldset">
+                                <h3 class="fieldset-title">Personal Info</h3>
+                                <div class="form-group avatar">
+                                    <figure>
+                                        <?php
+                                        $dataUser = getUserData($emailUser);
+                                        $profilePicture = $dataUser['userPicture'];
+                                        echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' />";
+                                        ?>
+                                    </figure>
+                                    <div class="form-inline col-md-10 col-sm-9 col-xs-12">
+                                        <input class="form-control" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
+                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                        <input type="text" class="form-control" name="name" id="name" value="<?php echo $nameUser ?>" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">Email</label>
+                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                        <input type="text" class="form-control" name="email" id="email" value="<?php echo $emailUser ?>" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" name="password" id="password" value="<?php $password ?>">
+                                    <input type="hidden" class="form-control" name="IDuser" id="IDuser" value="<?php $IDuser ?>">
+                                </div>
+                            </fieldset>
+                            <hr>
+                            <div class="mb-3">
+                                <div class="col-md-5 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
+                                    <table>
+                                        <tr>
+                                            <td><input class="btn btn-primary" type="button" onclick="modifying_user();" value="Update Profile" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important "></td>
+                                            <td><input class="btn btn-primary" type="submit" name="adminPanel" id="adminPanel" value="Volver al menu administrador" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important "></td>
+                                        </tr>
+                                    </table>
+                                    <script>
+                                        function handleFileSelect(evt) {
+                                            var f = evt.target.files[0]; // FileList object
+                                            var reader = new FileReader();
+                                            // Closure to capture the file information.
+                                            reader.onload = (function(theFile) {
+                                                return function(e) {
+                                                    var binaryData = e.target.result;
+                                                    //Converting Binary Data to base 64
+                                                    var base64String = window.btoa(binaryData);
+                                                    //save into var globally string
+                                                    image = base64String;
+                                                };
+                                            })(f);
+                                            // Read in the image file as a data URL
+                                            reader.readAsBinaryString(f);
+                                        }
+                                        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                                    </script>
+                        </form>
+                    </div>
+                </div>
             </section>
         </div>
     </div>

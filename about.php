@@ -28,13 +28,15 @@ include_once 'php/inc/header.inc.php';
             <?php
             if (isset($_SESSION['email'])) {
                 $email = $_SESSION['email'];
-                if ($email == 'guest@webComics.com') {
+                $userData = getUserData($email);
+                $userPrivilege = $userData['privilege'];
+                if ($userPrivilege == 'guest') {
                     echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
-                } else {
-                    echo "<a class='dropdown-item' href='settingsProfile.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                } elseif ($userPrivilege == 'admin') {
+                    echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 }
             }
-
             ?>
             <a class="dropdown-item" href="about.php"><i class="bi bi-newspaper p-1"></i>
                 Sobre WebComics</a>
@@ -75,14 +77,19 @@ include_once 'php/inc/header.inc.php';
                     <?php
                     if (isset($_SESSION['email'])) {
                         $email = $_SESSION['email'];
-                        if ($email == 'guest@webComics.com') {
+                        $userData = getUserData($email);
+                        $userPrivilege = $userData['privilege'];
+                        if ($userPrivilege == 'guest') {
                             echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
+                        } elseif ($userPrivilege == 'admin') {
+                            echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                            echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                         } else {
-                            echo "<a class='dropdown-item' href='settingsProfile.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                            echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                         }
-                        echo "<button class='dropdown-item' onclick='closeSesion()' name='closeSesion'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button>";
                     }
-
+                    echo "<div class='dropdown-divider'></div>";
+                    echo "<button class='dropdown-item' onclick='closeSesion()' name='closeSesion'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button>";
                     ?>
                 </li>
             </ul>
@@ -111,8 +118,8 @@ include_once 'php/inc/header.inc.php';
                 </p>
                 <!-- //abrir en otra ventana. Usando javascript  -->
                 <div class="d-flex justify-content-center">
-                    <a href="https://github.com/AlejandroRodriguezM" class="btn btn-primary m-2">Github</a>
-                    <a href="https://www.linkedin.com/in/alejandro-rodriguez-mena-497a00179/" class="btn btn-primary m-2">Linkedin</a>
+                    <a href="https://github.com/AlejandroRodriguezM" class="btn btn-primary m-2" target="_blank">Github</a>
+                    <a href="https://www.linkedin.com/in/alejandro-rodriguez-mena-497a00179/" class="btn btn-primary m-2" target="_blank">Linkedin</a>
                 </div>
             </div>
 

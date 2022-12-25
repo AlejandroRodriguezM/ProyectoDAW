@@ -1,4 +1,4 @@
-
+/*jshint -W033 */
 var sesion = localStorage.getItem('UserName');
 var image;
 var imageData;
@@ -195,6 +195,7 @@ const login_user = async () => {
         })
         document.querySelector('#formIniciar').reset();
         localStorage.setItem('UserName', result.userName);
+        
         setTimeout(() => {
             window.location.href = "inicio.php";
         }, 2000);
@@ -249,7 +250,6 @@ const guest_User = async () => {
 }
 
 const update_user = async () => {
-    
     var email = document.querySelector("#correo").value;
     var password = document.querySelector("#password").value;
     var repassword = document.querySelector("#repassword").value;
@@ -328,9 +328,77 @@ if (result.success == true) {
         footer: "Web Comics"
     })
     document.querySelector('#formUpdate').reset();
-    localStorage.setItem('UserName', result.userName);
+    localStorage.setItem('UserName', name);
     setTimeout(() => {
-        window.location.href = "settingsProfile.php";
+        window.location.href = "modificarPerfil.php";
+    }, 2000);
+} else {
+    Swal.fire({
+        icon: "error",
+        title: "ERROR.",
+        text: result.message,
+        footer: "Web Comics"
+    })
+}
+}
+
+const modifying_user = async () => {
+    var email = document.querySelector("#email").value;
+    var name = document.querySelector("#name").value;
+    var password = document.querySelector("#password").value;
+    var id = document.querySelector("#IDuser").value;
+    if (email.trim() === '' | name.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    if (!validateUserNAme(name)) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have introduce a valid Name",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('email', email);
+    data.append("password", password);
+    data.append("userName", name);
+    data.append("id", id);
+    //if image is unvaliable, send 0
+    if (image == null) {
+        data.append("userPicture", "");
+    } else{
+        data.append("userPicture", image);
+    }
+
+//pass data to php file
+var respond = await fetch("php/user/modify_user.php", {
+    method: 'POST',
+    body: data
+});
+
+var result = await respond.json();
+
+if (result.success == true) {
+    Swal.fire({
+        icon: "success",
+        title: "GREAT",
+        text: result.message,
+        footer: "Web Comics"
+    })
+    document.querySelector('#formUpdate').reset();
+    // localStorage.setItem('UserName', name);
+    setTimeout(() => {
+        window.location.href = "adminPanelUser.php";
     }, 2000);
 } else {
     Swal.fire({

@@ -18,8 +18,24 @@ checkCookiesAdmin();
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Panel de administracion</title>
+    <title>Lista de bloqueados</title>
 </head>
+
+<?php
+if (isset($_POST['edit'])) {
+    $emailUser = $_POST['emailUser'];
+    $IDuser = $_POST['IDuser'];
+    $passwordUser = obtain_password($emailUser);
+    cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
+    header("Location: actualizandoUser.php");
+}
+
+if (isset($_POST['status'])) {
+    $email = $_POST['emailUser'];
+    changeStatusAccount($email);
+}
+?>
+
 
 <body onload="checkSesionUpdate()">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -27,18 +43,16 @@ checkCookiesAdmin();
             WebComics
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <?php
+            <?php
             if (isset($_SESSION['email'])) {
                 $email = $_SESSION['email'];
                 $userData = getUserData($email);
                 $userPrivilege = $userData['privilege'];
-                if ($userPrivilege == 'guest') {
-                    echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
-                } elseif ($userPrivilege == 'admin') {
+                if ($userPrivilege == 'admin') {
                     echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 } else {
-                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                    deleteCookies();
                 }
             }
             ?>
@@ -83,12 +97,8 @@ checkCookiesAdmin();
                         $email = $_SESSION['email'];
                         $userData = getUserData($email);
                         $userPrivilege = $userData['privilege'];
-                        if ($userPrivilege == 'guest') {
-                            echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
-                        } elseif ($userPrivilege == 'admin') {
-                            echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
-                            echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
-                        } else {
+                        if ($userPrivilege == 'admin') {
+                            echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                             echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                         }
                     }
@@ -99,8 +109,7 @@ checkCookiesAdmin();
             </ul>
         </div>
     </nav>
-
-    <div class="container">
+    <div>
         <div class="view-account">
             <section class="module">
                 <div class="module-inner">
@@ -110,7 +119,7 @@ checkCookiesAdmin();
                             $email = $_SESSION['email'];
                             $dataUser = getUserData($email);
                             $profilePicture = $dataUser['userPicture'];
-                            echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' />";
+                            echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' style='width: 20%px; height: 20%; />";
                             ?>
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
@@ -126,7 +135,6 @@ checkCookiesAdmin();
                                     $email = $_SESSION['email'];
                                     $dataUser = getUserData($email);
                                     $email = $dataUser['email'];
-                                    // echo with style font size 
                                     echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                     ?>
                                 </li>
@@ -140,51 +148,72 @@ checkCookiesAdmin();
                         </div>
                         <nav class="side-menu">
                             <ul class="nav">
-                                <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
-                                <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
-                                <!-- <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
-                                <li><a href="#"><span class="fa fa-envelope"></span> Messages</a></li>
-                                <li><a href="user-drive.html"><span class="fa fa-th"></span> Drive</a></li>
-                                <li><a href="#"><span class="fa fa-clock-o"></span> Reminders</a></li> -->
+                                <li><a href="adminPanelUser.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
+                                <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
+                                <li class="active"><a href="crudBlockUser.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
                             </ul>
                         </nav>
                     </div>
-                    <div class="content-panel">
-                        <fieldset class="fieldset">
-                            <h3 class="fieldset-title">Personal Info</h3>
-                            <div class="form-group avatar">
-                            </div>
-
-                            <div class="form-group">
-                                <?php
-                                $email = $_SESSION['email'];
-                                $dataUser = getUserData($email);
-                                $userName = $dataUser['userName'];
-                                echo "<label>Nombre de usuario: </label>";
-                                echo " " . "<span>$userName</span>";
-                                ?>
-                            </div>
-                            <div class="form-group">
-                                <?php
-                                $email = $_SESSION['email'];
-                                $dataUser = getUserData($email);
-                                $email = $dataUser['email'];
-                                echo "<label>Correo electronico: </label>";
-                                echo " " . "<span>$email</span>";
-                                ?>
-                            </div>
-                            <!-- Mas adelante aqui se van a poner mas informacion de cada usuario. Por ahora se queda vacio.  -->
-                            <!-- <div class="form-group">
-                                <?php
-                                ?>
-                            </div> -->
-                        </fieldset>
-                        <hr>
-                        <div class="mb-3">
-                        </div>
+                </div>
             </section>
         </div>
+
+        <div style="margin-left: auto; margin-right: auto; width: 80%">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <td>ID</td>
+                            <td>Imagen de perfil</td>
+                            <td>Nombre</td>
+                            <td>Correo</td>
+                            <td>Privilegio</td>
+                            <td>Estado</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                <?php
+                                $registros = showUsers();
+                                $user = $registros->fetch();
+                                while ($user != null) {
+                                ?>
+                        <tr>
+
+
+                            <?php
+                                    if ($user['accountStatus'] == 'block') {
+                            ?>
+                                <td name='IDuser'><?php echo $user['IDuser'] ?></td>
+                                <td><img src='<?php echo $user['userPicture'] ?>' style='width: 100px; height: 100px; border-radius: 50%;'></td>
+                                <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
+                                <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
+                                <td><?php echo $user['privilege'] ?></td>
+                                <td><?php echo $user['accountStatus'] ?></td>
+                                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit' id='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
+                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres desbloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>
+                                    <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
+                                    <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
+                                    <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
+                                </form>
+                        <?php
+                                    }
+                                    echo "</tr>";
+                                    $user = $registros->fetch();
+                                }
+                        ?>
+                        </form>
+                        </tr>
+                    </tbody>
+                </table>
+                <h5 class="card-title"></h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

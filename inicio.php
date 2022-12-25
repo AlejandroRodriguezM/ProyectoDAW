@@ -18,6 +18,10 @@ checkCookiesUser();
     <title>Inicio</title>
 </head>
 
+<?php
+$email = $_SESSION['email'];
+$userName = returnNameUser($email);
+?>
 
 <body onload="checkSesion();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -25,7 +29,7 @@ checkCookiesUser();
             WebComics
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <?php
+            <?php
             if (isset($_SESSION['email'])) {
                 $email = $_SESSION['email'];
                 $userData = getUserData($email);
@@ -34,8 +38,6 @@ checkCookiesUser();
                     echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
                 } elseif ($userPrivilege == 'admin') {
                     echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
-                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
-                } else {
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 }
             }
@@ -74,7 +76,7 @@ checkCookiesUser();
             <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 (NAME USER)
             </button>
-            <ul class="dropdown-menu" >
+            <ul class="dropdown-menu">
                 <li>
 
                     <?php
@@ -85,7 +87,7 @@ checkCookiesUser();
                         if ($userPrivilege == 'guest') {
                             echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
                         } elseif ($userPrivilege == 'admin') {
-                            echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                            echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                             echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                         } else {
                             echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
@@ -98,42 +100,6 @@ checkCookiesUser();
             </ul>
         </div>
     </nav>
-    <!-- <div class="card text-center m-4">
-        <div class="card-header">
-            Web Comics
-        </div>
-        <div class="card-body">
-            <div class="text-start">
-                <button class="btn btn-danger mb-4"> <i class="bi bi-person-plus p-1"></i> New Contact</button>
-            </div>
-            <table class="table table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <td>Nombre</td>
-                        <td>Apellido 1</td>
-                        <td>Apellido 2</td>
-                        <td>Telefono</td>
-                        <td>Correo</td>
-                        <td>Editar</td>
-                        <td>Eliminar</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Alejandro</td>
-                        <td>Test 1</td>
-                        <td>Test 2</td>
-                        <td>900000000</td>
-                        <td>Test@test.com</td>
-                        <td><button class="btn btn-success"> <i class="bi bi-pencil-square p-1"></i> Editar</button>
-                        </td>
-                        <td><button class="btn btn-danger"> <i class="bi bi-trash p-1"></i> Eliminar</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <h5 class="card-title"></h5>
-            <p class="card-text"></p>
-        </div> -->
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>

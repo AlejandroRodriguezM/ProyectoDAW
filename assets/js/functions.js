@@ -1,3 +1,4 @@
+/*jshint -W033 */
 const validateEmail = (email) => {
     return /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/.test(email.trim());
 }

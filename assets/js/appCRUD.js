@@ -1,4 +1,4 @@
-
+/*jshint -W033 */
 var sesion = localStorage.getItem('UserName');
 var email = localStorage.getItem('correo');
 

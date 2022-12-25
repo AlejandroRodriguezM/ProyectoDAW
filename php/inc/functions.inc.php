@@ -18,6 +18,20 @@ function cookiesUser($email, $password)
 	setcookie('passwordUser', $password, time() + 3600, '/');
 }
 
+function cookiesUserTemporal($email, $password, $id)
+{
+	setcookie('loginUserTemp', $email, time() + 3600, '/');
+	setcookie('passwordUserTemp', $password, time() + 3600, '/');
+	setcookie('idTemp', $id, time() + 3600, '/');
+}
+
+function destroyCookiesUserTemporal()
+{
+	setcookie('loginUserTemp', '', time() - 3600, '/');
+	setcookie('passwordUserTemp', '', time() - 3600, '/');
+	setcookie('idTemp', '', time() - 3600, '/');
+}
+
 function cookiesAdmin($email, $password)
 {
 	setcookie('adminUser', $email, time() + 3600, '/');
@@ -27,13 +41,30 @@ function cookiesAdmin($email, $password)
 function checkCookiesAdmin()
 {
 	if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser']) || !isset($_COOKIE['adminUser']) || !isset($_COOKIE['passwordAdmin'])) {
+		echo '<script type="text/JavaScript"> 
+		localStorage.clear();
+     </script>';
 		die("Error. You are not the administrator. Talk to the administrator if you have more problems <a href='logOut.php'>Log in</a>");
+	} elseif (checkStatus($_SESSION['email'])) {
+		echo '<script type="text/JavaScript"> 
+		localStorage.clear();
+	 </script>';
+		die("Error. You are block <a href='logOut.php'>Log in</a>");
 	}
 }
 
-function checkCookiesUser(){
+function checkCookiesUser()
+{
 	if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
+		echo '<script type="text/JavaScript"> 
+		localStorage.clear();
+     </script>';
 		die("Error. You are not logged <a href='logOut.php'>Log in</a>");
+	} elseif (checkStatus($_SESSION['email'])) {
+		echo '<script type="text/JavaScript"> 
+		localStorage.clear();
+	 </script>';
+		die("Error. You are block <a href='logOut.php'>Log in</a>");
 	}
 }
 
@@ -46,8 +77,18 @@ function deleteCookies()
 {
 	session_start();
 	session_destroy();
+
+	echo '<script type="text/JavaScript">
+	localStorage.clear();
+	</script>';
+
+	if (isset($_COOKIE['adminUser']) || isset($_COOKIE['passwordAdmin'])) {
+		setcookie('adminUser', '', time() - 3600, '/');
+		setcookie('passwordAdmin', '', time() - 3600, '/');
+	}
 	setcookie('loginUser', '', time() - 3600, '/');
 	setcookie('passwordUser', '', time() - 3600, '/');
+	destroyCookiesUserTemporal();
 }
 
 /**
@@ -86,14 +127,11 @@ function reservedWords()
 	return $palabras;
 }
 
-function saveImage()
+function saveImage($email, $idUser)
 {
-	$email = $_POST['email'];
-	$userData = getUserData($email);
 	$email = explode("@", $email);
 	$email = $email[0];
 	$image = $_POST['userPicture'];
-	$idUser = $userData['IDuser'];
 
 	if (empty($image)) {
 		$pathDefault = '../../assets/pictureProfile/default/default.jpg';
@@ -110,16 +148,28 @@ function saveImage()
 	fclose($file);
 }
 
-function createDirectory()
+function createDirectory($email, $idUser)
 {
-	$email = $_POST['email'];
-	$userData = getUserData($email);
 	$email = explode("@", $email);
 	$email = $email[0];
-	$idUser = $userData['IDuser'];
 	$file_path = '../../assets/pictureProfile/' . $idUser . "-" . $email;
 	if (!file_exists($file_path)) {
 		mkdir($file_path, 0777, true);
+	}
+}
+
+function deleteDirectory($email, $idUser)
+{
+	$email = explode("@", $email);
+	$email = $email[0];
+	$file_path = '../../assets/pictureProfile/' . $idUser . "-" . $email;
+	if (file_exists($file_path)) {
+		$files = glob($file_path . '/*');
+		foreach ($files as $file) {
+			if (is_file($file))
+				unlink($file);
+		}
+		rmdir($file_path);
 	}
 }
 
