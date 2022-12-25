@@ -26,12 +26,24 @@ const new_user = async () => {
     var password = document.querySelector("#password").value;
     var repassword = document.querySelector("#repassword").value;
     var name = document.querySelector("#name").value;
+    //checkbox
+    var check = document.querySelector("#checkbox");
 
     if (email.trim() === '' | password.trim() === '' | name.trim() === '') {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
             text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    if(!check.checked){
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to accept the terms and conditions",
             footer: "Web Comics"
         })
         return;

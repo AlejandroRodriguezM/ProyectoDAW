@@ -13,6 +13,8 @@ include_once 'php/inc/header.inc.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <title>Acces user</title>
 </head>
@@ -143,7 +145,7 @@ include_once 'php/inc/header.inc.php';
                     <input type="email" class="form-control" id="correo" placeholder="name@test.com" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
                 </div>
                 <div class="mb-3"">
-                    <label for="password" class="form-label">Password</label>
+                    <label for=" password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password_user" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
@@ -162,6 +164,16 @@ include_once 'php/inc/header.inc.php';
             </form>
         </div>
     </div>
+
+    <div class="alert text-center cookiealert" role="alert">
+        <b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn more</a>
+
+        <button type="button" class="btn btn-primary btn-sm acceptcookies">
+            I agree
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>

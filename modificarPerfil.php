@@ -22,6 +22,7 @@ if ($userPrivilege == 'guest') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
+    <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
@@ -80,6 +81,17 @@ if ($userPrivilege == 'guest') {
             $email = $_SESSION['email'];
             echo pictureProfile($email);
             ?>
+
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+                <!-- The Close Button -->
+                <span class="close"></span>
+
+                <!-- Modal Content (The Image) -->
+                <img class="modal-content" id="img01">
+            </div>
 
             <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 (NAME USER)
@@ -158,16 +170,43 @@ if ($userPrivilege == 'guest') {
                             <fieldset class="fieldset">
                                 <h3 class="fieldset-title">Personal Info</h3>
                                 <div class="form-group avatar">
+                                    <label class="col-md-3 col-sm-3 col-xs-12 control-label">New profile picture</label>
                                     <figure>
                                         <?php
                                         $email = $_SESSION['email'];
                                         $dataUser = getUserData($email);
                                         $profilePicture = $dataUser['userPicture'];
-                                        echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' />";
                                         ?>
+                                        <div class="image-upload">
+                                            <label for="file-input">
+                                                <?php
+                                                echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' style='cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important '/>";
+
+                                                ?>
+                                            </label>
+                                            <input type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                        </div>
                                     </figure>
+
+                                    <!-- OTRA FORMA DE HACERLO -->
+                                    <!-- <label class="col-md-3 col-sm-3 col-xs-12 control-label">New profile picture</label>
+                                    <figure>
+                                        <?php
+                                        // $email = $_SESSION['email'];
+                                        // $dataUser = getUserData($email);
+                                        // $profilePicture = $dataUser['userPicture'];
+                                        ?>
+                                        <div class="image-upload">
+                                            <label for="file-input">
+                                                <?php
+                                                // echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' style='cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important '/>";
+                                                ?>
+                                            </label>
+                                        <input type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                    </figure> -->
                                     <div class="form-inline col-md-10 col-sm-9 col-xs-12">
-                                        <input class="form-control" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                        <input class="form-control" type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -211,7 +250,7 @@ if ($userPrivilege == 'guest') {
                                             // Read in the image file as a data URL
                                             reader.readAsBinaryString(f);
                                         }
-                                        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                                        document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
                                     </script>
                         </form>
                     </div>
@@ -219,6 +258,35 @@ if ($userPrivilege == 'guest') {
             </section>
         </div>
     </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById("avatar");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        img.onclick = function() {
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        modal.addEventListener('click', function() {
+            this.style.display = "none";
+        })
+    </script>
+
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

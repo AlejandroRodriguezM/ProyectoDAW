@@ -53,3 +53,12 @@ Se ha creado una pagina donde se ve un crud de los usuarios en la base de datos 
 Codigo refactorizado para acceder de forma mas eficiente a funciones de la base de datos como funciones no relacionadas con esta.
 Actualmente el proyecto se encuentra desornado debido al tamaño creciente de este, posiblemente se reordenen para que tengan mas sentido.
 Eliminado bug que no permitia ver el nombre de usuario logueado cuando se modificaba este usuario.
+
+25/12/2022
+Se ha añadido la funcionalidad de eliminar usuarios de privilegio "user" y "block"
+
+25/12/2022
+Se ha añadido un model para aceptar cookies cuando es la primera vez que se visita la pagina
+Ahora al pinchar la imagen de perfil, se mostrara en un model la imagen de perfil
+Al modificar un perfil siendo administrador o modificar tuy perfil como user normal, podras pinchar tambien en la "imagen predeterminada" para esocger la imagen de perfil(Quizas quite esta funcionalidad)
+Se ha añadido un condiciones y servicios que se deben de aceptar si se quiere registrar un usuario, utilizando un "model"

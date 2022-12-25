@@ -676,3 +676,9 @@ body {
     border: 1px solid #eaeaea;
 }
 
+.image-upload>input {
+    display: none;
+  }
+
+
+
