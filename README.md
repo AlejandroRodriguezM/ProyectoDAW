@@ -66,3 +66,6 @@ Se ha añadido un condiciones y servicios que se deben de aceptar si se quiere r
 26/12/2022
 Añadida nuevas funciones para crear cookies de tipo "guest" (funciones sin uso debido a bugs)
 Ahora las contraseñas pueden verse mediante un icono tipo "ojo" (solo funciona con una contraseña y no con varias en un mismo form)
+
+26/12/2022
+Arreglado bug que no permitia mostrar correctamente datos cuando se modificaba el administrador desde el panel de admninistracion
