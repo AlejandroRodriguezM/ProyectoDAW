@@ -69,3 +69,11 @@ Ahora las contraseñas pueden verse mediante un icono tipo "ojo" (solo funciona 
 
 26/12/2022
 Arreglado bug que no permitia mostrar correctamente datos cuando se modificaba el administrador desde el panel de admninistracion
+
+26/12/2022
+Arreglado bug que no permitia cambiar de imagen de perfil desde perfil de usuario.
+Se ha modificado las imagenes del crud de usuarios, para que al pulsarla nos lleve a su pagina de informacion
+Cuando se accede a la pagina de informacion del usuario, solamente se podra modificar si es "admin" o "user" pero nunca guest.
+Se ha creado una nueva pagina llamada "adminInfoUser.php" donde se podra ver la informacion de usuarios y se ha enlazado junto con la de "actualizandoUser.php"
+Se ha arreglado un bug que no permitia mostrar datos esenciales como session o cookies cuando se modificaba un usuario administrador que este activo a la hora de realizar el cambio.
+Se han arreglado errores de direccion de diferentes ficheros ya que se cambiaron nombres de las paginas.

@@ -2,6 +2,7 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 checkCookiesUser();
+destroyCookiesUserTemporal();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,11 +21,6 @@ checkCookiesUser();
     <title>Inicio</title>
 </head>
 
-<?php
-$email = $_SESSION['email'];
-$userName = returnNameUser($email);
-?>
-
 <body onload="checkSesion();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="btn btn-secondary btn-lg active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -39,7 +35,7 @@ $userName = returnNameUser($email);
                 if ($userPrivilege == 'guest') {
                     echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
                 } elseif ($userPrivilege == 'admin') {
-                    echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                    echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 }
             }
@@ -51,7 +47,7 @@ $userName = returnNameUser($email);
                 sesion</a>
         </div>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#">Inicio</a>
+            <a class="navbar-brand" href="inicio.php">Inicio</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Mi colección</a>
@@ -77,10 +73,8 @@ $userName = returnNameUser($email);
 
             <!-- The Modal -->
             <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
                 <!-- The Close Button -->
                 <span class="close"></span>
-
                 <!-- Modal Content (The Image) -->
                 <img class="modal-content" id="img01">
             </div>

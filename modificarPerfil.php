@@ -3,15 +3,13 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 checkCookiesUser();
-
+destroyCookiesUserTemporal();;
 $email = $_SESSION['email'];
 $userData = getUserData($email);
 $userPrivilege = $userData['privilege'];
 if ($userPrivilege == 'guest') {
     header('Location: logOut.php');
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,15 +125,13 @@ if ($userPrivilege == 'guest') {
                     <div class="side-bar">
                         <div class="user-info">
                             <?php
-                            $email = $_SESSION['email'];
                             $dataUser = getUserData($email);
                             $profilePicture = $dataUser['userPicture'];
-                            echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' />";
+                            echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                             ?>
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
-                                    $email = $_SESSION['email'];
                                     $dataUser = getUserData($email);
                                     $userName = $dataUser['userName'];
                                     echo "$userName";
@@ -143,7 +139,6 @@ if ($userPrivilege == 'guest') {
                                 </li>
                                 <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                     <?php
-                                    $email = $_SESSION['email'];
                                     $dataUser = getUserData($email);
                                     $email = $dataUser['email'];
                                     // echo with style font size 
@@ -173,7 +168,6 @@ if ($userPrivilege == 'guest') {
                                     <label class="col-md-3 col-sm-3 col-xs-12 control-label">New profile picture</label>
                                     <figure>
                                         <?php
-                                        $email = $_SESSION['email'];
                                         $dataUser = getUserData($email);
                                         $profilePicture = $dataUser['userPicture'];
                                         ?>
@@ -181,17 +175,15 @@ if ($userPrivilege == 'guest') {
                                             <label for="file-input">
                                                 <?php
                                                 echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' style='cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important '/>";
-
                                                 ?>
-                                            </label>
-                                            <input type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                        </div>
                                     </figure>
-
-                                    <!-- OTRA FORMA DE HACERLO -->
-                                    <!-- <label class="col-md-3 col-sm-3 col-xs-12 control-label">New profile picture</label>
+                                    <div class="form-inline col-md-10 col-sm-9 col-xs-12">
+                                        <input class="form-control" type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                <!-- OTRA FORMA DE HACERLO -->
+                                <!-- <label class="col-md-3 col-sm-3 col-xs-12 control-label">New profile picture</label>
                                     <figure>
-                                        <?php
+                                    <?php
                                         // $email = $_SESSION['email'];
                                         // $dataUser = getUserData($email);
                                         // $profilePicture = $dataUser['userPicture'];
@@ -205,9 +197,6 @@ if ($userPrivilege == 'guest') {
                                         <input type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                     </figure> -->
-                                    <div class="form-inline col-md-10 col-sm-9 col-xs-12">
-                                        <input class="form-control" type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
@@ -270,16 +259,10 @@ if ($userPrivilege == 'guest') {
         img.onclick = function() {
             modal.style.display = "block";
             modalImg.src = this.src;
-            captionText.innerHTML = this.alt;
         }
 
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
 
         modal.addEventListener('click', function() {
             this.style.display = "none";

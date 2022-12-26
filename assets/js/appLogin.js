@@ -1,7 +1,6 @@
 /*jshint -W033 */
 var sesion = localStorage.getItem('UserName');
 var image;
-var imageData;
 const checkSesion = () => {
     if (sesion != null) {
         window.location.href = "inicio.php";
@@ -408,7 +407,6 @@ if (result.success == true) {
         footer: "Web Comics"
     })
     document.querySelector('#formUpdate').reset();
-    // localStorage.setItem('UserName', name);
     setTimeout(() => {
         window.location.href = "adminPanelUser.php";
     }, 2000);

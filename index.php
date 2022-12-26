@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-
+destroyCookiesUserTemporal();
 ?>
 
 <!DOCTYPE html>

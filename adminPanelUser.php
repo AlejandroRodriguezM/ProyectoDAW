@@ -3,6 +3,7 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 checkCookiesAdmin();
+destroyCookiesUserTemporal();
 
 ?>
 <!DOCTYPE html>
@@ -30,6 +31,13 @@ if (isset($_POST['edit'])) {
     cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
     header("Location: actualizandoUser.php");
 }
+if (isset($_POST['avatarUser'])) {
+    $emailUser = $_POST['emailUser'];
+    $IDuser = $_POST['IDuser'];
+    $passwordUser = obtain_password($emailUser);
+    cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
+    header("Location: adminInfoUser.php");
+}
 
 if (isset($_POST['status'])) {
     $emailStatus = $_POST['emailUser'];
@@ -41,7 +49,7 @@ if (isset($_POST['del'])) {
     $IDuser = $_POST['IDuser'];
     delete_user($email, $IDuser);
 }
-$email = $_COOKIE['adminUser'];
+$email = $_SESSION['email'];
 ?>
 
 
@@ -92,17 +100,11 @@ $email = $_COOKIE['adminUser'];
             <?php
             echo pictureProfile($email);
             ?>
-
-            <!-- The Modal -->
             <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
-                <!-- The Close Button -->
                 <span class="close"></span>
-
                 <!-- Modal Content (The Image) -->
                 <img class="modal-content" id="img01">
             </div>
-
 
             <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 (NAME USER)
@@ -194,14 +196,13 @@ $email = $_COOKIE['adminUser'];
                                 ?>
                         <tr>
                             <td name='IDuser'><?php echo $user['IDuser'] ?></td>
-                            <td><img src='<?php echo $user['userPicture'] ?>' class='avatarPicture' id='avatar' alt='Avatar' style='width: 100px; height: 100px; border-radius: 50%;'></td>
-                            <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
-                                <span class="close"></span>
-                                <!-- Modal Content (The Image) -->
-                                <img class="modal-content" id="img01">
-                            </div>
-
+                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                <td><input type="hidden" name="avatarUser"><input type="image" src="<?php echo $user['userPicture'] ?>" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;"></td>
+                                <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
+                                <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
+                                <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
+                            </form>
                             <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
                             <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
                             <td><?php echo $user['privilege'] ?></td>
@@ -212,7 +213,7 @@ $email = $_COOKIE['adminUser'];
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-success' disabled> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
-                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
+                                    <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
                                     <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
                                     <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
                                     <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
@@ -226,11 +227,11 @@ $email = $_COOKIE['adminUser'];
                                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button name='edit' class='btn btn-success'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
-                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
+                                    <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
 
-                                    <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
-                                    <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
-                                    <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
+                                    <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
+                                    <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
+                                    <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
                                 </form>
                             <?php
                                     } elseif ($user['accountStatus'] == 'block') {
@@ -240,9 +241,9 @@ $email = $_COOKIE['adminUser'];
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres desbloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='del' onclick='return confirm("¿Estas seguro que quieres borrar al usuario?")'> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
 
-                                    <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
-                                    <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
-                                    <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
+                                    <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
+                                    <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
+                                    <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
                                 </form>
                             <?php
                                     } else {
@@ -251,9 +252,9 @@ $email = $_COOKIE['adminUser'];
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres bloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
                                     <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='del' onclick='return confirm("¿Estas seguro que quieres borrar al usuario?")'> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
-                                    <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
-                                    <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
-                                    <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
+                                    <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
+                                    <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
+                                    <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
                                 </form>
                         <?php
                                     }
@@ -282,7 +283,6 @@ $email = $_COOKIE['adminUser'];
         img.onclick = function() {
             modal.style.display = "block";
             modalImg.src = this.src;
-            captionText.innerHTML = this.alt;
         }
 
         // Get the <span> element that closes the modal
@@ -292,7 +292,6 @@ $email = $_COOKIE['adminUser'];
             this.style.display = "none";
         })
     </script>
-
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

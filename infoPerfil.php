@@ -37,13 +37,12 @@ if ($userPrivilege == 'guest') {
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <?php
             if (isset($_SESSION['email'])) {
-                $email = $_SESSION['email'];
                 $userData = getUserData($email);
                 $userPrivilege = $userData['privilege'];
                 if ($userPrivilege == 'guest') {
                     echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
                 } elseif ($userPrivilege == 'admin') {
-                    echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                    echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 } else {
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
@@ -77,16 +76,12 @@ if ($userPrivilege == 'guest') {
         <div class="dropdown">
 
             <?php
-            $email = $_SESSION['email'];
             echo pictureProfile($email);
             ?>
 
-            
             <!-- The Modal -->
             <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
                 <span class="close"></span>
-
                 <!-- Modal Content (The Image) -->
                 <img class="modal-content" id="img01">
             </div>
@@ -98,7 +93,6 @@ if ($userPrivilege == 'guest') {
                 <li>
                     <?php
                     if (isset($_SESSION['email'])) {
-                        $email = $_SESSION['email'];
                         $userData = getUserData($email);
                         $userPrivilege = $userData['privilege'];
                         if ($userPrivilege == 'guest') {
@@ -125,15 +119,13 @@ if ($userPrivilege == 'guest') {
                     <div class="side-bar">
                         <div class="user-info">
                             <?php
-                            $email = $_SESSION['email'];
                             $dataUser = getUserData($email);
                             $profilePicture = $dataUser['userPicture'];
-                            echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' style='width:100%; height: 100%;' />";
+                            echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                             ?>
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
-                                    $email = $_SESSION['email'];
                                     $dataUser = getUserData($email);
                                     $userName = $dataUser['userName'];
                                     echo "$userName";
@@ -141,7 +133,6 @@ if ($userPrivilege == 'guest') {
                                 </li>
                                 <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                     <?php
-                                    $email = $_SESSION['email'];
                                     $dataUser = getUserData($email);
                                     $email = $dataUser['email'];
                                     // echo with style font size 
@@ -175,7 +166,6 @@ if ($userPrivilege == 'guest') {
 
                             <div class="form-group">
                                 <?php
-                                $email = $_SESSION['email'];
                                 $dataUser = getUserData($email);
                                 $userName = $dataUser['userName'];
                                 echo "<label>Nombre de usuario: </label>";
@@ -184,7 +174,6 @@ if ($userPrivilege == 'guest') {
                             </div>
                             <div class="form-group">
                                 <?php
-                                $email = $_SESSION['email'];
                                 $dataUser = getUserData($email);
                                 $email = $dataUser['email'];
                                 echo "<label>Correo electronico: </label>";
@@ -215,7 +204,6 @@ if ($userPrivilege == 'guest') {
         img.onclick = function() {
             modal.style.display = "block";
             modalImg.src = this.src;
-            captionText.innerHTML = this.alt;
         }
 
         // Get the <span> element that closes the modal

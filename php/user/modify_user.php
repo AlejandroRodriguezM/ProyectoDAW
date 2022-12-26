@@ -11,12 +11,11 @@ if ($_POST) {
     $emailNew = $_POST['email'];
     $imageURL = $_POST['userPicture'];
     $row = getUserData($emailOld);
-    if(empty($imageURL)){
-        $imageURL = $row['userPicture'];
-    }else{
-        $imageURL = $_POST['userPicture'];
-    }
-    
+    // if(empty($imageURL)){
+    //     $imageURL = $row['userPicture'];
+    // }else{
+    //     $imageURL = $_POST['userPicture'];
+    // }
     $id = $row['IDuser'];
     $reservedWords = reservedWords();
     if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
@@ -25,7 +24,6 @@ if ($_POST) {
     } elseif ($emailOld == $emailNew) {
         if (update_user($userName, $emailOld, $password)) {
             saveImage($emailNew, $id);
-            destroyCookiesUserTemporal();
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';
         }
@@ -34,19 +32,18 @@ if ($_POST) {
         $validate['message'] = 'ERROR. The email is used';
     } else {
         if (update_user($userName, $emailOld, $password)) {
+            if($row['privilege'] == 'admin'){
+                unset($_SESSION['email']);
+                $_SESSION['email'] = $emailNew;
+                cookiesUser($emailNew, $password);
+                cookiesAdmin($emailNew, $password);
+            }
             update_email($emailNew, $emailOld);
             createDirectory($emailNew, $id);
             saveImage($emailNew, $id);
             insertURL($emailNew, $id);
             destroyCookiesUserTemporal();
             deleteDirectory($emailOld, $id);
-
-            if($row['privilege'] == 'admin'){
-                unset($_SESSION['email']);
-                $_SESSION['email'] = $emailOld;
-                cookiesUser($emailNew, $password);
-                cookiesAdmin($emailNew, $password);
-            }
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';
         } else {

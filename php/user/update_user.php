@@ -19,12 +19,11 @@ if ($_POST) {
         if (update_user($userName, $email, $password)) {
             saveImage($email,$id);
             insertURL($email,$id);
+            cookiesUser($email, $password);
             $row = getUserData($email);
             if ($row['privilege'] == 'admin') {
                 cookiesAdmin($email, $password);
             }
-            cookiesUser($email, $password);
-            
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';
         } else {

@@ -96,12 +96,10 @@ $email = $_COOKIE['adminUser'];
                 echo pictureProfile($email);
             }
             ?>
-
             <!-- The Modal -->
             <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <!-- The Close Button -->
                 <span class="close"></span>
-
                 <!-- Modal Content (The Image) -->
                 <img class="modal-content" id="img01">
             </div>
@@ -169,6 +167,7 @@ $email = $_COOKIE['adminUser'];
                         </div>
                         <nav class="side-menu">
                             <ul class="nav">
+                                <li><a href="adminInfoUser.php"><span class="fa fa-user"></span>Profile</a></li>
                                 <li class="active"><a href="update_user.php"><span class="fa fa-cog"></span>Updating user data</a></li>
                             </ul>
                         </nav>
