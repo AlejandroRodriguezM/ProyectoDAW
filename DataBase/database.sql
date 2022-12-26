@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-12-2022 a las 04:32:59
+-- Tiempo de generación: 26-12-2022 a las 18:41:01
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -76,7 +76,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`IDuser`, `privilege`, `userName`, `password`, `email`, `userPicture`, `accountStatus`) VALUES
-(1, 'guest', 'guest', 'guest', 'guest@webComics.com', 'assets/pictureProfile/default/default.jpg', 'active');
+(1, 'guest', 'guest', 'guest', 'guest@webComics.com', 'assets/pictureProfile/default/default.jpg', 'active'),
+(2, 'admin', 'Alejandro', '$2y$10$jYtWDGxaCKHYfLz9u4Zzoe1lle1j0UaKl9K8QkkO51wUHcARStMJy', 'aloxfloyd@gmail.com', 'assets/pictureProfile/2-aloxfloyd/profile.jpg', 'active');
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,7 @@ ALTER TABLE `possession`
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`IDuser`);
+  ADD PRIMARY KEY (`IDuser`,`email`);
 
 --
 -- Indices de la tabla `wanted`
@@ -134,7 +135,7 @@ ALTER TABLE `comics`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `IDuser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `IDuser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
