@@ -18,6 +18,26 @@ function cookiesUser($email, $password)
 	setcookie('passwordUser', $password, time() + 3600, '/');
 }
 
+function destroyCookiesUser()
+{
+	setcookie('loginUser', '', time() - 3600, '/');
+	setcookie('passwordUser', '', time() - 3600, '/');
+}
+
+function cookiesGuest()
+{
+	$email = 'guest@webComics.com';
+	$password = 'guest';
+	setcookie('loginUser', $email, time() + 3600, '/');
+	setcookie('passwordUser', $password, time() + 3600, '/');
+}
+
+function destroyCookiesGuest()
+{
+	setcookie('loginGuest', '', time() - 3600, '/');
+	setcookie('passwordGuest', '', time() - 3600, '/');
+}
+
 function cookiesUserTemporal($email, $password, $id)
 {
 	setcookie('loginUserTemp', $email, time() + 3600, '/');
@@ -36,6 +56,12 @@ function cookiesAdmin($email, $password)
 {
 	setcookie('adminUser', $email, time() + 3600, '/');
 	setcookie('passwordAdmin', $password, time() + 3600, '/');
+}
+
+function destroyCookiesAdmin()
+{
+	setcookie('adminUser', '', time() - 3600, '/');
+	setcookie('passwordAdmin', '', time() - 3600, '/');
 }
 
 function checkCookiesAdmin()
@@ -82,13 +108,10 @@ function deleteCookies()
 	localStorage.clear();
 	</script>';
 
-	if (isset($_COOKIE['adminUser']) || isset($_COOKIE['passwordAdmin'])) {
-		setcookie('adminUser', '', time() - 3600, '/');
-		setcookie('passwordAdmin', '', time() - 3600, '/');
-	}
-	setcookie('loginUser', '', time() - 3600, '/');
-	setcookie('passwordUser', '', time() - 3600, '/');
+	destroyCookiesAdmin();
+	destroyCookiesUser();
 	destroyCookiesUserTemporal();
+	destroyCookiesGuest();
 }
 
 /**

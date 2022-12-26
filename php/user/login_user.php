@@ -18,7 +18,7 @@ if ($_POST) {
             if (checkUser($email, $pass_encrypted)) {
                 $row = getUserData($email);
                 if ($row['privilege'] == 'admin') {
-                    cookiesAdmin($email, $pass);
+                    cookiesAdmin($email, $pass_encrypted);
                 }
                 $validate['success'] = true;
                 $validate['message'] = 'Welcome to the internet ' . $row['userName'];

@@ -13,9 +13,10 @@ include_once 'php/inc/header.inc.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
     <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="stylesheet" href="./assets/style/show-password-toggle.css">
     <title>Acces user</title>
 </head>
 
@@ -144,22 +145,30 @@ include_once 'php/inc/header.inc.php';
                     <label for="correo" class="form-label">Email Address</label>
                     <input type="email" class="form-control" id="correo" placeholder="name@test.com" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
                 </div>
-                <div class="mb-3"">
-                    <label for=" password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password_user" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password_user" placeholder="***********" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                        <button id="toggle-password" type="button" class="d-none" aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+                        </button>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="repassword" class="form-label">RePassword</label>
-                    <input type="password" class="form-control" id="repassword_user" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                    <label for="password" class="form-label">RePassword</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="repassword_user" placeholder="***********" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                        <button id="toggle-password" type="button" class="d-none" aria-label="Show password as plain text. Warning: this will display your password on the screen.">
+                        </button>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <input type="button" name="guest_user" class="btn btn-secondary form-control" onclick="guest_User();" value="Guest sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                    <input type="button" name="guest_user" class="btn btn-secondary form-control" onclick="guest_User();" value="Ingresar como invitado" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
-                    <input type="button" name="enter_sesion" class="btn btn-danger form-control" onclick="login_user();" value="Enter sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                    <input type="button" name="enter_sesion" class="btn btn-danger form-control" onclick="login_user();" value="Iniciar sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
-                    <a href="registro.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Create account</a>
+                    <a href="registro.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Crear cuenta</a>
                 </div>
             </form>
         </div>
@@ -172,6 +181,29 @@ include_once 'php/inc/header.inc.php';
             I agree
         </button>
     </div>
+
+    <script>
+        var ShowPasswordToggle = document.querySelector("[type='password']");
+        ShowPasswordToggle.onclick = function() {
+            document.querySelector("[type='password']").classList.add("input-password");
+            document.getElementById("toggle-password").classList.remove("d-none");
+            const passwordInput = document.querySelector("[type='password']");
+            const togglePasswordButton = document.getElementById("toggle-password");
+            togglePasswordButton.addEventListener("click", togglePassword);
+
+            function togglePassword() {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    togglePasswordButton.setAttribute("aria-label", "Hide password.")
+                } else {
+                    passwordInput.type = "password";
+                    togglePasswordButton.setAttribute("aria-label", "Show password as plain text. " + "Warning: this will display your password on the screen.")
+                }
+            }
+        };
+    </script>
+
+
 
     <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
     <script src="./assets/js/functions.js"></script>
