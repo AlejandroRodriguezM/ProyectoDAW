@@ -40,6 +40,13 @@ if ($_POST) {
             insertURL($emailNew, $id);
             destroyCookiesUserTemporal();
             deleteDirectory($emailOld, $id);
+
+            if($row['privilege'] == 'admin'){
+                unset($_SESSION['email']);
+                $_SESSION['email'] = $emailOld;
+                cookiesUser($emailNew, $password);
+                cookiesAdmin($emailNew, $password);
+            }
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';
         } else {

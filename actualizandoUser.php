@@ -40,6 +40,7 @@ if (isset($_POST['adminPanel'])) {
     destroyCookiesUserTemporal();
     header('Location: adminPanelUser.php');
 }
+$email = $_COOKIE['adminUser'];
 ?>
 
 
@@ -52,7 +53,6 @@ if (isset($_POST['adminPanel'])) {
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php
             if (isset($_SESSION['email'])) {
-                $email = $_SESSION['email'];
                 $userData = getUserData($email);
                 $userPrivilege = $userData['privilege'];
                 if ($userPrivilege == 'guest') {
@@ -93,7 +93,6 @@ if (isset($_POST['adminPanel'])) {
 
             <?php
             if (isset($_SESSION['email'])) {
-                $email = $_SESSION['email'];
                 echo pictureProfile($email);
             }
             ?>
@@ -114,7 +113,6 @@ if (isset($_POST['adminPanel'])) {
                 <li>
                     <?php
                     if (isset($_SESSION['email'])) {
-                        $email = $_SESSION['email'];
                         $userData = getUserData($email);
                         $userPrivilege = $userData['privilege'];
                         if ($userPrivilege == 'guest') {

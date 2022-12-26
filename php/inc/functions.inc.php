@@ -71,7 +71,7 @@ function checkCookiesAdmin()
 		localStorage.clear();
      </script>';
 		die("Error. You are not the administrator. Talk to the administrator if you have more problems <a href='logOut.php'>Log in</a>");
-	} elseif (checkStatus($_SESSION['email'])) {
+	} elseif (checkStatus($_COOKIE['adminUser'])) {
 		echo '<script type="text/JavaScript"> 
 		localStorage.clear();
 	 </script>';

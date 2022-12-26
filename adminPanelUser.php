@@ -32,7 +32,7 @@ if (isset($_POST['edit'])) {
 }
 
 if (isset($_POST['status'])) {
-    $email = $_POST['emailUser'];
+    $emailStatus = $_POST['emailUser'];
     changeStatusAccount($email);
 }
 
@@ -41,6 +41,7 @@ if (isset($_POST['del'])) {
     $IDuser = $_POST['IDuser'];
     delete_user($email, $IDuser);
 }
+$email = $_COOKIE['adminUser'];
 ?>
 
 
@@ -52,7 +53,6 @@ if (isset($_POST['del'])) {
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php
             if (isset($_SESSION['email'])) {
-                $email = $_SESSION['email'];
                 $userData = getUserData($email);
                 $userPrivilege = $userData['privilege'];
                 if ($userPrivilege == 'admin') {
@@ -90,7 +90,6 @@ if (isset($_POST['del'])) {
         <div class="dropdown">
 
             <?php
-            $email = $_SESSION['email'];
             echo pictureProfile($email);
             ?>
 
@@ -112,7 +111,6 @@ if (isset($_POST['del'])) {
                 <li>
                     <?php
                     if (isset($_SESSION['email'])) {
-                        $email = $_SESSION['email'];
                         $userData = getUserData($email);
                         $userPrivilege = $userData['privilege'];
                         if ($userPrivilege == 'admin') {
@@ -134,7 +132,6 @@ if (isset($_POST['del'])) {
                     <div class="side-bar">
                         <div class="user-info">
                             <?php
-                            $email = $_SESSION['email'];
                             $dataUser = getUserData($email);
                             $profilePicture = $dataUser['userPicture'];
                             echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' style='width: 20%px; height: 20%; />";
@@ -142,7 +139,6 @@ if (isset($_POST['del'])) {
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
-                                    $email = $_SESSION['email'];
                                     $dataUser = getUserData($email);
                                     $userName = $dataUser['userName'];
                                     echo "$userName";
@@ -150,7 +146,6 @@ if (isset($_POST['del'])) {
                                 </li>
                                 <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                     <?php
-                                    $email = $_SESSION['email'];
                                     $dataUser = getUserData($email);
                                     $email = $dataUser['email'];
                                     echo " " . "<span style='font-size: 0.7em'>$email</span>";
@@ -200,7 +195,6 @@ if (isset($_POST['del'])) {
                         <tr>
                             <td name='IDuser'><?php echo $user['IDuser'] ?></td>
                             <td><img src='<?php echo $user['userPicture'] ?>' class='avatarPicture' id='avatar' alt='Avatar' style='width: 100px; height: 100px; border-radius: 50%;'></td>
-                           
                             <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
                                 <span class="close"></span>
