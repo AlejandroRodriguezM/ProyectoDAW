@@ -3,6 +3,7 @@ session_start();
 include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
+$email = $_SESSION['email'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,10 +13,10 @@ destroyCookiesUserTemporal();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
-    <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/bootstrap.rtl.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/icons/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Inicio</title>
@@ -61,7 +62,7 @@ destroyCookiesUserTemporal();
         <div class="d-flex" role="search">
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Busqueda</button>
+                <button class="btn btn-outline-success mr-sm-3" type="submit">Busqueda</button>
             </form>
         </div>
         <div class="dropdown">
@@ -109,7 +110,7 @@ destroyCookiesUserTemporal();
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
-    </div>
+
 
     <script>
         // Get the modal
