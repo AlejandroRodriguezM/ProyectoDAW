@@ -62,3 +62,7 @@ Se ha añadido un model para aceptar cookies cuando es la primera vez que se vis
 Ahora al pinchar la imagen de perfil, se mostrara en un model la imagen de perfil
 Al modificar un perfil siendo administrador o modificar tuy perfil como user normal, podras pinchar tambien en la "imagen predeterminada" para esocger la imagen de perfil(Quizas quite esta funcionalidad)
 Se ha añadido un condiciones y servicios que se deben de aceptar si se quiere registrar un usuario, utilizando un "model"
+
+26/12/2022
+Añadida nuevas funciones para crear cookies de tipo "guest" (funciones sin uso debido a bugs)
+Ahora las contraseñas pueden verse mediante un icono tipo "ojo" (solo funciona con una contraseña y no con varias en un mismo form)
