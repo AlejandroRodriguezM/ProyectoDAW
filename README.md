@@ -81,3 +81,9 @@ Se han arreglado errores de direccion de diferentes ficheros ya que se cambiaron
 Arreglado bug a la hora de guardar foto de perfil en la que no se seleccionaba ninguna nueva imagen desde modificar usuario normal
 Arreglado bug a la hora de guardar foto de perfil en la que no se seleccionaba ninguna nueva imagen desde modificar usuario admin a si mismo u otros usuarios
 Ahora cuando se modifique el perfil de un usuario, los datos basicos vienen ya cargados
+
+27/12/2022 Log 2
+Creada una nueva tabla en la base de datos llamada "aboutuser" donde se van guardando datos relativos al usuario como fecha de creacion del usuario, o una descripcion sobre ellos mismos
+Creado nuevos metodos para almacenar datos de la cuenta desde modificacion y desde la misma creacion del usuario
+Cuando se elimina un usuario ahora se borran todos los datos del resto de tablas referente a esa ID
+El usaurio guest no mostrara datos sobre su usuario

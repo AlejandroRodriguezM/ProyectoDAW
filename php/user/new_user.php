@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include_once '../inc/header.inc.php';
 
 $validate['success'] = array('success' => false, 'message' => "");
@@ -10,6 +10,8 @@ if ($_POST) {
     $password = password_hash($_POST['pass'], PASSWORD_DEFAULT);
     $email = $_POST['email'];
     $reservedWords = reservedWords();
+    $fecha = date('Y-m-d');
+    $fechaCreacion = date('Y-m-d', strtotime(str_replace('-', '/', $fecha)));
     if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords) || in_array(strtolower($email), $reservedWords)) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
@@ -21,6 +23,7 @@ if ($_POST) {
             if (new_user($userName, $email, $password)) {
                 $row = getUserData($email);
                 $id = $row['IDuser'];
+                insertAbourUser($id,"No existe información sobre el usuario $email",$fechaCreacion);
                 createDirectory($email,$id);
                 saveImage($email,$id);
                 insertURL($email,$id);

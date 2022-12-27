@@ -19,6 +19,7 @@ if ($_POST) {
         $userName = $row['userName'];
     }
     $id = $row['IDuser'];
+    $infoUser = $_POST['field'];
     $reservedWords = reservedWords();
     if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
         $validate['success'] = false;
@@ -32,6 +33,7 @@ if ($_POST) {
             if ($row['privilege'] == 'admin') {
                 cookiesAdmin($email, $password);
             }
+            updateAboutUser($id,$infoUser);
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';
         } else {

@@ -180,14 +180,14 @@ if ($userPrivilege == 'guest') {
                                     <div class="form-inline col-md-10 col-sm-9 col-xs-12">
                                         <input class="form-control" type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
-                                <!-- OTRA FORMA DE HACERLO -->
-                                <!-- <label class="col-md-3 col-sm-3 col-xs-12 control-label">New profile picture</label>
+                                    <!-- OTRA FORMA DE HACERLO -->
+                                    <!-- <label class="col-md-3 col-sm-3 col-xs-12 control-label">New profile picture</label>
                                     <figure>
                                     <?php
-                                        // $email = $_SESSION['email'];
-                                        // $dataUser = getUserData($email);
-                                        // $profilePicture = $dataUser['userPicture'];
-                                        ?>
+                                    // $email = $_SESSION['email'];
+                                    // $dataUser = getUserData($email);
+                                    // $profilePicture = $dataUser['userPicture'];
+                                    ?>
                                         <div class="image-upload">
                                             <label for="file-input">
                                                 <?php
@@ -217,6 +217,22 @@ if ($userPrivilege == 'guest') {
                                         <input type="password" class="form-control" id="repassword" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-3 col-xs-12 control-label">Sobre mi</label>
+                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                        <?php
+                                        $IDuser = $dataUser['IDuser'];
+                                        $infoUser = getInfoAboutUser($IDuser);
+                                        $sobreUser = $infoUser['infoUser'];
+                                        ?>
+                                        <textarea maxlength="449" class="form-control" id="field" onkeyup="countChar(this)" name="text" rows="3" style="resize:none; background-color:smoke;"><?php echo $sobreUser ?></textarea>
+                                        <span class="help-block">
+                                            <p id="charNum" class="help-block ">1/450</p>
+                                        </span>
+                                    </div>
+                                </div>
+
                             </fieldset>
                             <hr>
                             <div class="mb-3">
@@ -268,7 +284,6 @@ if ($userPrivilege == 'guest') {
             this.style.display = "none";
         })
     </script>
-
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

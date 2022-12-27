@@ -151,10 +151,6 @@ if ($userPrivilege == 'guest') {
                             <ul class="nav">
                                 <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
                                 <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
-                                <!-- <li><a href="#"><span class="fa fa-credit-card"></span> Billing</a></li>
-                                <li><a href="#"><span class="fa fa-envelope"></span> Messages</a></li>
-                                <li><a href="user-drive.html"><span class="fa fa-th"></span> Drive</a></li>
-                                <li><a href="#"><span class="fa fa-clock-o"></span> Reminders</a></li> -->
                             </ul>
                         </nav>
                     </div>
@@ -178,6 +174,22 @@ if ($userPrivilege == 'guest') {
                                 $email = $dataUser['email'];
                                 echo "<label>Correo electronico: </label>";
                                 echo " " . "<span>$email</span>";
+                                ?>
+                            </div>
+                            <div class="form-group">
+                                <?php
+                                $dataUser = getUserData($email);
+                                $IDuser = $dataUser['IDuser'];
+                                $infoUser = getInfoAboutUser($IDuser);
+                                $fechaCreacion = $infoUser['fechaCreacion'];
+                                $sobreUser = $infoUser['infoUser'];
+                                echo "<label>Fecha de creacion: </label>";
+                                echo " " . "<span>$fechaCreacion</span>";
+                                echo "<br>";
+                                echo "<label>Sobre mi:</label><br>";
+                                echo "<div class='col-xs-12'>";
+                                echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
+                                echo "</div>";
                                 ?>
                             </div>
                             <!-- Mas adelante aqui se van a poner mas informacion de cada usuario. Por ahora se queda vacio.  -->

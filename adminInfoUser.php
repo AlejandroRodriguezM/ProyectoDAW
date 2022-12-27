@@ -116,7 +116,7 @@ $email = $_COOKIE['loginUserTemp'];
                             $profilePicture = $dataUser['userPicture'];
                             echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                             ?>
-                            
+
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
@@ -149,7 +149,6 @@ $email = $_COOKIE['loginUserTemp'];
                                 $userPrivilege = $userData['privilege'];
                                 if ($userData['privilege'] != 'guest') {
                                     echo "<li><a href='actualizandoUser.php'><span class='fa fa-cog'></span>Settings</a></li>";
-
                                 }
                                 ?>
                             </ul>
@@ -177,11 +176,26 @@ $email = $_COOKIE['loginUserTemp'];
                                 echo " " . "<span>$email</span>";
                                 ?>
                             </div>
-                            <!-- Mas adelante aqui se van a poner mas informacion de cada usuario. Por ahora se queda vacio.  -->
-                            <!-- <div class="form-group">
-                                <?php
-                                ?>
-                            </div> -->
+                            <?php
+                            $userData = getUserData($_COOKIE['loginUserTemp']);
+                            $userPrivilege = $userData['privilege'];
+                            if ($userPrivilege != 'guest') {
+                                echo "<div class='form-group'>";
+                                $dataUser = getUserData($email);
+                                $IDuser = $dataUser['IDuser'];
+                                $infoUser = getInfoAboutUser($IDuser);
+                                $fechaCreacion = $infoUser['fechaCreacion'];
+                                $sobreUser = $infoUser['infoUser'];
+                                echo "<label>Fecha de creacion: </label>";
+                                echo " " . "<span>$fechaCreacion</span>";
+                                echo "<br>";
+                                echo "<label>Sobre mi:</label><br>";
+                                echo "<div class='col-xs-12'>";
+                                echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
+                                echo "</div>";
+                                echo "</div>";
+                            }
+                            ?>
                         </fieldset>
                         <hr>
                         <div class="mb-3">

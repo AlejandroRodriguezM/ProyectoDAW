@@ -265,6 +265,7 @@ const update_user = async () => {
     var password = document.querySelector("#password").value;
     var repassword = document.querySelector("#repassword").value;
     var name = document.querySelector("#name").value;
+    var textArea = document.querySelector("#field").value;
 
     if (password.trim() === '' | repassword.trim() === '' | name.trim() === '') {
         Swal.fire({
@@ -316,6 +317,7 @@ const update_user = async () => {
     data.append('email', email);
     data.append("pass", password);
     data.append("userName", name);
+    data.append("field", textArea);
     //if image is unvaliable, send 0
     if (image == null) {
         data.append("userPicture","");
@@ -358,6 +360,7 @@ const modifying_user = async () => {
     var name = document.querySelector("#name").value;
     var password = document.querySelector("#password").value;
     var id = document.querySelector("#IDuser").value;
+
     if (email.trim() === '' | name.trim() === '') {
         Swal.fire({
             icon: "error",

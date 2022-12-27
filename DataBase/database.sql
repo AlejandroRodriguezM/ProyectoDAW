@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-12-2022 a las 18:41:01
+-- Tiempo de generación: 27-12-2022 a las 17:35:33
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -26,6 +26,24 @@ USE `webcomics`;
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `aboutuser`
+--
+
+DROP TABLE IF EXISTS `aboutuser`;
+CREATE TABLE `aboutuser` (
+  `IDuser` int(11) NOT NULL,
+  `infoUser` varchar(450) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='Donde se guardan los datos de cada usuario';
+
+--
+-- RELACIONES PARA LA TABLA `aboutuser`:
+--   `IDuser`
+--       `users` -> `IDuser`
+--
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `comics`
 --
 
@@ -42,6 +60,10 @@ CREATE TABLE `comics` (
   `Cover` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- RELACIONES PARA LA TABLA `comics`:
+--
+
 -- --------------------------------------------------------
 
 --
@@ -53,6 +75,14 @@ CREATE TABLE `possession` (
   `user` int(11) NOT NULL,
   `comic` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- RELACIONES PARA LA TABLA `possession`:
+--   `comic`
+--       `comics` -> `IDcomic`
+--   `user`
+--       `users` -> `IDuser`
+--
 
 -- --------------------------------------------------------
 
@@ -70,6 +100,10 @@ CREATE TABLE `users` (
   `userPicture` varchar(250) NOT NULL,
   `accountStatus` enum('active','block') NOT NULL DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- RELACIONES PARA LA TABLA `users`:
+--
 
 --
 -- Volcado de datos para la tabla `users`
@@ -92,8 +126,23 @@ CREATE TABLE `wanted` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- RELACIONES PARA LA TABLA `wanted`:
+--   `comic`
+--       `comics` -> `IDcomic`
+--   `user`
+--       `users` -> `IDuser`
+--
+
+--
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `aboutuser`
+--
+ALTER TABLE `aboutuser`
+  ADD PRIMARY KEY (`IDuser`),
+  ADD KEY `idUser` (`IDuser`);
 
 --
 -- Indices de la tabla `comics`
@@ -135,11 +184,17 @@ ALTER TABLE `comics`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `IDuser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `IDuser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `aboutuser`
+--
+ALTER TABLE `aboutuser`
+  ADD CONSTRAINT `id_user` FOREIGN KEY (`IDuser`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `possession`
