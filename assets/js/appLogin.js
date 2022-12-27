@@ -418,6 +418,7 @@ if (result.success == true) {
         footer: "Web Comics"
     })
     document.querySelector('#formUpdate').reset();
+    localStorage.setItem('UserName', name);
     setTimeout(() => {
         window.location.href = "adminPanelUser.php";
     }, 2000);
