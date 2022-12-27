@@ -19,6 +19,10 @@ if ($_POST) {
         if (checkEmail($email)) {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. The email is used';
+        }
+        if(checkUserName($userName)){
+            $validate['success'] = false;
+            $validate['message'] = 'ERROR. That user name alredy exist';
         } else {
             if (new_user($userName, $email, $password)) {
                 $row = getUserData($email);

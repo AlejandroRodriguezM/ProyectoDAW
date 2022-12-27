@@ -87,3 +87,7 @@ Creada una nueva tabla en la base de datos llamada "aboutuser" donde se van guar
 Creado nuevos metodos para almacenar datos de la cuenta desde modificacion y desde la misma creacion del usuario
 Cuando se elimina un usuario ahora se borran todos los datos del resto de tablas referente a esa ID
 El usaurio guest no mostrara datos sobre su usuario
+
+27/12/2022 Log 3
+Ahora el nombre de usuario es una clave primaria y no se puede repetir
+La base de datos ha sido actualizada (Voz de avast antivirus)

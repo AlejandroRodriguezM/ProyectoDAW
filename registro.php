@@ -25,6 +25,10 @@ include_once 'php/inc/header.inc.php';
             <h3 class="mt-2">REGISTER SYSTEM</h3>
             <form id="formInsert" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <div class="mb-3">
+                    <label for="name" class="form-label">User name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                </div>
+                <div class="mb-3">
                     <label for="correo" class="form-label">Email Address</label>
                     <input type="email" class="form-control" id="correo" placeholder="name@test.com" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
@@ -35,10 +39,6 @@ include_once 'php/inc/header.inc.php';
                 <div class="mb-3">
                     <label for="repassword" class="form-label">RePassword</label>
                     <input type="password" class="form-control" id="repassword" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                </div>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
                     <img class="chosenUserProfile mb-2" id="output" src="./assets/img/chosePicture.png" />

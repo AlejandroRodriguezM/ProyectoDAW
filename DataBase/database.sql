@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-12-2022 a las 17:35:33
+-- Tiempo de generación: 27-12-2022 a las 19:33:55
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -32,7 +32,8 @@ USE `webcomics`;
 DROP TABLE IF EXISTS `aboutuser`;
 CREATE TABLE `aboutuser` (
   `IDuser` int(11) NOT NULL,
-  `infoUser` varchar(450) NOT NULL
+  `infoUser` varchar(450) NOT NULL,
+  `fechaCreacion` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='Donde se guardan los datos de cada usuario';
 
 --
@@ -40,6 +41,13 @@ CREATE TABLE `aboutuser` (
 --   `IDuser`
 --       `users` -> `IDuser`
 --
+
+--
+-- Volcado de datos para la tabla `aboutuser`
+--
+
+INSERT INTO `aboutuser` (`IDuser`, `infoUser`, `fechaCreacion`) VALUES
+(2, 'JUJA', '2022-12-07');
 
 -- --------------------------------------------------------
 
@@ -111,7 +119,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`IDuser`, `privilege`, `userName`, `password`, `email`, `userPicture`, `accountStatus`) VALUES
 (1, 'guest', 'guest', 'guest', 'guest@webComics.com', 'assets/pictureProfile/default/default.jpg', 'active'),
-(2, 'admin', 'Alejandro', '$2y$10$jYtWDGxaCKHYfLz9u4Zzoe1lle1j0UaKl9K8QkkO51wUHcARStMJy', 'aloxfloyd@gmail.com', 'assets/pictureProfile/2-aloxfloyd/profile.jpg', 'active');
+(2, 'admin', 'Alejandro', '$2y$10$/o2MDmiE3rjM.AEVOo9xv.R/J3qE.rk3SsmBH0dZhFoERTonXrrze', 'aloxfloyd@gmail.com', 'assets/pictureProfile/2-aloxfloyd/profile.jpg', 'active');
 
 -- --------------------------------------------------------
 
@@ -161,7 +169,7 @@ ALTER TABLE `possession`
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`IDuser`,`email`);
+  ADD PRIMARY KEY (`IDuser`,`email`,`userName`);
 
 --
 -- Indices de la tabla `wanted`
@@ -184,7 +192,7 @@ ALTER TABLE `comics`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `IDuser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `IDuser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas

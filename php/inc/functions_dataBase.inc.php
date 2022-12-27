@@ -284,3 +284,14 @@ function getInfoAboutUser($IDuser){
 	$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
 	return $consulta;
 }
+
+function checkUserName($userName){
+	global $conection;
+	$exist = false;
+	$consulta = $conection->prepare("SELECT * from users WHERE userName = ?");
+	$consulta->execute(array($userName));
+	if ($consulta->fetchColumn()) {
+		$exist = true;
+	}
+	return $exist;
+}
