@@ -98,3 +98,6 @@ Se ha arreglado bug a la hora de modificar nombre de usuario desde poanel admini
 
 27/12/2022 Log 5
 Se arreglado bug en el que no se podia actualizar datos de usuario si el campo "sobre mi" esta vacio.
+
+27/12/2022 Log 6
+Agregado en la base de datos de aboutuser, un nombre y apellidos del usuario, se pueden modificar desde panel de usuario normal o desde administrador, pueden estar vacios.

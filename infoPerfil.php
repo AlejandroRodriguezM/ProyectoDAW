@@ -183,6 +183,15 @@ if ($userPrivilege == 'guest') {
                                 $infoUser = getInfoAboutUser($IDuser);
                                 $fechaCreacion = $infoUser['fechaCreacion'];
                                 $sobreUser = $infoUser['infoUser'];
+                                $nombre = $infoUser['nombreUser'];
+                                $apellidos = $infoUser['apellidoUser'];
+
+                                echo "<label>Nombre: </label>";
+                                echo " " . "<span>$nombre</span>";
+                                echo "<br>";
+                                echo "<label>Apellidos: </label>";
+                                echo " " . "<span>$apellidos</span>";
+                                echo "<br>";
                                 echo "<label>Fecha de creacion: </label>";
                                 echo " " . "<span>$fechaCreacion</span>";
                                 echo "<br>";
@@ -190,6 +199,7 @@ if ($userPrivilege == 'guest') {
                                 echo "<div class='col-xs-12'>";
                                 echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
                                 echo "</div>";
+
                                 ?>
                             </div>
                             <!-- Mas adelante aqui se van a poner mas informacion de cada usuario. Por ahora se queda vacio.  -->

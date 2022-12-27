@@ -79,7 +79,6 @@ function getUserData($email)
 
 function new_user($userName, $email, $password)
 {
-
 	global $conection;
 	$create = false;
 	try {
@@ -241,10 +240,12 @@ function changeStatusAccount($email)
 function insertAbourUser($IDuser,$infoUser,$fechaCreacion){
 	global $conection;
 	try {
-		$insertData = $conection->prepare("INSERT INTO aboutuser (IDuser,infoUser,fechaCreacion) VALUES (?,?,?)");
+		$insertData = $conection->prepare("INSERT INTO aboutuser (IDuser,infoUser,fechaCreacion,nombreUser,apellidoUser) VALUES (?,?,?,?,?)");
 		$insertData->bindParam(1, $IDuser);
 		$insertData->bindParam(2, $infoUser);
 		$insertData->bindParam(3, $fechaCreacion);
+		$insertData->bindParam(4, $name);
+		$insertData->bindParam(5, $lastname);
 		$insertData->execute();
 	} catch (PDOException $e) {
 		$error_Code = $e->getCode();
@@ -253,18 +254,24 @@ function insertAbourUser($IDuser,$infoUser,$fechaCreacion){
 	}
 }
 
-function updateAboutUser($IDuser, $infoUser)
+function updateAboutUser($IDuser, $infoUser,$name,$lastname)
 {
 	global $conection;
 	try {
-		$insertData = $conection->prepare("UPDATE aboutuser SET infoUser = ? WHERE IDuser = ?");
+		$userData = getInfoAboutUser($IDuser);
+		$checkInfo = $userData['infoUser'];
+		if (empty($infoUser)) {
+			$infoUser = $checkInfo;
+		}
+		$insertData = $conection->prepare("UPDATE aboutuser SET infoUser = ?,nombreUser = ?,apellidoUser = ? WHERE IDuser = ?");
 		if (empty($infoUser)) {
 			$insertData->bindParam(1, " ");
 		} else {
 			$insertData->bindParam(1, $infoUser);
 		}
-		$insertData->bindParam(2, $IDuser);
-
+		$insertData->bindParam(2, $name);
+		$insertData->bindParam(3, $lastname);
+		$insertData->bindParam(4, $IDuser);
 		$insertData->execute();
 	} catch (PDOException $e) {
 		$error_Code = $e->getCode();

@@ -6,6 +6,8 @@ $validate['success'] = array('success' => false, 'message' => "");
 
 if ($_POST) {
     $email = $_POST['email'];
+    $name = $_POST['nameUser'];
+    $lastname = $_POST['lastnameUser'];
     $row = getUserData($email);
     $image = $_POST['userPicture'];
     if (empty($image)) {
@@ -42,7 +44,7 @@ if ($_POST) {
                 if ($row['privilege'] == 'admin') {
                     cookiesAdmin($email, $password);
                 }
-                updateAboutUser($id, $infoUser);
+                updateAboutUser($id, $infoUser,$name,$lastname);
                 $validate['success'] = true;
                 $validate['message'] = 'The user save correctly';
             } else {

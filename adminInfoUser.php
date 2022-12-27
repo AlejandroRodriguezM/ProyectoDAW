@@ -177,15 +177,20 @@ $email = $_COOKIE['loginUserTemp'];
                                 ?>
                             </div>
                             <?php
-                            $userData = getUserData($_COOKIE['loginUserTemp']);
-                            $userPrivilege = $userData['privilege'];
-                            if ($userPrivilege != 'guest') {
-                                echo "<div class='form-group'>";
                                 $dataUser = getUserData($email);
                                 $IDuser = $dataUser['IDuser'];
                                 $infoUser = getInfoAboutUser($IDuser);
                                 $fechaCreacion = $infoUser['fechaCreacion'];
                                 $sobreUser = $infoUser['infoUser'];
+                                $nombre = $infoUser['nombreUser'];
+                                $apellidos = $infoUser['apellidoUser'];
+
+                                echo "<label>Nombre: </label>";
+                                echo " " . "<span>$nombre</span>";
+                                echo "<br>";
+                                echo "<label>Apellidos: </label>";
+                                echo " " . "<span>$apellidos</span>";
+                                echo "<br>";
                                 echo "<label>Fecha de creacion: </label>";
                                 echo " " . "<span>$fechaCreacion</span>";
                                 echo "<br>";
@@ -193,9 +198,8 @@ $email = $_COOKIE['loginUserTemp'];
                                 echo "<div class='col-xs-12'>";
                                 echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
                                 echo "</div>";
-                                echo "</div>";
-                            }
-                            ?>
+
+                                ?>
                         </fieldset>
                         <hr>
                         <div class="mb-3">

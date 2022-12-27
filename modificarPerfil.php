@@ -197,12 +197,33 @@ if ($userPrivilege == 'guest') {
                                         <input type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                     </figure> -->
+                                    <?php
+                                    $IDuser = $dataUser['IDuser'];
+                                    $infoUser = getInfoAboutUser($IDuser);
+                                    $nameUser = $infoUser['nombreUser'];
+                                    $lastName = $infoUser['apellidoUser'];
+                                    ?>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
                                     <div class="col-md-10 col-sm-9 col-xs-12">
                                         <input type="text" class="form-control" id="name" value="<?php echo $dataUser['userName'] ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                         <input type="hidden" id="correo" value="<?php echo $email ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">Your name</label>
+                                    <div class="col-md-10 col-sm-9 col-xs-12">
+
+                                        <input type="text" class="form-control" id="nameUser" value="<?php echo $nameUser ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">You lastname</label>
+                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                        <input type="text" class="form-control" id="lastnameUser" value="<?php echo $lastName ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                 </div>
                                 <div class="form-group">

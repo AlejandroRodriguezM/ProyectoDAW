@@ -6,6 +6,8 @@ $validate['success'] = array('success' => false, 'message' => "");
 
 if ($_POST) {
     $userName = $_POST['userName'];
+    $name = $_POST['nameUser'];
+    $lastname = $_POST['lastnameUser'];
     $password = $_COOKIE['passwordUserTemp'];
     $emailOld = $_COOKIE['loginUserTemp'];
     $emailNew = $_POST['email'];
@@ -29,6 +31,7 @@ if ($_POST) {
     } elseif ($emailOld == $emailNew) {
         if (update_user($userName, $emailOld, $password)) {
             updateSaveImage($emailNew, $image);
+            updateAboutUser($id, "",$name,$lastname);
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';
         }
@@ -43,6 +46,7 @@ if ($_POST) {
                 cookiesUser($emailNew, $password);
                 cookiesAdmin($emailNew, $password);
             }
+            updateAboutUser($id, $infoUser,$name,$lastname);
             update_email($emailNew, $emailOld);
             createDirectory($emailNew, $id);
             updateSaveImage($emailNew, $image);
@@ -50,7 +54,7 @@ if ($_POST) {
             destroyCookiesUserTemporal();
             deleteDirectory($emailOld, $id);
             $validate['success'] = true;
-            $validate['message'] = 'The user save correctly';
+            $validate['message'] = 'The user as been updated';
         } else {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. The user dont save correctly';

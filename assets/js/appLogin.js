@@ -265,6 +265,8 @@ const update_user = async () => {
     var password = document.querySelector("#password").value;
     var repassword = document.querySelector("#repassword").value;
     var name = document.querySelector("#name").value;
+    var nameUSer = document.querySelector("#nameUser").value;
+    var lastNameUSer = document.querySelector("#lastnameUser").value;
     var textArea = document.querySelector("#field").value;
 
     if (password.trim() === '' | repassword.trim() === '' | name.trim() === '') {
@@ -318,6 +320,8 @@ const update_user = async () => {
     data.append("pass", password);
     data.append("userName", name);
     data.append("field", textArea);
+    data.append("nameUser", nameUSer);
+    data.append("lastnameUser", lastNameUSer);
     //if image is unvaliable, send 0
     if (image == null) {
         data.append("userPicture","");
@@ -358,6 +362,8 @@ if (result.success == true) {
 const modifying_user = async () => {
     var email = document.querySelector("#email").value;
     var name = document.querySelector("#name").value;
+    var nameUSer = document.querySelector("#nameUser").value;
+    var lastNameUSer = document.querySelector("#lastnameUser").value;
     var password = document.querySelector("#password").value;
     var id = document.querySelector("#IDuser").value;
 
@@ -387,6 +393,8 @@ const modifying_user = async () => {
     data.append("password", password);
     data.append("userName", name);
     data.append("id", id);
+    data.append("nameUser", nameUSer);
+    data.append("lastnameUser", lastNameUSer);
     //if image is unvaliable, send 0
     if (image == null) {
         data.append("userPicture", "");

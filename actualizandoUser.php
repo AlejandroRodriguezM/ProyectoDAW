@@ -184,6 +184,13 @@ $email = $_COOKIE['adminUser'];
                                         echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' />";
                                         ?>
                                     </figure>
+
+                                    <?php
+                                    $IDuser = $dataUser['IDuser'];
+                                    $infoUser = getInfoAboutUser($IDuser);
+                                    $nameUser = $infoUser['nombreUser'];
+                                    $lastName = $infoUser['apellidoUser'];
+                                    ?>
                                     <div class="form-inline col-md-10 col-sm-9 col-xs-12">
                                         <input class="form-control" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
@@ -194,6 +201,23 @@ $email = $_COOKIE['adminUser'];
                                         <input type="text" class="form-control" name="name" id="name" value="<?php echo $nameUser ?>" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">Your name</label>
+                                    <div class="col-md-10 col-sm-9 col-xs-12">
+
+                                        <input type="text" class="form-control" id="nameUser" value="<?php echo $nameUser ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">You lastname</label>
+                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                        <input type="text" class="form-control" id="lastnameUser" value="<?php echo $lastName ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                </div>
+
+
                                 <div class="form-group">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">Email</label>
                                     <div class="col-md-10 col-sm-9 col-xs-12">
