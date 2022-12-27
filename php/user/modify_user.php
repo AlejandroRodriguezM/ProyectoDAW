@@ -12,11 +12,18 @@ if ($_POST) {
     $image = $_POST['userPicture'];
     $row = getUserData($emailOld);
     $id = $row['IDuser'];
-    if(empty($image)){
+    $oldUSerName = $row['userName'];
+    $reservedWords = reservedWords();
+    if ($userName == $oldUSerName) {
+        $userName = $row['userName'];
+    }
+    if (empty($image)) {
         $image = $row['userPicture'];
     }
-    $reservedWords = reservedWords();
-    if (in_array(strtolower($userName), $reservedWords)) {
+    if (checkUserName($userName) && $userName != $oldUSerName) {
+        $validate['success'] = false;
+        $validate['message'] = 'ERROR. That user name alredy exist';
+    } elseif (in_array(strtolower($userName), $reservedWords)) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
     } elseif ($emailOld == $emailNew) {
@@ -30,7 +37,7 @@ if ($_POST) {
         $validate['message'] = 'ERROR. The email is used';
     } else {
         if (update_user($userName, $emailOld, $password)) {
-            if($row['privilege'] == 'admin'){
+            if ($row['privilege'] == 'admin') {
                 unset($_SESSION['email']);
                 $_SESSION['email'] = $emailNew;
                 cookiesUser($emailNew, $password);

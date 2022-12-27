@@ -91,3 +91,7 @@ El usaurio guest no mostrara datos sobre su usuario
 27/12/2022 Log 3
 Ahora el nombre de usuario es una clave primaria y no se puede repetir
 La base de datos ha sido actualizada (Voz de avast antivirus)
+
+27/12/2022 Log 4
+Se ha modificado los ficheros de update_user.php y "modify_user.php" para que no acepten el cambio si el nuevo nombre de usuario ya existe
+Se ha arreglado bug a la hora de modificar nombre de usuario desde poanel administrador como de usuario nornal.

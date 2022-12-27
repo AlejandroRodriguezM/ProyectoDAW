@@ -21,26 +21,34 @@ if ($_POST) {
     $id = $row['IDuser'];
     $infoUser = $_POST['field'];
     $reservedWords = reservedWords();
-    if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
+    
+    if (checkUserName($userName) && $userName != $oldUserName) {
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. You cant use system reserved words';
-    } else {
-        if (update_user($userName, $email, $password)) {
-            updateSaveImage($email, $image);
-            insertURL($email, $id);
-            cookiesUser($email, $password);
-            $row = getUserData($email);
-            if ($row['privilege'] == 'admin') {
-                cookiesAdmin($email, $password);
-            }
-            updateAboutUser($id,$infoUser);
-            $validate['success'] = true;
-            $validate['message'] = 'The user save correctly';
-        } else {
+        $validate['message'] = 'ERROR. That user name alredy exist';
+    }
+    else{
+        if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. The user dont save correctly';
+            $validate['message'] = 'ERROR. You cant use system reserved words';
+        } else {
+            if (update_user($userName, $email, $password)) {
+                updateSaveImage($email, $image);
+                insertURL($email, $id);
+                cookiesUser($email, $password);
+                $row = getUserData($email);
+                if ($row['privilege'] == 'admin') {
+                    cookiesAdmin($email, $password);
+                }
+                updateAboutUser($id, $infoUser);
+                $validate['success'] = true;
+                $validate['message'] = 'The user save correctly';
+            } else {
+                $validate['success'] = false;
+                $validate['message'] = 'ERROR. The user dont save correctly';
+            }
         }
     }
+
 } else {
     $validate['success'] = false;
     $validate['message'] = 'ERROR. The user is not save in database';
