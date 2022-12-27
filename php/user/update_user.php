@@ -20,6 +20,9 @@ if ($_POST) {
     }
     $id = $row['IDuser'];
     $infoUser = $_POST['field'];
+    if(empty($infoUser)){
+        $infoUser = "No se han introducido datos";
+    }
     $reservedWords = reservedWords();
     
     if (checkUserName($userName) && $userName != $oldUserName) {

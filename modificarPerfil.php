@@ -228,7 +228,7 @@ if ($userPrivilege == 'guest') {
                                         ?>
                                         <textarea maxlength="449" class="form-control" id="field" onkeyup="countChar(this)" name="text" rows="3" style="resize:none; background-color:smoke;"><?php echo $sobreUser ?></textarea>
                                         <span class="help-block">
-                                            <p id="charNum" class="help-block ">1/450</p>
+                                            <p id="charNum" class="help-block ">0/450</p>
                                         </span>
                                     </div>
                                 </div>

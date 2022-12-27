@@ -95,3 +95,6 @@ La base de datos ha sido actualizada (Voz de avast antivirus)
 27/12/2022 Log 4
 Se ha modificado los ficheros de update_user.php y "modify_user.php" para que no acepten el cambio si el nuevo nombre de usuario ya existe
 Se ha arreglado bug a la hora de modificar nombre de usuario desde poanel administrador como de usuario nornal.
+
+27/12/2022 Log 5
+Se arreglado bug en el que no se podia actualizar datos de usuario si el campo "sobre mi" esta vacio.

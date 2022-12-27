@@ -39,8 +39,8 @@ var pictureProfileUser = () => {
 }
 function countChar(val) {
     var len = val.value.length;
-    if (len >= 450) {
-        val.value = val.value.substring(0, 450);
+    if (len >= 451) {
+        val.value = val.value.substring(0, 451);
     } else {
         $('#charNum').text(1 + len + '/450');
     }
