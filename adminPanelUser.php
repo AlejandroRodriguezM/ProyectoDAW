@@ -41,7 +41,7 @@ if (isset($_POST['avatarUser'])) {
 
 if (isset($_POST['status'])) {
     $emailStatus = $_POST['emailUser'];
-    changeStatusAccount($email);
+    changeStatusAccount($emailStatus);
 }
 
 if (isset($_POST['del'])) {

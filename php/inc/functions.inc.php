@@ -171,6 +171,26 @@ function saveImage($email, $idUser)
 	fclose($file);
 }
 
+function updateSaveImage($email,$image)
+{
+	$dataUser = getUserData($email);
+	$newImage = $_POST['userPicture'];
+	$idUser = $dataUser['IDuser'];
+	$email = explode("@", $email);
+	$email = $email[0];
+	if (empty($newImage)) {
+		$pathDefault = '../../'.$image;
+		$type = pathinfo($pathDefault, PATHINFO_EXTENSION);
+		$data = file_get_contents($pathDefault);
+		$image = 'data:image/' . $type . ';base64,' . base64_encode($data);
+	}
+	$file_path = '../../assets/pictureProfile/' . $idUser . "-" . $email;
+	$blob = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
+	$file = fopen($file_path . "/profile.jpg", "w");
+	fwrite($file, $blob);
+	fclose($file);
+}
+
 function createDirectory($email, $idUser)
 {
 	$email = explode("@", $email);

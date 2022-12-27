@@ -5,20 +5,28 @@ include_once '../inc/header.inc.php';
 $validate['success'] = array('success' => false, 'message' => "");
 
 if ($_POST) {
-    $userName = $_POST['userName'];
-    $imageURL = $_POST['userPicture'];
-    $password = password_hash($_POST['pass'], PASSWORD_DEFAULT);
     $email = $_POST['email'];
     $row = getUserData($email);
+    $image = $_POST['userPicture'];
+    if (empty($image)) {
+        $image = $row['userPicture'];
+    }
+    $userName = $_POST['userName'];
+    $oldUserName = $row['userName'];
+    $emailOld = $_SESSION['email'];
+    $password = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+    if ($userName == $oldUserName) {
+        $userName = $row['userName'];
+    }
     $id = $row['IDuser'];
     $reservedWords = reservedWords();
     if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
-    }else {
+    } else {
         if (update_user($userName, $email, $password)) {
-            saveImage($email,$id);
-            insertURL($email,$id);
+            updateSaveImage($email, $image);
+            insertURL($email, $id);
             cookiesUser($email, $password);
             $row = getUserData($email);
             if ($row['privilege'] == 'admin') {

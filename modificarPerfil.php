@@ -201,7 +201,7 @@ if ($userPrivilege == 'guest') {
                                 <div class="form-group">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
                                     <div class="col-md-10 col-sm-9 col-xs-12">
-                                        <input type="text" class="form-control" id="name" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                        <input type="text" class="form-control" id="name" value="<?php echo $dataUser['userName'] ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                         <input type="hidden" id="correo" value="<?php echo $email ?>">
                                     </div>
                                 </div>

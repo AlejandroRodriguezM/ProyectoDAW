@@ -318,7 +318,7 @@ const update_user = async () => {
     data.append("userName", name);
     //if image is unvaliable, send 0
     if (image == null) {
-        data.append("userPicture", "");
+        data.append("userPicture","");
     } else{
         data.append("userPicture", image);
     }

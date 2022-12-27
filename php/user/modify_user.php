@@ -9,21 +9,19 @@ if ($_POST) {
     $password = $_COOKIE['passwordUserTemp'];
     $emailOld = $_COOKIE['loginUserTemp'];
     $emailNew = $_POST['email'];
-    $imageURL = $_POST['userPicture'];
+    $image = $_POST['userPicture'];
     $row = getUserData($emailOld);
-    // if(empty($imageURL)){
-    //     $imageURL = $row['userPicture'];
-    // }else{
-    //     $imageURL = $_POST['userPicture'];
-    // }
     $id = $row['IDuser'];
+    if(empty($image)){
+        $image = $row['userPicture'];
+    }
     $reservedWords = reservedWords();
-    if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
+    if (in_array(strtolower($userName), $reservedWords)) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
     } elseif ($emailOld == $emailNew) {
         if (update_user($userName, $emailOld, $password)) {
-            saveImage($emailNew, $id);
+            updateSaveImage($emailNew, $image);
             $validate['success'] = true;
             $validate['message'] = 'The user save correctly';
         }
@@ -40,7 +38,7 @@ if ($_POST) {
             }
             update_email($emailNew, $emailOld);
             createDirectory($emailNew, $id);
-            saveImage($emailNew, $id);
+            updateSaveImage($emailNew, $image);
             insertURL($emailNew, $id);
             destroyCookiesUserTemporal();
             deleteDirectory($emailOld, $id);
