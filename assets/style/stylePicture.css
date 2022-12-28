@@ -88,3 +88,28 @@
     width: 100%;
   }
 }
+
+.searchFieldset{
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.btn-close{
+ 
+}
+
+.tips-search{
+  width: 30%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.info-search{
+  /* //up in fielset */
+  margin-top: -30px;
+  /* margin-bottom: 1px; */
+  text-align: center;
+
+}

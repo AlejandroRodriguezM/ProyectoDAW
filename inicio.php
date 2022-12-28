@@ -60,9 +60,9 @@ $email = $_SESSION['email'];
         </div>
 
         <div class="d-flex" role="search">
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success mr-sm-3" type="submit">Busqueda</button>
+            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <input class="form-control mr-sm-3" type="text" placeholder="Search" aria-label="Search">
+                <button type="submit" name="search" id="search" class="btn btn-outline-success mr-sm-3">Busqueda</button>
             </form>
         </div>
         <div class="dropdown">
@@ -110,7 +110,28 @@ $email = $_SESSION['email'];
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
+    <?php
 
+    if (isset($_POST['search']))
+        //Fieldset tamaño 50%
+        echo "<fieldset class='searchFieldset' >
+        <a href='inicio.php' class='btn-close' aria-label='Close' role='button' style='float: right;'></a>
+        <legend class='info-search'>Busqueda</legend>
+        <table class='tips-search'>
+        <tr>
+            <td>
+                <p>1</p>
+            </td>
+            <td>
+                <p>2</p>
+            </td>
+            <td>
+            <p>3</p>
+        </td>
+        </tr>
+    </table>
+        </fieldset>";
+    ?>
 
     <script>
         // Get the modal

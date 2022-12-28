@@ -78,7 +78,6 @@ if ($userPrivilege == 'guest') {
             <?php
             echo pictureProfile($email);
             ?>
-
             <!-- The Modal -->
             <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <span class="close"></span>
