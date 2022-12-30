@@ -139,14 +139,28 @@ if (result.success == true) {
 const login_user = async () => {
     var email = document.querySelector("#correo").value;
     var password = document.querySelector('#password_user').value;
-    var repassword = document.querySelector('#repassword_user').value;
-    if (email.trim() === '' | password.trim() === '' | repassword.trim() === '') {
+    // var repassword = document.querySelector('#repassword_user').value;
+    if (email.trim() === '') {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
-            text: "You have to fill all the camps",
+            text: "You have to fill the email",
             footer: "Web Comics"
         })
+        document.querySelector("#correo").style.border = "1px solid red";
+        document.querySelector("#correo").value = email;
+        return;
+    }
+
+    if (password.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill the password",
+            footer: "Web Comics"
+        })
+        document.querySelector("#password_user").style.border = "1px solid red";
+        document.querySelector("#password_user").value = "";
         return;
     }
 
@@ -157,6 +171,8 @@ const login_user = async () => {
             text: "The email introduce is not valite, please, enter a correct email.",
             footer: "Web Comics"
         })
+        document.querySelector("#correo").style.border = "1px solid red";
+        document.querySelector("#correo").value = email;
         return;
     }
 
@@ -167,20 +183,8 @@ const login_user = async () => {
             text: "You have to introduce a valid password (upperCase,lowerCase,number and min 8 characters)",
             footer: "Web Comics"
         })
-        return;
-    }
-
-    if (password != repassword) {
-        Swal.fire({
-            icon: "error",
-            title: "ERROR.",
-            text: "The password doesn't match",
-            footer: "Web Comics"
-        })
         document.querySelector("#password").style.border = "1px solid red";
-        document.querySelector("#repassword").style.border = "1px solid red";
         document.querySelector("#password").value = "";
-        document.querySelector("#repassword").value = "";
         return;
     }
 
