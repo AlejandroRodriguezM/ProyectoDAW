@@ -101,3 +101,13 @@ Se arreglado bug en el que no se podia actualizar datos de usuario si el campo "
 
 27/12/2022 Log 6
 Agregado en la base de datos de aboutuser, un nombre y apellidos del usuario, se pueden modificar desde panel de usuario normal o desde administrador, pueden estar vacios.
+
+30/12/2022 Log 1
+Se ha modificado el index para que solamente se necesite 1 contraseña para entrar.
+Se ha modificado el svg para que este fijo en la pantalla para evitar errores en otro tipo de resoluciones en otras pantallas
+
+31/12/2022 Log 1
+Se ha modificado tanto el navbar donde anteriormente ponia "webComics" a un svg de bootstrap
+Se ha modificado la barra de busqueda para que aparezca contenido hasta pincharla(posiblemente se cambie para mejorar la busqueda personalizada)
+Primeros pasos en la busqueda de datos mediante in input text, por ahora solamente busca usuarios mediante nombre u email
+Feliz año nuevo, por un 2023 lleno de metas cumplidas.

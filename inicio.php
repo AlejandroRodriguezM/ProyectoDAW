@@ -24,9 +24,14 @@ $email = $_SESSION['email'];
 
 <body onload="checkSesion();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="btn btn-secondary btn-lg active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <!-- <a class="btn btn-secondary btn-lg active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             WebComics
-        </a>
+        </a> -->
+        <button id="nav" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="navbarDropdown" class="btn btn-secondary btn-lg active">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+            </svg>
+        </button>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php
             if (isset($_SESSION['email'])) {
@@ -61,12 +66,22 @@ $email = $_SESSION['email'];
 
         <div class="d-flex" role="search">
             <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <input class="form-control mr-sm-3" type="text" placeholder="Search" aria-label="Search">
-                <button type="submit" name="search" id="search" class="btn btn-outline-success mr-sm-3">Busqueda</button>
+                <label class="search-click-label">
+
+
+
+
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" onkeyup="buscarUsuarios()" />
+
+
+
+
+
+
+                </label>
             </form>
         </div>
         <div class="dropdown">
-
             <?php
             $email = $_SESSION['email'];
             echo pictureProfile($email);
@@ -85,7 +100,6 @@ $email = $_SESSION['email'];
             </button>
             <ul class="dropdown-menu">
                 <li>
-
                     <?php
                     if (isset($_SESSION['email'])) {
                         $email = $_SESSION['email'];
@@ -110,28 +124,14 @@ $email = $_SESSION['email'];
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
-    <?php
 
-    if (isset($_POST['search']))
-        //Fieldset tamaño 50%
-        echo "<fieldset class='searchFieldset' >
-        <a href='inicio.php' class='btn-close' aria-label='Close' role='button' style='float: right;'></a>
-        <legend class='info-search'>Busqueda</legend>
-        <table class='tips-search'>
-        <tr>
-            <td>
-                <p>1</p>
-            </td>
-            <td>
-                <p>2</p>
-            </td>
-            <td>
-            <p>3</p>
-        </td>
-        </tr>
-    </table>
-        </fieldset>";
-    ?>
+    <!-- <fieldset class='searchFieldset'> -->
+    <!-- <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a> -->
+    <!-- <legend class='info-search'>Busqueda</legend> -->
+    <div style="margin-left: auto; margin-right: auto; width: 80%">
+        <div id="search-result"></div>
+    </div>
+    <!-- </fieldset> -->
 
     <script>
         // Get the modal
@@ -160,14 +160,14 @@ $email = $_SESSION['email'];
         })
     </script>
 
-
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="./assets/js/appCRUD.js"></script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
+    <script src="./assets/js/functions.js"></script>
 </body>
 
 </html>

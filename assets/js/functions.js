@@ -53,7 +53,6 @@ function countChar(val) {
 }
 
 function profileImage() {
-
     function handleFileSelect(evt) {
         var f = evt.target.files[0]; // FileList object
         var reader = new FileReader();
@@ -72,3 +71,37 @@ function profileImage() {
     }
     document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
 }
+
+function buscarUsuarios() {
+    $(document).ready(function () {
+        $("#search-data").keyup(function () {
+            var input = $(this).val();
+            // alert(input);
+
+            if (input != ""){
+                $.ajax({
+                    url: "php/user/searchUser.php",
+                    method: "POST",
+                    data: { input: input },
+                    success: function (data) {
+                        $("#search-result").html(data);
+                    }
+                });
+            } else {
+                $("#search-result").css("display","none");
+            }
+        });
+    });
+}
+
+function mostrarUsuarios(usuarios) {
+    var lista = document.getElementById("lista-usuarios");
+    usuarios.forEach(function (usuario) {
+        var li = document.createElement("li");
+        li.innerHTML = usuario.nombre;
+        lista.appendChild(li);
+    });
+}
+
+
+

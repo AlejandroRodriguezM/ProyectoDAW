@@ -187,14 +187,7 @@ function insertURL($email, $idUser)
 	}
 }
 
-function showUsers()
-{
-	global $conection;
-	$sql = "SELECT * FROM users";
-	$resultado = $conection->query($sql);
 
-	return $resultado;
-}
 
 function checkStatus($email)
 {
@@ -301,4 +294,31 @@ function checkUserName($userName){
 		$exist = true;
 	}
 	return $exist;
+}
+
+function searchUser($search)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT userName,email,userPicture from users WHERE userName LIKE ? OR email LIKE ?");
+	$consulta->execute(array("%$search%", "%$search%"));
+	// $consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function showUsers()
+{
+	global $conection;
+	$sql = "SELECT * FROM users";
+	$consulta = $conection->query($sql);
+
+	return $consulta;
+}
+
+function countUserSearch($search)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from users WHERE userName LIKE ? OR email LIKE ?");
+	$consulta->execute(array("%$search%", "%$search%"));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
 }

@@ -55,16 +55,18 @@ $email = $_SESSION['email'];
 
 <body onload="checkSesionUpdate()">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="btn btn-secondary btn-lg active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            WebComics
-        </a>
+        <button id="nav" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="navbarDropdown" class="btn btn-secondary btn-lg active">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+            </svg>
+        </button>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php
             if (isset($_SESSION['email'])) {
                 $userData = getUserData($email);
                 $userPrivilege = $userData['privilege'];
                 if ($userPrivilege == 'admin') {
-                    echo "<a class='dropdown-item' href='admin.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                    echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                 } else {
                     deleteCookies();
@@ -90,9 +92,10 @@ $email = $_SESSION['email'];
         </div>
 
         <div class="d-flex" role="search">
-            <form class="form-inline mr-3 my-lg-0">
-                <input class="form-control mr-sm-3" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-1 my-sm-0 " type="submit">Busqueda</button>
+            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <label class="search-click-label">
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" />
+                </label>
             </form>
         </div>
         <div class="dropdown">

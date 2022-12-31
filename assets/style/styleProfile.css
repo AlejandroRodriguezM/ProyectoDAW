@@ -610,7 +610,7 @@ body {
     }
 }
 
-.chosenUserProfile{
+.chosenUserProfile {
     width: 106px;
     height: 106px;
     background-color: #999999;
@@ -623,21 +623,27 @@ body {
     transition: all 0.2s;
     -webkit-transition: all 0.2s;
 }
-.picture:hover{
+
+.picture:hover {
     border-color: #2ca8ff;
 }
-.content.ct-wizard-green .picture:hover{
+
+.content.ct-wizard-green .picture:hover {
     border-color: #05ae0e;
 }
-.content.ct-wizard-blue .picture:hover{
+
+.content.ct-wizard-blue .picture:hover {
     border-color: #3472f7;
 }
-.content.ct-wizard-orange .picture:hover{
+
+.content.ct-wizard-orange .picture:hover {
     border-color: #ff9500;
 }
-.content.ct-wizard-red .picture:hover{
+
+.content.ct-wizard-red .picture:hover {
     border-color: #ff3b30;
 }
+
 .picture input[type="file"] {
     cursor: pointer;
     display: block;
@@ -649,7 +655,7 @@ body {
     width: 100%;
 }
 
-.picture-src{
+.picture-src {
     width: 100%;
 }
 
@@ -658,7 +664,7 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-  }
+}
 
 .container {
     background-color: white;
@@ -667,7 +673,7 @@ body {
     margin: auto;
 }
 
-.img-profile{
+.img-profile {
     width: 100px;
     height: 100px;
     margin: auto;
@@ -678,7 +684,4 @@ body {
 
 .image-upload>input {
     display: none;
-  }
-
-
-
+}

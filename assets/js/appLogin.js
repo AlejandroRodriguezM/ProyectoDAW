@@ -135,7 +135,6 @@ if (result.success == true) {
 }
 }
 
-
 const login_user = async () => {
     var email = document.querySelector("#correo").value;
     var password = document.querySelector('#password_user').value;
