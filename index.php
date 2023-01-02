@@ -21,9 +21,6 @@ destroyCookiesUserTemporal();
 </head>
 
 <body onload="checkSesion();" class="inicio">
-
-
-
     <div class="sec1">
         <div class="container" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
             <div class="svg-container">
@@ -34,6 +31,7 @@ destroyCookiesUserTemporal();
                             body {
                                 background-color: rgb(30, 30, 30);
                             }
+
                             svg-container {
                                 position: absolute;
                                 top: 0;
@@ -147,42 +145,21 @@ destroyCookiesUserTemporal();
                     </g>
                 </svg>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
             <div class="text-center">
                 <img src="./assets/img/logoWeb.png" class="mt-5" width="250px" alt="logo web">
                 <h3 class="mt-2">LOGIN SISTEMA</h3>
                 <form method="post" id="formIniciar" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="mb-3">
-                        <label for="correo" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="correo" placeholder="name@test.com" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
+                        <label for="acceso" class="form-label">Email Address</label>
+                        <input type="text" class="form-control" id="acceso" placeholder="Introduce your userName or Email" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
                             <input type="password" class="form-control" id="password_user" placeholder="***********" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                            <button id="toggle-password" type="button" class="d-none" aria-label="Show password as plain text. Warning: this will display your password on the screen.">
-                            </button>
+                            <button id="toggle-password" type="button" class="d-none"></button>
                         </div>
                     </div>
-                    <!-- <div class="mb-3">
-                    <label for="password" class="form-label">RePassword</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control" id="repassword_user" placeholder="***********" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                        <button id="toggle-password" type="button" class="d-none" aria-label="Show password as plain text. Warning: this will display your password on the screen.">
-                        </button>
-                    </div>
-                </div> -->
                     <div class="mb-3">
                         <input type="button" name="guest_user" class="btn btn-secondary form-control" onclick="guest_User();" value="Ingresar como invitado" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                     </div>
@@ -204,34 +181,34 @@ destroyCookiesUserTemporal();
             </button>
         </div>
     </div>
-        <script>
-            var ShowPasswordToggle = document.querySelector("[type='password']");
-            ShowPasswordToggle.onclick = function() {
-                document.querySelector("[type='password']").classList.add("input-password");
-                document.getElementById("toggle-password").classList.remove("d-none");
-                const passwordInput = document.querySelector("[type='password']");
-                const togglePasswordButton = document.getElementById("toggle-password");
-                togglePasswordButton.addEventListener("click", togglePassword);
+    <script>
+        var ShowPasswordToggle = document.querySelector("[type='password']");
+        ShowPasswordToggle.onclick = function() {
+            document.querySelector("[type='password']").classList.add("input-password");
+            document.getElementById("toggle-password").classList.remove("d-none");
+            const passwordInput = document.querySelector("[type='password']");
+            const togglePasswordButton = document.getElementById("toggle-password");
+            togglePasswordButton.addEventListener("click", togglePassword);
 
-                function togglePassword() {
-                    if (passwordInput.type === "password") {
-                        passwordInput.type = "text";
-                        togglePasswordButton.setAttribute("aria-label", "Hide password.")
-                    } else {
-                        passwordInput.type = "password";
-                        togglePasswordButton.setAttribute("aria-label", "Show password as plain text. " + "Warning: this will display your password on the screen.")
-                    }
+            function togglePassword() {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    togglePasswordButton.setAttribute("aria-label", "Hide password.")
+                } else {
+                    passwordInput.type = "password";
+                    togglePasswordButton.setAttribute("aria-label", "Show password as plain text. " + "Warning: this will display your password on the screen.")
                 }
-            };
-        </script>
+            }
+        };
+    </script>
 
 
 
-        <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
-        <script src="./assets/js/functions.js"></script>
-        <script src="./assets/js/appLogin.js"></script>
-        <script src="./assets/js/bootstrap.bundle.min.js"></script>
-        <script src="./assets/js/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
+    <script src="./assets/js/functions.js"></script>
+    <script src="./assets/js/appLogin.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

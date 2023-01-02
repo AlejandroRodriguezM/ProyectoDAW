@@ -111,3 +111,9 @@ Se ha modificado tanto el navbar donde anteriormente ponia "webComics" a un svg 
 Se ha modificado la barra de busqueda para que aparezca contenido hasta pincharla(posiblemente se cambie para mejorar la busqueda personalizada)
 Primeros pasos en la busqueda de datos mediante in input text, por ahora solamente busca usuarios mediante nombre u email
 Feliz año nuevo, por un 2023 lleno de metas cumplidas.
+
+02/01/2023
+Se ha arreglado el buscador, pero no funciona correctamente. Solo guarda el ultimo dato del row.
+Se han creado varias funciones para buscar y mostrar datos usando ajax en javascript.
+Hay 2 ficheros en carpeta user, uno con terminacion test, que se usa para probar una funcion que solo toma datos, no la tabla completa.
+Ahora es posible loggearse usando el email o el nombre de usuario.

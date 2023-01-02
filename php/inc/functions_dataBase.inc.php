@@ -1,11 +1,11 @@
 <?php
 
-function checkUser($email, $password)
+function checkUser($acceso, $password)
 {
 	global $conection;
 	$exist = false;
-	$consulta = $conection->prepare("SELECT * from users WHERE email = ? and password = ?");
-	$consulta->execute(array($email, $password));
+	$consulta = $conection->prepare("SELECT * from users WHERE email = ? OR userName = ? and password = ?");
+	$consulta->execute(array($acceso,$acceso, $password));
 	if ($consulta->fetchColumn()) {
 		$exist = true;
 	}
@@ -34,8 +34,8 @@ function checkEmail($email)
 function obtain_password($email)
 {
 	global $conection;
-	$consulta = $conection->prepare("SELECT password from users where email=?");
-	$consulta->execute(array($email));
+	$consulta = $conection->prepare("SELECT password from users where email=? OR userName=?");
+	$consulta->execute(array($email, $email));
 	$password = $consulta->fetch(PDO::FETCH_ASSOC)['password'];
 	unset($consulta);
 	return $password;
@@ -67,10 +67,10 @@ function operacionesMySql($query)
  * @param [type] $email
  * @return array
  */
-function getUserData($email)
+function getUserData($acces)
 {
 	global $conection;
-	$sql = "SELECT * FROM users WHERE email='$email'";
+	$sql = "SELECT * FROM users WHERE email='$acces' OR userName = '$acces'";
 	$resultado = $conection->query($sql);
 	$userData = $resultado->fetch(PDO::FETCH_ASSOC);
 	// Devolvemos los datos del usuario
@@ -122,7 +122,6 @@ function update_user($userName, $email, $password)
 
 function delete_user($email, $idUser)
 {
-
 	global $conection;
 
 	try {
@@ -146,7 +145,6 @@ function delete_user($email, $idUser)
 
 function update_email($new_email, $old_email)
 {
-
 	global $conection;
 	$update = false;
 	try {
@@ -186,8 +184,6 @@ function insertURL($email, $idUser)
 		die("Code: " . $error_Code . "\nMessage: " . $message);
 	}
 }
-
-
 
 function checkStatus($email)
 {
@@ -288,8 +284,8 @@ function getInfoAboutUser($IDuser){
 function checkUserName($userName){
 	global $conection;
 	$exist = false;
-	$consulta = $conection->prepare("SELECT * from users WHERE userName = ?");
-	$consulta->execute(array($userName));
+	$consulta = $conection->prepare("SELECT * from users WHERE userName = ? OR email = ?");
+	$consulta->execute(array($userName, $userName));
 	if ($consulta->fetchColumn()) {
 		$exist = true;
 	}

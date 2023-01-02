@@ -31,12 +31,17 @@ if (isset($_POST['edit'])) {
     cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
     header("Location: actualizandoUser.php");
 }
+// if (isset($_POST['avatarUser'])) {
+//     $emailUser = $_POST['emailUser'];
+//     $IDuser = $_POST['IDuser'];
+//     $passwordUser = obtain_password($emailUser);
+//     cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
+//     header("Location: adminInfoUser.php");
+// }
+
 if (isset($_POST['avatarUser'])) {
     $emailUser = $_POST['emailUser'];
-    $IDuser = $_POST['IDuser'];
-    $passwordUser = obtain_password($emailUser);
-    cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
-    header("Location: adminInfoUser.php");
+    echo $emailUser;
 }
 
 if (isset($_POST['status'])) {
@@ -219,10 +224,7 @@ $email = $_SESSION['email'];
                                     <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
                                     <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
                                     <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
-                                    <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
-
                                     <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
-
                                 </form>
                             <?php
                                     } elseif ($user['privilege'] == 'admin') {
@@ -296,10 +298,9 @@ $email = $_SESSION['email'];
         })
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>

@@ -2,21 +2,21 @@
 session_start();
 include_once '../inc/header.inc.php';
 
-
 $validate['success'] = array('success' => false, 'message' => "", "userName" => "");
 
 if ($_POST) {
-    $email = $_POST['email'];
+    $acceso = $_POST['acceso'];
     $pass = $_POST['pass'];
-    $pass_encrypted = obtain_password($email);
-    $reservedWords = reservedWords();
-    if (in_array($pass, $reservedWords) || in_array($email, $reservedWords)) {
+    if (!checkUserName($acceso)) {
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. You cant use system reserved words';
+        $validate['message'] = 'The user name/email is not valid';
     } else {
+        $pass_encrypted = obtain_password($acceso);
+        $reservedWords = reservedWords();
         if (password_verify($pass, $pass_encrypted)) {
-            if (checkUser($email, $pass_encrypted)) {
-                $row = getUserData($email);
+            if (checkUser($acceso, $pass_encrypted)) {
+                $row = getUserData($acceso);
+                $email = $row['email'];
                 if ($row['privilege'] == 'admin') {
                     cookiesAdmin($email, $pass_encrypted);
                 }
