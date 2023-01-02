@@ -72,31 +72,29 @@ function profileImage() {
     document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
 }
 
-// function buscarUsuarios() {
-//     $(document).ready(function () {
-//         $("#search-data").keyup(function () {
-//             var input = $(this).val();
-//             // alert(input);
-//             if (input != "") {
-//                 $.ajax({
-//                     url: "php/user/search_user.php",
-//                     method: "POST",
-//                     data: { input: input },
-//                     success: function (data) {
-//                         mostrarUsuarios(data);
-//                     }
-//                 });
-//             } else {
-//                 $("#search-result").css("display", "none");
-//             }
-//         });
-//     });
-// }
+function buscarUsuarios() {
+    $("#search-data").keyup(function () {
+        var input = $(this).val();
+        // alert(input);
+        if (input != "") {
+            $.ajax({
+                url: "php/user/search_user.php",
+                method: "POST",
+                data: { input: input },
+                success: function (data) {
+                    mostrarUsuarios(data);
+                }
+            });
+        } else {
+            $("#search-result").css("display", "none");
+        }
+    });
+}
 
-// function mostrarUsuarios(data) {
-//     $("#search-result").css("display", "block");
-//     $("#search-result").html(data);
-// }
+function mostrarUsuarios(data) {
+    $("#search-result").css("display", "block");
+    $("#search-result").html(data);
+}
 
 // Misma funcion pero asincrona
 // async function buscarUsuarios() {
@@ -118,52 +116,55 @@ function profileImage() {
 // }
 
 //Otra forma de realizar la misma muestra de datos
-function buscarUsuarios() {
-    $(document).ready(function () {
-        $("#search-data").keyup(function () {
-            var input = $(this).val();
+// function buscarUsuarios() {
+//     $(document).ready(function () {
+//         $("#search-data").keyup(function () {
+//             var input = $(this).val();
 
-            if (input != "") {
-                $.ajax({
-                    url: 'php/user/search_user_test.php',
-                    type: 'GET',
-                    dataType: 'json',
-                    // data: { send_obj: JSON.stringify(input) },
-                    success: function (data) {
-                        // Create an empty string to store the table HTML
-                        var tableHTML = '';
-                        tableHTML += '<table class="table table-hover">';
-                        tableHTML += '<thead class="table-dark">';
-                        tableHTML += '<tr>';
-                        tableHTML += '<th>Avatar</th>';
-                        tableHTML += '<th>Nombre</th>';
-                        tableHTML += '<th>Email</th>';
-                        tableHTML += '</tr>';
-                        tableHTML += '</thead>';
-                        tableHTML += '<tbody>';
-                        tableHTML += '<form class="table table-hover" method="post">';
-                        // Loop through the data and build the table rows
-                        for (var i = 0; i < data.length; i++) {
-                            tableHTML += '<tr>';
-                            tableHTML += '<td><input type="hidden" name="avatarUser"><input type="image" src="' + data[i].userPicture + '" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;" /></td>';
-                            tableHTML += '<input type="hidden" name="emailUser" value="' + data[i].email + '"></td>';
-                            tableHTML += '</form>';
-                            tableHTML += '<td id="nameUser" name="nameUser">' + data[i].userName + '</td>';
-                            tableHTML += '<td id="emailUser" name="emailUser">' + data[i].email + '</td>';
-                            tableHTML += '</tr>';
-                        }
-                        tableHTML += '</tbody>';
-                        tableHTML += '</table>';
-                        // Add the table rows to the table body
-                        $("#search-result").html(tableHTML);
-                    }
-                });
-            } else {
-                $("#search-result").css("display", "none");
-            }
-        });
-    });
-}
+//             if (input != "") {
+//                 $.ajax({
+//                     url: 'php/user/search_user_test.php',
+//                     type: 'GET',
+//                     dataType: 'json',
+//                     // data: { send_obj: JSON.stringify(input) },
+//                     success: function (data) {
+//                         // Create an empty string to store the table HTML
+//                         var tableHTML = '';
+//                         tableHTML += '<table class="table table-hover">';
+//                         tableHTML += '<thead class="table-dark">';
+//                         tableHTML += '<tr>';
+//                         tableHTML += '<th>Avatar</th>';
+//                         tableHTML += '<th>Nombre</th>';
+//                         tableHTML += '<th>Email</th>';
+//                         tableHTML += '</tr>';
+//                         tableHTML += '</thead>';
+//                         tableHTML += '<tbody>';
+//                         tableHTML += '<form class="table table-hover" method="post">';
+//                         // Loop through the data and build the table rows
+//                         for (var i = 0; i < data.length; i++) {
+//                             tableHTML += '<tr>';
+//                             tableHTML += '<td>';
+//                             tableHTML += '<a href="searchInfoUser.php?email="' + data[i].email + '">';
+//                             tableHTML += '<img src="' + data[i].userPicture + '" alt="profile picture" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">';
+//                             tableHTML += '</a>';
+//                             tableHTML += '</td>';
+//                             tableHTML += '<td id="nameUser" name="nameUser">' + data[i].userName + '</td>';
+//                             tableHTML += '<td id="emailUser" name="emailUser">' + data[i].email + '</td>';
+//                             tableHTML += '</tr>';
+//                         }
+//                         tableHTML += '</form>';
+//                         tableHTML += '</tbody>';
+//                         tableHTML += '</table>';
+//                         // Add the table rows to the table body
+//                         $("#search-result").html(tableHTML);
+//                     }
+//                 });
+//             } else {
+//                 $("#search-result").css("display", "none");
+//             }
+//         });
+//     });
+// }
 
 
 

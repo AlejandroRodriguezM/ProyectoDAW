@@ -31,17 +31,12 @@ if (isset($_POST['edit'])) {
     cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
     header("Location: actualizandoUser.php");
 }
-// if (isset($_POST['avatarUser'])) {
-//     $emailUser = $_POST['emailUser'];
-//     $IDuser = $_POST['IDuser'];
-//     $passwordUser = obtain_password($emailUser);
-//     cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
-//     header("Location: adminInfoUser.php");
-// }
-
 if (isset($_POST['avatarUser'])) {
     $emailUser = $_POST['emailUser'];
-    echo $emailUser;
+    $IDuser = $_POST['IDuser'];
+    $passwordUser = obtain_password($emailUser);
+    cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
+    header("Location: adminInfoUser.php");
 }
 
 if (isset($_POST['status'])) {

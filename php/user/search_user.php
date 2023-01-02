@@ -27,10 +27,12 @@ if (isset($_POST['input'])) {
                                 while ($user != null) {
                                 ?>
                         <tr>
-                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                <td><input type="hidden" name="avatarUser"> <input type="image" src="<?php echo $user['userPicture'] ?>" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;"></td>
-                                <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
-                            </form>
+                            <td>
+                                <a href="searchInfoUser.php?userName=<?php echo $user['userName']; ?>">
+                                    <img src="<?php echo $user['userPicture']; ?>" alt="profile picture" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
+                                </a>
+                            </td>
+                            <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
                             <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
                             <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
 

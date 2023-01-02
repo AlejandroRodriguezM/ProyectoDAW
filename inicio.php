@@ -30,10 +30,10 @@ $email = $_SESSION['email'];
 //     header("Location: searchInfoUser.php");
 // }
 
-if (isset($_POST['avatarUser'])) {
-    $email = $_POST['emailUser'];
-    echo $email;
-}
+// if (isset($_POST['avatarUser'])) {
+//     $email = $_POST['emailUser'];
+//     echo $email;
+// }
 
 ?>
 

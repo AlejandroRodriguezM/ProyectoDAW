@@ -3,7 +3,7 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 checkCookiesUser();
-$email = $_COOKIE['loginUserTemp'];
+$email = $_GET['userName'];
 $emailUser = $_SESSION['email'];
 ?>
 <!DOCTYPE html>
