@@ -96,6 +96,17 @@ function mostrarUsuarios(data) {
     $("#search-result").html(data);
 }
 
+function toggleFieldset() {
+    var fieldset = document.getElementById("searchFieldset");
+    if (fieldset.style.display === "none") {
+        fieldset.style.display = "block";
+    } else {
+        fieldset.style.display = "none";
+    }
+}
+
+
+
 // Misma funcion pero asincrona
 // async function buscarUsuarios() {
 //     try {

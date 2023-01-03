@@ -112,7 +112,9 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
-  margin: 10px;
+  /* margin: 10px; */
+  width: 100%;
+  height: 100%;
 }
 
 .tips-search {
@@ -134,23 +136,20 @@
   background-size: 22px;
   background-position: 0px;
   border-radius: 20px;
-  width: 50px;
+  width: 300px;
   height: 50px;
-  padding: 25px;
-  transition: all 0.5s;
+  padding-left: 50px;
   position: relative;
-  overflow: hidden;
-  height: 50px;
   cursor: text;
   background: url("../img/search.svg") no-repeat 14px 12px;
   background-size: 24px;
   background-color: whitesmoke;
 }
 
-.search-click:focus {
+/* .search-click:focus {
   width: 300px;
   padding-left: 50px;
-}
+} */
 
 .search-click input {
   background: transparent;
@@ -174,4 +173,35 @@
   top: 0;
   bottom: 0;
   width: 20px;
+}
+
+.selected {
+  color: blue;
+  background-color: grey;
+}
+
+span{
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#suggestions {
+  z-index: 1;
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 300px;
+  height: 50px;
+}
+
+#suggestions div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#suggestions div:hover {
+  background-color: #eee;
 }

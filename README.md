@@ -120,3 +120,7 @@ Ahora es posible loggearse usando el email o el nombre de usuario.
 
 02/01/2023 Log 2
 Ya funciona la busqueda de usuarios mediante search.
+
+03/01/2023 Log 1
+Ahora el boton de busqueda despliega un fieldset con un buscador y 3 spans, que segun cual pulses, se mostrara una cosa u otra.
+Queda el autocompletado.

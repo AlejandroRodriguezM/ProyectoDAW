@@ -22,21 +22,6 @@ $email = $_SESSION['email'];
     <title>Inicio</title>
 </head>
 
-<?php
-
-// if (isset($_POST['avatarUser'])) {
-//     $email = $_POST['emailUser'];
-//     cookiesUserTemporal($email, "", "");
-//     header("Location: searchInfoUser.php");
-// }
-
-// if (isset($_POST['avatarUser'])) {
-//     $email = $_POST['emailUser'];
-//     echo $email;
-// }
-
-?>
-
 <body onload="checkSesion();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- <a class="btn btn-secondary btn-lg active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,12 +64,13 @@ $email = $_SESSION['email'];
             </ul>
         </div>
 
-        <div class="d-flex" role="search">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <label class="search-click-label">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" onkeyup="buscarUsuarios()" />
-                </label>
-            </form>
+        <div class="d-flex" role="search" style="margin-right: 20px;">
+            <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()">
+                Buscar
+                <i class="bi bi-search"></i>
+            </button>
+
+
         </div>
         <div class="dropdown">
             <?php
@@ -130,21 +116,88 @@ $email = $_SESSION['email'];
         Design by Alejandro Rodriguez 2022
     </div>
 
-    <!-- <fieldset class='searchFieldset'> -->
-    <!-- <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a> -->
-    <!-- <legend class='info-search'>Busqueda</legend> -->
-    <!-- <div style="margin-left: auto; margin-right: auto; width: 80%">
-        <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <div id="search-result"></div>
-        </form>
-    </div> -->
-    <!-- </fieldset> -->
+    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;">
+        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a>
+        <legend class='info-search'>Búsqueda</legend>
+        <div class="d-flex justify-content-center">
+            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <label class="search-click-label">
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data"  />
+                    <script>
+                        const input = document.getElementById('search-data');
+                        input.addEventListener('input', () => autocomplete(input));
+                    </script>
+                </label>
+            </form>
+        </div>
 
-    <div style="margin-left: auto; margin-right: auto; width: 80%">
-        <form class="table table-hover"  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <div id="search-result"></div>
-        </form>
-    </div>
+        <div class="d-flex justify-content-center">
+            <span id="span1" style="cursor: pointer;" class='selected'>Todo</span>
+            <span id="span2" style="cursor: pointer;">Usuarios</span>
+            <span id="span3" style="cursor: pointer;">Comics</span>
+        </div>
+
+        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none" id="show_users">
+            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div id="search-result"></div>
+            </form>
+        </div>
+
+        <script>
+            window.onload = () => {
+                const span1 = document.getElementById('span1');
+                const span2 = document.getElementById('span2');
+                const span3 = document.getElementById('span3');
+                const myDiv = document.getElementById('show_users');
+
+                const removeSelected = () => {
+                    span1.classList.remove('selected');
+                    span2.classList.remove('selected');
+                    span3.classList.remove('selected');
+                }
+
+                if (span1.classList.contains('selected')) {
+                    myDiv.style.display = 'block';
+                    buscarUsuarios();
+                }
+
+                span1.addEventListener('click', () => {
+                    removeSelected();
+                    span1.classList.add('selected');
+                    if (span1.classList.contains('selected')) {
+                        myDiv.style.display = 'block';
+                        buscarUsuarios();
+                    } else {
+                        myDiv.style.display = 'none';
+                    }
+                });
+
+                span2.addEventListener('click', () => {
+                    removeSelected();
+                    span2.classList.add('selected');
+                    if (span2.classList.contains('selected')) {
+                        myDiv.style.display = 'block';
+                        buscarUsuarios();
+                    } else {
+                        myDiv.style.display = 'none';
+                    }
+                });
+
+                span3.addEventListener('click', () => {
+                    removeSelected();
+                    span3.classList.add('selected');
+                    if (span3.classList.contains('selected')) {
+                        myDiv.style.display = 'none';
+                    } else {
+                        myDiv.style.display = 'none';
+                    }
+                });
+            };
+        </script>
+
+
+
+    </fieldset>
 
     <script>
         // Get the modal

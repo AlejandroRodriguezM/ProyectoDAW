@@ -301,6 +301,15 @@ function searchUser($search)
 	return $consulta;
 }
 
+function searchTest($search)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT userName from users WHERE userName LIKE ?");
+	$consulta->execute(array("%$search%"));
+	// $consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
 function showUsers()
 {
 	global $conection;
