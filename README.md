@@ -128,3 +128,7 @@ Queda el autocompletado.
 06/01/2023 Log 1
 Modificado ficheros en appLogin, para dejar de usar el fichero appCRUD.
 Cambiado style de span, ya que daba error en otros ficheros.
+
+06/01/2023 Log 2
+Se ha cambiado el nombre de la funcion para cargar los span, de forma que se encuentra en "onload" en body.
+Arreglado bug visual que no permitia mostrar el nombre del usuario logueado en la pantalla inicio.php
