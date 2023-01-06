@@ -15,7 +15,6 @@ if (isset($_POST['input'])) {
                         <tr>
                             <td>Imagen de perfil</td>
                             <td>Nombre</td>
-                            <td>Correo</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,7 +33,6 @@ if (isset($_POST['input'])) {
                             </td>
                             <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
                             <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
-                            <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
 
                         <?php
 

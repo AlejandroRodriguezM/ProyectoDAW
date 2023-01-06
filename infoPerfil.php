@@ -3,10 +3,21 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 checkCookiesUser();
+destroyCookiesUserTemporal();
 
 $email = $_SESSION['email'];
-$userData = getUserData($email);
-$userPrivilege = $userData['privilege'];
+$dataUser = getUserData($email);
+$IDuser = $dataUser['IDuser'];
+$infoUser = getInfoAboutUser($IDuser);
+
+$userPrivilege = $dataUser['privilege'];
+$profilePicture = $dataUser['userPicture'];
+$userName = $dataUser['userName'];
+$fechaCreacion = $infoUser['fechaCreacion'];
+$sobreUser = $infoUser['infoUser'];
+$nombre = $infoUser['nombreUser'];
+$apellidos = $infoUser['apellidoUser'];
+
 if ($userPrivilege == 'guest') {
     header('Location: logOut.php');
 }
@@ -39,8 +50,6 @@ if ($userPrivilege == 'guest') {
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php
             if (isset($_SESSION['email'])) {
-                $userData = getUserData($email);
-                $userPrivilege = $userData['privilege'];
                 if ($userPrivilege == 'guest') {
                     echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
                 } elseif ($userPrivilege == 'admin') {
@@ -95,11 +104,7 @@ if ($userPrivilege == 'guest') {
                 <li>
                     <?php
                     if (isset($_SESSION['email'])) {
-                        $userData = getUserData($email);
-                        $userPrivilege = $userData['privilege'];
-                        if ($userPrivilege == 'guest') {
-                            echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
-                        } elseif ($userPrivilege == 'admin') {
+                        if ($userPrivilege == 'admin') {
                             echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                             echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
                         } else {
@@ -121,23 +126,16 @@ if ($userPrivilege == 'guest') {
                     <div class="side-bar">
                         <div class="user-info">
                             <?php
-                            $dataUser = getUserData($email);
-                            $profilePicture = $dataUser['userPicture'];
                             echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                             ?>
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
-                                    $dataUser = getUserData($email);
-                                    $userName = $dataUser['userName'];
                                     echo "$userName";
                                     ?>
                                 </li>
                                 <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                     <?php
-                                    $dataUser = getUserData($email);
-                                    $email = $dataUser['email'];
-                                    // echo with style font size 
                                     echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                     ?>
                                 </li>
@@ -164,30 +162,18 @@ if ($userPrivilege == 'guest') {
 
                             <div class="form-group">
                                 <?php
-                                $dataUser = getUserData($email);
-                                $userName = $dataUser['userName'];
                                 echo "<label>Nombre de usuario: </label>";
                                 echo " " . "<span>$userName</span>";
                                 ?>
                             </div>
                             <div class="form-group">
                                 <?php
-                                $dataUser = getUserData($email);
-                                $email = $dataUser['email'];
                                 echo "<label>Correo electronico: </label>";
                                 echo " " . "<span>$email</span>";
                                 ?>
                             </div>
                             <div class="form-group">
                                 <?php
-                                $dataUser = getUserData($email);
-                                $IDuser = $dataUser['IDuser'];
-                                $infoUser = getInfoAboutUser($IDuser);
-                                $fechaCreacion = $infoUser['fechaCreacion'];
-                                $sobreUser = $infoUser['infoUser'];
-                                $nombre = $infoUser['nombreUser'];
-                                $apellidos = $infoUser['apellidoUser'];
-
                                 echo "<label>Nombre: </label>";
                                 echo " " . "<span>$nombre</span>";
                                 echo "<br>";

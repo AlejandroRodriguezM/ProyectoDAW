@@ -124,3 +124,7 @@ Ya funciona la busqueda de usuarios mediante search.
 03/01/2023 Log 1
 Ahora el boton de busqueda despliega un fieldset con un buscador y 3 spans, que segun cual pulses, se mostrara una cosa u otra.
 Queda el autocompletado.
+
+06/01/2023 Log 1
+Modificado ficheros en appLogin, para dejar de usar el fichero appCRUD.
+Cambiado style de span, ya que daba error en otros ficheros.

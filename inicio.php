@@ -22,11 +22,8 @@ $email = $_SESSION['email'];
     <title>Inicio</title>
 </head>
 
-<body onload="checkSesion();">
+<body onload="checkSesionUpdate();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <!-- <a class="btn btn-secondary btn-lg active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            WebComics
-        </a> -->
         <button id="nav" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="navbarDropdown" class="btn btn-secondary btn-lg active">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
@@ -35,7 +32,6 @@ $email = $_SESSION['email'];
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php
             if (isset($_SESSION['email'])) {
-                $email = $_SESSION['email'];
                 $userData = getUserData($email);
                 $userPrivilege = $userData['privilege'];
                 if ($userPrivilege == 'guest') {
@@ -69,12 +65,9 @@ $email = $_SESSION['email'];
                 Buscar
                 <i class="bi bi-search"></i>
             </button>
-
-
         </div>
         <div class="dropdown">
             <?php
-            $email = $_SESSION['email'];
             echo pictureProfile($email);
             ?>
 
@@ -93,7 +86,6 @@ $email = $_SESSION['email'];
                 <li>
                     <?php
                     if (isset($_SESSION['email'])) {
-                        $email = $_SESSION['email'];
                         $userData = getUserData($email);
                         $userPrivilege = $userData['privilege'];
                         if ($userPrivilege == 'guest') {
@@ -120,9 +112,9 @@ $email = $_SESSION['email'];
         <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a>
         <legend class='info-search'>Búsqueda</legend>
         <div class="d-flex justify-content-center">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
                 <label class="search-click-label">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data"  />
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" />
                     <script>
                         const input = document.getElementById('search-data');
                         input.addEventListener('input', () => autocomplete(input));
@@ -132,9 +124,9 @@ $email = $_SESSION['email'];
         </div>
 
         <div class="d-flex justify-content-center">
-            <span id="span1" style="cursor: pointer;" class='selected'>Todo</span>
-            <span id="span2" style="cursor: pointer;">Usuarios</span>
-            <span id="span3" style="cursor: pointer;">Comics</span>
+            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;" class='selected' >Todo</span>
+            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Usuarios</span>
+            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Comics</span>
         </div>
 
         <div style="margin-left: auto; margin-right: auto; width: 80%; display: none" id="show_users">
@@ -222,7 +214,8 @@ $email = $_SESSION['email'];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="./assets/js/appCRUD.js"></script>
+    
+    <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/functions.js"></script>

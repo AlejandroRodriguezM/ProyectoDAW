@@ -180,15 +180,6 @@
   background-color: grey;
 }
 
-span{
-  display: inline-block;
-  padding: 8px 16px;
-  margin: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
 #suggestions {
   z-index: 1;
   background-color: white;
