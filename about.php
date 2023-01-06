@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-
+destroyCookiesUserTemporal();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +20,7 @@ include_once 'php/inc/header.inc.php';
 </head>
 
 
-<body onload="checkSesion();">
+<body onload="checkSesionUpdate();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button id="nav" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="navbarDropdown" class="btn btn-secondary btn-lg active">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
@@ -165,7 +165,7 @@ include_once 'php/inc/header.inc.php';
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="./assets/js/appCRUD.js"></script>
+        <script src="./assets/js/appLogin.js"></script>
         <script src="./assets/js/bootstrap.bundle.min.js"></script>
         <script src="./assets/js/sweetalert2.all.min.js"></script>
 </body>

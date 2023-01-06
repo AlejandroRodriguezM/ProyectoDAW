@@ -105,7 +105,55 @@ function toggleFieldset() {
     }
 }
 
+function showSelected() {
+        const span1 = document.getElementById('span1');
+        const span2 = document.getElementById('span2');
+        const span3 = document.getElementById('span3');
+        const myDiv = document.getElementById('show_users');
 
+        const removeSelected = () => {
+            span1.classList.remove('selected');
+            span2.classList.remove('selected');
+            span3.classList.remove('selected');
+        }
+
+        if (span1.classList.contains('selected')) {
+            myDiv.style.display = 'block';
+            buscarUsuarios();
+        }
+
+        span1.addEventListener('click', () => {
+            removeSelected();
+            span1.classList.add('selected');
+            if (span1.classList.contains('selected')) {
+                myDiv.style.display = 'block';
+                buscarUsuarios();
+            } else {
+                myDiv.style.display = 'none';
+            }
+        });
+
+        span2.addEventListener('click', () => {
+            removeSelected();
+            span2.classList.add('selected');
+            if (span2.classList.contains('selected')) {
+                myDiv.style.display = 'block';
+                buscarUsuarios();
+            } else {
+                myDiv.style.display = 'none';
+            }
+        });
+
+        span3.addEventListener('click', () => {
+            removeSelected();
+            span3.classList.add('selected');
+            if (span3.classList.contains('selected')) {
+                myDiv.style.display = 'none';
+            } else {
+                myDiv.style.display = 'none';
+            }
+        });
+}
 
 // Misma funcion pero asincrona
 // async function buscarUsuarios() {

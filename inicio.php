@@ -22,7 +22,7 @@ $email = $_SESSION['email'];
     <title>Inicio</title>
 </head>
 
-<body onload="checkSesionUpdate();">
+<body onload="checkSesionUpdate();showSelected();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <button id="nav" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="navbarDropdown" class="btn btn-secondary btn-lg active">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
@@ -115,16 +115,16 @@ $email = $_SESSION['email'];
             <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
                 <label class="search-click-label">
                     <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" />
-                    <script>
+                    <!-- <script>
                         const input = document.getElementById('search-data');
                         input.addEventListener('input', () => autocomplete(input));
-                    </script>
+                    </script> -->
                 </label>
             </form>
         </div>
 
         <div class="d-flex justify-content-center">
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;" class='selected' >Todo</span>
+            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;" class='selected'>Todo</span>
             <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Usuarios</span>
             <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Comics</span>
         </div>
@@ -134,61 +134,6 @@ $email = $_SESSION['email'];
                 <div id="search-result"></div>
             </form>
         </div>
-
-        <script>
-            window.onload = () => {
-                const span1 = document.getElementById('span1');
-                const span2 = document.getElementById('span2');
-                const span3 = document.getElementById('span3');
-                const myDiv = document.getElementById('show_users');
-
-                const removeSelected = () => {
-                    span1.classList.remove('selected');
-                    span2.classList.remove('selected');
-                    span3.classList.remove('selected');
-                }
-
-                if (span1.classList.contains('selected')) {
-                    myDiv.style.display = 'block';
-                    buscarUsuarios();
-                }
-
-                span1.addEventListener('click', () => {
-                    removeSelected();
-                    span1.classList.add('selected');
-                    if (span1.classList.contains('selected')) {
-                        myDiv.style.display = 'block';
-                        buscarUsuarios();
-                    } else {
-                        myDiv.style.display = 'none';
-                    }
-                });
-
-                span2.addEventListener('click', () => {
-                    removeSelected();
-                    span2.classList.add('selected');
-                    if (span2.classList.contains('selected')) {
-                        myDiv.style.display = 'block';
-                        buscarUsuarios();
-                    } else {
-                        myDiv.style.display = 'none';
-                    }
-                });
-
-                span3.addEventListener('click', () => {
-                    removeSelected();
-                    span3.classList.add('selected');
-                    if (span3.classList.contains('selected')) {
-                        myDiv.style.display = 'none';
-                    } else {
-                        myDiv.style.display = 'none';
-                    }
-                });
-            };
-        </script>
-
-
-
     </fieldset>
 
     <script>
@@ -214,7 +159,7 @@ $email = $_SESSION['email'];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    
+
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
