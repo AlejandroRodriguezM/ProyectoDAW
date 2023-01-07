@@ -6,7 +6,6 @@ const checkSesion = () => {
     if (sesion != null) {
         window.location.href = "inicio.php";
     }
-    document.querySelector('#user').innerHTML = sesion;
 }
 
 const checkSesionUpdate = () => {
