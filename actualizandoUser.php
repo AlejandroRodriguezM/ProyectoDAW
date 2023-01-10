@@ -95,9 +95,8 @@ $email = $_COOKIE['adminUser'];
         <div class="dropdown">
 
             <?php
-            if (isset($_SESSION['email'])) {
-                echo pictureProfile($email);
-            }
+            $picture = pictureProfile($email);
+            echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture'>";
             ?>
             <!-- The Modal -->
             <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

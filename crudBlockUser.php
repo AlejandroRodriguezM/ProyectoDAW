@@ -87,8 +87,8 @@ if (isset($_POST['status'])) {
         <div class="dropdown">
 
             <?php
-            $email = $_SESSION['email'];
-            echo pictureProfile($email);
+            $picture = pictureProfile($email);
+            echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture'>";
             ?>
 
             <!-- The Modal -->

@@ -72,7 +72,8 @@ $emailUser = $_SESSION['email'];
         <div class="dropdown">
 
             <?php
-            echo pictureProfile($emailUser);
+            $picture = pictureProfile($email);
+            echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture'>";
             ?>
 
             <!-- The Modal -->
@@ -87,7 +88,7 @@ $emailUser = $_SESSION['email'];
             </button>
             <ul class="dropdown-menu">
                 <li>
-                <?php
+                    <?php
                     if (isset($_SESSION['email'])) {
                         $userData = getUserData($emailUser);
                         $userPrivilege = $userData['privilege'];

@@ -100,7 +100,6 @@ function new_user($userName, $email, $password)
 
 function update_user($userName, $email, $password)
 {
-
 	global $conection;
 	$update = false;
 	try {

@@ -220,5 +220,5 @@ function pictureProfile($email)
 {
 	$dataUser = getUserData($email);
 	$profilePicture = $dataUser['userPicture'];
-	return "<img src='$profilePicture' id='avatar' alt='Avatar' class='avatarPicture'>";
+	return $profilePicture;
 }

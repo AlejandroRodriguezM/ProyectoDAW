@@ -51,8 +51,6 @@ include_once 'php/inc/header.inc.php';
                     } else {
                         echo "<input type='checkbox' name='checkbox' id='checkbox' value='checkbox' readonly disabled>";
                     }
-
-
                     ?>
                     <label>Acepto y he leido las condiciones y servicios</label>
                 </div>

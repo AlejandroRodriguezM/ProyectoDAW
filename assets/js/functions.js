@@ -21,7 +21,6 @@ var loadFile = function (event) {
 
 var pictureProfileUser = () => {
     var modal = document.getElementById("myModal");
-
     // Get the image and insert it inside the modal - use its "alt" text as a caption
     var img = document.getElementById("avatarUser");
     var modalImg = document.getElementById("img01");
@@ -37,6 +36,22 @@ var pictureProfileUser = () => {
         this.style.display = "none";
     })
 }
+
+function pictureProfileAvatar() {
+    var modal = document.getElementById("myModal");
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById("avatar");
+    var modalImg = document.getElementById("img01");
+    img.onclick = function() {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+    }
+
+    modal.addEventListener('click', function() {
+        this.style.display = "none";
+    })
+}
+
 function countChar(val) {
     var len = val.value.length;
     if (len >= 451) {
@@ -87,6 +102,9 @@ function buscarUsuarios() {
             });
         } else {
             $("#search-result").css("display", "none");
+
+
+
         }
     });
 }

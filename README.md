@@ -132,3 +132,10 @@ Cambiado style de span, ya que daba error en otros ficheros.
 06/01/2023 Log 2
 Se ha cambiado el nombre de la funcion para cargar los span, de forma que se encuentra en "onload" en body.
 Arreglado bug visual que no permitia mostrar el nombre del usuario logueado en la pantalla inicio.php
+
+10/01/2023 Log 1
+Se ha modificado la base de datos, ahora existen 2 tablas nuevas relacionadas con el envio de tickets entre usuario y administrador
+Se ha modificado los ficheros javascript para tener el bootstrap de la version 5.2.3
+Se ha modificado los estilos para adaprtarlo a los nuevos bootrap
+Se ha añadido en inicio el css de bootstrap 5.2.3 pero no funciona correctamente por tener 2 ficheros de bootstrapp css extra(hay que solucionarlo)
+Ahora inicio, infoPerfil y modificar.php permiten realizar las busquedas de usuarios.

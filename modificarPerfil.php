@@ -28,36 +28,41 @@ if ($userPrivilege == 'guest') {
     <title>Settings</title>
 </head>
 
-<body onload="checkSesionUpdate()">
+<body onload="checkSesionUpdate();showSelected();">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button id="nav" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="navbarDropdown" class="btn btn-secondary btn-lg active">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
-            </svg>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <?php
-            if (isset($_SESSION['email'])) {
-                $email = $_SESSION['email'];
-                $userData = getUserData($email);
-                $userPrivilege = $userData['privilege'];
-                if ($userPrivilege == 'guest') {
-                    echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
-                } elseif ($userPrivilege == 'admin') {
-                    echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
-                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
-                } else {
-                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+        <div class="btn-group">
+            <button id="nav" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+                </svg>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="navbar-inicio">
+
+                <?php
+                if (isset($_SESSION['email'])) {
+                    $userData = getUserData($email);
+                    $userPrivilege = $userData['privilege'];
+                    if ($userPrivilege == 'guest') {
+                        echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
+                    } elseif ($userPrivilege == 'admin') {
+                        echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
+                        echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                    } else {
+                        echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                        echo "<button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket'>";
+                        echo "<i class='bi bi-person-circle p-1'></i>Enviar un ticket</button>";
+                        echo "</button>";
+                    }
                 }
-            }
-            ?>
-            <a class="dropdown-item" href="about.php"><i class="bi bi-newspaper p-1"></i>
-                Sobre WebComics</a>
-            <div class="dropdown-divider"></div>
-            <button class="dropdown-item" onclick="closeSesion()" name="closeSesion"><i class="bi bi-box-arrow-right p-1"></i>Salir de
-                sesion</a>
+                ?>
+                <a class="dropdown-item" href="about.php"><i class="bi bi-newspaper p-1"></i>
+                    Sobre WebComics</a>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item" onclick="closeSesion()" name="closeSesion"><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
+            </div>
         </div>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
             <a class="navbar-brand" href="inicio.php">Inicio</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
@@ -69,57 +74,72 @@ if ($userPrivilege == 'guest') {
             </ul>
         </div>
 
-        <div class="d-flex" role="search">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <label class="search-click-label">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" />
-                </label>
-            </form>
+        <div class="d-flex" role="search" style="margin-right: 15px;">
+            <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()">
+                Buscar
+                <i class="bi bi-search"></i>
+            </button>
         </div>
-        <div class="dropdown">
 
+        <div class="dropdown" id="navbar-user" style="left: 2px !important;">
             <?php
-            $email = $_SESSION['email'];
-            echo pictureProfile($email);
+            $picture = pictureProfile($email);
+            echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()'>";
             ?>
 
-
-            <!-- The Modal -->
-            <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
-                <!-- The Close Button -->
-                <span class="close"></span>
-
-                <!-- Modal Content (The Image) -->
-                <img class="modal-content" id="img01">
-            </div>
-
-            <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                (NAME USER)
+            <!-- imagen de perfil  -->
+            <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 20px;"> </button>
             </button>
             <ul class="dropdown-menu">
-                <li>
-                    <?php
-                    if (isset($_SESSION['email'])) {
-                        $email = $_SESSION['email'];
-                        $userData = getUserData($email);
-                        $userPrivilege = $userData['privilege'];
-                        if ($userPrivilege == 'guest') {
-                            echo "<button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button>";
-                        } elseif ($userPrivilege == 'admin') {
-                            echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
-                            echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
-                        } else {
-                            echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
-                        }
+                <?php
+                if (isset($_SESSION['email'])) {
+                    if ($userPrivilege == 'admin') {
+                        echo "<li><a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                        echo "<li><a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
+                    } else {
+                        echo "<li><a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
+                        echo "<li><a class='dropdown-item' href='#'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
                     }
-                    ?>
-                    <div class="dropdown-divider"></div>
-                    <button class='dropdown-item' onclick='closeSesion()' name='closeSesion'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button>
-                </li>
+                }
+                echo "<div class='dropdown-divider'></div>";
+                echo "<li> <button class='dropdown-item' onclick='closeSesion()' name='closeSesion'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button> </i>";
+                ?>
             </ul>
         </div>
     </nav>
+
+    <div class="card-footer text-muted">
+        Design by Alejandro Rodriguez 2022
+    </div>
+
+    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;">
+        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a>
+        <legend class='info-search'>Búsqueda</legend>
+        <div class="d-flex justify-content-center">
+            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
+                <label class="search-click-label">
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" />
+                    <!-- <script>
+                        const input = document.getElementById('search-data');
+                        input.addEventListener('input', () => autocomplete(input));
+                    </script> -->
+                </label>
+            </form>
+        </div>
+
+        <!-- botones para clasificar que ver  -->
+        <div class="d-flex justify-content-center">
+            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;" class='selected'>Todo</span>
+            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Usuarios</span>
+            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Comics</span>
+        </div>
+
+        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none" id="show_users">
+            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div id="search-result"></div>
+            </form>
+        </div>
+    </fieldset>
 
     <div class="container">
         <div class="view-account">
@@ -183,23 +203,7 @@ if ($userPrivilege == 'guest') {
                                     <div class="form-inline col-md-10 col-sm-9 col-xs-12">
                                         <input class="form-control" type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
-                                    <!-- OTRA FORMA DE HACERLO -->
-                                    <!-- <label class="col-md-3 col-sm-3 col-xs-12 control-label">New profile picture</label>
-                                    <figure>
-                                    <?php
-                                    // $email = $_SESSION['email'];
-                                    // $dataUser = getUserData($email);
-                                    // $profilePicture = $dataUser['userPicture'];
-                                    ?>
-                                        <div class="image-upload">
-                                            <label for="file-input">
-                                                <?php
-                                                // echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' style='cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important '/>";
-                                                ?>
-                                            </label>
-                                        <input type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                    </div>
-                                    </figure> -->
+
                                     <?php
                                     $IDuser = $dataUser['IDuser'];
                                     $infoUser = getInfoAboutUser($IDuser);
@@ -288,26 +292,41 @@ if ($userPrivilege == 'guest') {
         </div>
     </div>
 
-    <script>
-        // Get the modal
-        var modal = document.getElementById("myModal");
 
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementById("avatar");
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        img.onclick = function() {
-            modal.style.display = "block";
-            modalImg.src = this.src;
-        }
+    <!-- The Modal -->
+    <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- The Close Button -->
+        <span class="close"></span>
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content" id="img01">
+    </div>
 
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        modal.addEventListener('click', function() {
-            this.style.display = "none";
-        })
-    </script>
+    <!-- FORMULARIO INSERTAR -->
+    <div class="modal fade" id="crear_ticket" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" id="formInsert" onsubmit="return false;">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Crear un ticket para administradores</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Asunto</label>
+                            <input type="text" id="asunto_usuario" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Mensaje</label>
+                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <!-- <input type="submit" class="btn btn-info" value="Guardar" onclick="insert_request()"> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

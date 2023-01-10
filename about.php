@@ -38,6 +38,9 @@ destroyCookiesUserTemporal();
                 } elseif ($userPrivilege == 'admin') {
                     echo "<a class='dropdown-item' href='adminPanelUser.php'><i class='bi bi-person-circle p-1'></i>Administracion</a>";
                     echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                } else {
+                    echo "<a class='dropdown-item' href='infoPerfil.php'><i class='bi bi-person-circle p-1'></i>Mi perfil</a>";
+                    echo "<a class='dropdown-item' href='#'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a>";
                 }
             }
             ?>

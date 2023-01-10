@@ -72,7 +72,8 @@ $email = $_COOKIE['loginUserTemp'];
         <div class="dropdown">
 
             <?php
-            echo pictureProfile($email);
+            $picture = pictureProfile($email);
+            echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture'>";
             ?>
 
             <!-- The Modal -->

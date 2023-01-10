@@ -101,7 +101,8 @@ $email = $_SESSION['email'];
         <div class="dropdown">
 
             <?php
-            echo pictureProfile($email);
+            $picture = pictureProfile($email);
+            echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture'>";
             ?>
             <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <span class="close"></span>
@@ -169,6 +170,7 @@ $email = $_SESSION['email'];
                                 <li class="active"><a href="adminPanelUser.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
                                 <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
                                 <li><a href="crudBlockUser.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
+                                <li><a href="#"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
                             </ul>
                         </nav>
                     </div>
