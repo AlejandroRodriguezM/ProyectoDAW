@@ -139,3 +139,6 @@ Se ha modificado los ficheros javascript para tener el bootstrap de la version 5
 Se ha modificado los estilos para adaprtarlo a los nuevos bootrap
 Se ha añadido en inicio el css de bootstrap 5.2.3 pero no funciona correctamente por tener 2 ficheros de bootstrapp css extra(hay que solucionarlo)
 Ahora inicio, infoPerfil y modificar.php permiten realizar las busquedas de usuarios.
+
+14/01/2023 Log 1
+Se ha modificado el login, para que de igual el tamaño de la contraseña, saltaba error.

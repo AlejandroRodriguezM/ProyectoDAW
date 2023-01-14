@@ -31,11 +31,11 @@ function checkEmail($email)
  * @param [type] $con
  * @return string
  */
-function obtain_password($email)
+function obtain_password($acces)
 {
 	global $conection;
 	$consulta = $conection->prepare("SELECT password from users where email=? OR userName=?");
-	$consulta->execute(array($email, $email));
+	$consulta->execute(array($acces,$acces));
 	$password = $consulta->fetch(PDO::FETCH_ASSOC)['password'];
 	unset($consulta);
 	return $password;

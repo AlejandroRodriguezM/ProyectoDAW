@@ -163,19 +163,6 @@ const login_user = async () => {
         document.querySelector("#password_user").value = "";
         return;
     }
-
-    if (!validatePassword(password)) {
-        Swal.fire({
-            icon: "error",
-            title: "ERROR.",
-            text: "You have to introduce a valid password (upperCase,lowerCase,number and min 8 characters)",
-            footer: "Web Comics"
-        })
-        document.querySelector("#password_user").style.border = "1px solid red";
-        document.querySelector("#password_user").value = "";
-        return;
-    }
-
     //insert to data base in case of everything go correct.
     const data = new FormData();
     data.append('acceso', acceso);
