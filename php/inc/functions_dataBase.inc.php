@@ -232,8 +232,8 @@ function insertAbourUser($IDuser,$infoUser,$fechaCreacion){
 		$insertData->bindParam(1, $IDuser);
 		$insertData->bindParam(2, $infoUser);
 		$insertData->bindParam(3, $fechaCreacion);
-		$insertData->bindParam(4, $name);
-		$insertData->bindParam(5, $lastname);
+		$insertData->bindParam(4, "");
+		$insertData->bindParam(5, "");
 		$insertData->execute();
 	} catch (PDOException $e) {
 		$error_Code = $e->getCode();
