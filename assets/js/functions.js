@@ -29,9 +29,6 @@ var pictureProfileUser = () => {
         modalImg.src = this.src;
     }
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
     modal.addEventListener('click', function () {
         this.style.display = "none";
     })

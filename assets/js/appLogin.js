@@ -104,7 +104,6 @@ const new_user = async () => {
         data.append("userPicture", "");
     } else {
         data.append("userPicture", image);
-        console.log(image);
     }
 
     //pass data to php file
