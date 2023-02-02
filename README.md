@@ -150,4 +150,5 @@ Arreglado bugs visuales
 02/02/2023 Log 2
 Arreglada la seccion modal a la hora de tener tanto para la imagen como para el formulario de los tickets
 Implementada la funcion para crear tickets
-Creadas 2 nuevas paginas, segun sin eres usuario o administrador
+Creadas 2 nuevas paginas, segun sin eres usuario o administrador(Aun estan en creacion, no funcional)
+Arreglado bugs visuales respecto al cambio de bootstrap a 5.2.3
