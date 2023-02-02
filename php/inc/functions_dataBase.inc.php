@@ -272,6 +272,27 @@ function updateAboutUser($IDuser, $infoUser,$name,$lastname)
 	}
 }
 
+function new_ticket($id_user,$asunto_ticket,$descripcion_ticket,$fecha,$estado){
+	global $conection;
+	$confirmado = false;
+	try {
+		$insertData = $conection->prepare("INSERT INTO tickets (user_id,asunto_ticket,mensaje,fecha_ticket,status) VALUES (?,?,?,?,?)");
+		$insertData->bindParam(1, $id_user);
+		$insertData->bindParam(2, $asunto_ticket);
+		$insertData->bindParam(3, $descripcion_ticket);
+		$insertData->bindParam(4, $fecha);
+		$insertData->bindParam(5, $estado);
+		if($insertData->execute()){
+			$confirmado = true;
+		}
+		return $confirmado;
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+}
+
 function getInfoAboutUser($IDuser){
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from aboutuser where IDuser=?");

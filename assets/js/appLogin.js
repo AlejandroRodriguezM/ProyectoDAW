@@ -411,6 +411,57 @@ const modifying_user = async () => {
     }
 }
 
+const mandar_ticket = async () => {
+    var id = document.querySelector("#id_user_ticket").value;
+    var asunto = document.querySelector("#asunto_usuario").value;
+    var mensaje = document.querySelector("#mensaje_usuario").value;
+
+    if (asunto.trim() === '' | mensaje.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('idUser', id);
+    data.append("asunto_ticket", asunto);
+    data.append("mensaje", mensaje);
+
+    //pass data to php file
+    var respond = await fetch("php/user/new_ticket.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_ticket').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
+
 // const delete_user = async () => {
 //     var id = document.querySelector("#IDuser").value;
 //     const data = new FormData();

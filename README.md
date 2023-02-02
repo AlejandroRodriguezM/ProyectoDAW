@@ -146,3 +146,8 @@ Se ha modificado el login, para que de igual el tamaño de la contraseña, salta
 02/02/2023 Log 1
 Modificado todo el proyecto a bootstrap 5.2.3
 Arreglado bugs visuales
+
+02/02/2023 Log 2
+Arreglada la seccion modal a la hora de tener tanto para la imagen como para el formulario de los tickets
+Implementada la funcion para crear tickets
+Creadas 2 nuevas paginas, segun sin eres usuario o administrador
