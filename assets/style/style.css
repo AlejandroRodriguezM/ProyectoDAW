@@ -77,3 +77,9 @@ form {
     position: relative;
 }
 
+.menu_botones{
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+    font-size: 25px !important;
+}

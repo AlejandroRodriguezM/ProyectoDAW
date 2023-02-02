@@ -142,3 +142,6 @@ Ahora inicio, infoPerfil y modificar.php permiten realizar las busquedas de usua
 
 14/01/2023 Log 1
 Se ha modificado el login, para que de igual el tamaño de la contraseña, saltaba error.
+
+02/02/2023 Log 1
+Modificado todo el proyecto a bootstrap 5.2.3
