@@ -3,7 +3,7 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 checkCookiesAdmin();
-
+$email = $_COOKIE['adminUser'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,13 +39,10 @@ if (isset($_POST['adminPanel'])) {
     destroyCookiesUserTemporal();
     header('Location: adminPanelUser.php');
 }
-$email = $_COOKIE['adminUser'];
 ?>
 
-
-
 <body onload="checkSesionUpdate()">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -164,7 +161,7 @@ $email = $_COOKIE['adminUser'];
                         <nav class="side-menu">
                             <ul class="nav">
                                 <li><a href="adminInfoUser.php"><span class="fa fa-user"></span>Profile</a></li>
-                                <li class="active"><a href="update_user.php"><span class="fa fa-cog"></span>Updating user data</a></li>
+                                <li class="active"><a href="actualizandoUser.php"><span class="fa fa-cog"></span>Updating user data</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -172,57 +169,57 @@ $email = $_COOKIE['adminUser'];
                         <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                             <fieldset class="fieldset">
                                 <h3 class="fieldset-title">Personal Info</h3>
-                                <div class="form-group avatar">
+                                <div class="form-group avatar" style="width: 420px;">
                                     <figure>
                                         <?php
                                         $dataUser = getUserData($emailUser);
                                         $profilePicture = $dataUser['userPicture'];
-                                        echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' />";
                                         ?>
+                                        <div class="image-upload">
+                                            <label for="file-input"></label>
+                                            <?php
+                                            echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' style='cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important '/>";
+                                            ?>
                                     </figure>
-
-                                    <?php
-                                    $IDuser = $dataUser['IDuser'];
-                                    $infoUser = getInfoAboutUser($IDuser);
-                                    $nameUser = $infoUser['nombreUser'];
-                                    $lastName = $infoUser['apellidoUser'];
-                                    ?>
                                     <div class="form-inline col-md-10 col-sm-9 col-xs-12">
                                         <input class="form-control" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <?php
+                                $IDuser = $dataUser['IDuser'];
+                                $infoUser = getInfoAboutUser($IDuser);
+                                $nameUser = $infoUser['nombreUser'];
+                                $lastName = $infoUser['apellidoUser'];
+                                ?>
+                                <div class="form-group" style="margin-top: 5px;">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
-                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                         <input type="text" class="form-control" name="name" id="name" value="<?php echo $nameUser ?>" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" style="margin-top: 5px;">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">Your name</label>
-                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
 
                                         <input type="text" class="form-control" id="nameUser" value="<?php echo $nameUser ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" style="margin-top: 5px;">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">You lastname</label>
-                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                         <input type="text" class="form-control" id="lastnameUser" value="<?php echo $lastName ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
                                 </div>
 
-
-                                <div class="form-group">
+                                <div class="form-group" style="margin-top: 5px;">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">Email</label>
-                                    <div class="col-md-10 col-sm-9 col-xs-12">
+                                    <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                         <input type="text" class="form-control" name="email" id="email" value="<?php echo $emailUser ?>" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                        <input type="hidden" class="form-control" name="password" id="password" value="<?php $password ?>">
+                                        <input type="hidden" class="form-control" name="IDuser" id="IDuser" value="<?php $IDuser ?>">
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="hidden" class="form-control" name="password" id="password" value="<?php $password ?>">
-                                    <input type="hidden" class="form-control" name="IDuser" id="IDuser" value="<?php $IDuser ?>">
                                 </div>
                             </fieldset>
                             <hr>
@@ -230,8 +227,8 @@ $email = $_COOKIE['adminUser'];
                                 <div class="col-md-5 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
                                     <table>
                                         <tr>
-                                            <td><input class="btn btn-primary" type="button" onclick="modifying_user();" value="Update Profile" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important "></td>
-                                            <td><input class="btn btn-primary" type="submit" name="adminPanel" id="adminPanel" value="Volver al menu administrador" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important "></td>
+                                            <td><input class="btn btn-primary" type="button" onclick="modifying_user();" value="Actualizar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important "></td>
+                                            <td><input class="btn btn-primary" type="submit" name="adminPanel" id="adminPanel" value="Volver" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important "></td>
                                         </tr>
                                     </table>
                                     <script>

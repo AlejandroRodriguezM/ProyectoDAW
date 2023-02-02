@@ -1,10 +1,9 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-
 checkCookiesAdmin();
 destroyCookiesUserTemporal();
-
+$email = $_SESSION['email'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,11 +47,18 @@ if (isset($_POST['del'])) {
     $IDuser = $_POST['IDuser'];
     delete_user($email, $IDuser);
 }
-$email = $_SESSION['email'];
+
 ?>
 
 
-<body onload="checkSesionUpdate()">
+<body onload="checkSesionUpdate();showSelected();">
+    <!-- The Modal img-->
+    <div id="myModal" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- The Close Button -->
+        <span class="close"></span>
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content" id="img01">
+    </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -142,24 +148,27 @@ $email = $_SESSION['email'];
                             <?php
                             $dataUser = getUserData($email);
                             $profilePicture = $dataUser['userPicture'];
-                            echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' style='width: 20%px; height: 20%; />";
+                            echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                             ?>
                             <ul class="meta list list-unstyled">
-                                <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
+                                <li class="name">
+                                    <label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
                                     $dataUser = getUserData($email);
                                     $userName = $dataUser['userName'];
                                     echo "$userName";
                                     ?>
                                 </li>
-                                <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
+                                <li class="email">
+                                    <label for="" style="font-size: 0.8em;">Mail: </label>
                                     <?php
                                     $dataUser = getUserData($email);
                                     $email = $dataUser['email'];
                                     echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                     ?>
                                 </li>
-                                <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
+                                <li class="activity">
+                                    <label for="" style="font-size: 0.8em;">Logged in: </label>
                                     <?php
                                     $hora = $_SESSION['hour'];
                                     echo "$hora";
@@ -180,7 +189,7 @@ $email = $_SESSION['email'];
             </section>
         </div>
 
-        <div style="margin-left: auto; margin-right: auto; width: 80%">
+        <div style="margin-left: 250px;padding:15px; width: 80%">
             <div class="card-body">
                 <table class="table table-hover">
                     <thead class="table-dark">
@@ -275,27 +284,6 @@ $email = $_SESSION['email'];
             </div>
         </div>
     </div>
-
-    <script>
-        // Get the modal
-        var modal = document.getElementById("myModal");
-
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementById("avatar");
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        img.onclick = function() {
-            modal.style.display = "block";
-            modalImg.src = this.src;
-        }
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        modal.addEventListener('click', function() {
-            this.style.display = "none";
-        })
-    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

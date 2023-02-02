@@ -145,3 +145,4 @@ Se ha modificado el login, para que de igual el tamaño de la contraseña, salta
 
 02/02/2023 Log 1
 Modificado todo el proyecto a bootstrap 5.2.3
+Arreglado bugs visuales

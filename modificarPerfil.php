@@ -184,14 +184,14 @@ if ($userPrivilege == 'guest') {
                         <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                             <fieldset class="fieldset">
                                 <h3 class="fieldset-title">Personal Info</h3>
-                                    <div class="form-group avatar" style="width: 420px;">
+                                <div class="form-group avatar" style="width: 420px;">
                                     <figure>
                                         <?php
                                         $dataUser = getUserData($email);
                                         $profilePicture = $dataUser['userPicture'];
                                         ?>
                                         <div class="image-upload">
-                                            <label for="file-input">
+                                            <label for="file-input"></label>
                                                 <?php
                                                 echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' style='cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important '/>";
                                                 ?>
@@ -199,14 +199,14 @@ if ($userPrivilege == 'guest') {
                                     <div class="form-inline col-md-10 col-sm-9 col-xs-12">
                                         <input class="form-control" type="file" name="file-input" id="file-input" accept=".jpg, .png" onchange="loadFile(event)" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>
-
-                                    <?php
-                                    $IDuser = $dataUser['IDuser'];
-                                    $infoUser = getInfoAboutUser($IDuser);
-                                    $nameUser = $infoUser['nombreUser'];
-                                    $lastName = $infoUser['apellidoUser'];
-                                    ?>
                                 </div>
+                                <?php
+                                $IDuser = $dataUser['IDuser'];
+                                $infoUser = getInfoAboutUser($IDuser);
+                                $nameUser = $infoUser['nombreUser'];
+                                $lastName = $infoUser['apellidoUser'];
+                                ?>
+
                                 <div class="form-group" style="margin-top: 5px;">
                                     <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
                                     <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
@@ -221,7 +221,7 @@ if ($userPrivilege == 'guest') {
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-top: 5px;">
-                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label" >You lastname</label>
+                                    <label class="col-md-2 col-sm-3 col-xs-12 control-label">You lastname</label>
                                     <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                         <input type="text" class="form-control" id="lastnameUser" value="<?php echo $lastName ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     </div>

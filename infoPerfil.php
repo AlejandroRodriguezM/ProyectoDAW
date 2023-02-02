@@ -154,29 +154,34 @@ if ($userPrivilege == 'guest') {
             <section class="module">
                 <div class="module-inner">
                     <div class="side-bar">
-                        <div class="user-info">
+                    <div class="user-info">
                             <?php
+                            $dataUser = getUserData($email);
+                            $profilePicture = $dataUser['userPicture'];
                             echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                             ?>
                             <ul class="meta list list-unstyled">
                                 <li class="name">
                                     <label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
-                                    echo $userName;
+                                    $dataUser = getUserData($email);
+                                    $userName = $dataUser['userName'];
+                                    echo "$userName";
                                     ?>
                                 </li>
                                 <li class="email">
-                                    <label style="font-size: 0.8em;">Mail: </label>
+                                    <label for="" style="font-size: 0.8em;">Mail: </label>
                                     <?php
-                                    echo "<span style='font-size: 0.7em;!important'>$email</span>";
+                                    $dataUser = getUserData($email);
+                                    $email = $dataUser['email'];
+                                    echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                     ?>
                                 </li>
                                 <li class="activity">
-                                    <label style="font-size: 0.8em;">Logged in: </label>
+                                    <label for="" style="font-size: 0.8em;">Logged in: </label>
                                     <?php
                                     $hora = $_SESSION['hour'];
-                                    echo $hora;
-
+                                    echo "$hora";
                                     ?>
                                 </li>
                             </ul>

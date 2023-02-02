@@ -3,7 +3,8 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 checkCookiesAdmin();
-$email = $_COOKIE['loginUserTemp'];
+$email = $_COOKIE['adminUser'];
+$emailUser = $_COOKIE['loginUserTemp'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +111,7 @@ $email = $_COOKIE['loginUserTemp'];
                     <div class="side-bar">
                         <div class="user-info">
                             <?php
-                            $dataUser = getUserData($email);
+                            $dataUser = getUserData($emailUser);
                             $profilePicture = $dataUser['userPicture'];
                             echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                             ?>
@@ -118,17 +119,17 @@ $email = $_COOKIE['loginUserTemp'];
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
-                                    $dataUser = getUserData($email);
+                                    $dataUser = getUserData($emailUser);
                                     $userName = $dataUser['userName'];
                                     echo "$userName";
                                     ?>
                                 </li>
                                 <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                     <?php
-                                    $dataUser = getUserData($email);
-                                    $email = $dataUser['email'];
-                                    // echo with style font size 
-                                    echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                    $dataUser = getUserData($emailUser);
+                                    $emailUser = $dataUser['email'];
+                                    // echo with style font size
+                                    echo " " . "<span style='font-size: 0.7em'>$emailUser</span>";
                                     ?>
                                 </li>
                                 <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
@@ -143,7 +144,7 @@ $email = $_COOKIE['loginUserTemp'];
                             <ul class="nav">
                                 <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span>Profile</a></li>
                                 <?php
-                                $userData = getUserData($email);
+                                $userData = getUserData($emailUser);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userData['privilege'] != 'guest') {
                                     echo "<li><a href='actualizandoUser.php'><span class='fa fa-cog'></span>Settings</a></li>";
@@ -160,7 +161,7 @@ $email = $_COOKIE['loginUserTemp'];
 
                             <div class="form-group">
                                 <?php
-                                $dataUser = getUserData($email);
+                                $dataUser = getUserData($emailUser);
                                 $userName = $dataUser['userName'];
                                 echo "<label>Nombre de usuario: </label>";
                                 echo " " . "<span>$userName</span>";
@@ -168,14 +169,14 @@ $email = $_COOKIE['loginUserTemp'];
                             </div>
                             <div class="form-group">
                                 <?php
-                                $dataUser = getUserData($email);
-                                $email = $dataUser['email'];
+                                $dataUser = getUserData($emailUser);
+                                $emailUser = $dataUser['email'];
                                 echo "<label>Correo electronico: </label>";
-                                echo " " . "<span>$email</span>";
+                                echo " " . "<span>$emailUser</span>";
                                 ?>
                             </div>
                             <?php
-                            $dataUser = getUserData($email);
+                            $dataUser = getUserData($emailUser);
                             $IDuser = $dataUser['IDuser'];
                             $infoUser = getInfoAboutUser($IDuser);
                             $fechaCreacion = $infoUser['fechaCreacion'];
