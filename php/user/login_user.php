@@ -25,6 +25,7 @@ if ($_POST) {
                 $validate['userName'] = strtoupper($row['userName']);
                 $_SESSION['hour'] = date("H:i", time());
                 $_SESSION['email'] = $row['email'];
+                $_SESSION['userName'] = $row['userName'];
                 cookiesUser($email, $pass_encrypted);
             } else {
                 $validate['success'] = false;

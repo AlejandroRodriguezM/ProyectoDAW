@@ -112,21 +112,6 @@ if ($userPrivilege == 'admin') {
             </div>
     </nav>
 
-    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;">
-        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a>
-        <legend class='info-search'>Búsqueda</legend>
-        <div class="d-flex justify-content-center">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                <label class="search-click-label">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" />
-                    <!-- <script>
-                        const input = document.getElementById('search-data');
-                        input.addEventListener('input', () => autocomplete(input));
-                    </script> -->
-                </label>
-            </form>
-        </div>
-
         <!-- botones para clasificar que ver  -->
         <div class="d-flex justify-content-center">
             <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;" class='selected'>Todo</span>
@@ -214,9 +199,12 @@ if ($userPrivilege == 'admin') {
                         </nav>
                     </div>
                     <div class="content-panel">
-                        <!-- AQUI VA EL CONTENIDO DE LOS TICKETS 
-                     -->
-                    
+                        <!-- AQUI VA EL CONTENIDO DE LOS TICKETS -->
+                        <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <fieldset class="fieldset">
+                                <h3 class="fieldset-title">Mensajes</h3>
+                            </fieldset>
+                        </form>
                     </div>
                 </div>
             </section>
@@ -268,8 +256,6 @@ if ($userPrivilege == 'admin') {
             </div>
         </div>
     </div>
-
-
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

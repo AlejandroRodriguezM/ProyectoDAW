@@ -5,7 +5,7 @@ function checkUser($acceso, $password)
 	global $conection;
 	$exist = false;
 	$consulta = $conection->prepare("SELECT * from users WHERE email = ? OR userName = ? and password = ?");
-	$consulta->execute(array($acceso,$acceso, $password));
+	$consulta->execute(array($acceso, $acceso, $password));
 	if ($consulta->fetchColumn()) {
 		$exist = true;
 	}
@@ -35,7 +35,7 @@ function obtain_password($acces)
 {
 	global $conection;
 	$consulta = $conection->prepare("SELECT password from users where email=? OR userName=?");
-	$consulta->execute(array($acces,$acces));
+	$consulta->execute(array($acces, $acces));
 	$password = $consulta->fetch(PDO::FETCH_ASSOC)['password'];
 	unset($consulta);
 	return $password;
@@ -70,7 +70,7 @@ function operacionesMySql($query)
 function getUserData($acces)
 {
 	global $conection;
-	$sql = "SELECT * FROM users WHERE email='$acces' OR userName = '$acces'";
+	$sql = "SELECT * FROM users WHERE email='$acces' OR userName = '$acces' or IDuser = '$acces'";
 	$resultado = $conection->query($sql);
 	$userData = $resultado->fetch(PDO::FETCH_ASSOC);
 	// Devolvemos los datos del usuario
@@ -225,15 +225,18 @@ function changeStatusAccount($email)
 	}
 }
 
-function insertAbourUser($IDuser,$infoUser,$fechaCreacion){
+function insertAbourUser($IDuser, $infoUser, $fechaCreacion)
+{
 	global $conection;
 	try {
+		$nameUser = "";
+		$apellidoUser = "";
 		$insertData = $conection->prepare("INSERT INTO aboutuser (IDuser,infoUser,fechaCreacion,nombreUser,apellidoUser) VALUES (?,?,?,?,?)");
 		$insertData->bindParam(1, $IDuser);
 		$insertData->bindParam(2, $infoUser);
 		$insertData->bindParam(3, $fechaCreacion);
-		$insertData->bindParam(4, "");
-		$insertData->bindParam(5, "");
+		$insertData->bindParam(4, $nameUser);
+		$insertData->bindParam(5, $apellidoUser);
 		$insertData->execute();
 	} catch (PDOException $e) {
 		$error_Code = $e->getCode();
@@ -242,7 +245,7 @@ function insertAbourUser($IDuser,$infoUser,$fechaCreacion){
 	}
 }
 
-function updateAboutUser($IDuser, $infoUser,$name,$lastname)
+function updateAboutUser($IDuser, $infoUser, $name, $lastname)
 {
 	global $conection;
 	try {
@@ -272,7 +275,8 @@ function updateAboutUser($IDuser, $infoUser,$name,$lastname)
 	}
 }
 
-function new_ticket($id_user,$asunto_ticket,$descripcion_ticket,$fecha,$estado){
+function new_ticket($id_user, $asunto_ticket, $descripcion_ticket, $fecha, $estado)
+{
 	global $conection;
 	$confirmado = false;
 	try {
@@ -282,7 +286,7 @@ function new_ticket($id_user,$asunto_ticket,$descripcion_ticket,$fecha,$estado){
 		$insertData->bindParam(3, $descripcion_ticket);
 		$insertData->bindParam(4, $fecha);
 		$insertData->bindParam(5, $estado);
-		if($insertData->execute()){
+		if ($insertData->execute()) {
 			$confirmado = true;
 		}
 		return $confirmado;
@@ -293,7 +297,54 @@ function new_ticket($id_user,$asunto_ticket,$descripcion_ticket,$fecha,$estado){
 	}
 }
 
-function getInfoAboutUser($IDuser){
+function respond_tickets($ticket_id, $mensaje_ticket, $fecha, $nombre_admin)
+{
+
+	global $conection;
+	$confirmado = false;
+	try {
+		$insertData = $conection->prepare("INSERT INTO tickets_respuestas (ticket_id, respuesta_ticket, fecha_respuesta, nombre_admin) VALUES (?,?,?,?)");
+		$insertData->bindParam(1, $ticket_id);
+		$insertData->bindParam(2, $mensaje_ticket);
+		$insertData->bindParam(3, $fecha);
+		$insertData->bindParam(4, $nombre_admin);
+		if ($insertData->execute()) {
+			$confirmado = true;
+		}
+		return $confirmado;
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+}
+
+function cambiar_estado($estado, $id)
+{
+	global $conection;
+	try {
+		$insertData = $conection->prepare("UPDATE tickets SET status = ? WHERE ticket_id = ?");
+		$insertData->bindParam(1, $estado);
+		$insertData->bindParam(2, $id);
+		$insertData->execute();
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+}
+
+function getTickets($id)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from tickets_respuestas where ticket_id=?");
+	$consulta->execute(array($id));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function getInfoAboutUser($IDuser)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from aboutuser where IDuser=?");
 	$consulta->execute(array($IDuser));
@@ -301,7 +352,8 @@ function getInfoAboutUser($IDuser){
 	return $consulta;
 }
 
-function checkUserName($userName){
+function checkUserName($userName)
+{
 	global $conection;
 	$exist = false;
 	$consulta = $conection->prepare("SELECT * from users WHERE userName = ? OR email = ?");

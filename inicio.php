@@ -42,7 +42,7 @@ $email = $_SESSION['email'];
                                 } elseif ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                                    echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
@@ -94,7 +94,6 @@ $email = $_SESSION['email'];
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                         } else {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                            echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
                         }
                     }
                     echo "<div class='dropdown-divider'></div>";
@@ -107,11 +106,11 @@ $email = $_SESSION['email'];
     <!-- The Modal -->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <!-- <div class="modal-dialog"> -->
-            <!-- <div class="modal-content"> -->
-                <!-- Modal Content (The Image) -->
-                <img class="modal-content_img" id="img01">
-                <!-- Modal Caption (Image Text) -->
-            <!-- </div> -->
+        <!-- <div class="modal-content"> -->
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content_img" id="img01">
+        <!-- Modal Caption (Image Text) -->
+        <!-- </div> -->
         <!-- </div> -->
     </div>
 
@@ -131,7 +130,7 @@ $email = $_SESSION['email'];
                     <div class="form-group">
                         <label>Mensaje</label>
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php 
+                        <?php
                         if (isset($_SESSION['email'])) {
                             $userData = getUserData($email);
                             $id_user = $userData['IDuser'];

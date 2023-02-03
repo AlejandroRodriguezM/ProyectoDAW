@@ -461,6 +461,56 @@ const mandar_ticket = async () => {
     }
 }
 
+const responder_ticket = async (ticket_id) => {
+    var id = document.querySelector("#ticket_id_" + ticket_id).value;
+    var estado = document.querySelector("#estado_" + ticket_id).value;
+    var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
+    if (respuesta.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('ticket_id', id);
+    data.append("estado", estado);
+    data.append("mensaje", respuesta);
+    
+
+    //pass data to php file
+    var respond = await fetch("php/user/respon_ticket.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_ticket_respond').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
 
 // const delete_user = async () => {
 //     var id = document.querySelector("#IDuser").value;
