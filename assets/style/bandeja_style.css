@@ -1,0 +1,29 @@
+.ticket {
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    background-color: #fff;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.ticket-header {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.ticket-info {
+    display: none;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.ticket-header:hover {
+    background-color: #444;
+}

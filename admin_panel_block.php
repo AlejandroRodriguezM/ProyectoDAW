@@ -164,7 +164,7 @@ if (isset($_POST['avatarUser'])) {
                         <?php
                         $dataUser = getUserData($email);
                         $profilePicture = $dataUser['userPicture'];
-                        echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+                        echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' style='width: 20%px; height: 20%; />";
                         ?>
                         <ul class="meta list list-unstyled">
                             <li class="name">
@@ -217,17 +217,14 @@ if (isset($_POST['avatarUser'])) {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                            <?php
-                                            $registros = showUsers();
-                                            $user = $registros->fetch();
-                                            while ($user != null) {
-                                            ?>
-                                    <tr>
-
-
                                         <?php
-                                                if ($user['accountStatus'] == 'block') {
+                                        $registros = showUsers();
+                                        $user = $registros->fetch();
+                                        while ($user != null) {
+                                        ?>
+                                    <tr>
+                                        <?php
+                                            if ($user['accountStatus'] == 'block') {
                                         ?>
                                             <td name='IDuser'><?php echo $user['IDuser'] ?></td>
                                             <td><input type="hidden" name="avatarUser"><input type="image" src="<?php echo $user['userPicture'] ?>" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;"></td>
@@ -243,12 +240,11 @@ if (isset($_POST['avatarUser'])) {
                                                 <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
                                             </form>
                                     <?php
-                                                }
-                                                echo "</tr>";
-                                                $user = $registros->fetch();
                                             }
+                                            echo "</tr>";
+                                            $user = $registros->fetch();
+                                        }
                                     ?>
-                                    </form>
                                     </tr>
                                 </tbody>
                             </table>
@@ -261,19 +257,9 @@ if (isset($_POST['avatarUser'])) {
         </section>
     </div>
 
-
-    </div>
-
-
     <!-- The Modal -->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <!-- <div class="modal-dialog"> -->
-        <!-- <div class="modal-content"> -->
-        <!-- Modal Content (The Image) -->
         <img class="modal-content_img" id="img01">
-        <!-- Modal Caption (Image Text) -->
-        <!-- </div> -->
-        <!-- </div> -->
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

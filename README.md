@@ -159,3 +159,7 @@ Funcionalidad tickets medio funcional en admins
 04/02/2023 Log 1
 Funcionalidad de tickets terminada, ya es funcional
 Cambios en los stylos de todos los ficheros para acomodarlos al bootstrap 5.2.3
+
+04/02/2023 Log 2
+Nuevo stylo para la bandeja de los tickets
+Arreglado un bug en usuarios bloqueados que despues de desbloquear o editar se iba a la info del usuario
