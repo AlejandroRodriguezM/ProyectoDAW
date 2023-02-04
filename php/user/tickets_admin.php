@@ -3,7 +3,10 @@ include_once './php/inc/header.inc.php';
 // Conexión a la base de datos (asumiendo que ya está establecida)
 global $conection;
 $conn = $conection;
-
+$email_user = $_SESSION['email'];
+$data = getUserData($email_user);
+$id_user = $data['IDuser'];
+$nombre_user = $data['userName'];
 // Consulta para obtener los tickets
 $query = "SELECT * FROM tickets";
 $stmt = $conn->prepare($query);
@@ -15,11 +18,10 @@ if (!empty($tickets)) {
     // Recorrer los resultados y mostrar la información del ticket
     foreach ($tickets as $ticket) {
         $id_user = $ticket['user_id'];
-        $nombre_user = getUserData($id_user);
         echo "<div class='ticket'>";
         echo "<h2 class='ticket-header' id='ticket-header-" . $ticket['ticket_id'] . "'>Ticket #" . $ticket['ticket_id'] . " <span class='arrow'>&#9654;</span></h2>";
         echo "<div class='ticket-info' id='ticket-info-" . $ticket['ticket_id'] . "' style='display: none;'>";
-        echo "<p><strong>Usuario:</strong> " . $nombre_user['userName'] . "</p>";
+        echo "<p><strong>Usuario:</strong> " . $nombre_user . "</p>";
         echo "<p><strong>Asunto:</strong> " . $ticket['asunto_ticket'] . "</p>";
         echo "<p><strong>Descripción:</strong> " . $ticket['mensaje'] . "</p>";
         echo "<p><strong>Fecha enviado:</strong> " . $ticket['fecha_ticket'] . "</p>";
@@ -31,7 +33,14 @@ if (!empty($tickets)) {
         if (!empty($conversations)) {
             // Recorrer los resultados y mostrar la conversación
             foreach ($conversations as $conversation) {
-                echo "<p><strong>Mensaje: </strong>" . $conversation['respuesta_ticket'] . "</p>";
+              if($conversation['privilegio_user'] == 'admin'){
+                echo "<p style='color: blue'><strong>Tu mensaje: </strong>" . $conversation['respuesta_ticket'] . "<br> - Hora de mensaje: " . $conversation['fecha_respuesta'] . "</p>";
+
+              }
+              else{
+                echo "<p style='color: red'><strong>Mensaje del usuario: </strong>" . $conversation['respuesta_ticket'] . "<br> - Hora de mensaje: " . $conversation['fecha_respuesta'] . "</p>";
+
+              }
             }
         } else {
             echo "<p>No hay conversación para este ticket</p>";

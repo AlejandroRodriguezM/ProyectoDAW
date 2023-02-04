@@ -101,17 +101,12 @@ $email = $_SESSION['email'];
                     ?>
                 </ul>
             </div>
+        </div>
     </nav>
 
     <!-- The Modal -->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <!-- <div class="modal-dialog"> -->
-        <!-- <div class="modal-content"> -->
-        <!-- Modal Content (The Image) -->
         <img class="modal-content_img" id="img01">
-        <!-- Modal Caption (Image Text) -->
-        <!-- </div> -->
-        <!-- </div> -->
     </div>
 
     <!-- FORMULARIO INSERTAR -->

@@ -25,10 +25,11 @@ if ($userPrivilege == 'user') {
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
+    <link rel="stylesheet" href="./assets/style/ticket_style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <title>Panel de tickets</title>
+    <title>Panel de tickets administrador</title>
     <style>
         .ticket {
             margin-bottom: 20px;
@@ -44,33 +45,6 @@ if ($userPrivilege == 'user') {
 
         .arrow {
             float: right;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 30%;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 20px;
         }
     </style>
 </head>
@@ -154,36 +128,8 @@ if ($userPrivilege == 'user') {
                     ?>
                 </ul>
             </div>
+        </div>
     </nav>
-
-    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;">
-        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a>
-        <legend class='info-search'>Búsqueda</legend>
-        <div class="d-flex justify-content-center">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                <label class="search-click-label">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" />
-                    <!-- <script>
-                        const input = document.getElementById('search-data');
-                        input.addEventListener('input', () => autocomplete(input));
-                    </script> -->
-                </label>
-            </form>
-        </div>
-
-        <!-- botones para clasificar que ver  -->
-        <div class="d-flex justify-content-center">
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;" class='selected'>Todo</span>
-            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Usuarios</span>
-            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Comics</span>
-        </div>
-
-        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none" id="show_users">
-            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div id="search-result"></div>
-            </form>
-        </div>
-    </fieldset>
 
     <fieldset class='searchFieldset' id="searchFieldset" style="display: none;">
         <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a>
@@ -214,77 +160,68 @@ if ($userPrivilege == 'user') {
         </div>
     </fieldset>
 
-
-    
-    <div class="container">
-        <div class="view-account">
-            <section class="module">
-                <div class="module-inner">
-                    <div class="side-bar">
-                        <div class="user-info">
-                            <?php
-                            $dataUser = getUserData($email);
-                            $profilePicture = $dataUser['userPicture'];
-                            echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
-                            ?>
-                            <ul class="meta list list-unstyled">
-                                <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
-                                    <?php
-                                    $dataUser = getUserData($email);
-                                    $userName = $dataUser['userName'];
-                                    echo "$userName";
-                                    ?>
-                                </li>
-                                <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
-                                    <?php
-                                    $dataUser = getUserData($email);
-                                    $email = $dataUser['email'];
-                                    // echo with style font size 
-                                    echo " " . "<span style='font-size: 0.7em'>$email</span>";
-                                    ?>
-                                </li>
-                                <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
-                                    <?php
-                                    $hora = $_SESSION['hour'];
-                                    echo "$hora";
-                                    ?>
-                                </li>
-                            </ul>
-                        </div>
-                        <nav class="side-menu">
-                            <ul class="nav">
-                                <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
-                                <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
-                                <li class='active'><a href='panel_tickets_admin.php'><span class='fa fa-cog'></span>Panel de tickets</a></li>
-                            </ul>
-                        </nav>
+    <div class="view-account">
+        <section class="module">
+            <div class="module-inner">
+                <div class="side-bar">
+                    <div class="user-info">
+                        <?php
+                        $dataUser = getUserData($email);
+                        $profilePicture = $dataUser['userPicture'];
+                        echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+                        ?>
+                        <ul class="meta list list-unstyled">
+                            <li class="name">
+                                <label for="" style="font-size: 0.8em;">Nombre:</label>
+                                <?php
+                                $dataUser = getUserData($email);
+                                $userName = $dataUser['userName'];
+                                echo "$userName";
+                                ?>
+                            </li>
+                            <li class="email">
+                                <label for="" style="font-size: 0.8em;">Mail: </label>
+                                <?php
+                                $dataUser = getUserData($email);
+                                $email = $dataUser['email'];
+                                echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                ?>
+                            </li>
+                            <li class="activity">
+                                <label for="" style="font-size: 0.8em;">Logged in: </label>
+                                <?php
+                                $hora = $_SESSION['hour'];
+                                echo "$hora";
+                                ?>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="content-panel">
-                        <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                            <fieldset class="fieldset">
-                                <h3 class="fieldset-title">Mensajes</h3>
-                                <!-- Aquí se incluye el código PHP para obtener los tickets -->
-                                <?php include 'php/user/tickets.php'; ?>
-                                <!-- AQUI VA EL CONTENIDO DE LOS TICKETS -->
-
-                            </fieldset>
-                        </form>
-                    </div>
+                    <nav class="side-menu">
+                        <ul class="nav">
+                            <li><a href="adminPanelUser.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
+                            <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
+                            <li><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
+                            <li class="active"><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
+                        </ul>
+                    </nav>
                 </div>
-            </section>
-        </div>
+                <div class="content-panel">
+                    <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <fieldset class="fieldset">
+                            <h3 class="fieldset-title">Mensajes</h3>
+                            <!-- Aquí se incluye el código PHP para obtener los tickets -->
+                            <?php include 'php/user/tickets_admin.php'; ?>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </section>
     </div>
 
 
     <!-- The Modal -->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <!-- <div class="modal-dialog"> -->
-        <!-- <div class="modal-content"> -->
-        <!-- Modal Content (The Image) -->
         <img class="modal-content_img" id="img01">
-        <!-- Modal Caption (Image Text) -->
-        <!-- </div> -->
-        <!-- </div> -->
     </div>
 
 

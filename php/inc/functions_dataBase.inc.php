@@ -297,17 +297,18 @@ function new_ticket($id_user, $asunto_ticket, $descripcion_ticket, $fecha, $esta
 	}
 }
 
-function respond_tickets($ticket_id, $mensaje_ticket, $fecha, $nombre_admin)
+function respond_tickets($ticket_id, $mensaje_ticket, $fecha, $nombre_admin, $privilegio_user)
 {
 
 	global $conection;
 	$confirmado = false;
 	try {
-		$insertData = $conection->prepare("INSERT INTO tickets_respuestas (ticket_id, respuesta_ticket, fecha_respuesta, nombre_admin) VALUES (?,?,?,?)");
+		$insertData = $conection->prepare("INSERT INTO tickets_respuestas (ticket_id, respuesta_ticket, fecha_respuesta, nombre_admin,privilegio_user) VALUES (?,?,?,?,?)");
 		$insertData->bindParam(1, $ticket_id);
 		$insertData->bindParam(2, $mensaje_ticket);
 		$insertData->bindParam(3, $fecha);
 		$insertData->bindParam(4, $nombre_admin);
+		$insertData->bindParam(5, $privilegio_user);
 		if ($insertData->execute()) {
 			$confirmado = true;
 		}
@@ -338,6 +339,14 @@ function getTickets($id)
 {
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from tickets_respuestas where ticket_id=?");
+	$consulta->execute(array($id));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function getTickets_user($id){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from tickets where user_id=?");
 	$consulta->execute(array($id));
 	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
 	return $consulta;

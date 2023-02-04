@@ -218,13 +218,7 @@ $email = $_SESSION['email'];
 
     <!-- The Modal -->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <!-- <div class="modal-dialog"> -->
-            <!-- <div class="modal-content"> -->
-                <!-- Modal Content (The Image) -->
-                <img class="modal-content_img" id="img01">
-                <!-- Modal Caption (Image Text) -->
-            <!-- </div> -->
-        <!-- </div> -->
+        <img class="modal-content_img" id="img01">
     </div>
 
     <!-- FORMULARIO INSERTAR -->
@@ -243,7 +237,7 @@ $email = $_SESSION['email'];
                     <div class="form-group">
                         <label>Mensaje</label>
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php 
+                        <?php
                         if (isset($_SESSION['email'])) {
                             $userData = getUserData($email);
                             $id_user = $userData['IDuser'];
@@ -264,7 +258,6 @@ $email = $_SESSION['email'];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/functions.js"></script>

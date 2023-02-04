@@ -10,7 +10,7 @@ if ($_POST) {
     $descripcion_ticket = $_POST['mensaje'];
     $estado = 'Abierto';
     $reservedWords = reservedWords();
-    $fecha = date('Y-m-d');
+    $fecha = date('Y-m-d H:i:s');
     $fechaCreacion = date('Y-m-d', strtotime(str_replace('-', '/', $fecha)));
     if (in_array(strtolower($asunto_ticket), $reservedWords) || in_array(strtolower($descripcion_ticket), $reservedWords)) {
         $validate['success'] = false;

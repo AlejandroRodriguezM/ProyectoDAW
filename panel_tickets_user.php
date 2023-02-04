@@ -25,10 +25,28 @@ if ($userPrivilege == 'admin') {
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
+    <link rel="stylesheet" href="./assets/style/ticket_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <title>Settings</title>
+    <title>Tickets de usuario</title>
+    <style>
+        .ticket {
+            margin-bottom: 20px;
+        }
+
+        .ticket-header {
+            cursor: pointer;
+        }
+
+        .ticket-info {
+            display: none;
+        }
+
+        .arrow {
+            float: right;
+        }
+    </style>
 </head>
 
 <body onload="checkSesionUpdate();showSelected();">
@@ -112,18 +130,11 @@ if ($userPrivilege == 'admin') {
             </div>
     </nav>
 
-        <!-- botones para clasificar que ver  -->
-        <div class="d-flex justify-content-center">
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;" class='selected'>Todo</span>
-            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Usuarios</span>
-            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Comics</span>
-        </div>
-
-        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none" id="show_users">
-            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div id="search-result"></div>
-            </form>
-        </div>
+    <div style="margin-left: auto; margin-right: auto; width: 80%; display: none" id="show_users">
+        <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <div id="search-result"></div>
+        </form>
+    </div>
     </fieldset>
 
     <fieldset class='searchFieldset' id="searchFieldset" style="display: none;">
@@ -203,6 +214,8 @@ if ($userPrivilege == 'admin') {
                         <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                             <fieldset class="fieldset">
                                 <h3 class="fieldset-title">Mensajes</h3>
+                                <?php include 'php/user/tickets_user.php'; ?>
+
                             </fieldset>
                         </form>
                     </div>
@@ -214,19 +227,13 @@ if ($userPrivilege == 'admin') {
 
     <!-- The Modal -->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <!-- <div class="modal-dialog"> -->
-        <!-- <div class="modal-content"> -->
-        <!-- Modal Content (The Image) -->
         <img class="modal-content_img" id="img01">
-        <!-- Modal Caption (Image Text) -->
-        <!-- </div> -->
-        <!-- </div> -->
     </div>
 
     <!-- FORMULARIO INSERTAR -->
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div id="crear_ticket" class="modal modal_ticket" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content modal-content_ticket">
                 <div class="modal-header">
                     <form method="post" id="form_ticket" onsubmit="return false;">
                         <h4 class="modal-title">Crear un ticket para administradores</h4>
@@ -248,7 +255,7 @@ if ($userPrivilege == 'admin') {
                         ?>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer modal-footer_ticket">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
                     <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
                 </div>
@@ -256,6 +263,72 @@ if ($userPrivilege == 'admin') {
             </div>
         </div>
     </div>
+
+    <script>
+        // Función para mostrar y ocultar la conversación al hacer clic en el ticket
+        function toggleTicketInfo(id) {
+            var header = document.getElementById('ticket-header-' + id);
+            var info = document.getElementById('ticket-info-' + id);
+            var arrow = header.querySelector('.arrow');
+            if (info.style.display === 'block') {
+                info.style.display = 'none';
+                arrow.innerHTML = '&#9654;';
+            } else {
+                info.style.display = 'block';
+                arrow.innerHTML = '&#9660;';
+            }
+        }
+
+        // Asignar la función a los eventos de clic de los headers de los tickets
+        var headers = document.querySelectorAll('.ticket-header');
+        for (var i = 0; i < headers.length; i++) {
+            headers[i].addEventListener('click', function() {
+                toggleTicketInfo(this.id.replace('ticket-header-', ''));
+            });
+        }
+    </script>
+    <script>
+        // Función para abrir el modal
+        function openModal(modalId) {
+            var modal = document.querySelector('.modal-form' + modalId);
+            modal.style.display = "block";
+        }
+
+        // Función para cerrar el modal
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = "none";
+        }
+
+        // Botón para abrir el modal
+        var btns = document.querySelectorAll(".btn-open-modal");
+        btns.forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                var modalId = btn.dataset.target;
+                openModal(modalId);
+            });
+        });
+
+        // Botón para cerrar el modal
+        var closeBtns = document.querySelectorAll(".close-modal");
+        closeBtns.forEach(function(closeBtn) {
+            closeBtn.addEventListener("click", function() {
+                var modalId = closeBtn.dataset.target;
+                closeModal(modalId);
+            });
+        });
+
+        // Cerrar el modal al hacer clic en cualquier parte de la pantalla
+        var modals = document.querySelectorAll(".modal");
+        modals.forEach(function(modal) {
+            window.addEventListener("click", function(event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        });
+    </script>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

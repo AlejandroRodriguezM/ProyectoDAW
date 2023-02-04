@@ -15,6 +15,7 @@ $email = $_SESSION['email'];
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
+    <link rel="stylesheet" href="./assets/style/ticket_style.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -31,8 +32,16 @@ if (isset($_POST['edit'])) {
 }
 
 if (isset($_POST['status'])) {
-    $email = $_POST['emailUser'];
-    changeStatusAccount($email);
+    $emailStatus = $_POST['emailUser'];
+    changeStatusAccount($emailStatus);
+}
+
+if (isset($_POST['avatarUser'])) {
+    $emailUser = $_POST['emailUser'];
+    $IDuser = $_POST['IDuser'];
+    $passwordUser = obtain_password($emailUser);
+    cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
+    header("Location: adminInfoUser.php");
 }
 ?>
 
@@ -147,156 +156,126 @@ if (isset($_POST['status'])) {
         </div>
     </fieldset>
 
-    <div>
-        <div class="view-account">
-            <section class="module">
-                <div class="module-inner">
-                    <div class="side-bar">
-                        <div class="user-info">
-                            <?php
-                            $email = $_SESSION['email'];
-                            $dataUser = getUserData($email);
-                            $profilePicture = $dataUser['userPicture'];
-                            echo "<img class='img-profile img-circle img-responsive center-block' src='$profilePicture' style='width: 20%px; height: 20%; />";
-                            ?>
-                            <ul class="meta list list-unstyled">
-                                <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
+    <div class="view-account">
+        <section class="module">
+            <div class="module-inner">
+                <div class="side-bar">
+                    <div class="user-info">
+                        <?php
+                        $dataUser = getUserData($email);
+                        $profilePicture = $dataUser['userPicture'];
+                        echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+                        ?>
+                        <ul class="meta list list-unstyled">
+                            <li class="name">
+                                <label for="" style="font-size: 0.8em;">Nombre:</label>
+                                <?php
+                                $dataUser = getUserData($email);
+                                $userName = $dataUser['userName'];
+                                echo "$userName";
+                                ?>
+                            </li>
+                            <li class="email">
+                                <label for="" style="font-size: 0.8em;">Mail: </label>
+                                <?php
+                                $dataUser = getUserData($email);
+                                $email = $dataUser['email'];
+                                echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                ?>
+                            </li>
+                            <li class="activity">
+                                <label for="" style="font-size: 0.8em;">Logged in: </label>
+                                <?php
+                                $hora = $_SESSION['hour'];
+                                echo "$hora";
+                                ?>
+                            </li>
+                        </ul>
+                    </div>
+                    <nav class="side-menu">
+                        <ul class="nav">
+                            <li><a href="adminPanelUser.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
+                            <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
+                            <li class="active"><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
+                            <li><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="content-panel">
+                    <div style="margin-right: auto; width: 80%">
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <td>ID</td>
+                                        <td>Imagen de perfil</td>
+                                        <td>Nombre</td>
+                                        <td>Correo</td>
+                                        <td>Privilegio</td>
+                                        <td>Estado</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                            <?php
+                                            $registros = showUsers();
+                                            $user = $registros->fetch();
+                                            while ($user != null) {
+                                            ?>
+                                    <tr>
+
+
+                                        <?php
+                                                if ($user['accountStatus'] == 'block') {
+                                        ?>
+                                            <td name='IDuser'><?php echo $user['IDuser'] ?></td>
+                                            <td><input type="hidden" name="avatarUser"><input type="image" src="<?php echo $user['userPicture'] ?>" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;"></td>
+                                            <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
+                                            <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
+                                            <td><?php echo $user['privilege'] ?></td>
+                                            <td><?php echo $user['accountStatus'] ?></td>
+                                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                                <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit' id='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
+                                                <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres desbloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>
+                                                <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
+                                                <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
+                                                <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
+                                            </form>
                                     <?php
-                                    $email = $_SESSION['email'];
-                                    $dataUser = getUserData($email);
-                                    $userName = $dataUser['userName'];
-                                    echo "$userName";
+                                                }
+                                                echo "</tr>";
+                                                $user = $registros->fetch();
+                                            }
                                     ?>
-                                </li>
-                                <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
-                                    <?php
-                                    $email = $_SESSION['email'];
-                                    $dataUser = getUserData($email);
-                                    $email = $dataUser['email'];
-                                    echo " " . "<span style='font-size: 0.7em'>$email</span>";
-                                    ?>
-                                </li>
-                                <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
-                                    <?php
-                                    $hora = $_SESSION['hour'];
-                                    echo "$hora";
-                                    ?>
-                                </li>
-                            </ul>
+                                    </form>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h5 class="card-title"></h5>
+                            <p class="card-text"></p>
                         </div>
-                        <nav class="side-menu">
-                            <ul class="nav">
-                                <li><a href="adminPanelUser.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
-                                <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
-                                <li class="active"><a href="crudBlockUser.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
-            </section>
-        </div>
-
-        <div style="margin-left: auto; margin-right: auto; width: 80%">
-            <div class="card-body">
-                <table class="table table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <td>ID</td>
-                            <td>Imagen de perfil</td>
-                            <td>Nombre</td>
-                            <td>Correo</td>
-                            <td>Privilegio</td>
-                            <td>Estado</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                <?php
-                                $registros = showUsers();
-                                $user = $registros->fetch();
-                                while ($user != null) {
-                                ?>
-                        <tr>
-
-
-                            <?php
-                                    if ($user['accountStatus'] == 'block') {
-                            ?>
-                                <td name='IDuser'><?php echo $user['IDuser'] ?></td>
-                                <td><img src='<?php echo $user['userPicture'] ?>' style='width: 100px; height: 100px; border-radius: 50%;'></td>
-                                <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
-                                <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
-                                <td><?php echo $user['privilege'] ?></td>
-                                <td><?php echo $user['accountStatus'] ?></td>
-                                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit' id='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
-                                    <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres desbloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>
-                                    <td><input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'></td>
-                                    <td><input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'></td>
-                                    <td><input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'></td>
-                                </form>
-                        <?php
-                                    }
-                                    echo "</tr>";
-                                    $user = $registros->fetch();
-                                }
-                        ?>
-                        </form>
-                        </tr>
-                    </tbody>
-                </table>
-                <h5 class="card-title"></h5>
-                <p class="card-text"></p>
             </div>
-        </div>
+        </section>
     </div>
 
-    
+
+    </div>
+
+
     <!-- The Modal -->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <!-- <div class="modal-dialog"> -->
-            <!-- <div class="modal-content"> -->
-                <!-- Modal Content (The Image) -->
-                <img class="modal-content_img" id="img01">
-                <!-- Modal Caption (Image Text) -->
-            <!-- </div> -->
+        <!-- <div class="modal-content"> -->
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content_img" id="img01">
+        <!-- Modal Caption (Image Text) -->
+        <!-- </div> -->
         <!-- </div> -->
     </div>
 
-    <!-- FORMULARIO INSERTAR -->
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_ticket" onsubmit="return false;">
-                        <h4 class="modal-title">Crear un ticket para administradores</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Asunto</label>
-                        <input type="text" id="asunto_usuario" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php 
-                        if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
-                            $id_user = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
-                        }
-                        ?>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

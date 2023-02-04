@@ -416,6 +416,7 @@ const mandar_ticket = async () => {
     var asunto = document.querySelector("#asunto_usuario").value;
     var mensaje = document.querySelector("#mensaje_usuario").value;
 
+
     if (asunto.trim() === '' | mensaje.trim() === '') {
         Swal.fire({
             icon: "error",
@@ -465,6 +466,7 @@ const responder_ticket = async (ticket_id) => {
     var id = document.querySelector("#ticket_id_" + ticket_id).value;
     var estado = document.querySelector("#estado_" + ticket_id).value;
     var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
+
     if (respuesta.trim() === '') {
         Swal.fire({
             icon: "error",
@@ -481,7 +483,6 @@ const responder_ticket = async (ticket_id) => {
     data.append("estado", estado);
     data.append("mensaje", respuesta);
     
-
     //pass data to php file
     var respond = await fetch("php/user/respon_ticket.php", {
         method: 'POST',
@@ -497,7 +498,7 @@ const responder_ticket = async (ticket_id) => {
             text: result.message,
             footer: "Web Comics"
         })
-        document.querySelector('#form_ticket_respond').reset();
+        document.querySelector('#form_ticket_respond');
         setTimeout(() => {
             window.location.reload();
         }, 2000);

@@ -9,15 +9,16 @@ if ($_POST) {
     $mensaje_ticket = $_POST['mensaje'];
     $estado = $_POST['estado'];
     $reservedWords = reservedWords();
-    $fecha = date('Y-m-d');
-    $admin = $_SESSION['userName'];
+    $fecha = date('Y-m-d H:i:s');
+    $user = $_SESSION['userName'];
     $email = $_SESSION['email'];
     $row = getUserData($email);
+    $privilegio = $row['privilege'];
     if (in_array(strtolower($mensaje_ticket), $reservedWords)) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
     } else {
-        if (respond_tickets($ticket_id, $mensaje_ticket, $fecha, $admin)) {
+        if (respond_tickets($ticket_id, $mensaje_ticket, $fecha, $user, $privilegio)) {
 
             cambiar_estado($estado, $ticket_id);
 

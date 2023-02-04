@@ -153,7 +153,7 @@ if ($userPrivilege == 'guest') {
             <section class="module">
                 <div class="module-inner">
                     <div class="side-bar">
-                    <div class="user-info">
+                        <div class="user-info">
                             <?php
                             $dataUser = getUserData($email);
                             $profilePicture = $dataUser['userPicture'];
@@ -190,9 +190,7 @@ if ($userPrivilege == 'guest') {
                                 <li class='active'><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
                                 <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
                                 <?php
-                                if ($userPrivilege == 'admin') {
-                                    echo "<li><a href='panel_tickets_admin.php'><span class='fa fa-cog'></span>Comprobar tickets</a></li>";
-                                } else {
+                                if ($userPrivilege == 'user') {
                                     echo "<li><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
                                 }
                                 ?>
@@ -241,13 +239,7 @@ if ($userPrivilege == 'guest') {
 
     <!-- The Modal img-->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <!-- <div class="modal-dialog"> -->
-            <!-- <div class="modal-content"> -->
-                <!-- Modal Content (The Image) -->
-                <img class="modal-content_img" id="img01">
-                <!-- Modal Caption (Image Text) -->
-            <!-- </div> -->
-        <!-- </div> -->
+        <img class="modal-content_img" id="img01">
     </div>
 
     <!-- FORMULARIO INSERTAR -->
@@ -266,7 +258,7 @@ if ($userPrivilege == 'guest') {
                     <div class="form-group">
                         <label>Mensaje</label>
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php 
+                        <?php
                         if (isset($_SESSION['email'])) {
                             $userData = getUserData($email);
                             $id_user = $userData['IDuser'];

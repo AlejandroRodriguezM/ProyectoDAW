@@ -237,47 +237,7 @@ $emailUser = $_COOKIE['loginUserTemp'];
 
     <!-- The Modal -->
     <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <!-- <div class="modal-dialog"> -->
-        <!-- <div class="modal-content"> -->
-        <!-- Modal Content (The Image) -->
         <img class="modal-content_img" id="img01">
-        <!-- Modal Caption (Image Text) -->
-        <!-- </div> -->
-        <!-- </div> -->
-    </div>
-
-    <!-- FORMULARIO INSERTAR -->
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_ticket" onsubmit="return false;">
-                        <h4 class="modal-title">Crear un ticket para administradores</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Asunto</label>
-                        <input type="text" id="asunto_usuario" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php 
-                        if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
-                            $id_user = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
-                        }
-                        ?>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                </div>
-                </form>
-            </div>
-        </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
