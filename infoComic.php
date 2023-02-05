@@ -3,7 +3,6 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 checkCookiesUser();
-$emailUser = $_GET['userName'];
 $email = $_SESSION['email'];
 ?>
 <!DOCTYPE html>
@@ -16,10 +15,37 @@ $email = $_SESSION['email'];
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
+    <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <title>Perfil de usuario</title>
+    <style>
+        .comic-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+        }
+
+        .comic-detail {
+            width: 48%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .comic-label {
+            font-weight: bold;
+        }
+
+        .comic-value {
+            color: blue;
+        }
+    </style>
 </head>
 
 <body onload="checkSesionUpdate();showSelected();">
@@ -139,78 +165,113 @@ $email = $_SESSION['email'];
                     <div class="side-bar">
                         <div class="user-info">
                             <?php
-                            $dataUser = getUserData($emailUser);
-                            $profilePicture = $dataUser['userPicture'];
+                            $id = $_GET['IDcomic'];
+                            $dataUser = getDataComic($id);
+                            $profilePicture = $dataUser['Cover'];
                             echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                             ?>
 
                             <ul class="meta list list-unstyled">
                                 <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                     <?php
-                                    $userName = $dataUser['userName'];
-                                    echo "$userName";
-                                    ?>
-                                </li>
-                                <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
-                                    <?php
-                                    $email = $dataUser['email'];
-                                    // echo with style font size 
-                                    echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                    $comicName = $dataUser['nomComic'];
+                                    echo "$comicName";
                                     ?>
                                 </li>
                             </ul>
                         </div>
-                        <nav class="side-menu">
-                            <ul class="nav">
-                                <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span>Profile</a></li>
-                            </ul>
-                        </nav>
                     </div>
                     <div class="content-panel">
                         <fieldset class="fieldset">
-                            <h3 class="fieldset-title">Personal Info</h3>
+                            <h3 class="fieldset-title">Comic Info</h3>
                             <div class="form-group avatar">
                             </div>
-
-                            <div class="form-group">
-                                <?php
-                                $userName = $dataUser['userName'];
-                                echo "<label>Nombre de usuario: </label>";
-                                echo " " . "<span>$userName</span>";
-                                ?>
-                            </div>
-                            <div class="form-group">
-                                <?php
-                                echo "<label>Correo electronico: </label>";
-                                echo " " . "<span>$emailUser</span>";
-                                ?>
-                            </div>
                             <?php
-                            $IDuser = $dataUser['IDuser'];
-                            $infoUser = getInfoAboutUser($IDuser);
-                            $fechaCreacion = $infoUser['fechaCreacion'];
-                            $sobreUser = $infoUser['infoUser'];
-                            $nombre = $infoUser['nombreUser'];
-                            $apellidos = $infoUser['apellidoUser'];
+                            $fechaCreacion = $dataUser['date_published'];
+                            $nombre = $dataUser['nomComic'];
+                            $variante = $dataUser['nomVariante'];
+                            $editorial = $dataUser['nomEditorial'];
+                            $autor = $dataUser['nomGuionista'];
+                            $dibujante = $dataUser['nomDibujante'];
+                            $procedencia = $dataUser['Procedencia'];
+                            $numero = $dataUser['numComic'];
+                            $formato = $dataUser['Formato'];
 
-                            echo "<label>Nombre: </label>";
-                            echo " " . "<span>$nombre</span>";
-                            echo "<br>";
-                            echo "<label>Apellidos: </label>";
-                            echo " " . "<span>$apellidos</span>";
-                            echo "<br>";
-                            echo "<label>Fecha de creacion: </label>";
-                            echo " " . "<span>$fechaCreacion</span>";
-                            echo "<br>";
-                            echo "<label>Sobre mi:</label><br>";
-                            echo "<div class='col-xs-12'>";
-                            echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
+                            echo "<div class='comic-details'>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Nombre del comic: </label>";
+                            echo "    <span class='comic-value'>$nombre</span>";
+                            echo "  </div>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Numero: </label>";
+                            echo "    <span class='comic-value'>$numero</span>";
+                            echo "  </div>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Variante: </label>";
+                            echo "    <span class='comic-value'>$variante</span>";
+                            echo "  </div>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Formato: </label>";
+                            echo "    <span class='comic-value'>$formato</span>";
+                            echo "  </div>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Fecha de creacion: </label>";
+                            echo "    <span class='comic-value'>$fechaCreacion</span>";
+                            echo "  </div>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Editorial: </label>";
+                            echo "    <span class='comic-value'>$editorial</span>";
+                            echo "  </div>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Autor: </label>";
+                            echo "    <span class='comic-value'>$autor</span>";
+                            echo "  </div>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Dibujante: </label>";
+                            echo "    <span class='comic-value'>$dibujante</span>";
+                            echo "  </div>";
+                            echo "  <div class='comic-detail'>";
+                            echo "    <label class='comic-label'>Procedencia: </label>";
+                            echo "    <span class='comic-value'>$procedencia</span>";
+                            echo "  </div>";
                             echo "</div>";
-
                             ?>
                         </fieldset>
                         <hr>
-                        <div class="mb-3">
+
+                        <div style="display: flex; justify-content: center;">
+                            <div class="last-pubs">
+                                <h2 style='text-align: center'>Comics parecidos</h2>
+                                <br>
+                                <div class="scrollable-h comic-full">
+                                    <div class="scrollable-h-content">
+                                        <ul class="v2-cover-list">
+                                            <?php
+                                            for ($i = 0; $i < 5; $i++) {
+                                                $numero = randomComic();
+                                                $comic = getDataComic($numero);
+                                                $titulo = $comic['nomComic'];
+                                                $numComic = $comic['numComic'];
+                                                $variante = $comic['nomVariante'];
+
+                                                echo "<li id='comicyXwd2' class='get-it'><a href='#' title='$titulo - Variante: $variante / $numComic' class='title'>
+                                                <span class='cover'>";
+                                                echo "<img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>";
+                                            ?>
+                                                </span>
+                                                <strong><?php echo $titulo ?></strong>
+                                                <span class="issue-number issue-number-l1"><?php echo $numComic ?></span>
+                                                </a>
+                                                <button data-item-id="yXwd2" class="add"><span class="sp-icon">Lo tengo</span>
+                                                </button>
+                                                </li>
+                                            <?php
+                                            }
+                                            ?>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
             </section>
         </div>
@@ -254,6 +315,22 @@ $email = $_SESSION['email'];
             </div>
         </div>
     </div>
+
+    <script>
+        const buttons = document.querySelectorAll('.add');
+
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                if (button.classList.contains('add')) {
+                    button.classList.remove('add');
+                    button.classList.add('rem');
+                } else {
+                    button.classList.remove('rem');
+                    button.classList.add('add');
+                }
+            });
+        });
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

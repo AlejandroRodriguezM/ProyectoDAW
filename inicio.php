@@ -251,6 +251,21 @@ $email = $_SESSION['email'];
         </div>
     </div>
 
+    <script>
+const buttons = document.querySelectorAll('.add');
+
+buttons.forEach(function(button) {
+  button.addEventListener('click', function() {
+    if (button.classList.contains('add')) {
+      button.classList.remove('add');
+      button.classList.add('rem');
+    } else {
+      button.classList.remove('rem');
+      button.classList.add('add');
+    }
+  });
+});
+</script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

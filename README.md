@@ -168,3 +168,7 @@ Arreglado un bug en usuarios bloqueados que despues de desbloquear o editar se i
 Incluida la base de datos con comics y las imagenes de portadas
 La busqueda la funciona, queda funcionalidad para infoComics.php
 database actualizada
+
+05/02/2023 Log 2
+Arreglado bug de clicks en el boton + bajo la lista de comics
+Ahora ya existe pag de info de comics selecionado

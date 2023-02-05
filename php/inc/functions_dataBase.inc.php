@@ -467,6 +467,15 @@ function getDataComic($id){
 	return $consulta;
 }
 
+function getDatacomicName($search){
+	global $conection;
+	//return 5 comics but do not repit the id
+	$consulta = $conection->prepare("SELECT * from comics where nomComic LIKE ?");
+	$consulta->execute(array($search));
+	$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
 function numComics(){
 	global $conection;
 	$consulta = $conection->prepare("SELECT COUNT(*) from comics");
