@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-
 checkCookiesUser();
 $email = $_SESSION['email'];
 ?>
@@ -16,6 +15,7 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
+    <link rel="stylesheet" href="./assets/style/footer_style.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -44,6 +44,16 @@ $email = $_SESSION['email'];
 
         .comic-value {
             color: blue;
+        }
+
+        img {
+            max-width: 200px;
+            max-height: 300px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
         }
     </style>
 </head>
@@ -90,7 +100,7 @@ $email = $_SESSION['email'];
                         <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
                 </ul>
             </div>
@@ -169,6 +179,7 @@ $email = $_SESSION['email'];
                             $dataUser = getDataComic($id);
                             $profilePicture = $dataUser['Cover'];
                             echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+
                             ?>
 
                             <ul class="meta list list-unstyled">
@@ -243,36 +254,39 @@ $email = $_SESSION['email'];
                             <div class="last-pubs">
                                 <h2 style='text-align: center'>Comics parecidos</h2>
                                 <br>
-                                <div class="scrollable-h comic-full">
-                                    <div class="scrollable-h-content">
-                                        <ul class="v2-cover-list">
-                                            <?php
-                                            for ($i = 0; $i < 5; $i++) {
-                                                $numero = randomComic();
-                                                $comic = getDataComic($numero);
-                                                $titulo = $comic['nomComic'];
-                                                $numComic = $comic['numComic'];
-                                                $variante = $comic['nomVariante'];
+                                <!-- <div class="scrollable-h comic-full"> -->
+                                <div class="scrollable-h-content">
+                                    <ul class="v2-cover-list">
+                                        <?php
+                                        for ($i = 0; $i < 7; $i++) {
+                                            $numero = randomComic();
+                                            $comic = getDataComic($numero);
+                                            $id = $comic['IDcomic'];
+                                            $titulo = $comic['nomComic'];
+                                            $numComic = $comic['numComic'];
+                                            $variante = $comic['nomVariante'];
 
-                                                echo "<li id='comicyXwd2' class='get-it'><a href='#' title='$titulo - Variante: $variante / $numComic' class='title'>
+                                            echo "<li id='comicyXwd2' class='get-it'><a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
                                                 <span class='cover'>";
-                                                echo "<img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>";
-                                            ?>
-                                                </span>
-                                                <strong><?php echo $titulo ?></strong>
-                                                <span class="issue-number issue-number-l1"><?php echo $numComic ?></span>
-                                                </a>
-                                                <button data-item-id="yXwd2" class="add"><span class="sp-icon">Lo tengo</span>
-                                                </button>
-                                                </li>
-                                            <?php
-                                            }
-                                            ?>
-                                        </ul>
-                                    </div>
+                                            echo "<img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>";
+                                        ?>
+                                            </span>
+                                            <strong><?php echo $titulo ?></strong>
+                                            <span class="issue-number issue-number-l1"><?php echo $numComic ?></span>
+                                            </a>
+                                            <button data-item-id="yXwd2" class="add"><span class="sp-icon">Lo tengo</span>
+                                            </button>
+                                            </li>
+                                        <?php
+                                        }
+                                        ?>
+                                    </ul>
                                 </div>
+                                <!-- </div> -->
                             </div>
                         </div>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
@@ -315,7 +329,19 @@ $email = $_SESSION['email'];
             </div>
         </div>
     </div>
-
+    <div id="footer-lite">
+        <div class="content">
+            <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+            <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+            <!-- add social media with icons -->
+            <p class="social">
+                <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50"></a>
+                <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50"></a>
+            </p>
+            <p class="copyright">
+                © 2023 Web Comics</p>
+        </div>
+    </div>
     <script>
         const buttons = document.querySelectorAll('.add');
 

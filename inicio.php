@@ -17,6 +17,7 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
+    <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -54,7 +55,7 @@ $email = $_SESSION['email'];
                                 } elseif ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                    echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
@@ -77,13 +78,13 @@ $email = $_SESSION['email'];
                         <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
                 </ul>
             </div>
 
             <div class="d-flex" role="search" style="margin-right: 15px;">
-                <button class="btn btn-outline-success" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
+                <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
                     Buscar
                     <i class="bi bi-search"></i>
                 </button>
@@ -106,6 +107,7 @@ $email = $_SESSION['email'];
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                         } else {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
+                            echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
                         }
                     }
                     echo "<div class='dropdown-divider'></div>";
@@ -208,7 +210,7 @@ $email = $_SESSION['email'];
 
     <div style="display: flex; justify-content: center;">
         <div class="last-pubs">
-            <h2 style='text-align: center'>Mis novedades </h2>
+            <h2 style='text-align: center'>Mis novedades</h2>
             <br>
             <div class="scrollable-h comic-full">
                 <div class="scrollable-h-content">
@@ -218,12 +220,13 @@ $email = $_SESSION['email'];
                         for ($i = 0; $i < 10; $i++) {
                             $numero = randomComic();
                             $data_comic = getDataComic($numero);
+                            $id = $data_comic['IDcomic'];
                             $titulo = $data_comic['nomComic'];
                             $numComic = $data_comic['numComic'];
                             $variante = $data_comic['nomVariante'];
 
-                            echo "<li id='comicyXwd2' class='get-it'><a href='#' title='$titulo - Variante: $variante / $numComic' class='title'>
-            <span class='cover'>";
+                            echo "<li id='comicyXwd2' class='get-it'><a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
+                            <span class='cover'>";
 
                             echo "<img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>";
                         ?>
@@ -242,30 +245,36 @@ $email = $_SESSION['email'];
             </div>
         </div>
     </div>
+
     <div id="footer-lite">
         <div class="content">
-            <p class="helpcenter"><a href="/zendesk.ashx">Ayuda</a></p>
-            <p class="legal"><a href="/p/tos">Condiciones de uso</a><span>·</span><a href="/p/privacy">Política de privacidad</a><span>·</span><a class="cookies" href="/p/cookies">Mis cookies</a><span>·</span><a href="/p/about">Quiénes somos</a></p>
+            <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+            <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+            <!-- add social media with icons -->
+            <p class="social">
+                <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50"></a>
+                <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50"></a>
+            </p>
             <p class="copyright">
                 © 2023 Web Comics</p>
         </div>
     </div>
 
     <script>
-const buttons = document.querySelectorAll('.add');
+        const buttons = document.querySelectorAll('.add');
 
-buttons.forEach(function(button) {
-  button.addEventListener('click', function() {
-    if (button.classList.contains('add')) {
-      button.classList.remove('add');
-      button.classList.add('rem');
-    } else {
-      button.classList.remove('rem');
-      button.classList.add('add');
-    }
-  });
-});
-</script>
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                if (button.classList.contains('add')) {
+                    button.classList.remove('add');
+                    button.classList.add('rem');
+                } else {
+                    button.classList.remove('rem');
+                    button.classList.add('add');
+                }
+            });
+        });
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

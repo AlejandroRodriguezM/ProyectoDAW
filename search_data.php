@@ -17,6 +17,8 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
+    <link rel="stylesheet" href="./assets/style/footer_style.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -94,7 +96,7 @@ if (existe_user($input_user)) {
                         <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
                 </ul>
             </div>
@@ -299,15 +301,6 @@ if (existe_user($input_user)) {
                     </table>
                     <h5 class="card-title"></h5>
                     <p class="card-text"></p>
-                </div>
-            </div>
-
-            <div id="footer-lite">
-                <div class="content">
-                    <p class="helpcenter"><a href="/zendesk.ashx">Ayuda</a></p>
-                    <p class="legal"><a href="/p/tos">Condiciones de uso</a><span>·</span><a href="/p/privacy">Política de privacidad</a><span>·</span><a class="cookies" href="/p/cookies">Mis cookies</a><span>·</span><a href="/p/about">Quiénes somos</a></p>
-                    <p class="copyright">
-                        © 2023 Web Comics</p>
                 </div>
             </div>
 

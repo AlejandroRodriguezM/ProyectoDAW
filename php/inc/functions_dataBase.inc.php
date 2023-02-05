@@ -446,17 +446,26 @@ function countComicSearch($search){
 
 function randomComic()
 {
-	global $conection;
-
-	$query = "SELECT COUNT(*) FROM comics";
-	$count = $conection->prepare($query);
-	$count->execute();
-	$count = $count->fetchColumn();
-	$num = $count;
+	$num = count_comic_total();
 
 	$random = rand(1, $num);
 
 	return $random;
+}
+
+function count_comic_total(){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from comics");
+	$consulta->execute();
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function return_comic_published(){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * FROM comics ORDER BY date_published DESC;");
+	$consulta->execute();
+	return $consulta;
 }
 
 function getDataComic($id){

@@ -172,3 +172,8 @@ database actualizada
 05/02/2023 Log 2
 Arreglado bug de clicks en el boton + bajo la lista de comics
 Ahora ya existe pag de info de comics selecionado
+
+05/02/2023 Log 3
+Añadido un fotter en cada pagina al igual que solucionado un par de bugs de css
+En la pagina inicial.php no se visualiza bien la imagen de perfil(queda por arreglar)
+La pagina novedades.php muestra todos los comics pero no es capaz de dividir en filas de 10. posiblemente por el css

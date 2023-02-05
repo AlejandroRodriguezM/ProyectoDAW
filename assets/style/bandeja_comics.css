@@ -4198,50 +4198,6 @@ div.penalty-warning li {
     margin-left: 230px
 }
 
-#footer-lite {
-    position: relative;
-    margin-top: 50px;
-    padding: 20px 0;
-    background-color: #fff;
-    border-top: solid 1px #bebfb1;
-    color: #fff
-}
-
-#footer-lite div.content {
-    position: relative;
-    max-width: 960px;
-    margin: auto
-}
-
-#footer-lite p {
-    font-size: 13px;
-    margin-bottom: 13px;
-    text-align: center;
-    color: #888
-}
-
-#footer-lite p span {
-    padding: 0 6px
-}
-
-#footer-lite p.helpcenter {
-    font-weight: bold;
-    color: #0288d1
-}
-
-#footer-lite p.copyright {
-    font-size: 12px;
-    text-transform: uppercase
-}
-
-#footer-lite p.copyright a {
-    color: #888;
-    text-transform: none
-}
-
-#footer-lite div.content p.legal a {
-    color: #888
-}
 
 #wrapper.home #content {
     padding: 0;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-02-2023 a las 04:07:59
+-- Tiempo de generación: 05-02-2023 a las 18:21:10
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -1507,13 +1507,27 @@ INSERT INTO `comics` (`IDcomic`, `nomComic`, `numComic`, `nomVariante`, `nomEdit
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `lista_comics`
+--
+
+DROP TABLE IF EXISTS `lista_comics`;
+CREATE TABLE `lista_comics` (
+  `id_lista` int(11) NOT NULL,
+  `nombre_lista` varchar(100) NOT NULL,
+  `id_comic` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `possession`
 --
 
 DROP TABLE IF EXISTS `possession`;
 CREATE TABLE `possession` (
-  `user` int(11) NOT NULL,
-  `comic` int(11) NOT NULL
+  `id_posesion` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comic_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1595,18 +1609,6 @@ INSERT INTO `users` (`IDuser`, `privilege`, `userName`, `password`, `email`, `us
 (2, 'admin', 'admin', '$2y$10$UUVBrnJ5CPP0rLTI2z2f0u3o.NBnHY1TOBT54Ix7aSFfvMyRzGJrK', 'aloxfloyd@gmail.com', 'assets/pictureProfile/2-aloxfloyd/profile.jpg', 'active'),
 (12, 'user', 'test', '$2y$10$LwLY93PV5fqpnZQ.zLz/ke/PnTppn8gz0.5r7jwm1aBpig/8gFFlS', 'test@gmail.com', 'assets/pictureProfile/12-test/profile.jpg', 'active');
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `wanted`
---
-
-DROP TABLE IF EXISTS `wanted`;
-CREATE TABLE `wanted` (
-  `comic` int(11) NOT NULL,
-  `user` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Índices para tablas volcadas
 --
@@ -1625,11 +1627,19 @@ ALTER TABLE `comics`
   ADD PRIMARY KEY (`IDcomic`);
 
 --
+-- Indices de la tabla `lista_comics`
+--
+ALTER TABLE `lista_comics`
+  ADD PRIMARY KEY (`id_lista`),
+  ADD KEY `id_comic` (`id_comic`);
+
+--
 -- Indices de la tabla `possession`
 --
 ALTER TABLE `possession`
-  ADD PRIMARY KEY (`user`,`comic`),
-  ADD KEY `comic_id` (`comic`);
+  ADD PRIMARY KEY (`id_posesion`),
+  ADD KEY `comic_id` (`comic_id`),
+  ADD KEY `user_id_idx` (`user_id`);
 
 --
 -- Indices de la tabla `tickets`
@@ -1652,13 +1662,6 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`IDuser`,`email`,`userName`);
 
 --
--- Indices de la tabla `wanted`
---
-ALTER TABLE `wanted`
-  ADD PRIMARY KEY (`comic`,`user`),
-  ADD KEY `idUser` (`user`);
-
---
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -1667,6 +1670,12 @@ ALTER TABLE `wanted`
 --
 ALTER TABLE `comics`
   MODIFY `IDcomic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1426;
+
+--
+-- AUTO_INCREMENT de la tabla `possession`
+--
+ALTER TABLE `possession`
+  MODIFY `id_posesion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `tickets`
@@ -1697,11 +1706,17 @@ ALTER TABLE `aboutuser`
   ADD CONSTRAINT `id_user` FOREIGN KEY (`IDuser`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `lista_comics`
+--
+ALTER TABLE `lista_comics`
+  ADD CONSTRAINT `lista_comics_ibfk_1` FOREIGN KEY (`id_comic`) REFERENCES `comics` (`IDcomic`);
+
+--
 -- Filtros para la tabla `possession`
 --
 ALTER TABLE `possession`
-  ADD CONSTRAINT `comic_id` FOREIGN KEY (`comic`) REFERENCES `comics` (`IDcomic`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_id` FOREIGN KEY (`user`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `comic_id` FOREIGN KEY (`comic_id`) REFERENCES `comics` (`IDcomic`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tickets`
