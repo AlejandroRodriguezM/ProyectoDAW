@@ -21,13 +21,13 @@ if (isset($_POST['input'])) {
                         <tr>
                             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                 <?php
-                                $registros = searchUser($input);
+                                $registros = search_user($input);
                                 $user = $registros->fetch();
                                 while ($user != null) {
                                 ?>
                         <tr>
                             <td>
-                                <a href="searchInfoUser.php?userName=<?php echo $user['userName']; ?>">
+                                <a href="infoUser.php?userName=<?php echo $user['userName']; ?>">
                                     <img src="<?php echo $user['userPicture']; ?>" alt="profile picture" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
                                 </a>
                             </td>

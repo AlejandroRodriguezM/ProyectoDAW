@@ -344,7 +344,8 @@ function getTickets($id)
 	return $consulta;
 }
 
-function getTickets_user($id){
+function getTickets_user($id)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from tickets where user_id=?");
 	$consulta->execute(array($id));
@@ -373,22 +374,42 @@ function checkUserName($userName)
 	return $exist;
 }
 
-function searchUser($search)
+function search_user($search)
 {
 	global $conection;
 	$consulta = $conection->prepare("SELECT userName,email,userPicture from users WHERE userName LIKE ? OR email LIKE ?");
 	$consulta->execute(array("%$search%", "%$search%"));
-	// $consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
 	return $consulta;
 }
 
-function searchTest($search)
+function search_comics($search){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from comics WHERE nomComic LIKE ? OR nomVariante LIKE ? OR nomEditorial LIKE ? OR Formato LIKE ? OR Procedencia LIKE ? OR date_published LIKE ? OR nomGuionista LIKE ? OR nomDibujante LIKE ?");
+	$consulta->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
+	return $consulta;
+}
+
+function existe_comic($search){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from comics WHERE nomComic LIKE ? OR nomVariante LIKE ? OR nomEditorial LIKE ? OR Formato LIKE ? OR Procedencia LIKE ? OR date_published LIKE ? OR nomGuionista LIKE ? OR nomDibujante LIKE ?");
+	$consulta->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
+	if ($consulta->fetchColumn()) {
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function existe_user($search)
 {
 	global $conection;
-	$consulta = $conection->prepare("SELECT userName from users WHERE userName LIKE ?");
-	$consulta->execute(array("%$search%"));
-	// $consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
-	return $consulta;
+	$consulta = $conection->prepare("SELECT * from users WHERE userName LIKE ? OR email LIKE ?");
+	$consulta->execute(array("%$search%", "%$search%"));
+	if ($consulta->fetchColumn()) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 function showUsers()
@@ -396,7 +417,13 @@ function showUsers()
 	global $conection;
 	$sql = "SELECT * FROM users";
 	$consulta = $conection->query($sql);
+	return $consulta;
+}
 
+function showComics(){
+	global $conection;
+	$sql = "SELECT * FROM comics";
+	$consulta = $conection->query($sql);
 	return $consulta;
 }
 
@@ -405,6 +432,45 @@ function countUserSearch($search)
 	global $conection;
 	$consulta = $conection->prepare("SELECT COUNT(*) from users WHERE userName LIKE ? OR email LIKE ?");
 	$consulta->execute(array("%$search%", "%$search%"));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function countComicSearch($search){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from comics WHERE nomComic LIKE ? OR nomVariante LIKE ? OR nomEditorial LIKE ? OR Formato LIKE ? OR Procedencia LIKE ? OR date_published LIKE ? OR nomGuionista LIKE ? OR nomDibujante LIKE ?");
+	$consulta->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function randomComic()
+{
+	global $conection;
+
+	$query = "SELECT COUNT(*) FROM comics";
+	$count = $conection->prepare($query);
+	$count->execute();
+	$count = $count->fetchColumn();
+	$num = $count;
+
+	$random = rand(1, $num);
+
+	return $random;
+}
+
+function getDataComic($id){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from comics where IDcomic=?");
+	$consulta->execute(array($id));
+	$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function numComics(){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from comics");
+	$consulta->execute();
 	$consulta = $consulta->fetchColumn();
 	return $consulta;
 }

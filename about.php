@@ -107,34 +107,34 @@ $email = $_SESSION['email'];
             Web Comics
         </div>
 
-        <fieldset class='searchFieldset' id="searchFieldset" style="display: none;">
-            <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button'></a>
-            <legend class='info-search'>Búsqueda</legend>
-            <div class="d-flex justify-content-center">
-                <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                    <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;">
-                        <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" />
-                        <!-- <script>
+        <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'></a>
+        <legend class='info-search'>Búsqueda</legend>
+        <div class="d-flex justify-content-center">
+            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
+                <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                    <!-- <script>
                         const input = document.getElementById('search-data');
                         input.addEventListener('input', () => autocomplete(input));
                     </script> -->
-                    </label>
-                </form>
-            </div>
+                </label>
+            </form>
+        </div>
 
-            <!-- botones para clasificar que ver  -->
-            <div class="d-flex justify-content-center">
-                <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;" class='selected'>Todo</span>
-                <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Usuarios</span>
-                <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor: pointer;">Comics</span>
-            </div>
+        <!-- botones para clasificar que ver  -->
+        <div class="d-flex justify-content-center" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
+            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Todo</span>
+            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Usuarios</span>
+            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Comics</span>
+        </div>
 
-            <div style="margin-left: auto; margin-right: auto; width: 80%; display: none" id="show_users">
-                <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <div id="search-result"></div>
-                </form>
-            </div>
-        </fieldset>
+        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" id="show_information">
+            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                <div id="search-result"></div>
+            </form>
+        </div>
+    </fieldset>
 
         <div>
             <!-- //presentacion de quien soy  -->

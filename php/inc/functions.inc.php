@@ -171,7 +171,7 @@ function saveImage($email, $idUser)
 	fclose($file);
 }
 
-function updateSaveImage($email,$image)
+function updateSaveImage($email, $image)
 {
 	$dataUser = getUserData($email);
 	$newImage = $_POST['userPicture'];
@@ -179,7 +179,7 @@ function updateSaveImage($email,$image)
 	$email = explode("@", $email);
 	$email = $email[0];
 	if (empty($newImage)) {
-		$pathDefault = '../../'.$image;
+		$pathDefault = '../../' . $image;
 		$type = pathinfo($pathDefault, PATHINFO_EXTENSION);
 		$data = file_get_contents($pathDefault);
 		$image = 'data:image/' . $type . ';base64,' . base64_encode($data);
@@ -222,3 +222,5 @@ function pictureProfile($email)
 	$profilePicture = $dataUser['userPicture'];
 	return $profilePicture;
 }
+
+

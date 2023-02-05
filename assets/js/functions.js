@@ -121,22 +121,59 @@ function buscarUsuarios() {
                 method: "POST",
                 data: { input: input },
                 success: function (data) {
-                    mostrarUsuarios(data);
+                    mostrarDatos(data);
                 }
             });
         } else {
             $("#search-result").css("display", "none");
-
-
-
         }
     });
 }
 
-function mostrarUsuarios(data) {
+function buscarComics() {
+    $("#search-data").keyup(function () {
+        var input = $(this).val();
+        // alert(input);
+        if (input != "") {
+            $.ajax({
+                url: "php/user/search_comics.php",
+                method: "POST",
+                data: { input: input },
+                success: function (data) {
+                    mostrarDatos(data);
+                }
+            });
+        } else {
+            $("#search-result").css("display", "none");
+        }
+    });
+}
+
+function buscar_todo() {
+    $("#search-data").keyup(function () {
+        var input = $(this).val();
+        // alert(input);
+        if (input != "") {
+            $.ajax({
+                url: "php/user/search_datos.php",
+                method: "POST",
+                data: { input: input },
+                success: function (data) {
+                    mostrarDatos(data);
+                }
+            });
+        } else {
+            $("#search-result").css("display", "none");
+        }
+    });
+}
+
+function mostrarDatos(data) {
     $("#search-result").css("display", "block");
     $("#search-result").html(data);
 }
+
+
 
 function toggleFieldset() {
     var fieldset = document.getElementById("searchFieldset");
@@ -151,7 +188,11 @@ function showSelected() {
     const span1 = document.getElementById('span1');
     const span2 = document.getElementById('span2');
     const span3 = document.getElementById('span3');
-    const myDiv = document.getElementById('show_users');
+    const respuesta = document.getElementById('show_information');
+
+    span1.classList.add('selected');
+    respuesta.style.display = 'block';
+    buscar_todo();
 
     const removeSelected = () => {
         span1.classList.remove('selected');
@@ -159,40 +200,40 @@ function showSelected() {
         span3.classList.remove('selected');
     }
 
-    if (span1.classList.contains('selected')) {
-        myDiv.style.display = 'block';
-        buscarUsuarios();
-    }
+    span1.addEventListener('load', function () {
+        removeSelected();
+        span1.classList.add('selected');
+        respuesta.style.display = 'block';
+        buscar_todo();
+    });
 
     span1.addEventListener('click', () => {
         removeSelected();
         span1.classList.add('selected');
-        if (span1.classList.contains('selected')) {
-            myDiv.style.display = 'block';
-            buscarUsuarios();
-        } else {
-            myDiv.style.display = 'none';
-        }
+        respuesta.style.display = 'block';
+        buscar_todo();
     });
 
     span2.addEventListener('click', () => {
         removeSelected();
         span2.classList.add('selected');
-        if (span2.classList.contains('selected')) {
-            myDiv.style.display = 'block';
-            buscarUsuarios();
-        } else {
-            myDiv.style.display = 'none';
-        }
+        respuesta.style.display = 'block';
+        buscarUsuarios();
     });
 
     span3.addEventListener('click', () => {
         removeSelected();
         span3.classList.add('selected');
-        if (span3.classList.contains('selected')) {
-            myDiv.style.display = 'none';
-        } else {
-            myDiv.style.display = 'none';
+        respuesta.style.display = 'block';
+        buscarComics();
+    });
+
+
+    document.getElementById("searchFieldset").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            const searchData = document.getElementById("search-data").value;
+            window.location.href = "search_data.php?search=" + encodeURIComponent(searchData);
         }
     });
 }

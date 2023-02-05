@@ -163,3 +163,8 @@ Cambios en los stylos de todos los ficheros para acomodarlos al bootstrap 5.2.3
 04/02/2023 Log 2
 Nuevo stylo para la bandeja de los tickets
 Arreglado un bug en usuarios bloqueados que despues de desbloquear o editar se iba a la info del usuario
+
+05/02/2023 Log 1
+Incluida la base de datos con comics y las imagenes de portadas
+La busqueda la funciona, queda funcionalidad para infoComics.php
+database actualizada

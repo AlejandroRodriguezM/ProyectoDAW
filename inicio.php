@@ -16,11 +16,23 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <title>Inicio</title>
 
+    <title>Inicio</title>
+    <style>
+        img {
+            max-width: 200px;
+            max-height: 300px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
 </head>
 
 <body onload="checkSesionUpdate();showSelected();">
@@ -71,7 +83,7 @@ $email = $_SESSION['email'];
             </div>
 
             <div class="d-flex" role="search" style="margin-right: 15px;">
-                <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
+                <button class="btn btn-outline-success" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
                     Buscar
                     <i class="bi bi-search"></i>
                 </button>
@@ -147,6 +159,24 @@ $email = $_SESSION['email'];
         Design by Alejandro Rodriguez 2022
     </div>
 
+    <!-- AQUI VA EL CONTENIDO DE LA PAGINA -->
+    <?php
+    // global $conection;
+    // //update table comics
+    // //count rows in comics
+    // $query = "SELECT COUNT(*) FROM comics";
+    // $count = $conection->prepare($query);
+    // $count->execute();
+    // $count = $count->fetchColumn();
+    // $num = $count;
+    // for ($i = 1; $i <= $count; $i++) {
+    //     echo $i;
+    //     $query = "UPDATE comics SET Cover = './assets/covers_img/$i.jpg' where IDcomic = $i";
+    //     $insertData = $conection->prepare($query);
+    //     $insertData->execute();
+    // }
+    ?>
+
     <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'></a>
         <legend class='info-search'>Búsqueda</legend>
@@ -164,17 +194,63 @@ $email = $_SESSION['email'];
 
         <!-- botones para clasificar que ver  -->
         <div class="d-flex justify-content-center" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" class='selected'>Todo</span>
+            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Todo</span>
             <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Usuarios</span>
             <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Comics</span>
         </div>
 
-        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" id="show_users">
+        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" id="show_information">
             <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <div id="search-result"></div>
             </form>
         </div>
     </fieldset>
+
+    <div style="display: flex; justify-content: center;">
+        <div class="last-pubs">
+            <h2 style='text-align: center'>Mis novedades </h2>
+            <br>
+            <div class="scrollable-h comic-full">
+                <div class="scrollable-h-content">
+                    <ul class="v2-cover-list">
+                        <?php
+                        $total_comics = numComics();
+                        for ($i = 0; $i < 10; $i++) {
+                            $numero = randomComic();
+                            $data_comic = getDataComic($numero);
+                            $titulo = $data_comic['nomComic'];
+                            $numComic = $data_comic['numComic'];
+                            $variante = $data_comic['nomVariante'];
+
+                            echo "<li id='comicyXwd2' class='get-it'><a href='#' title='$titulo - Variante: $variante / $numComic' class='title'>
+            <span class='cover'>";
+
+                            echo "<img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>";
+                        ?>
+                            </span>
+                            <strong><?php echo $titulo ?></strong>
+                            <span class="issue-number issue-number-l1"><?php echo $numComic ?></span>
+                            </a>
+                            <button data-item-id="yXwd2" class="add"><span class="sp-icon">Lo tengo</span>
+                            </button>
+                            </li>
+                        <?php
+                        }
+                        ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-lite">
+        <div class="content">
+            <p class="helpcenter"><a href="/zendesk.ashx">Ayuda</a></p>
+            <p class="legal"><a href="/p/tos">Condiciones de uso</a><span>·</span><a href="/p/privacy">Política de privacidad</a><span>·</span><a class="cookies" href="/p/cookies">Mis cookies</a><span>·</span><a href="/p/about">Quiénes somos</a></p>
+            <p class="copyright">
+                © 2023 Web Comics</p>
+        </div>
+    </div>
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
