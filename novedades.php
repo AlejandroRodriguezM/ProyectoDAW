@@ -18,7 +18,6 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -34,6 +33,27 @@ $email = $_SESSION['email'];
             display: flex;
             flex-wrap: wrap;
         }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            max-height: 200px;
+            overflow-y: scroll;
+        }
+
+        .dropdown:active .dropdown-content {
+            display: block;
+        }
+        
     </style>
 </head>
 
@@ -158,10 +178,6 @@ $email = $_SESSION['email'];
         </div>
     </div>
 
-    <div class="card-footer text-muted">
-        Design by Alejandro Rodriguez 2022
-    </div>
-
     <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'></a>
         <legend class='info-search'>Búsqueda</legend>
@@ -191,6 +207,81 @@ $email = $_SESSION['email'];
         </div>
     </fieldset>
 
+    <div class="view-account" style="position:fixed; top:50px;">
+        <section class="module">
+            <div class="module-inner">
+                <div class="side-bar">
+                    <div class="user-info">
+                        <?php
+                        $dataUser = getUserData($email);
+                        $profilePicture = $dataUser['userPicture'];
+                        echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+                        ?>
+                        <ul class="meta list list-unstyled">
+                            <li class="name">
+                                <label for="" style="font-size: 0.8em;">Nombre:</label>
+                                <?php
+                                $dataUser = getUserData($email);
+                                $userName = $dataUser['userName'];
+                                echo "$userName";
+                                ?>
+                            </li>
+                            <li class="email">
+                                <label for="" style="font-size: 0.8em;">Mail: </label>
+                                <?php
+                                $dataUser = getUserData($email);
+                                $email = $dataUser['email'];
+                                echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                ?>
+                            </li>
+                            <li class="activity">
+                                <label for="" style="font-size: 0.8em;">Logged in: </label>
+                                <?php
+                                $hora = $_SESSION['hour'];
+                                echo "$hora";
+                                ?>
+                            </li>
+                        </ul>
+                    </div>
+                    <nav class="side-menu">
+                        <ul class="nav">
+                            <li class="dropdown" onclick="toggleDropdown(this)">
+                                <a href="#"><span class="fa fa-cog"></span>Escritores</a>
+                                <div class="dropdown-content" id="dropdownContent1">
+                                    <?php
+                                    $tabla_escritores = getScreenwriters();
+                                    mostrar_datos($tabla_escritores);
+                                    ?>
+                                </div>
+                            </li>
+
+                            <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
+                                <a href="#"><span class="fa fa-cog"></span>Artistas</a>
+                                <div class="dropdown-content" id="dropdownContent2">
+                                    <?php
+                                    $tabla_escritores = getArtists();
+                                    mostrar_datos($tabla_escritores);
+                                    ?>
+                                </div>
+                            </li>
+
+                            <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
+                                <a href="#"><span class="fa fa-cog"></span>Editorial</a>
+                                <div class="dropdown-content" id="dropdownContent3">
+                                    <?php
+                                    $tabla_editorial = getEditorial();
+                                    mostrar_datos($tabla_editorial);
+                                    ?>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </section>
+    </div>
+
 
     <div style="display: flex; justify-content: center;">
         <div class="last-pubs">
@@ -202,17 +293,17 @@ $email = $_SESSION['email'];
                         <?php
                         $total_comics = numComics();
                         $count = 0;
-                        // for ($i = 0; $i < $total_comics; $i++) {
-                            for ($i = 0; $i < 10; $i++) {
-                            $numero = randomComic();
-                            $data_comic = getDataComic($numero);
+                        $comics = return_comic_published();
+                        while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
                             $id = $data_comic['IDcomic'];
+                            $numero = $data_comic['numComic'];
                             $titulo = $data_comic['nomComic'];
                             $numComic = $data_comic['numComic'];
                             $variante = $data_comic['nomVariante'];
+                            $fecha = $data_comic['date_published'];
                             echo "<li id='comicyXwd2' class='get-it'><a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
-    <span class='cover'>";
-                            echo "<img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>";
+            <span class='cover'>";
+                            echo "<img src='./assets/covers_img/$id.jpg' alt='$titulo - $variante / #$numComic'> ";
                         ?>
                             </span>
                             <strong><?php echo $titulo ?></strong>
@@ -221,8 +312,16 @@ $email = $_SESSION['email'];
                             <button data-item-id="yXwd2" class="add"><span class="sp-icon">Lo tengo</span>
                             </button>
                             </li>
-                            
                         <?php
+                            $count++;
+                            if ($count % 10 === 0) {
+                                echo "</ul></div></div>";
+                                echo "<div class='last-pubs'>
+                                        <br>
+                                        <div class='scrollable-h comic-full'>
+                                        <div class='scrollable-h-content'>
+                                        <ul class='v2-cover-list'>";
+                            }
                         }
                         ?>
                     </ul>
@@ -232,6 +331,52 @@ $email = $_SESSION['email'];
         <h5 class="card-title"></h5>
         <p class="card-text"></p>
     </div>
+    <div id="footer-lite">
+        <div class="content">
+            <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+            <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+            <!-- add social media with icons -->
+            <p class="social">
+                <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50"></a>
+                <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50"></a>
+            </p>
+            <p class="copyright">
+                © 2023 Web Comics</p>
+        </div>
+    </div>
+    <script>
+        const buttons = document.querySelectorAll('.add');
+
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                if (button.classList.contains('add')) {
+                    button.classList.remove('add');
+                    button.classList.add('rem');
+                } else {
+                    button.classList.remove('rem');
+                    button.classList.add('add');
+                }
+            });
+        });
+    </script>
+
+<script>
+        function toggleDropdown(element) {
+            var dropdownContent1 = document.getElementById("dropdownContent1");
+            var dropdownContent2 = document.getElementById("dropdownContent2");
+            var dropdownContent3 = document.getElementById("dropdownContent3");
+            if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
+                dropdownContent1.style.display = "none";
+                dropdownContent2.style.display = "none";
+                dropdownContent3.style.display = "none";
+            } else {
+                dropdownContent1.style.display = "none";
+                dropdownContent2.style.display = "none";
+                dropdownContent3.style.display = "none";
+                element.querySelector(".dropdown-content").style.display = "block";
+            }
+        }
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

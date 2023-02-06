@@ -223,4 +223,78 @@ function pictureProfile($email)
 	return $profilePicture;
 }
 
+function getScreenwriters()
+{
+	$table = get_comic();
+	$screenwriters = array();
+	foreach ($table as $row) {
+		$names = preg_split("/[-,]+/", $row["nomGuionista"]);
+		foreach ($names as $name) {
+			$name = trim($name);
+			if (!isset($screenwriters[$name])) {
+				$screenwriters[$name] = 0;
+			}
+			$screenwriters[$name]++;
+		}
+	}
+	return $screenwriters;
+}
 
+function getArtists()
+{
+	$table = get_comic();
+	$artists = array();
+	foreach ($table as $row) {
+		$names = preg_split("/[-,]+/", $row["nomDibujante"]);
+		foreach ($names as $name) {
+			$name = trim($name);
+			if (!isset($artists[$name])) {
+				$artists[$name] = 0;
+			}
+			$artists[$name]++;
+		}
+	}
+	return $artists;
+}
+
+function getEditorial(){
+	$table = get_comic();
+	$editorial = array();
+	foreach ($table as $row) {
+		$names = preg_split("/[-,]+/", $row["nomEditorial"]);
+		foreach ($names as $name) {
+			$name = trim($name);
+			if (!isset($editorial[$name])) {
+				$editorial[$name] = 0;
+			}
+			$editorial[$name]++;
+		}
+	}
+	return $editorial;
+}
+
+function mostrar_datos($datos)
+{
+	$datos_comic = $datos;
+	ksort($datos_comic);
+	echo "<table>
+	<thead>
+	<tr>
+	<th>Nombre</th>
+	<th>Numeros</th>
+	</tr>
+	</thead>
+	<tbody>";
+	foreach ($datos_comic as $key => $value) {
+		echo "<tr>
+		<td>$key</td>
+	<td>$value</td>
+	<td>
+	<input type='checkbox' name='screenwriter' value='$key'>
+	<input type='hidden' name='screenwriter_value' value='$key'>
+	</td>
+	</tr>";
+	}
+	echo "</tbody>
+		</table>";
+}

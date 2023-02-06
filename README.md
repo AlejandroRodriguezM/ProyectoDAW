@@ -177,3 +177,8 @@ Ahora ya existe pag de info de comics selecionado
 Añadido un fotter en cada pagina al igual que solucionado un par de bugs de css
 En la pagina inicial.php no se visualiza bien la imagen de perfil(queda por arreglar)
 La pagina novedades.php muestra todos los comics pero no es capaz de dividir en filas de 10. posiblemente por el css
+
+06/02/2023 Log 1
+Novedades.php mejorada, ya muestra en filas de 10 comics cada uno
+Se ha añadido barra  menu lateral con 3 desplegables
+Solo funcionalidad estatica.

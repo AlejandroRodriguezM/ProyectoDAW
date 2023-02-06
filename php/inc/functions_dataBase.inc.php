@@ -73,7 +73,6 @@ function getUserData($acces)
 	$sql = "SELECT * FROM users WHERE email='$acces' OR userName = '$acces' or IDuser = '$acces'";
 	$resultado = $conection->query($sql);
 	$userData = $resultado->fetch(PDO::FETCH_ASSOC);
-	// Devolvemos los datos del usuario
 	return $userData;
 }
 
@@ -447,9 +446,7 @@ function countComicSearch($search){
 function randomComic()
 {
 	$num = count_comic_total();
-
 	$random = rand(1, $num);
-
 	return $random;
 }
 
@@ -463,7 +460,8 @@ function count_comic_total(){
 
 function return_comic_published(){
 	global $conection;
-	$consulta = $conection->prepare("SELECT * FROM comics ORDER BY date_published DESC;");
+	$consulta = $conection->prepare("SELECT *
+	FROM comics ORDER BY date_published DESC;");
 	$consulta->execute();
 	return $consulta;
 }
@@ -473,6 +471,14 @@ function getDataComic($id){
 	$consulta = $conection->prepare("SELECT * from comics where IDcomic=?");
 	$consulta->execute(array($id));
 	$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function get_comic(){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from comics");
+	$consulta->execute();
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
 	return $consulta;
 }
 
