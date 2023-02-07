@@ -39,8 +39,8 @@ $email = $_SESSION['email'];
 
 <?php
 
-$input_comic = $_GET['search'];
-$input_user = $_GET['search'];
+$input_comic = $_GET['IDcomic'];
+$input_user = $_GET['IDcomic'];
 $count_comic = 0;
 $count_user = 0;
 

@@ -257,7 +257,8 @@ function getArtists()
 	return $artists;
 }
 
-function getEditorial(){
+function getEditorial()
+{
 	$table = get_comic();
 	$editorial = array();
 	foreach ($table as $row) {
@@ -290,11 +291,40 @@ function mostrar_datos($datos)
 		<td>$key</td>
 	<td>$value</td>
 	<td>
-	<input type='checkbox' name='screenwriter' value='$key'>
-	<input type='hidden' name='screenwriter_value' value='$key'>
+	<input type='checkbox' name='comic' value='$key'>
+	<input type='hidden' name='comic_value' value='$key'>
 	</td>
 	</tr>";
 	}
 	echo "</tbody>
 		</table>";
+}
+
+function select_data_and_check_spaces_pdo()
+{
+	try {
+		global $conection;
+		// Select all data from the table
+		$stmt = $conection->prepare("SELECT * FROM comics");
+		$stmt->execute();
+
+		// Fetch all the rows into an array
+		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		// Check if the first character of each string in the data is a space
+		foreach ($data as $row) {
+			foreach ($row as $value) {
+				if (is_string($value) && strpos($value, ' ') !== false) {
+					$id = $row['IDcomic'];
+
+					echo "Found a string starting with a space: $value\n " . ":$id ;";
+				}
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	// Close the connection
+	$conection = null;
 }

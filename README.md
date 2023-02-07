@@ -182,3 +182,9 @@ La pagina novedades.php muestra todos los comics pero no es capaz de dividir en 
 Novedades.php mejorada, ya muestra en filas de 10 comics cada uno
 Se ha añadido barra  menu lateral con 3 desplegables
 Solo funcionalidad estatica.
+
+07/02/2023 Log 1
+ya funciona el "mostrar mas" en novedades, donde solamente se muestran 30 interaciones cada vez que se pulsa el boton.
+Arreglado un bug con la busquieda mediante input search
+Ahora la barra lateral de menu con 3 desplegables funciona correctamente, pero no agrupa datos segun checkbox, suma las busquedas(queda pulir esta parte)
+Arreglado en tiempo de carga a la base de datos

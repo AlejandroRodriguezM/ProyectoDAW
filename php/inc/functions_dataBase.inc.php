@@ -458,12 +458,23 @@ function count_comic_total(){
 	return $consulta;
 }
 
-function return_comic_published(){
+function return_comic_published($limit, $offset) {
 	global $conection;
-	$consulta = $conection->prepare("SELECT *
-	FROM comics ORDER BY date_published DESC;");
-	$consulta->execute();
-	return $consulta;
+    // Build the query to retrieve the comic books
+    $query = "SELECT IDcomic, numComic, nomComic, nomVariante, date_published FROM comics WHERE date_published IS NOT NULL ORDER BY date_published DESC LIMIT :limit OFFSET :offset";
+
+    // Prepare the statement
+    $stmt = $conection->prepare($query);
+
+    // Bind the parameters
+    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Return the result
+    return $stmt;
 }
 
 function getDataComic($id){

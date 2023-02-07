@@ -21,6 +21,8 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
 
     <title>Novedades</title>
     <style>
@@ -53,7 +55,11 @@ $email = $_SESSION['email'];
         .dropdown:active .dropdown-content {
             display: block;
         }
-        
+
+        button#load-more-comics {
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 
@@ -94,13 +100,13 @@ $email = $_SESSION['email'];
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <a class="nav-link active" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
                 </ul>
             </div>
@@ -179,8 +185,6 @@ $email = $_SESSION['email'];
     </div>
 
     <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'></a>
-        <legend class='info-search'>Búsqueda</legend>
         <div class="d-flex justify-content-center">
             <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
                 <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
@@ -287,55 +291,14 @@ $email = $_SESSION['email'];
         <div class="last-pubs">
             <h2 style='text-align: center'>Mis novedades</h2>
             <br>
-            <div class="scrollable-h comic-full">
-                <div class="scrollable-h-content">
-                    <ul class="v2-cover-list">
-                        <?php
-                        $total_comics = numComics();
-                        $count = 0;
-                        $comics = return_comic_published();
-                        while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
-                            $id = $data_comic['IDcomic'];
-                            $numero = $data_comic['numComic'];
-                            $titulo = $data_comic['nomComic'];
-                            $numComic = $data_comic['numComic'];
-                            $variante = $data_comic['nomVariante'];
-                            $fecha = $data_comic['date_published'];
-                            echo "<li id='comicyXwd2' class='get-it'><a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
-            <span class='cover'>";
-                            echo "<img src='./assets/covers_img/$id.jpg' alt='$titulo - $variante / #$numComic'> ";
-                        ?>
-                            </span>
-                            <strong><?php echo $titulo ?></strong>
-                            <span class="issue-number issue-number-l1"><?php echo $numComic ?></span>
-                            </a>
-                            <button data-item-id="yXwd2" class="add"><span class="sp-icon">Lo tengo</span>
-                            </button>
-                            </li>
-                        <?php
-                            $count++;
-                            if ($count % 10 === 0) {
-                                echo "</ul></div></div>";
-                                echo "<div class='last-pubs'>
-                                        <br>
-                                        <div class='scrollable-h comic-full'>
-                                        <div class='scrollable-h-content'>
-                                        <ul class='v2-cover-list'>";
-                            }
-                        }
-                        ?>
-                    </ul>
-                </div>
-            </div>
         </div>
-        <h5 class="card-title"></h5>
-        <p class="card-text"></p>
     </div>
-    <div id="footer-lite">
+    <button id="load-more-comics" class="btn btn-primary">Load More</button>
+
+    <!-- <div id="footer-lite">
         <div class="content">
             <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
             <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-            <!-- add social media with icons -->
             <p class="social">
                 <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50"></a>
                 <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50"></a>
@@ -343,7 +306,70 @@ $email = $_SESSION['email'];
             <p class="copyright">
                 © 2023 Web Comics</p>
         </div>
-    </div>
+    </div> -->
+
+    <script>
+        var limit = 30;
+        var offset = 0;
+        var totalComics = 0;
+        var checkboxChecked = null;
+
+        $(document).ready(function() {
+            loadComics(checkboxChecked);
+
+            $('#load-more-comics').click(function() {
+                offset += limit;
+                loadComics(checkboxChecked);
+            });
+
+            var checkboxes = document.querySelectorAll('input[type=checkbox]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].addEventListener('change', function() {
+                    if ($("input[type='checkbox']:checked").length > 0) {
+                        checkboxChecked = $("input[type='checkbox']:checked").val();
+                    }
+                    if (checkboxChecked) {
+                        offset = 0;
+                        $('.new-comic-list').remove();
+                        $("#load-more-comics").show();
+                        loadComics(checkboxChecked);
+                    } else {
+                        offset = 0;
+                        $('.new-comic-list').remove();
+                        $("#load-more-comics").show();
+                        loadComics(checkboxChecked);
+                    }
+                });
+            }
+        });
+
+        function loadComics() {
+    var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
+        return encodeURIComponent(this.value);
+    }).get();
+
+    var data = {
+        limit: limit,
+        offset: offset,
+    };
+
+    if (selectedCheckboxes.length > 0) {
+        data.checkboxChecked = selectedCheckboxes.join(",");
+    }
+
+    $.ajax({
+        url: "php/user/comics.php",
+        data: data,
+        success: function(data) {
+            totalComics = $(data).filter("#total-comics").val();
+            if (offset + limit >= totalComics) {
+                $("#load-more-comics").hide();
+            }
+            $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs');
+        }
+    });
+}
+    </script>
     <script>
         const buttons = document.querySelectorAll('.add');
 
@@ -359,8 +385,7 @@ $email = $_SESSION['email'];
             });
         });
     </script>
-
-<script>
+    <script>
         function toggleDropdown(element) {
             var dropdownContent1 = document.getElementById("dropdownContent1");
             var dropdownContent2 = document.getElementById("dropdownContent2");
@@ -378,7 +403,6 @@ $email = $_SESSION['email'];
         }
     </script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 

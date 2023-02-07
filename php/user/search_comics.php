@@ -27,7 +27,7 @@ if (isset($_POST['input'])) {
                                 ?>
                         <tr>
                             <td>
-                                <a href="searchInfoComic.php?IDcomic=<?php echo $comics['IDcomic']; ?>">
+                                <a href="infoComic.php?IDcomic=<?php echo $comics['IDcomic']; ?>">
                                     <img src="<?php echo $comics['Cover']; ?>" alt="profile picture" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
                                 </a>
                             </td>
