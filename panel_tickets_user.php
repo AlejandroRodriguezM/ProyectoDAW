@@ -251,8 +251,7 @@ if ($userPrivilege == 'admin') {
                 <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50"></a>
                 <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50"></a>
             </p>
-            <p class="copyright">
-                © 2023 Web Comics</p>
+<p class="copyright">©2023 Alejandro Rodriguez</p>
         </div>
     </div>
     <script>

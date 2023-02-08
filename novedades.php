@@ -252,6 +252,7 @@ $email = $_SESSION['email'];
                             <li class="dropdown" onclick="toggleDropdown(this)">
                                 <a href="#"><span class="fa fa-cog"></span>Escritores</a>
                                 <div class="dropdown-content" id="dropdownContent1">
+                                    <input type="text" id="searchInput1" onkeyup="searchData(1)">
                                     <?php
                                     $tabla_escritores = getScreenwriters();
                                     mostrar_datos($tabla_escritores);
@@ -262,6 +263,7 @@ $email = $_SESSION['email'];
                             <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
                                 <a href="#"><span class="fa fa-cog"></span>Artistas</a>
                                 <div class="dropdown-content" id="dropdownContent2">
+                                    <input type="text" id="searchInput2" onkeyup="searchData(2)">
                                     <?php
                                     $tabla_escritores = getArtists();
                                     mostrar_datos($tabla_escritores);
@@ -272,6 +274,7 @@ $email = $_SESSION['email'];
                             <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
                                 <a href="#"><span class="fa fa-cog"></span>Editorial</a>
                                 <div class="dropdown-content" id="dropdownContent3">
+                                    <input type="text" id="searchInput3" onkeyup="searchData(3)">
                                     <?php
                                     $tabla_editorial = getEditorial();
                                     mostrar_datos($tabla_editorial);
@@ -279,6 +282,26 @@ $email = $_SESSION['email'];
                                 </div>
                             </li>
 
+                            <script>
+                                function searchData(id) {
+                                    let input, filter, table, tr, td, i, txtValue;
+                                    input = document.getElementById("searchInput" + id);
+                                    filter = input.value.toUpperCase();
+                                    table = document.getElementById("dropdownContent" + id);
+                                    tr = table.getElementsByTagName("tr");
+                                    for (i = 0; i < tr.length; i++) {
+                                        td = tr[i].getElementsByTagName("td")[0];
+                                        if (td) {
+                                            txtValue = td.textContent || td.innerText;
+                                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                                tr[i].style.display = "";
+                                            } else {
+                                                tr[i].style.display = "none";
+                                            }
+                                        }
+                                    }
+                                }
+                            </script>
                         </ul>
                     </nav>
                 </div>
@@ -295,7 +318,7 @@ $email = $_SESSION['email'];
     </div>
     <button id="load-more-comics" class="btn btn-primary">Load More</button>
 
-    <!-- <div id="footer-lite">
+    <div id="footer-lite">
         <div class="content">
             <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
             <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
@@ -303,10 +326,9 @@ $email = $_SESSION['email'];
                 <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50"></a>
                 <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50"></a>
             </p>
-            <p class="copyright">
-                © 2023 Web Comics</p>
+            <p class="copyright">©2023 Alejandro Rodriguez</p>
         </div>
-    </div> -->
+    </div>
 
     <script>
         var limit = 30;
@@ -344,31 +366,31 @@ $email = $_SESSION['email'];
         });
 
         function loadComics() {
-    var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-        return encodeURIComponent(this.value);
-    }).get();
+            var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
+                return encodeURIComponent(this.value);
+            }).get();
 
-    var data = {
-        limit: limit,
-        offset: offset,
-    };
+            var data = {
+                limit: limit,
+                offset: offset,
+            };
 
-    if (selectedCheckboxes.length > 0) {
-        data.checkboxChecked = selectedCheckboxes.join(",");
-    }
-
-    $.ajax({
-        url: "php/user/comics.php",
-        data: data,
-        success: function(data) {
-            totalComics = $(data).filter("#total-comics").val();
-            if (offset + limit >= totalComics) {
-                $("#load-more-comics").hide();
+            if (selectedCheckboxes.length > 0) {
+                data.checkboxChecked = selectedCheckboxes.join(",");
             }
-            $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs');
+
+            $.ajax({
+                url: "php/user/comics.php",
+                data: data,
+                success: function(data) {
+                    totalComics = $(data).filter("#total-comics").val();
+                    if (offset + limit >= totalComics) {
+                        $("#load-more-comics").hide();
+                    }
+                    $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs');
+                }
+            });
         }
-    });
-}
     </script>
     <script>
         const buttons = document.querySelectorAll('.add');
@@ -390,6 +412,7 @@ $email = $_SESSION['email'];
             var dropdownContent1 = document.getElementById("dropdownContent1");
             var dropdownContent2 = document.getElementById("dropdownContent2");
             var dropdownContent3 = document.getElementById("dropdownContent3");
+
             if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
                 dropdownContent1.style.display = "none";
                 dropdownContent2.style.display = "none";
@@ -402,7 +425,6 @@ $email = $_SESSION['email'];
             }
         }
     </script>
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 

@@ -24,14 +24,18 @@ $email = $_SESSION['email'];
 
     <title>Inicio</title>
     <style>
-        img {
-            max-width: 200px;
-            max-height: 300px;
-        }
-
         .row {
             display: flex;
             flex-wrap: wrap;
+        }
+
+        #wrapper.home div.comments {
+            padding-right: 20px;
+            line-height: 140%;
+        }
+
+        .link-grey:hover {
+            color: #00913b;
         }
     </style>
 </head>
@@ -209,6 +213,46 @@ $email = $_SESSION['email'];
     </fieldset>
 
     <div style="display: flex; justify-content: center;">
+        <!-- Carousel -->
+        <div id="carousel-publi" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicators/dots -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+            </div>
+            <!-- The slideshow/carousel -->
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
+                        <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block" style="width: 945px; height: 300px;">
+                    </a>
+                </div>
+                <div class="carousel-item">
+                    <a href='https://www.radarcomics.com/es/' target="_blank">
+                        <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block" style="width: 945px; height: 300px;">
+                    </a>
+                </div>
+                <div class="carousel-item">
+                    <a href='https://www.whakoom.com/' target="_blank">
+                        <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block" style="width: 945px; height: 300px;">
+                    </a>
+                </div>
+            </div>
+            <!-- Left and right controls/icons -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </div>
+
+    <hr>
+
+
+    <div style="display: flex; justify-content: center;">
         <div class="last-pubs">
             <h2 style='text-align: center'>Mis novedades</h2>
             <br>
@@ -246,7 +290,66 @@ $email = $_SESSION['email'];
         </div>
     </div>
 
-    <div id="footer-lite">
+    <hr>
+
+    <div class="container mt-5">
+        <h2>Videos de interes</h2>
+        <div style="display: flex;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in- picture" allowfullscreen style="margin-right: 20px;"></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in- picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="container mt-5">
+        <div class="row  d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="headings d-flex justify-content-between align-items-center mb-3">
+                    <h5>Opiniones de los usuarios</h5>
+                </div>
+                <div class="card p-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center">
+                            <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2">
+                            <span><small class="font-weight-bold text-primary">james_olesenn</small> <small class="font-weight-bold">Hmm, This poster looks cool</small></span>
+                        </div>
+                        <small>2 days ago</small>
+                    </div>
+                </div>
+                <div class="card p-3 mt-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center">
+                            <img src="https://i.imgur.com/C4egmYM.jpg" width="30" class="user-img rounded-circle mr-2">
+                            <span><small class="font-weight-bold text-primary">olan_sams</small> <small class="font-weight-bold">Loving your work and profile! </small></span>
+                        </div>
+                        <small>3 days ago</small>
+                    </div>
+                </div>
+                <div class="card p-3 mt-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center">
+                            <img src="https://i.imgur.com/0LKZQYM.jpg" width="30" class="user-img rounded-circle mr-2">
+                            <span><small class="font-weight-bold text-primary">rashida_jones</small> <small class="font-weight-bold">Really cool Which filter are you using? </small></span>
+                        </div>
+                        <small>3 days ago</small>
+                    </div>
+                </div>
+                <div class="card p-3 mt-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center">
+                            <img src="https://i.imgur.com/ZSkeqnd.jpg" width="30" class="user-img rounded-circle mr-2">
+                            <span><small class="font-weight-bold text-primary">simona_rnasi</small> <small class="font-weight-bold text-primary">@macky_lones</small> <small class="font-weight-bold text-primary">@rashida_jones</small> <small class="font-weight-bold">Thanks </small></span>
+                        </div>
+                        <small>3 days ago</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div <div id="footer-lite">
         <div class="content">
             <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
             <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
@@ -255,8 +358,7 @@ $email = $_SESSION['email'];
                 <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50"></a>
                 <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50"></a>
             </p>
-            <p class="copyright">
-                © 2023 Web Comics</p>
+            <p class="copyright">©2023 Alejandro Rodriguez</p>
         </div>
     </div>
 

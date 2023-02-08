@@ -286,6 +286,7 @@ function mostrar_datos($datos)
 	</tr>
 	</thead>
 	<tbody>";
+	
 	foreach ($datos_comic as $key => $value) {
 		echo "<tr>
 		<td>$key</td>

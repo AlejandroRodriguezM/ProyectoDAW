@@ -21,6 +21,10 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <title>Sobre web Comics</title>
+    <style>
+
+    </style>
+
 </head>
 
 
@@ -103,7 +107,11 @@ $email = $_SESSION['email'];
                     ?>
                 </ul>
             </div>
+        </div>
     </nav>
+    <div class="card-footer text-muted">
+        Design by Alejandro Rodriguez 2022
+    </div>
     <div class="card text-center m-4">
         <div class="card-header">
             Web Comics
@@ -161,59 +169,57 @@ $email = $_SESSION['email'];
                     <a href="https://www.linkedin.com/in/alejandro-rodriguez-mena-497a00179/" class="btn btn-primary m-2" target="_blank">Linkedin</a>
                 </div>
             </div>
-
-
-            <div class="card-footer text-muted">
-                Design by Alejandro Rodriguez 2022
-            </div>
         </div>
+    </div>
 
-        <!-- The Modal -->
-        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <!-- <div class="modal-dialog"> -->
-            <!-- <div class="modal-content"> -->
-            <!-- Modal Content (The Image) -->
-            <img class="modal-content_img" id="img01">
-            <!-- Modal Caption (Image Text) -->
-            <!-- </div> -->
-            <!-- </div> -->
+    <div class="container mt-5">
+        <h2>Videos de interes</h2>
+        <div style="display: flex;">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/qAv1_SbTEkc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in- picture" allowfullscreen style="margin-right: 20px;"></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/FvXQBKsp0OI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in- picture" allowfullscreen></iframe>
         </div>
+    </div>
 
-        <!-- FORMULARIO INSERTAR -->
-        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <form method="post" id="form_ticket" onsubmit="return false;">
-                            <h4 class="modal-title">Crear un ticket para administradores</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Asunto</label>
-                            <input type="text" id="asunto_usuario" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Mensaje</label>
-                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
-                                $id_user = $userData['IDuser'];
-                                echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                    </div>
-                    </form>
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <img class="modal-content_img" id="img01">
+    </div>
+
+    <!-- FORMULARIO INSERTAR -->
+    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <form method="post" id="form_ticket" onsubmit="return false;">
+                        <h4 class="modal-title">Crear un ticket para administradores</h4>
                 </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input type="text" id="asunto_usuario" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            $userData = getUserData($email);
+                            $id_user = $userData['IDuser'];
+                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                </div>
+                </form>
             </div>
         </div>
-        
-        <div id="footer-lite">
+    </div>
+
+    <div id="footer-lite">
         <div class="content">
             <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
             <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
@@ -222,17 +228,16 @@ $email = $_SESSION['email'];
                 <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50"></a>
                 <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50"></a>
             </p>
-            <p class="copyright">
-                © 2023 Web Comics</p>
+            <p class="copyright">©2023 Alejandro Rodriguez</p>
         </div>
     </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-        <script src="./assets/js/appLogin.js"></script>
-        <script src="./assets/js/sweetalert2.all.min.js"></script>
-        <script src="./assets/js/functions.js"></script>
+    <script src="./assets/js/appLogin.js"></script>
+    <script src="./assets/js/sweetalert2.all.min.js"></script>
+    <script src="./assets/js/functions.js"></script>
 </body>
 
 </html>
