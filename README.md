@@ -196,3 +196,6 @@ Se ha añadido nuevos videos de muestra en la pagina inicio, que seran sustituid
 Se ha añadido nuevos videos en about.php
 Se ha mejorado la velocidad en general de la pagina con la refactorizacion de metodos de busqueda en base de datos
 Se ha añadido un carousel con baners de paginas de interes.
+
+08/02/2023 Log 2
+Arreglado el permiso de usuarios y arreglado bugs visuales
