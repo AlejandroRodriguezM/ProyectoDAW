@@ -395,21 +395,7 @@ $email = $_SESSION['email'];
             });
         }
     </script>
-    <script>
-        const buttons = document.querySelectorAll('.add');
 
-        buttons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                if (button.classList.contains('add')) {
-                    button.classList.remove('add');
-                    button.classList.add('rem');
-                } else {
-                    button.classList.remove('rem');
-                    button.classList.add('add');
-                }
-            });
-        });
-    </script>
     <script>
         function toggleDropdown(element) {
             var dropdownContent1 = document.getElementById("dropdownContent1");

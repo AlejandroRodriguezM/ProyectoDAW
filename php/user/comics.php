@@ -14,7 +14,7 @@ if (isset($_GET['checkboxChecked'])) {
         $where_params = [];
         for ($i = 0; $i < $search_count; $i++) {
             $where_clauses[] = "(nomGuionista LIKE ? OR nomDibujante LIKE ? OR nomEditorial = ?)";
-            $where_params = array_merge($where_params, ["%".$search[$i]."%", "%".$search[$i]."%", $search[$i]]);
+            $where_params = array_merge($where_params, ["%" . $search[$i] . "%", "%" . $search[$i] . "%", $search[$i]]);
         }
         $comics = $conection->prepare("SELECT * FROM comics WHERE " . implode(' OR ', $where_clauses));
         $comics->execute($where_params);
@@ -46,3 +46,21 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
         echo "<ul></ul>";
     }
 }
+
+?>
+
+<script>
+    const buttons = document.querySelectorAll('.add');
+
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (button.classList.contains('add')) {
+                button.classList.remove('add');
+                button.classList.add('rem');
+            } else {
+                button.classList.remove('rem');
+                button.classList.add('add');
+            }
+        });
+    });
+</script>

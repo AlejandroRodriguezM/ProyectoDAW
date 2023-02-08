@@ -199,3 +199,6 @@ Se ha añadido un carousel con baners de paginas de interes.
 
 08/02/2023 Log 2
 Arreglado el permiso de usuarios y arreglado bugs visuales
+
+08/02/2023 Log 3
+Areglado bug de selecionar comic
