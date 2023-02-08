@@ -188,3 +188,11 @@ ya funciona el "mostrar mas" en novedades, donde solamente se muestran 30 intera
 Arreglado un bug con la busquieda mediante input search
 Ahora la barra lateral de menu con 3 desplegables funciona correctamente, pero no agrupa datos segun checkbox, suma las busquedas(queda pulir esta parte)
 Arreglado en tiempo de carga a la base de datos
+
+08/02/2023 Log 1
+Ahora en la pagina novedades.php en la seccion de busqueda del menu lateral, se ha incluido un input text para hacer una busqueda autocompletada
+Se ha añadido nuevos elementos decorativos en la pagina inicio(se encuentra de forma estatica la parte de comentarios, ya se trabajara para que se vuelva dinamica)
+Se ha añadido nuevos videos de muestra en la pagina inicio, que seran sustituidos por videos que vayan con el tema de la web
+Se ha añadido nuevos videos en about.php
+Se ha mejorado la velocidad en general de la pagina con la refactorizacion de metodos de busqueda en base de datos
+Se ha añadido un carousel con baners de paginas de interes.
