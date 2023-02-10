@@ -54,7 +54,7 @@ $email = $_SESSION['email'];
 </head>
 
 <body onload="checkSesionUpdate();showSelected();">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -122,11 +122,10 @@ $email = $_SESSION['email'];
                         if ($userPrivilege == 'admin') {
                             echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                        } elseif($userPrivilege == 'user') {
+                        } elseif ($userPrivilege == 'user') {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                             echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
-                        }
-                        else{
+                        } else {
                             echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                         }
                     }
@@ -251,32 +250,40 @@ $email = $_SESSION['email'];
 
                         <div style="display: flex; justify-content: center;">
                             <div class="last-pubs">
-                                <h2 style='text-align: center'>Comics parecidos</h2>
-                                <br>
+                                <div class="titulo" style="display: flex; justify-content: center;">
+
+                                    <h2 style="align-items: center !important;color:black">Recomendaciones</h2>
+                                    <br>
+                                    <a href='novedades.php'>
+                                        <button class="v2-cover-list" style='margin-left:650px !important;'>Ver mas</button>
+                                    </a>
+                                </div>
                                 <!-- <div class="scrollable-h comic-full"> -->
                                 <div class="scrollable-h-content">
                                     <ul class="v2-cover-list">
                                         <?php
+                                        $total_comics = numComics();
                                         for ($i = 0; $i < 7; $i++) {
                                             $numero = randomComic();
-                                            $comic = getDataComic($numero);
-                                            $id = $comic['IDcomic'];
-                                            $titulo = $comic['nomComic'];
-                                            $numComic = $comic['numComic'];
-                                            $variante = $comic['nomVariante'];
+                                            $data_comic = getDataComic($numero);
+                                            $id = $data_comic['IDcomic'];
+                                            $titulo = $data_comic['nomComic'];
+                                            $numComic = $data_comic['numComic'];
+                                            $variante = $data_comic['nomVariante'];
 
-                                            echo "<li id='comicyXwd2' class='get-it'><a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
-                                                <span class='cover'>";
-                                            echo "<img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>";
-                                        ?>
+                                            echo "<li id='comicyXwd2' class='get-it'>
+                                            <a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
+                                                <span class='cover'>
+                                                <img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>
                                             </span>
                                             <strong><?php echo $titulo ?></strong>
-                                            <span class="issue-number issue-number-l1"><?php echo $numComic ?></span>
+                                            <span class='issue-number issue-number-l1'>$numComic</span>
                                             </a>
-                                            <button data-item-id="yXwd2" class="add"><span class="sp-icon">Lo tengo</span>
+                                            <input type='hidden' name='id_grapa' id='id_grapa' value='$id'>
+                                            <button data-item-id='yXwd2' class='add' >
+                                                <span class='sp-icon'>Lo tengo</span>
                                             </button>
-                                            </li>
-                                        <?php
+                                                </li>";
                                         }
                                         ?>
                                     </ul>
@@ -348,6 +355,8 @@ $email = $_SESSION['email'];
                 if (button.classList.contains('add')) {
                     button.classList.remove('add');
                     button.classList.add('rem');
+                    const id_comic = button.previousElementSibling.value;
+                    console.log(id_comic);
                 } else {
                     button.classList.remove('rem');
                     button.classList.add('add');

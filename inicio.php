@@ -278,13 +278,14 @@ $email = $_SESSION['email'];
                                         $variante = $data_comic['nomVariante'];
 
                                         echo "<li id='comicyXwd2' class='get-it'>
-                                    <a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
+                                        <a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
                                         <span class='cover'>
                                         <img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>
                                         </span>
                                         <strong><?php echo $titulo ?></strong>
                                         <span class='issue-number issue-number-l1'>$numComic</span>
                                     </a>
+                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id'>
                                     <button data-item-id='yXwd2' class='add' >
                                         <span class='sp-icon'>Lo tengo</span>
                                     </button>
@@ -374,6 +375,8 @@ $email = $_SESSION['email'];
                     if (button.classList.contains('add')) {
                         button.classList.remove('add');
                         button.classList.add('rem');
+                        const id_comic = button.previousElementSibling.value;
+                        console.log(id_comic);
                     } else {
                         button.classList.remove('rem');
                         button.classList.add('add');
