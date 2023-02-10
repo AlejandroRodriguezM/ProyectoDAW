@@ -286,13 +286,13 @@ function mostrar_datos($datos)
 	</tr>
 	</thead>
 	<tbody>";
-	
+
 	foreach ($datos_comic as $key => $value) {
 		echo "<tr>
 		<td>$key</td>
 	<td>$value</td>
 	<td>
-	<input type='checkbox' name='comic' value='$key'>
+	<input type='checkbox' id='comic' name='comic' value='$key'>
 	<input type='hidden' name='comic_value' value='$key'>
 	</td>
 	</tr>";

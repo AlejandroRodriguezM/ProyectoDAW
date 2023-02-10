@@ -1,0 +1,29 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.dropdown:active .dropdown-content {
+    display: block;
+}
+
+button#load-more-comics {
+    display: block;
+    margin: 0 auto;
+}
