@@ -202,3 +202,11 @@ Arreglado el permiso de usuarios y arreglado bugs visuales
 
 08/02/2023 Log 3
 Areglado bug de selecionar comic
+
+10/02/2023 Log 3
+Mejorada la funcionalidad de busqueda de comics.
+Eliminado boton de "mostrar mas" ahora solamente lo hace con scrolleo del raton.
+Arreglado bugs a la hora de mostrar con checkbox, ya no se repiten resultados.
+Creado nuevo css para añadir parallax a la pagina de inicio(en pruebas)
+Añadido nuevo boton en inicio en "Recomendaciones" que lleva a novedades.php
+Ahora a selecionar un comic con el boton class ".add", se puede ver por consola su id_comic, se usara para mas adelante guardar dicho comic en la tabla de lista mysql
