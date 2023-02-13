@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-02-2023 a las 02:08:03
+-- Tiempo de generación: 13-02-2023 a las 23:11:33
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -1507,6 +1507,46 @@ INSERT INTO `comics` (`IDcomic`, `nomComic`, `numComic`, `nomVariante`, `nomEdit
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `comics_guardados`
+--
+
+DROP TABLE IF EXISTS `comics_guardados`;
+CREATE TABLE `comics_guardados` (
+  `id_guardado` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comic_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `comics_guardados`
+--
+
+INSERT INTO `comics_guardados` (`id_guardado`, `user_id`, `comic_id`) VALUES
+(9, 2, 653),
+(10, 2, 1028),
+(11, 2, 252),
+(12, 2, 503),
+(13, 2, 1359),
+(14, 2, 112),
+(15, 2, 365),
+(16, 2, 200);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `contenido_listas`
+--
+
+DROP TABLE IF EXISTS `contenido_listas`;
+CREATE TABLE `contenido_listas` (
+  `id_contenido` int(11) NOT NULL,
+  `id_lista` int(11) NOT NULL,
+  `id_comic` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `lista_comics`
 --
 
@@ -1514,8 +1554,15 @@ DROP TABLE IF EXISTS `lista_comics`;
 CREATE TABLE `lista_comics` (
   `id_lista` int(11) NOT NULL,
   `nombre_lista` varchar(100) NOT NULL,
-  `id_comic` int(11) NOT NULL
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `lista_comics`
+--
+
+INSERT INTO `lista_comics` (`id_lista`, `nombre_lista`, `id_user`) VALUES
+(1, 'test', 12);
 
 -- --------------------------------------------------------
 
@@ -1541,7 +1588,11 @@ INSERT INTO `opiniones_comics` (`id_opinion`, `id_comic`, `id_usuario`, `opinion
 (2, 964, 2, 'rrrrr', 3),
 (3, 964, 2, 'juajajsjas', 2),
 (4, 964, 2, 'gerghrhberhnrhnt', 4),
-(5, 625, 2, 'test2', 3);
+(5, 625, 2, 'test2', 3),
+(6, 946, 2, 'es la ostia', 5),
+(7, 710, 2, 'hghgh', 1),
+(8, 710, 2, 'fgjhgh', 3),
+(9, 1028, 2, 'hfghghfgh', 5);
 
 -- --------------------------------------------------------
 
@@ -1554,19 +1605,6 @@ CREATE TABLE `opiniones_pagina` (
   `id_opinion` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `comentario` varchar(300) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `possession`
---
-
-DROP TABLE IF EXISTS `possession`;
-CREATE TABLE `possession` (
-  `id_posesion` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `comic_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1666,11 +1704,27 @@ ALTER TABLE `comics`
   ADD PRIMARY KEY (`IDcomic`);
 
 --
+-- Indices de la tabla `comics_guardados`
+--
+ALTER TABLE `comics_guardados`
+  ADD PRIMARY KEY (`id_guardado`),
+  ADD KEY `user_id_ibfk_1` (`user_id`),
+  ADD KEY `comic_id_ibfk_1` (`comic_id`);
+
+--
+-- Indices de la tabla `contenido_listas`
+--
+ALTER TABLE `contenido_listas`
+  ADD PRIMARY KEY (`id_contenido`),
+  ADD KEY `id_lista_ibfk_1` (`id_lista`),
+  ADD KEY `id_comic_ibfk_1` (`id_comic`);
+
+--
 -- Indices de la tabla `lista_comics`
 --
 ALTER TABLE `lista_comics`
   ADD PRIMARY KEY (`id_lista`),
-  ADD KEY `id_comic` (`id_comic`);
+  ADD KEY `lista_comics_ibfk_1` (`id_user`);
 
 --
 -- Indices de la tabla `opiniones_comics`
@@ -1686,14 +1740,6 @@ ALTER TABLE `opiniones_comics`
 ALTER TABLE `opiniones_pagina`
   ADD PRIMARY KEY (`id_opinion`),
   ADD KEY `fk_opiniones_pagina_users` (`id_user`);
-
---
--- Indices de la tabla `possession`
---
-ALTER TABLE `possession`
-  ADD PRIMARY KEY (`id_posesion`),
-  ADD KEY `comic_id` (`comic_id`),
-  ADD KEY `user_id_idx` (`user_id`);
 
 --
 -- Indices de la tabla `tickets`
@@ -1726,10 +1772,22 @@ ALTER TABLE `comics`
   MODIFY `IDcomic` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1426;
 
 --
+-- AUTO_INCREMENT de la tabla `comics_guardados`
+--
+ALTER TABLE `comics_guardados`
+  MODIFY `id_guardado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT de la tabla `contenido_listas`
+--
+ALTER TABLE `contenido_listas`
+  MODIFY `id_contenido` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `lista_comics`
 --
 ALTER TABLE `lista_comics`
-  MODIFY `id_lista` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_lista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `opiniones_comics`
@@ -1742,12 +1800,6 @@ ALTER TABLE `opiniones_comics`
 --
 ALTER TABLE `opiniones_pagina`
   MODIFY `id_opinion` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `possession`
---
-ALTER TABLE `possession`
-  MODIFY `id_posesion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `tickets`
@@ -1778,10 +1830,24 @@ ALTER TABLE `aboutuser`
   ADD CONSTRAINT `id_user` FOREIGN KEY (`IDuser`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `comics_guardados`
+--
+ALTER TABLE `comics_guardados`
+  ADD CONSTRAINT `comic_id_ibfk_1` FOREIGN KEY (`comic_id`) REFERENCES `comics` (`IDcomic`),
+  ADD CONSTRAINT `user_id_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`IDuser`);
+
+--
+-- Filtros para la tabla `contenido_listas`
+--
+ALTER TABLE `contenido_listas`
+  ADD CONSTRAINT `id_comic_ibfk_1` FOREIGN KEY (`id_comic`) REFERENCES `comics` (`IDcomic`),
+  ADD CONSTRAINT `id_lista_ibfk_1` FOREIGN KEY (`id_lista`) REFERENCES `lista_comics` (`id_lista`);
+
+--
 -- Filtros para la tabla `lista_comics`
 --
 ALTER TABLE `lista_comics`
-  ADD CONSTRAINT `lista_comics_ibfk_1` FOREIGN KEY (`id_comic`) REFERENCES `comics` (`IDcomic`);
+  ADD CONSTRAINT `lista_comics_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`IDuser`);
 
 --
 -- Filtros para la tabla `opiniones_comics`
@@ -1795,13 +1861,6 @@ ALTER TABLE `opiniones_comics`
 --
 ALTER TABLE `opiniones_pagina`
   ADD CONSTRAINT `fk_opiniones_pagina_users` FOREIGN KEY (`id_user`) REFERENCES `users` (`IDuser`);
-
---
--- Filtros para la tabla `possession`
---
-ALTER TABLE `possession`
-  ADD CONSTRAINT `comic_id` FOREIGN KEY (`comic_id`) REFERENCES `comics` (`IDcomic`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`IDuser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tickets`
