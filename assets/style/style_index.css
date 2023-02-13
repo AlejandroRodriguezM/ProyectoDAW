@@ -1,0 +1,76 @@
+body {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 767px) {
+    body {
+        font-size: 14px;
+    }
+}
+
+.container {
+    background-color: white;
+    border-radius: 10px;
+    width: 30%;
+    margin: auto;
+    margin-top: 2%;
+    padding: 20px;
+}
+
+@media (max-width: 767px) {
+    .container {
+        width: 90%;
+    }
+}
+
+.sec1 {
+    position: relative;
+}
+
+.menu_botones {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+    font-size: 25px !important;
+}
+
+form {
+    width: 400px;
+    margin: auto;
+}
+
+@media (max-width: 767px) {
+    form {
+        width: 80%;
+    }
+}
+
+label {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+}

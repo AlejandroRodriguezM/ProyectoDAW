@@ -1,0 +1,152 @@
+.card {
+    background-color: #fff;
+    border: none;
+}
+
+.form-color {
+    background-color: #fafafa;
+}
+
+.form-control {
+    height: 48px;
+    border-radius: 25px;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #35b69f;
+    outline: 0;
+    box-shadow: none;
+    text-indent: 10px;
+}
+
+.c-badge {
+    background-color: #35b69f;
+    color: white;
+    height: 20px;
+    font-size: 11px;
+    width: 92px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2px;
+}
+
+.comment-text {
+    font-size: 13px;
+}
+
+.wish {
+
+    color: #35b69f;
+}
+
+
+.user-feed {
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+.d-flex.flex-wrap.align-items-center.justify-content-end {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.boton-enviar {
+    margin-left: auto !important;
+}
+
+.form-opinion {
+    width: 100% !important;
+    height: 110px !important;
+}
+
+#rating .rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+}
+
+#rating .rating>input {
+    display: none;
+}
+
+#rating .rating>label {
+    position: relative;
+    width: 1em;
+    font-size: 30px;
+    font-weight: 300;
+    color: #FFD600;
+    cursor: pointer;
+}
+
+#rating .rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0;
+}
+
+#rating .rating>label:hover:before,
+#rating .rating>label:hover~label:before {
+    opacity: 1 !important;
+}
+
+#rating .rating>input:checked~label:before {
+    opacity: 1;
+}
+
+#rating .rating:hover>input:checked~label:before {
+    opacity: 0.4;
+}
+
+#rating .rating-lectura {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    pointer-events: none; /* desactivar eventos del ratón */
+}
+
+#rating .rating-lectura>input {
+    display: none;
+}
+
+#rating .rating-lectura>label {
+    position: relative;
+    width: 1em;
+    font-size: 30px;
+    font-weight: 300;
+    color: #FFD600;
+}
+
+#rating .rating-lectura>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0;
+}
+
+#rating .rating-lectura>input:checked~label:before {
+    opacity: 1;
+}
+
+.rating-lectura input[type="radio"]:hover,
+.rating-lectura label:hover {
+    cursor: default;
+}
+
+.rating-lectura input[type="radio"]:checked,
+.rating-lectura label:hover:before {
+    opacity: 1 !important;
+}
+
+.rating-lectura input[type="radio"]:checked:hover,
+.rating-lectura label:hover:before {
+    opacity: 1 !important;
+}
+
+.justify-content-end {
+    justify-content: flex-end !important;
+}

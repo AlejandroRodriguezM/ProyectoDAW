@@ -509,3 +509,49 @@ function numComics(){
 	$consulta = $consulta->fetchColumn();
 	return $consulta;
 }
+
+function agregar_opinion($id_user,$id_comic,$opinion,$puntuacion){
+	global $conection;
+	$agregado = false;
+	try {
+		$consulta = $conection->prepare("INSERT INTO opiniones_comics(id_comic,id_usuario,opinion,puntuacion) VALUES (?,?,?,?)");
+		$consulta->execute(array($id_comic,$id_user,$opinion,$puntuacion));
+		$agregado = true;
+
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $agregado;
+}
+
+function num_opiniones($id_comic){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from opiniones_comics where id_comic=?");
+	$consulta->execute(array($id_comic));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function opiniones_usuario($id_usuario){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from opiniones_comics where id_usuario=?");
+	$consulta->execute(array($id_usuario));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function mostrar_opiniones($id_comic){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from opiniones_comics where id_comic=?");
+	$consulta->execute(array($id_comic));
+	$consulta->execute();
+	return $consulta;
+}
+
+function valoracion_media($id_comic){
+	global $conection;
+	$consulta = $conection->prepare("SELECT AVG(puntuacion) from opiniones_comics where id_comic=?");
+	$consulta->execute(array($id_comic));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}

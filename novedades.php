@@ -287,6 +287,7 @@ $email = $_SESSION['email'];
             <br>
         </div>
     </div>
+    
     <div style="height: 250px"></div>
     <div id="footer-lite">
         <div class="content">

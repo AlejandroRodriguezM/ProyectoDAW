@@ -482,7 +482,7 @@ const responder_ticket = async (ticket_id) => {
     data.append('ticket_id', id);
     data.append("estado", estado);
     data.append("mensaje", respuesta);
-    
+
     //pass data to php file
     var respond = await fetch("php/user/respon_ticket.php", {
         method: 'POST',
@@ -509,6 +509,51 @@ const responder_ticket = async (ticket_id) => {
             text: result.message,
             footer: "Web Comics"
         })
+    }
+}
+
+const nueva_opinion = async () => {
+    var id_user = document.querySelector("#id_user_opinion").value;
+    var id_comic = document.querySelector("#id_comic").value;
+    var opinion = document.querySelector("#opinion").value;
+    const puntuacion = document.querySelector('input[name="rating"]:checked').value;
+
+    if (opinion.trim() === '' | puntuacion.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('idUser', id_user);
+    data.append("idComic", id_comic);
+    data.append("opinion", opinion);
+    data.append("puntuacion", puntuacion);
+
+    //pass data to php file
+    var respond = await fetch("php/user/nueva_opinion.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_opinion').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
     }
 }
 
