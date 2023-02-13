@@ -19,13 +19,14 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
+    <link rel="stylesheet" href="./assets/style/parallax.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <title>Novedades</title>
     <style>
-        
+
     </style>
 </head>
 
@@ -65,13 +66,13 @@ $email = $_SESSION['email'];
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <a class="nav-link active" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
                 </ul>
             </div>
@@ -152,6 +153,10 @@ $email = $_SESSION['email'];
         </div>
     </div>
 
+    <div class="card-footer text-muted">
+        Design by Alejandro Rodriguez 2022
+    </div>
+
     <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="d-flex justify-content-center">
             <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
@@ -179,125 +184,130 @@ $email = $_SESSION['email'];
         </div>
     </fieldset>
 
-    <div class="view-account" style="position:fixed; top:50px;">
-        <section class="module">
-            <div class="module-inner">
-                <div class="side-bar">
-                    <div class="user-info">
-                        <?php
-                        $dataUser = getUserData($email);
-                        $profilePicture = $dataUser['userPicture'];
-                        echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
-                        ?>
-                        <ul class="meta list list-unstyled">
-                            <li class="name">
-                                <label for="" style="font-size: 0.8em;">Nombre:</label>
-                                <?php
-                                // echo "<div style='height: 150px'>";
-                                $dataUser = getUserData($email);
-                                $userName = $dataUser['userName'];
-                                echo "$userName";
-                                // echo "</div>";
-                                ?>
-
-                            </li>
-                            <li class="email">
-                                <label for="" style="font-size: 0.8em;">Mail: </label>
+    <div class="bgimg-1">
+        <div class="caption">
+            <div class="view-account">
+                <section class="module">
+                    <div class="module-inner">
+                        <div class="side-bar">
+                            <div class="user-info">
                                 <?php
                                 $dataUser = getUserData($email);
-                                $email = $dataUser['email'];
-                                echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                $profilePicture = $dataUser['userPicture'];
+                                echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                 ?>
-                            </li>
-                            <li class="activity">
-                                <label for="" style="font-size: 0.8em;">Logged in: </label>
-                                <?php
-                                $hora = $_SESSION['hour'];
-                                echo "$hora";
-                                ?>
-                            </li>
-                        </ul>
-                    </div>
-                    <nav class="side-menu">
-                        <ul class="nav">
-                            <li class="dropdown" onclick="toggleDropdown(this)">
-                                <a href="#"><span class="fa fa-cog"></span>Escritores</a>
-                                <div class="dropdown-content" id="dropdownContent1">
-                                    <input type="text" id="searchInput1" onkeyup="searchData(1)">
-                                    <?php
-                                    $tabla_escritores = getScreenwriters();
-                                    mostrar_datos($tabla_escritores);
-                                    ?>
-                                </div>
-                            </li>
+                                <ul class="meta list list-unstyled">
+                                    <li class="name">
+                                        <label for="" style="font-size: 0.8em;">Nombre:</label>
+                                        <?php
+                                        // echo "<div style='height: 150px'>";
+                                        $dataUser = getUserData($email);
+                                        $userName = $dataUser['userName'];
+                                        echo "$userName";
+                                        // echo "</div>";
+                                        ?>
 
-                            <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
-                                <a href="#"><span class="fa fa-cog"></span>Artistas</a>
-                                <div class="dropdown-content" id="dropdownContent2">
-                                    <input type="text" id="searchInput2" onkeyup="searchData(2)">
-                                    <?php
-                                    $tabla_escritores = getArtists();
-                                    mostrar_datos($tabla_escritores);
-                                    ?>
-                                </div>
-                            </li>
+                                    </li>
+                                    <li class="email">
+                                        <label for="" style="font-size: 0.8em;">Mail: </label>
+                                        <?php
+                                        $dataUser = getUserData($email);
+                                        $email = $dataUser['email'];
+                                        echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                        ?>
+                                    </li>
+                                    <li class="activity">
+                                        <label for="" style="font-size: 0.8em;">Logged in: </label>
+                                        <?php
+                                        $hora = $_SESSION['hour'];
+                                        echo "$hora";
+                                        ?>
+                                    </li>
+                                </ul>
+                            </div>
+                            <nav class="side-menu">
+                                <ul class="nav">
+                                    <li class="dropdown" onclick="toggleDropdown(this)">
+                                        <a href="#"><span class="fa fa-cog"></span>Escritores</a>
+                                        <div class="dropdown-content" id="dropdownContent1">
+                                            <input type="text" id="searchInput1" onkeyup="searchData(1)">
+                                            <?php
+                                            $tabla_escritores = getScreenwriters();
+                                            mostrar_datos($tabla_escritores);
+                                            ?>
+                                        </div>
+                                    </li>
 
-                            <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
-                                <a href="#"><span class="fa fa-cog"></span>Editorial</a>
-                                <div class="dropdown-content" id="dropdownContent3">
-                                    <input type="text" id="searchInput3" onkeyup="searchData(3)">
-                                    <?php
-                                    $tabla_editorial = getEditorial();
-                                    mostrar_datos($tabla_editorial);
-                                    ?>
-                                </div>
-                            </li>
+                                    <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
+                                        <a href="#"><span class="fa fa-cog"></span>Artistas</a>
+                                        <div class="dropdown-content" id="dropdownContent2">
+                                            <input type="text" id="searchInput2" onkeyup="searchData(2)">
+                                            <?php
+                                            $tabla_escritores = getArtists();
+                                            mostrar_datos($tabla_escritores);
+                                            ?>
+                                        </div>
+                                    </li>
 
-                            <script>
-                                function searchData(id) {
-                                    let input, filter, table, tr, td, i, txtValue;
-                                    input = document.getElementById("searchInput" + id);
-                                    filter = input.value.toUpperCase();
-                                    table = document.getElementById("dropdownContent" + id);
-                                    tr = table.getElementsByTagName("tr");
-                                    for (i = 0; i < tr.length; i++) {
-                                        td = tr[i].getElementsByTagName("td")[0];
-                                        if (td) {
-                                            txtValue = td.textContent || td.innerText;
-                                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                                tr[i].style.display = "";
-                                            } else {
-                                                tr[i].style.display = "none";
+                                    <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
+                                        <a href="#"><span class="fa fa-cog"></span>Editorial</a>
+                                        <div class="dropdown-content" id="dropdownContent3">
+                                            <input type="text" id="searchInput3" onkeyup="searchData(3)">
+                                            <?php
+                                            $tabla_editorial = getEditorial();
+                                            mostrar_datos($tabla_editorial);
+                                            ?>
+                                        </div>
+                                    </li>
+
+                                    <script>
+                                        function searchData(id) {
+                                            let input, filter, table, tr, td, i, txtValue;
+                                            input = document.getElementById("searchInput" + id);
+                                            filter = input.value.toUpperCase();
+                                            table = document.getElementById("dropdownContent" + id);
+                                            tr = table.getElementsByTagName("tr");
+                                            for (i = 0; i < tr.length; i++) {
+                                                td = tr[i].getElementsByTagName("td")[0];
+                                                if (td) {
+                                                    txtValue = td.textContent || td.innerText;
+                                                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                                        tr[i].style.display = "";
+                                                    } else {
+                                                        tr[i].style.display = "none";
+                                                    }
+                                                }
                                             }
                                         }
-                                    }
-                                }
-                            </script>
-                        </ul>
-                    </nav>
+                                    </script>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+            <div style="display: flex; justify-content: center;">
+                <div class="last-pubs">
+                    <h2 style='text-align: center'>Mis novedades</h2>
+                    <br>
                 </div>
             </div>
-        </section>
-    </div>
 
+            <div class="bgimg-2">
+                <div id="footer-lite">
+                    <div class="content">
+                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                        <p class="social">
+                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-    <div style="display: flex; justify-content: center;">
-        <div class="last-pubs">
-            <h2 style='text-align: center'>Mis novedades</h2>
-            <br>
-        </div>
-    </div>
-    
-    <div style="height: 250px"></div>
-    <div id="footer-lite">
-        <div class="content">
-            <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-            <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-            <p class="social">
-                <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-
-            </p>
-            <p class="copyright">©2023 Alejandro Rodriguez</p>
+                        </p>
+                        <p class="copyright">©2023 Alejandro Rodriguez</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

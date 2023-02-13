@@ -219,3 +219,6 @@ Nueva hoja de estilo para añadir comentarios
 añadido la posibilidad de añadir comentarios a comics para puntuar el mismo de forma individual desde infoComics.php
 Se muestran los comentarios de diferentes usuarios en infoComics.php segun el comic
 Creadas 2 nuevas tablas en la base de datos para almacenar los comentarios de un comic en concreto y sobre la pagina en general(en proceso)
+
+13/02/2023 Log 2
+Cambios en parallax, en pruebas
