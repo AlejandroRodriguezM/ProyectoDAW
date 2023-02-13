@@ -24,7 +24,7 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <title>Novedades</title>
+    <title>Mis comics</title>
     <style>
         .custom-table {
             width: 600px;
@@ -254,7 +254,7 @@ $email = $_SESSION['email'];
                                             <div class="dropdown-content" id="dropdownContent1">
                                                 <input type="text" name="buscador_navegacion" id="searchInput1" onkeyup="searchData(1)">
                                                 <?php
-                                                $tabla_escritores = getScreenwriters();
+                                                $tabla_escritores = getScreenwriters_user($id_user);
                                                 mostrar_datos($tabla_escritores);
                                                 ?>
                                             </div>
@@ -265,7 +265,7 @@ $email = $_SESSION['email'];
                                             <div class="dropdown-content" id="dropdownContent2">
                                                 <input type="text" name="buscador_navegacion" id="searchInput2" onkeyup="searchData(2)">
                                                 <?php
-                                                $tabla_escritores = getArtists();
+                                                $tabla_escritores = getArtists_user($id_user);
                                                 mostrar_datos($tabla_escritores);
                                                 ?>
                                             </div>
@@ -276,7 +276,7 @@ $email = $_SESSION['email'];
                                             <div class="dropdown-content" id="dropdownContent3">
                                                 <input type="text" name="buscador_navegacion" id="searchInput3" onkeyup="searchData(3)">
                                                 <?php
-                                                $tabla_escritores = getPortadas();
+                                                $tabla_escritores = getPortadas_user($id_user);
                                                 mostrar_datos($tabla_escritores);
                                                 ?>
                                             </div>
@@ -287,7 +287,7 @@ $email = $_SESSION['email'];
                                             <div class="dropdown-content" id="dropdownContent4">
                                                 <input type="text" id="searchInput4" onkeyup="searchData(4)">
                                                 <?php
-                                                $tabla_editorial = getEditorial();
+                                                $tabla_editorial = getEditorial_user($id_user);
                                                 mostrar_datos($tabla_editorial);
                                                 ?>
                                             </div>
@@ -326,7 +326,7 @@ $email = $_SESSION['email'];
                     <div class="last-pubs">
                         <br>
                         <div class="titulo" style="border-radius:10px">
-                            <h2 style='text-align: center'>Mis novedades</h2>
+                            <h2 style='text-align: center'>Mis comics</h2>
                         </div>
                         <br>
                     </div>
@@ -406,7 +406,7 @@ $email = $_SESSION['email'];
             }
 
             $.ajax({
-                url: "php/user/comics.php",
+                url: "php/user/comics_user.php",
                 data: data,
                 success: function(data) {
                     totalComics = $(data).filter("#total-comics").val();

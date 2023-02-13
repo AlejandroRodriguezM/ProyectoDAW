@@ -557,6 +557,109 @@ const nueva_opinion = async () => {
     }
 }
 
+const nueva_lista = async () => {
+    var nombre_lista = document.querySelector("#nombre_lista").value;
+    var id_user = document.querySelector("#id_user").value;
+
+
+    if (nombre_lista.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('nombre_lista', nombre_lista);
+    data.append("id_user", id_user);
+
+    //pass data to php file
+    var respond = await fetch("php/user/new_lista.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_lista').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
+const guardar_comic = async (id_comic) => {
+    const id_user = document.querySelector("#id_user").value;
+
+    const data = new FormData();
+    data.append("id_comic", id_comic);
+    data.append("id_user", id_user);
+
+    const respond = await fetch("php/user/guardar_comic.php", {
+        method: "POST",
+        body: data,
+    });
+
+    const result = await respond.json();
+
+    if (result.success == false) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+};
+
+const quitar_comic = async (id_comic) => {
+    const id_user = document.querySelector("#id_user").value;
+
+    const data = new FormData();
+    data.append("id_comic", id_comic);
+    data.append("id_user", id_user);
+
+    const respond = await fetch("php/user/quitar_comic.php", {
+        method: "POST",
+        body: data,
+    });
+
+    const result = await respond.json();
+
+    if (result.success == false) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+};
+
 
 // const delete_user = async () => {
 //     var id = document.querySelector("#IDuser").value;

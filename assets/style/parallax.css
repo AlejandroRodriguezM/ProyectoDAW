@@ -1,7 +1,7 @@
 .bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
     position: relative;
     opacity: 0.8;
-    /* background-attachment: fixed; */
+    background-attachment: fixed;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -36,21 +36,5 @@
     min-height: 400px;
 }
 
-.view-account {
-    position: fixed !important;
-    top: 50px;
-    /* background-color: white; */
-    z-index: 100;
-    margin-top: 30px;
-  }
 
-  .side-bar {
-    background-color: rgb(221, 217, 217);
-    position: fixed;
-    margin-top: 20px;
-    color: black;
-  }
 
-  span,label,a{
-    color: black;
-  }

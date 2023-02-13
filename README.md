@@ -222,3 +222,16 @@ Creadas 2 nuevas tablas en la base de datos para almacenar los comentarios de un
 
 13/02/2023 Log 2
 Cambios en parallax, en pruebas
+
+13/02/2023 Log 3
+Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
+Se ha añadido la funcion de la pestaña "Mi coleccion" en el fichero micoleccion.php
+Se han creado 2 ficheros nuevos relacionados a micoleccion.php:
+ - mis_comics.php
+ - listas_lectura.php
+Para poder ver correctamente mis_comics.php, se ha creado otra API llamada comics_user.php, donde solamente se mostraran aquellos comics que tenga el usuario guardados en
+la base de datos.
+Se han creado mas de 10 funciones nuevas para contrololar todo lo relacionado a lo mencionado anteriormente.
+Se ha modificado la base de datos y se han añadido 2 tablas nuevas.
+Ahora se pueden guardar comics pulsando en el boton bajo la portada y desde infoComics.php se ha añadido un boton para añadir ese comic en concreto
+Cuando un comic es guardado se mostrara de forma normal ya pulsado, si se vuelve a pulsar se eliminara de la base de datos.

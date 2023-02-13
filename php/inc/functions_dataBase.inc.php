@@ -555,3 +555,70 @@ function valoracion_media($id_comic){
 	$consulta = $consulta->fetchColumn();
 	return $consulta;
 }
+
+function nueva_lista($id_user,$nombre_lista){
+	global $conection;
+	$agregado = false;
+	try {
+		$consulta = $conection->prepare("INSERT INTO lista_comics(nombre_lista,id_user) VALUES (?,?)");
+		$consulta->execute(array($nombre_lista,$id_user));
+		$agregado = true;
+
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $agregado;
+}
+
+function check_guardado($id_user,$id_comic){
+	global $conection;
+	$guardado = false;
+	$consulta = $conection->prepare("SELECT COUNT(*) from comics_guardados where user_id=? AND comic_id=?");
+	$consulta->execute(array($id_user,$id_comic));
+	$consulta = $consulta->fetchColumn();
+	if ($consulta > 0) {
+		$guardado = true;
+	}
+	// var_dump($guardado);
+	return $guardado;
+}
+
+function guardar_comic($id_user,$id_comic){
+	global $conection;
+	$agregado = false;
+	try {
+		$consulta = $conection->prepare("INSERT INTO comics_guardados(user_id,comic_id) VALUES (?,?)");
+		$consulta->execute(array($id_user,$id_comic));
+		$agregado = true;
+
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $agregado;
+}
+
+function quitar_comic($id_user,$id_comic){
+	global $conection;
+	$agregado = false;
+	try {
+		$consulta = $conection->prepare("DELETE FROM comics_guardados WHERE user_id=? AND comic_id=?");
+		$consulta->execute(array($id_user,$id_comic));
+		$agregado = true;
+
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $agregado;
+}
+
+
+
+function get_comics_guardados($limit, $offset,$id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from comics_guardados JOIN comics ON comics_guardados.comic_id=comics.IDcomic where user_id=:id_user ORDER BY comic_id  DESC LIMIT :limit OFFSET :offset");
+	$consulta->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+	$consulta->bindParam(':limit', $limit, PDO::PARAM_INT);
+	$consulta->bindParam(':offset', $offset, PDO::PARAM_INT);
+	$consulta->execute();
+	return $consulta;
+}

@@ -38,6 +38,44 @@ $email = $_SESSION['email'];
         .link-grey:hover {
             color: #00913b;
         }
+
+        .video-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .video-container iframe:nth-child(1) {
+            margin-right: 20px;
+        }
+
+        .video-container iframe:nth-child(2) {
+            margin-right: 20px;
+        }
+
+        .video-container iframe:nth-child(3) {
+            margin-left: auto;
+        }
+
+        .ver-mas-btn {
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin-left: 1026px !important;
+            text-align: right;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ver-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -80,7 +118,7 @@ $email = $_SESSION['email'];
                         <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
@@ -217,6 +255,7 @@ $email = $_SESSION['email'];
 
     <div class="bgimg-1">
         <div class="caption">
+            <br>
             <div style="display: flex; justify-content: center;">
                 <!-- Carousel -->
                 <div id="carousel-publi" class="carousel slide" data-bs-ride="carousel">
@@ -256,40 +295,47 @@ $email = $_SESSION['email'];
             <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
                     <div class="last-pubs">
-                        <div class="titulo" style="display: flex; justify-content: center; ">
-                            <h2 style="align-items: center;color:black">Recomendaciones</h2>
-
+                        <div class="titulo">
+                            <h2>Recomendaciones</h2>
                         </div>
                         <a href='novedades.php'>
-                            <button class="v2-cover-list" style='margin-left:1055px !important;'>Ver mas</button>
+                            <button class="ver-mas-btn">Ver más</button>
                         </a>
-                        <br>
                         <div class="scrollable-h comic-full">
                             <div class="scrollable-h-content">
                                 <ul class="v2-cover-list">
                                     <?php
                                     $total_comics = numComics();
+                                    echo "<input type='hidden' id='id_user' value='$id_user'>";
+
                                     for ($i = 0; $i < 8; $i++) {
                                         $numero = randomComic();
                                         $data_comic = getDataComic($numero);
-                                        $id = $data_comic['IDcomic'];
+                                        $id_comic = $data_comic['IDcomic'];
                                         $titulo = $data_comic['nomComic'];
                                         $numComic = $data_comic['numComic'];
                                         $variante = $data_comic['nomVariante'];
 
                                         echo "<li id='comicyXwd2' class='get-it'>
-                                        <a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
+                                        <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
                                         <span class='cover'>
                                         <img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>
                                         </span>
                                         <strong><?php echo $titulo ?></strong>
                                         <span class='issue-number issue-number-l1'>$numComic</span>
                                     </a>
-                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id'>
-                                    <button data-item-id='yXwd2' class='add' >
+                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
+                                    
+                                        if (check_guardado($id_user, $id_comic)) {
+                                            echo "<button data-item-id='yXwd2' class='rem' >
                                         <span class='sp-icon'>Lo tengo</span>
-                                    </button>
-                                </li>";
+                                    </button>";
+                                        } else {
+                                            echo "<button data-item-id='yXwd2' class='add' >
+                                        <span class='sp-icon'>Lo tengo</span>
+                                        </button>";
+                                        }
+                                        echo "</li>";
                                     }
                                     ?>
                                 </ul>
@@ -299,10 +345,14 @@ $email = $_SESSION['email'];
                 </div>
             </div>
             <div class="container mt-5">
-                <h2>Videos de interes</h2>
-                <div style="display: flex;">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in- picture" allowfullscreen style="margin-right: 20px;"></iframe>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in- picture" allowfullscreen></iframe>
+                <div class="titulo">
+                    <h2>Videos de interes</h2>
+                </div>
+                <hr>
+                <div class="video-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -310,7 +360,7 @@ $email = $_SESSION['email'];
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-8">
                         <div class="headings d-flex justify-content-between align-items-center mb-3">
-                            <h5>Opiniones de los usuarios</h5>
+                            <h2 style="color: black">Opinion de los usuarios</h2>
                         </div>
                         <div class="card p-3">
                             <div class="d-flex justify-content-between align-items-center">
@@ -355,36 +405,65 @@ $email = $_SESSION['email'];
         <div class="bgimg-2">
             <div id="footer-lite">
                 <div class="content">
-                    <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                    <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
                     <!-- add social media with icons -->
                     <p class="social">
                         <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
                         <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
                     </p>
-                    <p class="copyright">©2023 Alejandro Rodriguez</p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>
         <script>
-            const buttons = document.querySelectorAll('.add');
-
-            buttons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    if (button.classList.contains('add')) {
-                        button.classList.remove('add');
-                        button.classList.add('rem');
-                        const id_comic = button.previousElementSibling.value;
-                        console.log(id_comic);
-                    } else {
-                        button.classList.remove('rem');
-                        button.classList.add('add');
-                        const id_comic = button.previousElementSibling.value;
-                        console.log(id_comic);
-                    }
+            (function() {
+                const buttonsAdd = document.querySelectorAll('.add');
+                buttonsAdd.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        if (button.classList.contains('add')) {
+                            button.classList.remove('add');
+                            button.classList.add('rem');
+                            const id_comic = button.previousElementSibling.value;
+                            guardar_comic(id_comic);
+                        } else if (button.classList.contains('rem')) {
+                            button.classList.remove('rem');
+                            button.classList.add('add');
+                            const id_comic = button.previousElementSibling.value;
+                            quitar_comic(id_comic);
+                        }
+                    });
                 });
-            });
+
+                const buttonsRem = document.querySelectorAll('.rem');
+                buttonsRem.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        if (button.classList.contains('rem')) {
+                            button.classList.remove('rem');
+                            button.classList.add('add');
+                            const id_comic = button.previousElementSibling.value;
+                            quitar_comic(id_comic);
+                        } else if (button.classList.contains('add')) {
+                            button.classList.remove('add');
+                            button.classList.add('rem');
+                            const id_comic = button.previousElementSibling.value;
+                            guardar_comic(id_comic);
+
+                        }
+                    });
+                });
+            })();
         </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

@@ -15,20 +15,21 @@ if (isset($_GET['checkboxChecked'])) {
     $search_count = count($search);
 
     if ($search_count == 1) {
-        $where_clause = " WHERE nomGuionista LIKE '%" . $search[0] . "%' OR nomDibujante LIKE '%" . $search[0] . "%' OR nomEditorial = '" . $search[0] . "'";
+        $where_clause = " WHERE comics_guardados.comic_id = comics.IDcomic AND comics_guardados.user_id = $id_user AND (nomGuionista LIKE '%" . $search[0] . "%' OR nomDibujante LIKE '%" . $search[0] . "%' OR nomEditorial = '" . $search[0] . "')";
     } else {
         $where_clauses = [];
         for ($i = 0; $i < $search_count; $i++) {
             $where_clauses[] = "(nomGuionista LIKE '%" . $search[$i] . "%' OR nomDibujante LIKE '%" . $search[$i] . "%' OR nomEditorial = '" . $search[$i] . "')";
         }
-        $where_clause = " WHERE " . implode(' OR ', $where_clauses);
+        $where_clause = " WHERE comics_guardados.comic_id = comics.IDcomic AND comics_guardados.user_id = $id_user AND (" . implode(' OR ', $where_clauses) . ")";
     }
-
-    $comics = $conection->prepare("SELECT * FROM comics" . $where_clause);
+    $comics = $conection->prepare("SELECT * FROM comics_guardados,comics" . $where_clause);
     $comics->execute();
 } else {
-    $comics = return_comic_published($limit, $offset);
+    $comics = get_comics_guardados($limit, $offset,$id_user);
 }
+
+
 $contador = 0;
 $total_comics = numComics();
 echo "<input type='hidden' id='id_user' value='$id_user'>";
@@ -41,22 +42,22 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
     $fecha = $data_comic['date_published'];
 
     echo "<li id='comicyXwd2' class='get-it'>
-            <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
-              <span class='cover'>
-                <img src='./assets/covers_img/$id_comic.jpg' alt='$titulo - $variante / #$numComic'>
-              </span>
-              <strong>$titulo</strong>
-              <span class='issue-number issue-number-l1'>$numComic</span>
-            </a>
-            <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
+                <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
+                  <span class='cover'>
+                    <img src='./assets/covers_img/$id_comic.jpg' alt='$titulo - $variante / #$numComic'>
+                  </span>
+                  <strong>$titulo</strong>
+                  <span class='issue-number issue-number-l1'>$numComic</span>
+                </a>
+                <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
     if (check_guardado($id_user, $id_comic)) {
         echo "<button data-item-id='yXwd2' class='rem' >
-                <span class='sp-icon'>Lo tengo</span>
-            </button>";
+                    <span class='sp-icon'>Lo tengo</span>
+                </button>";
     } else {
         echo "<button data-item-id='yXwd2' class='add' >
-                <span class='sp-icon'>Lo tengo</span>
-                </button>";
+                    <span class='sp-icon'>Lo tengo</span>
+                    </button>";
     }
     echo "</li>";
     $contador++;
@@ -64,7 +65,6 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
         echo "<ul></ul>";
     }
 }
-
 
 ?>
 
@@ -100,7 +100,7 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
                     button.classList.add('rem');
                     const id_comic = button.previousElementSibling.value;
                     guardar_comic(id_comic);
-                    
+
                 }
             });
         });
