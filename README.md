@@ -236,6 +236,8 @@ Se ha modificado la base de datos y se han añadido 2 tablas nuevas.
 Ahora se pueden guardar comics pulsando en el boton bajo la portada y desde infoComics.php se ha añadido un boton para añadir ese comic en concreto
 Cuando un comic es guardado se mostrara de forma normal ya pulsado, si se vuelve a pulsar se eliminara de la base de datos.
 
-
 24/02/2023 Log 1
 Uso de la api de marvel para tener mas de 6000 comics nuevos y descripciones
+
+24/02/2023 Log 2
+Modificados ficheros php para poder visualizar correctamente los datos de la base de datos y modificacion de varios estilos.
