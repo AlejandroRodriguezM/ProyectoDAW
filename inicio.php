@@ -315,11 +315,11 @@ $email = $_SESSION['email'];
                                         $titulo = $data_comic['nomComic'];
                                         $numComic = $data_comic['numComic'];
                                         $variante = $data_comic['nomVariante'];
-
+                                        $cover = $data_comic['Cover'];
                                         echo "<li id='comicyXwd2' class='get-it'>
                                         <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
                                         <span class='cover'>
-                                        <img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>
+                                        <img src='$cover' alt='$titulo - $variante / #$numComic'>
                                         </span>
                                         <strong><?php echo $titulo ?></strong>
                                         <span class='issue-number issue-number-l1'>$numComic</span>

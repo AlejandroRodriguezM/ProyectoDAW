@@ -443,12 +443,19 @@ function countComicSearch($search){
 	return $consulta;
 }
 
-function randomComic()
-{
-	$num = count_comic_total();
-	$random = rand(1, $num);
-	return $random;
+function randomComic() {
+    global $conection;
+
+    $stmt = $conection->query("SELECT IDcomic FROM comics ORDER BY RAND() LIMIT 1");
+
+    if ($stmt) {
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['IDcomic'];
+    } else {
+        return null;
+    }
 }
+
 
 function count_comic_total(){
 	global $conection;
@@ -461,7 +468,7 @@ function count_comic_total(){
 function return_comic_published($limit, $offset) {
 	global $conection;
     // Build the query to retrieve the comic books
-    $query = "SELECT IDcomic, numComic, nomComic, nomVariante, date_published FROM comics WHERE date_published IS NOT NULL ORDER BY date_published DESC LIMIT :limit OFFSET :offset";
+    $query = "SELECT IDcomic, numComic, nomComic, nomVariante, date_published, Cover FROM comics WHERE date_published IS NOT NULL ORDER BY date_published DESC LIMIT :limit OFFSET :offset";
 
     // Prepare the statement
     $stmt = $conection->prepare($query);
