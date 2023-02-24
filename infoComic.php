@@ -3,6 +3,11 @@ session_start();
 include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 $email = $_SESSION['email'];
+
+$id_comic = $_GET['IDcomic'];
+$data_comic = getDataComic($id_comic);
+$profilePicture = $data_comic['Cover'];
+$descripcion = get_descripcion($id_comic);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -140,6 +145,22 @@ $email = $_SESSION['email'];
 
         #myButton.active:before {
             content: "Lo tengo";
+        }
+
+        .bgimg-1::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('<?php echo $profilePicture ?>');
+            filter: blur(5px);
+            z-index: -1;
+            background-attachment: fixed;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
         }
     </style>
 </head>
@@ -301,7 +322,7 @@ $email = $_SESSION['email'];
         Design by Alejandro Rodriguez 2022
     </div>
 
-    <div class="bgimg-1">
+    <div class="bgimg-1" style="background-image: url(<?php echo $profilePicture ?>);background-size: cover !important;">
         <br>
         <div class="caption">
             <div class="container mt-5" style="margin-top:auto !important;background-color:#ffffff88">
@@ -312,9 +333,7 @@ $email = $_SESSION['email'];
 
                                 <div class="user-info">
                                     <?php
-                                    $id_comic = $_GET['IDcomic'];
-                                    $data_comic = getDataComic($id_comic);
-                                    $profilePicture = $data_comic['Cover'];
+
                                     echo "<input type='hidden' id='id_comic' value='$id_comic'>";
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:120%; height: 120%;margin-left:-15px' />";
                                     ?>
@@ -355,7 +374,12 @@ $email = $_SESSION['email'];
                                         echo "  </div>";
                                         echo "  <div class='comic-detail'>";
                                         echo "    <label class='comic-label'>Variante: </label>";
-                                        echo "    <span class='comic-value'><a href='search_data.php?search=" . $variante . "'>$variante</a></span>";
+                                        echo "    <span class='comic-value'>";
+                                        $variantes = explode("-", $variante);
+                                        foreach ($variantes as $variante) {
+                                            echo "<a href='search_data.php?search=" . $variante . "'>$variante</a>";
+                                        }
+                                        echo "</span>";
                                         echo "  </div>";
                                         echo "  <div class='comic-detail'>";
                                         echo "    <label class='comic-label'>Formato: </label>";
@@ -364,85 +388,97 @@ $email = $_SESSION['email'];
                                         echo "  <div class='comic-detail'>";
                                         echo "    <label class='comic-label'>Fecha de creacion: </label>";
                                         echo "    <span class='comic-value'><a href='search_data.php?search=" . $fechaCreacion . "'>$fechaCreacion</a></span>";
-
                                         echo "  </div>";
                                         echo "  <div class='comic-detail'>";
                                         echo "    <label class='comic-label'>Editorial: </label>";
                                         echo "    <span class='comic-value'><a href='search_data.php?search=" . $editorial . "'>$editorial</a></span>";
-
                                         echo "  </div>";
                                         echo "  <div class='comic-detail'>";
                                         echo "    <label class='comic-label'>Autor: </label>";
-                                        echo "    <span class='comic-value'><a href='search_data.php?search=" . $autor . "'>$autor</a></span>";
+                                        echo "<span class='comic-value'>";
+                                        $autores = explode("-", $autor);
+                                        foreach ($autores as $autor) {
+                                            echo "<a href='search_data.php?search=" . $autor . "'>$autor</a>";
+                                        }
+                                        echo "</span>";
                                         echo "  </div>";
                                         echo "  <div class='comic-detail'>";
                                         echo "    <label class='comic-label'>Dibujante: </label>";
-                                        echo "    <span class='comic-value'><a href='search_data.php?search=" . $dibujante . "'>$dibujante</a></span>";
+                                        echo "<span class='comic-value'>";
+                                        $dibujantes = explode("-", $dibujante);
+                                        foreach ($dibujantes as $dibujante) {
+                                            echo "<a href='search_data.php?search=" . $dibujante . "'>$dibujante</a>";
+                                        }
+                                        echo "</span>";
                                         echo "  </div>";
                                         echo "  <div class='comic-detail'>";
                                         echo "    <label class='comic-label'>Procedencia: </label>";
                                         echo "    <span class='comic-value'><a href='search_data.php?search=" . $procedencia . "'>$procedencia</a></span>";
-
                                         echo "  </div>";
                                         echo "  <div class='comic-detail'>";
                                         echo "    <label class='comic-label'>Valoracion media: </label>";
-
                                         $full_stars = floor($valoracion_media);
                                         $half_star = $valoracion_media - $full_stars >= 0.5 ? 1 : 0;
                                         $empty_stars = 5 - $full_stars - $half_star;
-
                                         for ($i = 0; $i < $full_stars; $i++) {
                                             echo '<i class="fas fa-star"></i>';
                                         }
-
                                         if ($half_star) {
                                             echo '<i class="fas fa-star-half-alt"></i>';
                                         }
-
                                         for ($i = 0; $i < $empty_stars; $i++) {
                                             echo '<i class="far fa-star"></i>';
                                         }
-
                                         echo "  </div>";
-
                                         echo "</div>";
+
                                         ?>
                                 </fieldset>
+
+                                <fieldset class="fieldset">
+                                    <legend class="fieldset-title" style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px;">Descripción del cómic</legend>
+                                    <div class="form-group avatar" style="background-color: #ECECEC; border-radius: 10px; padding: 20px;">
+                                        <div class="d-flex flex-column align-items-center">
+                                            <p style="color: #4A4A4A; font-family: Comic Sans MS, cursive, sans-serif; font-size: 1.5em; line-height: 1.5em; text-align: justify;"><?php echo $descripcion ?></p>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
 
                                 <div class="card">
                                     <div class="p-3">
                                         <h6>Opiniones</h6>
                                     </div>
                                     <form action="" method='POST' id='form_opinion' onsubmit="return false;" style="width:auto">
-                                    <div class="d-flex flex-column form-color p-3">
-                                        <div class="d-flex flex-wrap align-items-center">
-                                            <img src='<?php echo $picture ?>' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-                                            <div class="pr-2">
-                                                <h6 class="mb-0" style="margin-left:10px"><?php echo $name ?></h6>
-                                            </div>
-                                            <textarea id='opinion' class="form-control mt-2" placeholder="Pon tu comentario..." style="width: 100% !important; height: 110px !important; resize: none !important;"></textarea>
-                                            <div class="d-flex flex-row align-items-center mr-2" id="rating">
-                                                <label for="rating" class="mr-2">Valoracion:</label>
-                                                <div class="rating" style="margin-left:5px">
-                                                    <input type="radio" name="rating" value="5" id="5">
-                                                    <label for="5">☆</label>
-                                                    <input type="radio" name="rating" value="4" id="4">
-                                                    <label for="4">☆</label>
-                                                    <input type="radio" name="rating" value="3" id="3">
-                                                    <label for="3">☆</label>
-                                                    <input type="radio" name="rating" value="2" id="2">
-                                                    <label for="2">☆</label>
-                                                    <input type="radio" name="rating" value="1" id="1">
-                                                    <label for="1">☆</label>
+                                        <div class="d-flex flex-column form-color p-3">
+                                            <div class="d-flex flex-wrap align-items-center">
+                                                <img src='<?php echo $picture ?>' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
+                                                <div class="pr-2">
+                                                    <h6 class="mb-0" style="margin-left:10px"><?php echo $name ?></h6>
+                                                </div>
+                                                <textarea id='opinion' class="form-control mt-2" placeholder="Pon tu comentario..." style="width: 100% !important; height: 110px !important; resize: none !important;"></textarea>
+                                                <div class="d-flex flex-row align-items-center mr-2" id="rating">
+                                                    <label for="rating" class="mr-2">Valoracion:</label>
+                                                    <div class="rating" style="margin-left:5px">
+                                                        <input type="radio" name="rating" value="5" id="5">
+                                                        <label for="5">☆</label>
+                                                        <input type="radio" name="rating" value="4" id="4">
+                                                        <label for="4">☆</label>
+                                                        <input type="radio" name="rating" value="3" id="3">
+                                                        <label for="3">☆</label>
+                                                        <input type="radio" name="rating" value="2" id="2">
+                                                        <label for="2">☆</label>
+                                                        <input type="radio" name="rating" value="1" id="1">
+                                                        <label for="1">☆</label>
+                                                    </div>
+                                                </div>
+                                                <div class="boton-enviar d-flex flex-wrap align-items-center justify-content-end">
+                                                    <input type="hidden" id='id_user_opinion' value='<?php echo $id_user ?>'>
+                                                    <input type="hidden" id='id_comic' value='<?php echo $id_comic ?>'>
+                                                    <button type="submit" class="btn btn-primary boton-enviar" onclick="nueva_opinion()">Enviar</button>
                                                 </div>
                                             </div>
-                                            <div class="boton-enviar d-flex flex-wrap align-items-center justify-content-end">
-                                                <input type="hidden" id='id_user_opinion' value='<?php echo $id_user ?>'>
-                                                <input type="hidden" id='id_comic' value='<?php echo $id_comic ?>'>
-                                                <button type="submit" class="btn btn-primary boton-enviar" onclick="nueva_opinion()">Enviar</button>
-                                            </div>
                                         </div>
-                                    </div>
                                     </form>
                                     <div class="comentarios"></div>
                                 </div>
@@ -475,13 +511,13 @@ $email = $_SESSION['email'];
                                         $titulo = $data_comic['nomComic'];
                                         $numComic = $data_comic['numComic'];
                                         $variante = $data_comic['nomVariante'];
-
+                                        $cover = $data_comic['Cover'];
                                         echo "<li id='comicyXwd2' class='get-it'>
                                         <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
                                         <span class='cover'>
-                                        <img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>
+                                        <img src='$cover' alt='$titulo - $variante / #$numComic'>
                                         </span>
-                                        <strong>$titulo</strong>
+                                        <strong><?php echo $titulo ?></strong>
                                         <span class='issue-number issue-number-l1'>$numComic</span>
                                     </a>
                                     <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";

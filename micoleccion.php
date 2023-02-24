@@ -414,30 +414,38 @@ $email = $_SESSION['email'];
                         <div class="scrollable-h comic-full">
                             <div class="scrollable-h-content">
                                 <ul class="v2-cover-list">
-                                    <?php
+                                <?php
                                     $total_comics = numComics();
-                                    echo "<input type='hidden' id='id_user' value='$id_user'>'";
+                                    echo "<input type='hidden' id='id_user' value='$id_user'>";
+
                                     for ($i = 0; $i < 8; $i++) {
                                         $numero = randomComic();
                                         $data_comic = getDataComic($numero);
-                                        $id = $data_comic['IDcomic'];
+                                        $id_comic = $data_comic['IDcomic'];
                                         $titulo = $data_comic['nomComic'];
                                         $numComic = $data_comic['numComic'];
                                         $variante = $data_comic['nomVariante'];
-
+                                        $cover = $data_comic['Cover'];
                                         echo "<li id='comicyXwd2' class='get-it'>
-                                        <a href='infoComic.php?IDcomic=$id' title='$titulo - Variante: $variante / $numComic' class='title'>
+                                        <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
                                         <span class='cover'>
-                                        <img src='./assets/covers_img/$numero.jpg' alt='$titulo - $variante / #$numComic'>
+                                        <img src='$cover' alt='$titulo - $variante / #$numComic'>
                                         </span>
                                         <strong><?php echo $titulo ?></strong>
                                         <span class='issue-number issue-number-l1'>$numComic</span>
                                     </a>
-                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id'>
-                                    <button data-item-id='yXwd2' class='add' >
+                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
+                                    
+                                        if (check_guardado($id_user, $id_comic)) {
+                                            echo "<button data-item-id='yXwd2' class='rem' >
                                         <span class='sp-icon'>Lo tengo</span>
-                                    </button>
-                                </li>";
+                                    </button>";
+                                        } else {
+                                            echo "<button data-item-id='yXwd2' class='add' >
+                                        <span class='sp-icon'>Lo tengo</span>
+                                        </button>";
+                                        }
+                                        echo "</li>";
                                     }
                                     ?>
                                 </ul>

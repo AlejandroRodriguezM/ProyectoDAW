@@ -381,20 +381,22 @@ function search_user($search)
 	return $consulta;
 }
 
-function search_comics($search){
+function search_comics($search)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from comics WHERE nomComic LIKE ? OR nomVariante LIKE ? OR nomEditorial LIKE ? OR Formato LIKE ? OR Procedencia LIKE ? OR date_published LIKE ? OR nomGuionista LIKE ? OR nomDibujante LIKE ?");
 	$consulta->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
 	return $consulta;
 }
 
-function existe_comic($search){
+function existe_comic($search)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from comics WHERE nomComic LIKE ? OR nomVariante LIKE ? OR nomEditorial LIKE ? OR Formato LIKE ? OR Procedencia LIKE ? OR date_published LIKE ? OR nomGuionista LIKE ? OR nomDibujante LIKE ?");
 	$consulta->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
 	if ($consulta->fetchColumn()) {
 		return true;
-	}else{
+	} else {
 		return false;
 	}
 }
@@ -419,7 +421,8 @@ function showUsers()
 	return $consulta;
 }
 
-function showComics(){
+function showComics()
+{
 	global $conection;
 	$sql = "SELECT * FROM comics";
 	$consulta = $conection->query($sql);
@@ -435,7 +438,8 @@ function countUserSearch($search)
 	return $consulta;
 }
 
-function countComicSearch($search){
+function countComicSearch($search)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT COUNT(*) from comics WHERE nomComic LIKE ? OR nomVariante LIKE ? OR nomEditorial LIKE ? OR Formato LIKE ? OR Procedencia LIKE ? OR date_published LIKE ? OR nomGuionista LIKE ? OR nomDibujante LIKE ?");
 	$consulta->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
@@ -443,21 +447,23 @@ function countComicSearch($search){
 	return $consulta;
 }
 
-function randomComic() {
-    global $conection;
+function randomComic()
+{
+	global $conection;
 
-    $stmt = $conection->query("SELECT IDcomic FROM comics ORDER BY RAND() LIMIT 1");
+	$stmt = $conection->query("SELECT IDcomic FROM comics ORDER BY RAND() LIMIT 1");
 
-    if ($stmt) {
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row['IDcomic'];
-    } else {
-        return null;
-    }
+	if ($stmt) {
+		$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		return $row['IDcomic'];
+	} else {
+		return null;
+	}
 }
 
 
-function count_comic_total(){
+function count_comic_total()
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT COUNT(*) from comics");
 	$consulta->execute();
@@ -465,26 +471,28 @@ function count_comic_total(){
 	return $consulta;
 }
 
-function return_comic_published($limit, $offset) {
+function return_comic_published($limit, $offset)
+{
 	global $conection;
-    // Build the query to retrieve the comic books
-    $query = "SELECT IDcomic, numComic, nomComic, nomVariante, date_published, Cover FROM comics WHERE date_published IS NOT NULL ORDER BY date_published DESC LIMIT :limit OFFSET :offset";
+	// Build the query to retrieve the comic books
+	$query = "SELECT IDcomic, numComic, nomComic, nomVariante, date_published, Cover FROM comics WHERE date_published IS NOT NULL ORDER BY date_published DESC LIMIT :limit OFFSET :offset";
 
-    // Prepare the statement
-    $stmt = $conection->prepare($query);
+	// Prepare the statement
+	$stmt = $conection->prepare($query);
 
-    // Bind the parameters
-    $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+	// Bind the parameters
+	$stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+	$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 
-    // Execute the statement
-    $stmt->execute();
+	// Execute the statement
+	$stmt->execute();
 
-    // Return the result
-    return $stmt;
+	// Return the result
+	return $stmt;
 }
 
-function getDataComic($id){
+function getDataComic($id)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from comics where IDcomic=?");
 	$consulta->execute(array($id));
@@ -492,7 +500,8 @@ function getDataComic($id){
 	return $consulta;
 }
 
-function get_comic(){
+function get_comic()
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from comics");
 	$consulta->execute();
@@ -500,7 +509,8 @@ function get_comic(){
 	return $consulta;
 }
 
-function getDatacomicName($search){
+function getDatacomicName($search)
+{
 	global $conection;
 	//return 5 comics but do not repit the id
 	$consulta = $conection->prepare("SELECT * from comics where nomComic LIKE ?");
@@ -509,7 +519,8 @@ function getDatacomicName($search){
 	return $consulta;
 }
 
-function numComics(){
+function numComics()
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT COUNT(*) from comics");
 	$consulta->execute();
@@ -517,21 +528,22 @@ function numComics(){
 	return $consulta;
 }
 
-function agregar_opinion($id_user,$id_comic,$opinion,$puntuacion){
+function agregar_opinion($id_user, $id_comic, $opinion, $puntuacion)
+{
 	global $conection;
 	$agregado = false;
 	try {
 		$consulta = $conection->prepare("INSERT INTO opiniones_comics(id_comic,id_usuario,opinion,puntuacion) VALUES (?,?,?,?)");
-		$consulta->execute(array($id_comic,$id_user,$opinion,$puntuacion));
+		$consulta->execute(array($id_comic, $id_user, $opinion, $puntuacion));
 		$agregado = true;
-
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
 	return $agregado;
 }
 
-function num_opiniones($id_comic){
+function num_opiniones($id_comic)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT COUNT(*) from opiniones_comics where id_comic=?");
 	$consulta->execute(array($id_comic));
@@ -539,7 +551,8 @@ function num_opiniones($id_comic){
 	return $consulta;
 }
 
-function opiniones_usuario($id_usuario){
+function opiniones_usuario($id_usuario)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT COUNT(*) from opiniones_comics where id_usuario=?");
 	$consulta->execute(array($id_usuario));
@@ -547,7 +560,8 @@ function opiniones_usuario($id_usuario){
 	return $consulta;
 }
 
-function mostrar_opiniones($id_comic){
+function mostrar_opiniones($id_comic)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from opiniones_comics where id_comic=?");
 	$consulta->execute(array($id_comic));
@@ -555,7 +569,8 @@ function mostrar_opiniones($id_comic){
 	return $consulta;
 }
 
-function valoracion_media($id_comic){
+function valoracion_media($id_comic)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT AVG(puntuacion) from opiniones_comics where id_comic=?");
 	$consulta->execute(array($id_comic));
@@ -563,25 +578,26 @@ function valoracion_media($id_comic){
 	return $consulta;
 }
 
-function nueva_lista($id_user,$nombre_lista){
+function nueva_lista($id_user, $nombre_lista)
+{
 	global $conection;
 	$agregado = false;
 	try {
 		$consulta = $conection->prepare("INSERT INTO lista_comics(nombre_lista,id_user) VALUES (?,?)");
-		$consulta->execute(array($nombre_lista,$id_user));
+		$consulta->execute(array($nombre_lista, $id_user));
 		$agregado = true;
-
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
 	return $agregado;
 }
 
-function check_guardado($id_user,$id_comic){
+function check_guardado($id_user, $id_comic)
+{
 	global $conection;
 	$guardado = false;
 	$consulta = $conection->prepare("SELECT COUNT(*) from comics_guardados where user_id=? AND comic_id=?");
-	$consulta->execute(array($id_user,$id_comic));
+	$consulta->execute(array($id_user, $id_comic));
 	$consulta = $consulta->fetchColumn();
 	if ($consulta > 0) {
 		$guardado = true;
@@ -590,37 +606,36 @@ function check_guardado($id_user,$id_comic){
 	return $guardado;
 }
 
-function guardar_comic($id_user,$id_comic){
+function guardar_comic($id_user, $id_comic)
+{
 	global $conection;
 	$agregado = false;
 	try {
 		$consulta = $conection->prepare("INSERT INTO comics_guardados(user_id,comic_id) VALUES (?,?)");
-		$consulta->execute(array($id_user,$id_comic));
+		$consulta->execute(array($id_user, $id_comic));
 		$agregado = true;
-
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
 	return $agregado;
 }
 
-function quitar_comic($id_user,$id_comic){
+function quitar_comic($id_user, $id_comic)
+{
 	global $conection;
 	$agregado = false;
 	try {
 		$consulta = $conection->prepare("DELETE FROM comics_guardados WHERE user_id=? AND comic_id=?");
-		$consulta->execute(array($id_user,$id_comic));
+		$consulta->execute(array($id_user, $id_comic));
 		$agregado = true;
-
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
 	return $agregado;
 }
 
-
-
-function get_comics_guardados($limit, $offset,$id_user){
+function get_comics_guardados($limit, $offset, $id_user)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from comics_guardados JOIN comics ON comics_guardados.comic_id=comics.IDcomic where user_id=:id_user ORDER BY comic_id  DESC LIMIT :limit OFFSET :offset");
 	$consulta->bindParam(':id_user', $id_user, PDO::PARAM_INT);
@@ -628,4 +643,13 @@ function get_comics_guardados($limit, $offset,$id_user){
 	$consulta->bindParam(':offset', $offset, PDO::PARAM_INT);
 	$consulta->execute();
 	return $consulta;
+}
+
+function get_descripcion($id)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT descripcion_comics from descripcion_comics where id_comic=?");
+	$consulta->execute(array($id));
+	$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
+	return $consulta['descripcion_comics'];
 }
