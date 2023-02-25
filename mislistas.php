@@ -23,7 +23,7 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
-    <title>Mi colección</title>
+    <title>Mis listas de comics</title>
     <style>
         .row {
             display: flex;
@@ -40,18 +40,20 @@ $email = $_SESSION['email'];
 
         .card-category-3 ul li {
             list-style-type: none;
-            display: inline-block;
-            vertical-align: top;
-            margin: 100px 5px;
+            float: left;
+            /* Modificado */
+            margin: 100px 2.5px;
+            /* Modificado */
             text-align: center;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
         }
-
 
         .card-category-3 {
             font-family: sans-serif;
             margin-bottom: 45px;
             text-align: center;
+            overflow: auto;
+            /* Agregado para evitar que se solapen los elementos */
         }
 
         .ioverlay-card {
@@ -111,6 +113,7 @@ $email = $_SESSION['email'];
             border: 1px solid #e91e63;
             background-color: rgb(255, 225, 170);
         }
+
 
         .ver-mas-btn {
             background-color: #3498DB;
@@ -329,34 +332,6 @@ $email = $_SESSION['email'];
             <div class="card-category-3">
                 <ul>
                     <li class="card-item">
-                        <a href="mis_comics.php">
-                            <div class="ioverlay-card io-card-2">
-                                <div class="card-content">
-                                    <span class="card-title">Mis comics</span>
-                                    <p class="card-text">
-                                        Tu coleccion de comics
-                                    </p>
-                                </div>
-                                <img src="assets/img/comic1.jpg" />
-                            </div>
-                        </a>
-                    </li>
-
-
-                    <li class="card-item">
-                        <a href="mislistas.php">
-                            <div class="ioverlay-card io-card-2">
-                                <div class="card-content">
-                                    <span class="card-title">Mis listas</span>
-                                    <p class="card-text">
-                                        Tus listas de comics
-                                    </p>
-                                </div>
-                                <img src="assets/img/comic2.jpg" />
-                            </div>
-                    </li>
-
-                    <li class="card-item">
                         <div class="ioverlay-card io-card-2">
                             <a href='#' data-bs-toggle='modal' data-bs-target='#nueva_lista'>
                                 <div class="card-content">
@@ -369,8 +344,33 @@ $email = $_SESSION['email'];
                             </a>
                         </div>
                     </li>
+
+                    <?php
+                    $listas = get_listas($id_user);
+
+                    foreach ($listas as $lista) {
+                        $id_lista = $lista['id_lista'];
+                        $nombre_lista = $lista['nombre_lista'];
+                        $num_listas = num_listas_user($id_user);
+
+                        echo "<li class='card-item'>";
+                        echo "<a href='contenido_lista.php?id_lista=$id_lista'>";
+                        echo "<div class='ioverlay-card io-card-2'>";
+                        echo "<div class='card-content'>";
+                        echo "<span class='card-title'>Lista $id_lista</span>";
+                        echo "<p class='card-text'>$nombre_lista</p>";
+                        echo "</div>";
+                        echo "<img src='assets/img/comic2.jpg' />";
+                        echo "</div>";
+                        echo "</a>";
+                        echo "</li>";
+                    }
+                    ?>
+
+
                 </ul>
             </div>
+
 
             <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
@@ -384,7 +384,7 @@ $email = $_SESSION['email'];
                         <div class="scrollable-h comic-full">
                             <div class="scrollable-h-content">
                                 <ul class="v2-cover-list">
-                                <?php
+                                    <?php
                                     $total_comics = numComics();
                                     echo "<input type='hidden' id='id_user' value='$id_user'>";
 
@@ -405,7 +405,7 @@ $email = $_SESSION['email'];
                                         <span class='issue-number issue-number-l1'>$numComic</span>
                                     </a>
                                     <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
-                                    
+
                                         if (check_guardado($id_user, $id_comic)) {
                                             echo "<button data-item-id='yXwd2' class='rem' >
                                         <span class='sp-icon'>Lo tengo</span>
@@ -424,6 +424,8 @@ $email = $_SESSION['email'];
                     </div>
                 </div>
             </div>
+
+
 
             <div class="bgimg-2">
                 <div id="footer-lite">

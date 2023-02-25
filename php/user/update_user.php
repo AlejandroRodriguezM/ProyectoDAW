@@ -22,19 +22,20 @@ if ($_POST) {
     }
     $id = $row['IDuser'];
     $infoUser = $_POST['field'];
-    if(empty($infoUser)){
+    if (empty($infoUser)) {
         $infoUser = "No se han introducido datos";
     }
     $reservedWords = reservedWords();
-    
+
     if (checkUserName($userName) && $userName != $oldUserName) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. That user name alredy exist';
-    }
-    else{
+        header('HTTP/1.1 409 Conflict');
+    } else {
         if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. You cant use system reserved words';
+            header('HTTP/1.1 400 Bad Request');
         } else {
             if (update_user($userName, $email, $password)) {
                 updateSaveImage($email, $image);
@@ -44,12 +45,14 @@ if ($_POST) {
                 if ($row['privilege'] == 'admin') {
                     cookiesAdmin($email, $password);
                 }
-                updateAboutUser($id, $infoUser,$name,$lastname);
+                updateAboutUser($id, $infoUser, $name, $lastname);
                 $validate['success'] = true;
                 $validate['message'] = 'The user save correctly';
+                header('HTTP/1.1 200 OK');
             } else {
                 $validate['success'] = false;
                 $validate['message'] = 'ERROR. The user dont save correctly';
+                header('HTTP/1.1 500 Internal Server Error');
             }
         }
     }
@@ -57,5 +60,7 @@ if ($_POST) {
 } else {
     $validate['success'] = false;
     $validate['message'] = 'ERROR. The user is not save in database';
+    header('HTTP/1.1 400 Bad Request');
 }
+header('Content-type: application/json');
 echo json_encode($validate);

@@ -14,14 +14,14 @@ if ($_POST) {
     $fechaCreacion = date('Y-m-d', strtotime(str_replace('-', '/', $fecha)));
     if (in_array(strtolower($asunto_ticket), $reservedWords) || in_array(strtolower($descripcion_ticket), $reservedWords)) {
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. You cant use system reserved words';
+        $validate['message'] = 'ERROR. You cannot use system reserved words';
     } else {
         if (new_ticket($id_user, $asunto_ticket, $descripcion_ticket, $fecha, $estado)) {
             $validate['success'] = true;
-            $validate['message'] = 'El ticket se ha mandado correctamente';
+            $validate['message'] = 'El ticket se ha enviado correctamente';
         } else {
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. El ticket no se ha podido mandar';
+            $validate['message'] = 'ERROR. El ticket no se ha podido enviar';
         }
     }
 }

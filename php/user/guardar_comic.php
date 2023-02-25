@@ -10,9 +10,11 @@ if ($_POST) {
 
     if (guardar_comic($id_user,$id_comic)) {
         $validate['success'] = true;
+        header("HTTP/1.1 200 OK");
     } else {
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. No se ha podido guardar el comic';
+        $validate['message'] = 'ERROR. No se ha podido guardar el cómic';
+        header("HTTP/1.1 500 Internal Server Error");
     }
 }
 echo json_encode($validate);

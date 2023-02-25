@@ -15,6 +15,7 @@ if ($_POST) {
     $row = getUserData($email);
     $privilegio = $row['privilege'];
     if (in_array(strtolower($mensaje_ticket), $reservedWords)) {
+        http_response_code(400);
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
     } else {
@@ -25,9 +26,15 @@ if ($_POST) {
             $validate['success'] = true;
             $validate['message'] = 'El ticket se ha respondido correctamente';
         } else {
+            http_response_code(500);
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. El ticket no se respondido correctamente';
+            $validate['message'] = 'ERROR. El ticket no se ha respondido correctamente';
         }
     }
+} else {
+    http_response_code(400);
+    $validate['success'] = false;
+    $validate['message'] = 'ERROR. The ticket data was not provided in the request';
 }
+header('Content-type: application/json');
 echo json_encode($validate);

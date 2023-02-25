@@ -645,6 +645,25 @@ function get_comics_guardados($limit, $offset, $id_user)
 	return $consulta;
 }
 
+function get_comics_lista($limit, $offset, $id_lista)
+{
+    global $conection;
+    $consulta = $conection->prepare("SELECT * FROM contenido_listas JOIN comics ON contenido_listas.id_comic=comics.IDcomic WHERE contenido_listas.id_lista=:id_lista ORDER BY comics.IDcomic DESC LIMIT :limit OFFSET :offset");
+    $consulta->bindParam(':id_lista', $id_lista, PDO::PARAM_INT);
+    $consulta->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $consulta->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $consulta->execute();
+    return $consulta;
+}
+
+function get_contenido_lista($id_lista){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from contenido_listas where id_lista=?");
+	$consulta->execute(array($id_lista));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
 function get_descripcion($id)
 {
 	global $conection;
@@ -652,4 +671,20 @@ function get_descripcion($id)
 	$consulta->execute(array($id));
 	$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
 	return $consulta['descripcion_comics'];
+}
+
+function get_listas($id){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from lista_comics where id_user=?");
+	$consulta->execute(array($id));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function num_listas_user($id){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from lista_comics where id_user=?");
+	$consulta->execute(array($id));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
 }

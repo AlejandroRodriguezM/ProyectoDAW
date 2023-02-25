@@ -7,43 +7,27 @@ $userData = getUserData($email);
 $id_user = $userData['IDuser'];
 $limit = intval($_GET['limit']);
 $offset = intval($_GET['offset']);
-
+$id_lista = $_GET['id_lista'];
 if (isset($_GET['checkboxChecked'])) {
     $search = explode(",", $_GET['checkboxChecked']);
     $search = array_map('trim', $search);
     $search = array_map('urldecode', $search);
     $search_count = count($search);
-    //make for and show all $search
-    for($i = 0;$i < $search_count; $i++)
-    {
-        echo "<h1>$search[$i]</h1>";
-    }
+
     if ($search_count == 1) {
-        $where_clause = " WHERE nomGuionista LIKE '%" . $search[0] . "%' OR nomDibujante LIKE '%" . $search[0] . "%' OR nomVariante LIKE '%" . $search[0] . "%' OR nomEditorial = '" . $search[0] . "'";
+        $where_clause = " WHERE contenido_listas.id_comic = comics.IDcomic AND contenido_listas.id_lista = $id_lista AND (nomGuionista LIKE '%" . $search[0] . "%' OR nomDibujante LIKE '%" . $search[0] . "%' OR nomEditorial = '" . $search[0] . "')";
     } else {
         $where_clauses = [];
         for ($i = 0; $i < $search_count; $i++) {
-            $where_clauses[] = "(nomGuionista LIKE '%" . $search[$i] . "%' OR nomDibujante LIKE '%" . $search[$i] . "%' OR nomVariante LIKE '%" . $search[$i] . "%' OR nomEditorial = '" . $search[$i] . "')";
+            $where_clauses[] = "(nomGuionista LIKE '%" . $search[$i] . "%' OR nomDibujante LIKE '%" . $search[$i] . "%' OR nomEditorial = '" . $search[$i] . "')";
         }
-        $where_clause = " WHERE " . implode(' OR ', $where_clauses);
+        $where_clause = " WHERE contenido_listas.id_comic = comics.IDcomic AND contenido_listas.id_lista = $id_lista AND (" . implode(' OR ', $where_clauses) . ")";
     }
-
-    $comics = $conection->prepare("SELECT * FROM comics" . $where_clause);
+    $comics = $conection->prepare("SELECT * FROM comics_guardados,comics" . $where_clause);
     $comics->execute();
 } else {
-    $comics = return_comic_published($limit, $offset);
+    $comics = get_comics_lista($limit, $offset, $id_lista);
 }
-
-
-// if (isset($_GET['comic'])) {
-//     $search = urldecode(trim($_GET['comic']));
-//     echo "<h1>$search</h1>";
-//     $where_clause = " WHERE nomGuionista LIKE '%" . $search . "%' OR nomDibujante LIKE '%" . $search . "%' OR nomVariante LIKE '%" . $search . "%' OR nomEditorial = '" . $search . "'";
-//     $comics = $conection->prepare("SELECT * FROM comics" . $where_clause);
-//     $comics->execute();
-// } else {
-//     $comics = return_comic_published($limit, $offset);
-// }
 
 
 $contador = 0;
@@ -59,22 +43,22 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
     $cover = $data_comic['Cover'];
 
     echo "<li id='comicyXwd2' class='get-it'>
-            <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
-              <span class='cover'>
-                <img src='$cover' alt='$titulo - $variante / #$numComic'>
-              </span>
-              <strong>$titulo</strong>
-              <span class='issue-number issue-number-l1'>$numComic</span>
-            </a>
-            <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
+                <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
+                  <span class='cover'>
+                    <img src='$cover' alt='$titulo - $variante / #$numComic'>
+                  </span>
+                  <strong>$titulo</strong>
+                  <span class='issue-number issue-number-l1'>$numComic</span>
+                </a>
+                <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
     if (check_guardado($id_user, $id_comic)) {
         echo "<button data-item-id='yXwd2' class='rem' >
-                <span class='sp-icon'>Lo tengo</span>
-            </button>";
+                    <span class='sp-icon'>Lo tengo</span>
+                </button>";
     } else {
         echo "<button data-item-id='yXwd2' class='add' >
-                <span class='sp-icon'>Lo tengo</span>
-                </button>";
+                    <span class='sp-icon'>Lo tengo</span>
+                    </button>";
     }
     echo "</li>";
     $contador++;
@@ -82,7 +66,6 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
         echo "<ul></ul>";
     }
 }
-
 
 ?>
 

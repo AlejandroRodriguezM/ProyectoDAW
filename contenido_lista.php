@@ -4,6 +4,7 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
+$id_lista = $_GET['id_lista'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,10 +25,10 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <title>Novedades</title>
+    <title>Mis comics</title>
     <style>
         .custom-table {
-            width: 300px;
+            width: 600px;
             margin: 20px auto;
             border-collapse: collapse;
         }
@@ -54,7 +55,7 @@ $email = $_SESSION['email'];
         }
 
         input[name='buscador_navegacion'] {
-            width: 300px;
+            width: 500px;
             height: 35px;
             padding: 5px;
             font-size: 16px;
@@ -251,10 +252,10 @@ $email = $_SESSION['email'];
                                     <ul class="nav">
                                         <li class="dropdown" onclick="toggleDropdown(this)">
                                             <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Escritores</a>
-                                            <div id="dropdownContent1" class="dropdown-content" onclick="closeDropdown(this)">
+                                            <div class="dropdown-content" id="dropdownContent1">
                                                 <input type="text" name="buscador_navegacion" id="searchInput1" onkeyup="searchData(1)">
                                                 <?php
-                                                $tabla_escritores = getScreenwriters();
+                                                $tabla_escritores = getScreenwriters_user($id_user);
                                                 mostrar_datos($tabla_escritores);
                                                 ?>
                                             </div>
@@ -262,10 +263,10 @@ $email = $_SESSION['email'];
 
                                         <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
                                             <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Artistas</a>
-                                            <div id="dropdownContent2" class="dropdown-content" onclick="closeDropdown(this)">
+                                            <div class="dropdown-content" id="dropdownContent2">
                                                 <input type="text" name="buscador_navegacion" id="searchInput2" onkeyup="searchData(2)">
                                                 <?php
-                                                $tabla_escritores = getArtists();
+                                                $tabla_escritores = getArtists_user($id_user);
                                                 mostrar_datos($tabla_escritores);
                                                 ?>
                                             </div>
@@ -273,10 +274,10 @@ $email = $_SESSION['email'];
 
                                         <li class="dropdown" onclick="toggleDropdown(this)">
                                             <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Portadas</a>
-                                            <div id="dropdownContent3" class="dropdown-content" onclick="closeDropdown(this)">
+                                            <div class="dropdown-content" id="dropdownContent3">
                                                 <input type="text" name="buscador_navegacion" id="searchInput3" onkeyup="searchData(3)">
                                                 <?php
-                                                $tabla_escritores = getPortadas();
+                                                $tabla_escritores = getPortadas_user($id_user);
                                                 mostrar_datos($tabla_escritores);
                                                 ?>
                                             </div>
@@ -284,10 +285,10 @@ $email = $_SESSION['email'];
 
                                         <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
                                             <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Editorial</a>
-                                            <div id="dropdownContent4" class="dropdown-content" onclick="closeDropdown(this)">
+                                            <div class="dropdown-content" id="dropdownContent4">
                                                 <input type="text" id="searchInput4" onkeyup="searchData(4)">
                                                 <?php
-                                                $tabla_editorial = getEditorial();
+                                                $tabla_editorial = getEditorial_user($id_user);
                                                 mostrar_datos($tabla_editorial);
                                                 ?>
                                             </div>
@@ -326,7 +327,8 @@ $email = $_SESSION['email'];
                     <div class="last-pubs">
                         <br>
                         <div class="titulo" style="border-radius:10px">
-                            <h2 style='text-align: center'>Mis novedades</h2>
+                        <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
+                            <h2 style='text-align: center'>Mis comics</h2>
                         </div>
                         <br>
                     </div>
@@ -392,6 +394,7 @@ $email = $_SESSION['email'];
         });
 
         function loadComics() {
+            var id_lista = document.querySelector('#id_lista').value;
             var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
                 return encodeURIComponent(this.value);
             }).get();
@@ -399,6 +402,7 @@ $email = $_SESSION['email'];
             var data = {
                 limit: limit,
                 offset: offset,
+                id_lista: id_lista
             };
 
             if (selectedCheckboxes.length > 0) {
@@ -406,7 +410,7 @@ $email = $_SESSION['email'];
             }
 
             $.ajax({
-                url: "php/user/comics.php",
+                url: "php/user/comics_lista.php",
                 data: data,
                 success: function(data) {
                     totalComics = $(data).filter("#total-comics").val();
@@ -426,6 +430,7 @@ $email = $_SESSION['email'];
             var dropdownContent3 = document.getElementById("dropdownContent3");
             var dropdownContent4 = document.getElementById("dropdownContent4");
 
+
             if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
                 dropdownContent1.style.display = "none";
                 dropdownContent2.style.display = "none";
@@ -439,24 +444,7 @@ $email = $_SESSION['email'];
                 element.querySelector(".dropdown-content").style.display = "block";
             }
         }
-
-        function closeDropdown(dropdownContent) {
-            dropdownContent.style.display = "none";
-        }
-
-        document.addEventListener("click", function(event) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var dropdown = dropdowns[i];
-                if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
-                    dropdown.style.display = "none";
-                }
-            }
-        });
     </script>
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 

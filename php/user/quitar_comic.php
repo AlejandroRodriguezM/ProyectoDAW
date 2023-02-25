@@ -10,9 +10,14 @@ if ($_POST) {
 
     if (quitar_comic($id_user,$id_comic)) {
         $validate['success'] = true;
+        $validate['message'] = 'El comic se ha quitado correctamente';
     } else {
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. No se ha podido guardar el comic';
+        $validate['message'] = 'ERROR. No se ha podido quitar el comic';
     }
+} else {
+    $validate['success'] = false;
+    $validate['message'] = 'ERROR. El comic no se ha quitado de la lista';
 }
+header('Content-type: application/json');
 echo json_encode($validate);

@@ -71,7 +71,6 @@ CREATE TABLE `comics` (
 
 --
 -- Volcado de datos para la tabla `comics`
---
 
 INSERT INTO `comics` (`IDcomic`, `nomComic`, `numComic`, `nomVariante`, `nomEditorial`, `Formato`, `Procedencia`, `date_published`, `nomGuionista`, `nomDibujante`, `Cover`) VALUES
 (1, 'A.X.E: Avengers', 1, 'Salvador Larroca', 'Marvel', 'Grapa', 'USA', '2022', 'Kieron Gillen', 'Federico Vicentini', './assets/covers_img/1.jpg'),
@@ -6485,10 +6484,10 @@ CREATE TABLE `descripcion_comics` (
 --
 
 INSERT INTO `descripcion_comics` (`id_descripcion`, `id_comic`, `descripcion_comics`) VALUES
-(1, 1, 'No tiene descripcion. Prueba de nuevo dentro de varios dias'),
-(2, 2, 'No tiene descripcion. Prueba de nuevo dentro de varios dias'),
-(3, 3, 'No tiene descripcion. Prueba de nuevo dentro de varios dias'),
-(4, 4, 'No tiene descripcion. Prueba de nuevo dentro de varios dias'),
+(1, 1, 'Esta serie de cómics sigue las aventuras de los Vengadores, el icónico equipo de superhéroes de Marvel, mientras luchan contra varias amenazas a la humanidad.'),
+(2, 2, 'Death to the mutants: En esta serie, los Vengadores luchan contra los mutantes, una especie de humanos con habilidades especiales, que son vistos como una amenaza por algunos.'),
+(3, 3, 'Eternals: Esta serie sigue a los Eternos, una raza de seres sobrehumanos que han vivido en la Tierra durante miles de años y han influenciado la historia de la humanidad.'),
+(4, 4, 'Esta serie está basada en la popular franquicia de ciencia ficción de Ridley Scott, y sigue las aventuras de varios personajes que luchan contra los peligrosos y mortales xenomorfos.'),
 (5, 5, 'No tiene descripcion. Prueba de nuevo dentro de varios dias'),
 (6, 6, 'No tiene descripcion. Prueba de nuevo dentro de varios dias'),
 (7, 7, 'No tiene descripcion. Prueba de nuevo dentro de varios dias'),

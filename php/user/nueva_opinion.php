@@ -12,13 +12,16 @@ if($_POST){
     if(agregar_opinion($id_user,$id_comic,$opinion,$puntuacion)){
         $validate['success'] = true;
         $validate['message'] = 'The opinion save correctly';
+        http_response_code(200);
     } else {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. The opinion dont save correctly';
+        http_response_code(500);
     }
 } else {
     $validate['success'] = false;
     $validate['message'] = 'ERROR. The opinion is not save in database';
+    http_response_code(400);
 }
 
 echo json_encode($validate);

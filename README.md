@@ -241,3 +241,8 @@ Uso de la api de marvel para tener mas de 6000 comics nuevos y descripciones
 
 24/02/2023 Log 2
 Modificados ficheros php para poder visualizar correctamente los datos de la base de datos y modificacion de varios estilos.
+
+25/02/2023 Log 1
+Modificados las funciones javascript a la hora de seleccionar mediante checkbox diferentes datos para hacer una busqueda mas personalizada en novedades.php
+Se han creado varias funciones nuevas referente a las listas de comics personalizadas y a la busqueda de datos en estas
+Se han incorporado las funcionalidades de ver el contenido de las listas personalizadas,(aun queda por añadir la funcionalidad para agregar comics en estas.)

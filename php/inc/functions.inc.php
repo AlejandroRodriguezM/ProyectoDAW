@@ -387,21 +387,17 @@ function getPortadas_user($id_user)
 
 function mostrar_datos($datos)
 {
-	$datos_comic = $datos;
-	ksort($datos_comic);
+	ksort($datos);
 	echo "<table class='custom-table'>
 	<thead>
 	<tr>
-	<th>Nombre</th>
-	<th>Numeros</th>
 	</tr>
 	</thead>
 	<tbody>";
 
-	foreach ($datos_comic as $key => $value) {
+	foreach ($datos as $key => $value) {
 		echo "<tr>
 		<td>$key</td>
-	<td>$value</td>
 	<td>
 	<input type='checkbox' id='comic' name='comic' value='$key'>
 	<input type='hidden' name='comic_value' value='$key'>
@@ -411,6 +407,36 @@ function mostrar_datos($datos)
 	echo "</tbody>
 		</table>";
 }
+
+// function mostrar_datos($datos)
+// {
+//     $datos_comic = $datos;
+//     ksort($datos_comic);
+//     echo "<table class='custom-table'>
+//         <thead>
+//             <tr></tr>
+//         </thead>
+//         <tbody>";
+//     foreach ($datos_comic as $key => $value) {
+//         echo "<tr>
+//             <td class='comic-cell' data-comic='$key'>$key</td>
+//         </tr>";
+//     }
+//     echo "</tbody>
+//         </table>";
+//     echo "<input type='hidden' id='comic' name='comic' value=''>";
+//     echo "<script>
+//         document.addEventListener('DOMContentLoaded', () => {
+//             const comicCells = document.querySelectorAll('.comic-cell');
+//             comicCells.forEach(cell => {
+//                 cell.addEventListener('click', () => {
+//                     const key = cell.dataset.comic;
+//                     document.getElementById('comic').value = key;
+//                 });
+//             });
+//         });
+//     </script>";
+// }
 
 function select_data_and_check_spaces_pdo()
 {
