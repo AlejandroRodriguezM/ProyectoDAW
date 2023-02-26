@@ -253,4 +253,5 @@ Se ha añadido la funcionalidad de guardar o quitar comics de nuestras listas pe
 Se han mejorado los terminos de busqueda, ahora cada paramentro tiene su propio href para buscar de forma independiente datos
 Se ha añadido varios ficheros nuevos php que sirven para mostrar comcis de una lista de lectura unicada y de los comics guardados en esta y los posibles que se puedan guardar
 Se han creado nuevas funciones js para guardar y quitar comics de dichas listas
-Se ha mejorado la base de datos, ahora alberga mas de 15000 entradas en la tabla "comics" y "
+Se ha mejorado la base de datos, ahora alberga mas de 15000 entradas en la tabla "comics" y "descripcion_comics"
+Se han eliminado bugs respecto a la hora de realizar busquedas
