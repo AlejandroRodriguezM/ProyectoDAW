@@ -42,17 +42,20 @@ $email = $_SESSION['email'];
             list-style-type: none;
             float: left;
             /* Modificado */
-            margin: 100px 2.5px;
+            margin: 20px 2.5px;
             /* Modificado */
             text-align: center;
             box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
         }
+
 
         .card-category-3 {
             font-family: sans-serif;
             margin-bottom: 45px;
             text-align: center;
             overflow: auto;
+            display: flex;
+            justify-content: center;
             /* Agregado para evitar que se solapen los elementos */
         }
 
@@ -348,25 +351,35 @@ $email = $_SESSION['email'];
                     <?php
                     $listas = get_listas($id_user);
 
+                    $i = -4;
                     foreach ($listas as $lista) {
                         $id_lista = $lista['id_lista'];
                         $nombre_lista = $lista['nombre_lista'];
                         $num_listas = num_listas_user($id_user);
-
+                        $num_comics = get_total_contenido($id_lista);
                         echo "<li class='card-item'>";
                         echo "<a href='contenido_lista.php?id_lista=$id_lista'>";
                         echo "<div class='ioverlay-card io-card-2'>";
                         echo "<div class='card-content'>";
-                        echo "<span class='card-title'>Lista $id_lista</span>";
-                        echo "<p class='card-text'>$nombre_lista</p>";
+                        echo "<span class='card-title'>$nombre_lista</span>";
+                        echo "<p class='card-text'>Total: $num_comics Comics</p>";
                         echo "</div>";
                         echo "<img src='assets/img/comic2.jpg' />";
                         echo "</div>";
                         echo "</a>";
                         echo "</li>";
+
+                        $i++;
+                        if ($i % 5 == 0) {
+                            echo "<div class='clearfix'></div>";
+                        }
+                    }
+
+                    // Asegurarse de que se añade clearfix si el número total de listas es divisible por 3
+                    if ($i % 3 != 0) {
+                        echo "<div class='clearfix'></div>";
                     }
                     ?>
-
 
                 </ul>
             </div>

@@ -54,7 +54,7 @@ if (existe_user($input_user)) {
 ?>
 
 <body onload="checkSesionUpdate();showSelected();">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -122,11 +122,10 @@ if (existe_user($input_user)) {
                         if ($userPrivilege == 'admin') {
                             echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                        } elseif($userPrivilege == 'user') {
+                        } elseif ($userPrivilege == 'user') {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                             echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
-                        }
-                        else{
+                        } else {
                             echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                         }
                     }
@@ -256,16 +255,16 @@ if (existe_user($input_user)) {
                     <table class="table table-hover">
                         <thead class="table-dark">
                             <tr>
-                                <td>Portada</td>
-                                <td>Nombre del comic</td>
-                                <td>Numero</td>
-                                <td>Variante</td>
-                                <td>Editorial</td>
-                                <td>Formato</td>
-                                <td>Procedencia</td>
-                                <td>Fecha de publicacion</td>
-                                <td>Nombre del guionista</td>
-                                <td>Nombre del dibujante</td>
+                                <td style='text-align:center'>Portada</td>
+                                <td style='text-align:center'>Nombre del comic</td>
+                                <td style='text-align:center'>Numero</td>
+                                <td style='text-align:center'>Variante</td>
+                                <td style='text-align:center'>Editorial</td>
+                                <td style='text-align:center'>Formato</td>
+                                <td style='text-align:center'>Procedencia</td>
+                                <td style='text-align:center'>Fecha de publicacion</td>
+                                <td style='text-align:center'>Nombre del guionista</td>
+                                <td style='text-align:center'>Nombre del dibujante</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -278,18 +277,79 @@ if (existe_user($input_user)) {
                                 <tr>
                                     <td>
                                         <a href="infoComic.php?IDcomic=<?php echo $comics['IDcomic']; ?>">
-                                            <img src="<?php echo $comics['Cover']; ?>" alt="profile picture" class="avatarPicture" name="avatarComic" id="avatar" alt="Avatar" style="width: 100px; height: 130px; border-radius: 0;">
+                                            <img src="<?php echo $comics['Cover']; ?>" alt="profile picture" class="avatarPicture" name="avatarComic" id="avatar" alt="Avatar" style="width: 140px; height: 210px; border-radius: 0;">
                                         </a>
                                     </td>
-                                    <td><?php echo $comics['nomComic']; ?></td>
-                                    <td><?php echo $comics['numComic']; ?></td>
-                                    <td><?php echo $comics['nomVariante']; ?></td>
-                                    <td><?php echo $comics['nomEditorial']; ?></td>
-                                    <td><?php echo $comics['Formato']; ?></td>
-                                    <td><?php echo $comics['Procedencia']; ?></td>
-                                    <td><?php echo $comics['date_published']; ?></td>
-                                    <td><?php echo $comics['nomGuionista']; ?></td>
-                                    <td><?php echo $comics['nomDibujante']; ?></td>
+                                    <td>
+                                    <div class='comic-detail'>
+                                            <?php
+                                            $titulo = str_replace(' ', ' ', $comics['nomComic']);
+                                            echo "<span class='comic-value'><a href='search_data.php?search=$titulo'>$titulo</a></span>";
+                                            ?>
+                                        </div>
+                                    </td>
+                                    <td><?php echo $comics['numComic'] ?></td>
+                                    <td>
+                                        <div class='comic-detail'>
+                                            <?php
+                                            $variantes = explode('-', $comics['nomVariante']);
+                                            foreach ($variantes as $variante) {
+                                                echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($variante)) . "'>" . $variante . "</a></span>";
+                                            }
+                                            ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class='comic-detail'>
+                                            <?php
+                                            $nomEditorial = str_replace(' ', '-', $comics['nomEditorial']);
+                                            echo "<span class='comic-value'><a href='search_data.php?search=$nomEditorial'>$comics[nomEditorial]</a></span>";
+                                            ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class='comic-detail'>
+                                            <?php
+                                            $formato = str_replace(' ', '-', $comics['Formato']);
+                                            echo "<span class='comic-value'><a href='search_data.php?search=$formato'>$comics[Formato]</a></span>";
+                                            ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class='comic-detail'>
+                                            <?php
+                                            $procedencia = str_replace(' ', '-', $comics['Procedencia']);
+                                            echo "<span class='comic-value'><a href='search_data.php?search=$procedencia'>$comics[Procedencia]</a></span>";
+                                            ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class='comic-detail'>
+                                            <?php
+                                            echo "<span class='comic-value'><a href='search_data.php?search=$comics[date_published]'>$comics[date_published]</a></span>";
+                                            ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class='comic-detail'>
+                                            <?php
+                                            $guionistas = explode('-', $comics['nomGuionista']);
+                                            foreach ($guionistas as $guionista) {
+                                                echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($guionista)) . "'>" . $guionista . "</a></span>";
+                                            }
+                                            ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class='comic-detail'>
+                                            <?php
+                                            $dibujantes = explode('-', $comics['nomDibujante']);
+                                            foreach ($dibujantes as $dibujante) {
+                                                echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($dibujante)) . "'>" . $dibujante . "</a></span>";
+                                            }
+                                            ?>
+                                        </div>
+                                    </td>
                                     <input type='hidden' name='IDcomic' id='IDcomic' value='<?php echo $comics['IDcomic'] ?>'>
                             <?php
 

@@ -246,3 +246,11 @@ Modificados ficheros php para poder visualizar correctamente los datos de la bas
 Modificados las funciones javascript a la hora de seleccionar mediante checkbox diferentes datos para hacer una busqueda mas personalizada en novedades.php
 Se han creado varias funciones nuevas referente a las listas de comics personalizadas y a la busqueda de datos en estas
 Se han incorporado las funcionalidades de ver el contenido de las listas personalizadas,(aun queda por añadir la funcionalidad para agregar comics en estas.)
+
+27/02/2023 Log 1
+Se han factorizado varios scripts referentes a guardar un comic con nuestro usuario
+Se ha añadido la funcionalidad de guardar o quitar comics de nuestras listas personalizadas
+Se han mejorado los terminos de busqueda, ahora cada paramentro tiene su propio href para buscar de forma independiente datos
+Se ha añadido varios ficheros nuevos php que sirven para mostrar comcis de una lista de lectura unicada y de los comics guardados en esta y los posibles que se puedan guardar
+Se han creado nuevas funciones js para guardar y quitar comics de dichas listas
+Se ha mejorado la base de datos, ahora alberga mas de 15000 entradas en la tabla "comics" y "

@@ -4,7 +4,11 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
+$userData = getUserData($email);
+$id_user = $userData['IDuser'];
 $id_lista = $_GET['id_lista'];
+$data_lista =  get_nombre_lista($id_lista);
+$nombre_lista = $data_lista['nombre_lista'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,10 +29,10 @@ $id_lista = $_GET['id_lista'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <title>Mis comics</title>
+    <title>Lista <?php echo $nombre_lista ?></title>
     <style>
         .custom-table {
-            width: 600px;
+            width: 300px;
             margin: 20px auto;
             border-collapse: collapse;
         }
@@ -55,7 +59,7 @@ $id_lista = $_GET['id_lista'];
         }
 
         input[name='buscador_navegacion'] {
-            width: 500px;
+            width: 300px;
             height: 35px;
             padding: 5px;
             font-size: 16px;
@@ -82,6 +86,60 @@ $id_lista = $_GET['id_lista'];
         label,
         a {
             color: black;
+        }
+
+        .desactivate {
+            background-color: white !important;
+            color: #00c9b7;
+            border: none;
+            padding: 0;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 150px;
+            height: 50px;
+        }
+
+        .activate {
+            color: white;
+            background-color: #00c9b7 !important;
+            display: block;
+            position: relative;
+            margin-top: 6px;
+            width: 100%;
+            height: 34px;
+            background-color: transparent;
+            border: solid 1px #00c9b7;
+            border-radius: 4px;
+        }
+
+        .activate>.sp-icon {
+            background-image: url('assets/img/tick_white.png') !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: 20px !important;
+        }
+
+        .ver-mas-btn {
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin-left: 1026px !important;
+            text-align: right;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ver-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -125,10 +183,10 @@ $id_lista = $_GET['id_lista'];
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <a class="nav-link active" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
                 </ul>
             </div>
@@ -324,16 +382,116 @@ $id_lista = $_GET['id_lista'];
 
             <div style="display: flex; justify-content: center;">
                 <div class="container mt-5">
-                    <div class="last-pubs">
+                    <div class="last-pubs-1">
                         <br>
                         <div class="titulo" style="border-radius:10px">
-                        <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
-                            <h2 style='text-align: center'>Mis comics</h2>
+                            <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
+                            <h2 style='text-align: center'>Lista <?php echo $nombre_lista  ?></h2>
                         </div>
+                        <a href='#'>
+                            <button type="button" class="ver-mas-btn" onclick="location.reload()">Refrescar página</button>
+                        </a>
                         <br>
                     </div>
                 </div>
             </div>
+
+
+
+            <?php
+
+            if (get_total_guardados($id_user) > 0) {
+            ?>
+                <div style="display: flex; justify-content: center;">
+                    <div class="container mt-5">
+                        <div class="last-pubs-2">
+                            <br>
+                            <div class="titulo" style="border-radius:10px">
+                                <h2 style='text-align: center'>Mis comics</h2>
+                                <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+            <?php
+            } else {
+            ?>
+                <div class="container mt-5">
+                    <div style="display: flex; justify-content: center;">
+                        <div class="last-pubs">
+                            <div class="titulo">
+                                <h2>Recomendaciones</h2>
+                            </div>
+                            <a href='novedades.php'>
+                                <button class="ver-mas-btn">Ver más</button>
+                            </a>
+                            <div class="scrollable-h comic-full">
+                                <div class="scrollable-h-content">
+                                    <ul class="v2-cover-list">
+                                        <?php
+                                        $total_comics = numComics();
+                                        echo "<input type='hidden' id='id_user' value='$id_user'>";
+
+                                        for ($i = 0; $i < 8; $i++) {
+                                            $numero = randomComic();
+                                            $data_comic = getDataComic($numero);
+                                            $id_comic = $data_comic['IDcomic'];
+                                            $titulo = $data_comic['nomComic'];
+                                            $numComic = $data_comic['numComic'];
+                                            $variante = $data_comic['nomVariante'];
+                                            $cover = $data_comic['Cover'];
+                                            echo "<li id='comicyXwd2' class='get-it'>
+                                        <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
+                                        <span class='cover'>
+                                        <img src='$cover' alt='$titulo - $variante / #$numComic'>
+                                        </span>
+                                        <strong><?php echo $titulo ?></strong>
+                                        <span class='issue-number issue-number-l1'>$numComic</span>
+                                    </a>
+                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
+
+                                            if (check_guardado($id_user, $id_comic)) {
+                                                echo "<button data-item-id='yXwd2' class='rem' >
+                                        <span class='sp-icon'>Lo tengo</span>
+                                    </button>";
+                                            } else {
+                                                echo "<button data-item-id='yXwd2' class='add' >
+                                        <span class='sp-icon'>Lo tengo</span>
+                                        </button>";
+                                            }
+                                            echo "</li>";
+                                        }
+                                        ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    (function() {
+                        const buttons = document.querySelectorAll('.add, .rem');
+                        buttons.forEach(function(button) {
+                            button.addEventListener('click', function() {
+                                const id_comic = button.previousElementSibling.value;
+                                if (button.classList.contains('add')) {
+                                    button.classList.remove('add');
+                                    button.classList.add('rem');
+                                    guardar_comic(id_comic);
+                                } else if (button.classList.contains('rem')) {
+                                    button.classList.remove('rem');
+                                    button.classList.add('add');
+                                    quitar_comic(id_comic);
+                                }
+                            });
+                        });
+                    })();
+                </script>
+            <?php
+            }
+            ?>
 
             <div class="bgimg-2">
                 <div id="footer-lite">
@@ -395,6 +553,8 @@ $id_lista = $_GET['id_lista'];
 
         function loadComics() {
             var id_lista = document.querySelector('#id_lista').value;
+
+
             var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
                 return encodeURIComponent(this.value);
             }).get();
@@ -417,7 +577,19 @@ $id_lista = $_GET['id_lista'];
                     if (offset + limit >= totalComics) {
                         $("#load-more-comics").hide();
                     }
-                    $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs');
+                    $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-1');
+                }
+            });
+
+            $.ajax({
+                url: "php/user/comics_user_agregar.php",
+                data: data,
+                success: function(data) {
+                    totalComics = $(data).filter("#total-comics").val();
+                    if (offset + limit >= totalComics) {
+                        $("#load-more-comics").hide();
+                    }
+                    $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-2');
                 }
             });
         }
@@ -429,7 +601,6 @@ $id_lista = $_GET['id_lista'];
             var dropdownContent2 = document.getElementById("dropdownContent2");
             var dropdownContent3 = document.getElementById("dropdownContent3");
             var dropdownContent4 = document.getElementById("dropdownContent4");
-
 
             if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
                 dropdownContent1.style.display = "none";
@@ -444,7 +615,42 @@ $id_lista = $_GET['id_lista'];
                 element.querySelector(".dropdown-content").style.display = "block";
             }
         }
+
+        function closeDropdown(dropdownContent) {
+            dropdownContent.style.display = "none";
+        }
+
+        document.addEventListener("click", function(event) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var dropdown = dropdowns[i];
+                if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
+                    dropdown.style.display = "none";
+                }
+            }
+        });
     </script>
+    <!-- <script>
+        function actualizarListaComic() {
+            const id_lista = document.getElementById('id_lista').value;
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `contenido_lista.php?id_lista=${id_lista}`, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const lista_comics = JSON.parse(xhr.responseText);
+                    lista_comics.forEach(function(comic) {
+                        actualizarInterfazUsuario(comic.IDcomic, id_lista);
+                    });
+                } else {
+                    console.error(xhr.responseText);
+                }
+            };
+            xhr.send();
+        }
+
+        setInterval(actualizarListaComic, 5000);
+    </script> -->
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 

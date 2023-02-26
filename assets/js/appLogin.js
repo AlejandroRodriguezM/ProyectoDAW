@@ -660,6 +660,57 @@ const quitar_comic = async (id_comic) => {
     }
 };
 
+const guardar_comic_lista = async (id_comic,id_lista) => {
+    const data = new FormData();
+    data.append("id_comic", id_comic);
+    data.append("id_lista", id_lista);
+
+    const respond = await fetch("php/user/guardar_comic_lista.php", {
+        method: "POST",
+        body: data,
+    });
+
+    const result = await respond.json();
+
+    if (result.success == false) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+};
+
+const quitar_comic_lista = async (id_comic,id_lista) => {
+
+    const data = new FormData();
+    data.append("id_comic", id_comic);
+    data.append("id_lista", id_lista);
+
+    const respond = await fetch("php/user/quitar_comic_lista.php", {
+        method: "POST",
+        body: data,
+    });
+
+    const result = await respond.json();
+
+    if (result.success == false) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+};
+
 
 // const delete_user = async () => {
 //     var id = document.querySelector("#IDuser").value;

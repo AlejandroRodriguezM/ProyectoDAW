@@ -88,37 +88,18 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
 
 <script>
     (function() {
-        const buttonsAdd = document.querySelectorAll('.add');
-        buttonsAdd.forEach(function(button) {
+        const buttons = document.querySelectorAll('.add, .rem');
+        buttons.forEach(function(button) {
             button.addEventListener('click', function() {
+                const id_comic = button.previousElementSibling.value;
                 if (button.classList.contains('add')) {
-                    button.classList.remove('add');
-                    button.classList.add('rem');
-                    const id_comic = button.previousElementSibling.value;
+                    button.classList.toggle('add');
+                    button.classList.toggle('rem');
                     guardar_comic(id_comic);
                 } else if (button.classList.contains('rem')) {
-                    button.classList.remove('rem');
-                    button.classList.add('add');
-                    const id_comic = button.previousElementSibling.value;
+                    button.classList.toggle('rem');
+                    button.classList.toggle('add');
                     quitar_comic(id_comic);
-                }
-            });
-        });
-
-        const buttonsRem = document.querySelectorAll('.rem');
-        buttonsRem.forEach(function(button) {
-            button.addEventListener('click', function() {
-                if (button.classList.contains('rem')) {
-                    button.classList.remove('rem');
-                    button.classList.add('add');
-                    const id_comic = button.previousElementSibling.value;
-                    quitar_comic(id_comic);
-                } else if (button.classList.contains('add')) {
-                    button.classList.remove('add');
-                    button.classList.add('rem');
-                    const id_comic = button.previousElementSibling.value;
-                    guardar_comic(id_comic);
-
                 }
             });
         });

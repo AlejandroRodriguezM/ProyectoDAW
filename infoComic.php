@@ -7,7 +7,7 @@ $email = $_SESSION['email'];
 $id_comic = $_GET['IDcomic'];
 $data_comic = getDataComic($id_comic);
 $profilePicture = $data_comic['Cover'];
-$descripcion = get_descripcion($id_comic);
+$descripcion = get_descripcion($id_comic)['descripcion_comics'];
 ?>
 <!DOCTYPE html>
 <html lang="en">

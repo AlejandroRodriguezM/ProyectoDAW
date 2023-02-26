@@ -606,6 +606,20 @@ function check_guardado($id_user, $id_comic)
 	return $guardado;
 }
 
+function check_guardado_lista($id_lista, $id_comic)
+{
+	global $conection;
+	$guardado = false;
+	$consulta = $conection->prepare("SELECT COUNT(*) from contenido_listas where id_lista=? AND id_comic=?");
+	$consulta->execute(array($id_lista, $id_comic));
+	$consulta = $consulta->fetchColumn();
+	if ($consulta > 0) {
+		$guardado = true;
+	}
+	// var_dump($guardado);
+	return $guardado;
+}
+
 function guardar_comic($id_user, $id_comic)
 {
 	global $conection;
@@ -627,6 +641,34 @@ function quitar_comic($id_user, $id_comic)
 	try {
 		$consulta = $conection->prepare("DELETE FROM comics_guardados WHERE user_id=? AND comic_id=?");
 		$consulta->execute(array($id_user, $id_comic));
+		$agregado = true;
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $agregado;
+}
+
+function guardar_comic_lista($id_comic,$id_lista)
+{
+	global $conection;
+	$agregado = false;
+	try {
+		$consulta = $conection->prepare("INSERT INTO contenido_listas(id_comic,id_lista) VALUES (?,?)");
+		$consulta->execute(array($id_comic, $id_lista));
+		$agregado = true;
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $agregado;
+}
+
+function quitar_comic_lista($id_comic,$id_lista)
+{
+	global $conection;
+	$agregado = false;
+	try {
+		$consulta = $conection->prepare("DELETE FROM contenido_listas WHERE id_comic=? AND id_lista=?");
+		$consulta->execute(array($id_comic, $id_lista));
 		$agregado = true;
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
@@ -656,21 +698,37 @@ function get_comics_lista($limit, $offset, $id_lista)
     return $consulta;
 }
 
-function get_contenido_lista($id_lista){
+function get_id_contenido($id_lista,$id_comic){
 	global $conection;
-	$consulta = $conection->prepare("SELECT * from contenido_listas where id_lista=?");
-	$consulta->execute(array($id_lista));
-	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
-	return $consulta;
+	$consulta = $conection->prepare("SELECT id_contenido from contenido_listas where id_lista=? and id_comic=?");
+	$consulta->execute(array($id_lista,$id_comic));
+	$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+	return "[" . $resultado['id_contenido'] . "]";
+
 }
 
+function get_total_contenido($id_lista){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from contenido_listas where id_lista=?");
+	$consulta->execute(array($id_lista));
+	$resultado = $consulta->fetchColumn();
+	return $resultado;
+}
+
+function get_total_guardados($id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from comics_guardados where user_id=?");
+	$consulta->execute(array($id_user));
+	$resultado = $consulta->fetchColumn();
+	return $resultado;
+}
 function get_descripcion($id)
 {
 	global $conection;
-	$consulta = $conection->prepare("SELECT descripcion_comics from descripcion_comics where id_comic=?");
+	$consulta = $conection->prepare("SELECT * from descripcion_comics where id_comic=?");
 	$consulta->execute(array($id));
 	$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
-	return $consulta['descripcion_comics'];
+	return $consulta;
 }
 
 function get_listas($id){
@@ -679,6 +737,14 @@ function get_listas($id){
 	$consulta->execute(array($id));
 	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
 	return $consulta;
+}
+
+function get_nombre_lista($id_lista){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from lista_comics where id_lista=?");
+	$consulta->execute(array($id_lista));
+	$nombre_lista = $consulta->fetch(PDO::FETCH_ASSOC);
+	return $nombre_lista;
 }
 
 function num_listas_user($id){

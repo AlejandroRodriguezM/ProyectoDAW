@@ -27,7 +27,7 @@ $email = $_SESSION['email'];
     <title>Mis comics</title>
     <style>
         .custom-table {
-            width: 600px;
+            width: 300px;
             margin: 20px auto;
             border-collapse: collapse;
         }
@@ -54,7 +54,7 @@ $email = $_SESSION['email'];
         }
 
         input[name='buscador_navegacion'] {
-            width: 500px;
+            width: 300px;
             height: 35px;
             padding: 5px;
             font-size: 16px;
@@ -81,6 +81,26 @@ $email = $_SESSION['email'];
         label,
         a {
             color: black;
+        }
+
+        .ver-mas-btn {
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin-left: 1026px !important;
+            text-align: right;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ver-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -333,6 +353,68 @@ $email = $_SESSION['email'];
                 </div>
             </div>
 
+            <?php
+
+            if (get_total_guardados($id_user) < 1) {
+            ?>
+                <div class="container mt-5">
+                    <div style="display: flex; justify-content: center;">
+                        <div class="last-pubs">
+                            <div class="titulo">
+                                <h2>Recomendaciones</h2>
+                            </div>
+                            <a href='novedades.php'>
+                                <button class="ver-mas-btn">Ver más</button>
+                            </a>
+                            <div class="scrollable-h comic-full">
+                                <div class="scrollable-h-content">
+                                    <ul class="v2-cover-list">
+                                        <?php
+                                        $total_comics = numComics();
+                                        echo "<input type='hidden' id='id_user' value='$id_user'>";
+
+                                        for ($i = 0; $i < 8; $i++) {
+                                            $numero = randomComic();
+                                            $data_comic = getDataComic($numero);
+                                            $id_comic = $data_comic['IDcomic'];
+                                            $titulo = $data_comic['nomComic'];
+                                            $numComic = $data_comic['numComic'];
+                                            $variante = $data_comic['nomVariante'];
+                                            $cover = $data_comic['Cover'];
+                                            echo "<li id='comicyXwd2' class='get-it'>
+                            <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
+                            <span class='cover'>
+                            <img src='$cover' alt='$titulo - $variante / #$numComic'>
+                            </span>
+                            <strong><?php echo $titulo ?></strong>
+                            <span class='issue-number issue-number-l1'>$numComic</span>
+                        </a>
+                        <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
+
+                                            if (check_guardado($id_user, $id_comic)) {
+                                                echo "<button data-item-id='yXwd2' class='rem' >
+                            <span class='sp-icon'>Lo tengo</span>
+                        </button>";
+                                            } else {
+                                                echo "<button data-item-id='yXwd2' class='add' >
+                            <span class='sp-icon'>Lo tengo</span>
+                            </button>";
+                                            }
+                                            echo "</li>";
+                                        }
+                                        ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <?php
+            }
+
+            ?>
+
             <div class="bgimg-2">
                 <div id="footer-lite">
                     <div class="content">
@@ -426,7 +508,6 @@ $email = $_SESSION['email'];
             var dropdownContent3 = document.getElementById("dropdownContent3");
             var dropdownContent4 = document.getElementById("dropdownContent4");
 
-
             if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
                 dropdownContent1.style.display = "none";
                 dropdownContent2.style.display = "none";
@@ -440,6 +521,20 @@ $email = $_SESSION['email'];
                 element.querySelector(".dropdown-content").style.display = "block";
             }
         }
+
+        function closeDropdown(dropdownContent) {
+            dropdownContent.style.display = "none";
+        }
+
+        document.addEventListener("click", function(event) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var dropdown = dropdowns[i];
+                if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
+                    dropdown.style.display = "none";
+                }
+            }
+        });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
