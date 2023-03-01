@@ -18,6 +18,7 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <link rel="stylesheet" href="./assets/style/parallax.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -250,141 +251,144 @@ if (existe_user($input_user)) {
 
         if ($count_comic > 0) {
         ?>
-            <div style="margin-left: auto; margin-right: auto; width: 80%">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <td style='text-align:center'>Portada</td>
-                                <td style='text-align:center'>Nombre del comic</td>
-                                <td style='text-align:center'>Numero</td>
-                                <td style='text-align:center'>Variante</td>
-                                <td style='text-align:center'>Editorial</td>
-                                <td style='text-align:center'>Formato</td>
-                                <td style='text-align:center'>Procedencia</td>
-                                <td style='text-align:center'>Fecha de publicacion</td>
-                                <td style='text-align:center'>Nombre del guionista</td>
-                                <td style='text-align:center'>Nombre del dibujante</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $registros = search_comics($input_comic);
-                            $comics = $registros->fetch();
-                            while ($comics != null) {
+            <div class="bgimg-1">
+                <div class="caption">
+                    <div style="margin-left: auto; margin-right: auto; width: 80%">
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <td style='text-align:center'>Portada</td>
+                                        <td style='text-align:center'>Nombre del comic</td>
+                                        <td style='text-align:center'>Numero</td>
+                                        <td style='text-align:center'>Variante</td>
+                                        <td style='text-align:center'>Editorial</td>
+                                        <td style='text-align:center'>Formato</td>
+                                        <td style='text-align:center'>Procedencia</td>
+                                        <td style='text-align:center'>Fecha de publicacion</td>
+                                        <td style='text-align:center'>Nombre del guionista</td>
+                                        <td style='text-align:center'>Nombre del dibujante</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $registros = search_comics($input_comic);
+                                    $comics = $registros->fetch();
+                                    while ($comics != null) {
 
-                            ?>
-                                <tr>
-                                    <td>
-                                        <a href="infoComic.php?IDcomic=<?php echo $comics['IDcomic']; ?>">
-                                            <img src="<?php echo $comics['Cover']; ?>" alt="profile picture" class="avatarPicture" name="avatarComic" id="avatar" alt="Avatar" style="width: 140px; height: 210px; border-radius: 0;">
-                                        </a>
-                                    </td>
-                                    <td>
-                                    <div class='comic-detail'>
-                                            <?php
-                                            $titulo = str_replace(' ', ' ', $comics['nomComic']);
-                                            echo "<span class='comic-value'><a href='search_data.php?search=$titulo'>$titulo</a></span>";
-                                            ?>
-                                        </div>
-                                    </td>
-                                    <td><?php echo $comics['numComic'] ?></td>
-                                    <td>
-                                        <div class='comic-detail'>
-                                            <?php
-                                            $variantes = explode('-', $comics['nomVariante']);
-                                            foreach ($variantes as $variante) {
-                                                echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($variante)) . "'>" . $variante . "</a></span>";
-                                            }
-                                            ?>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='comic-detail'>
-                                            <?php
-                                            $nomEditorial = str_replace(' ', '-', $comics['nomEditorial']);
-                                            echo "<span class='comic-value'><a href='search_data.php?search=$nomEditorial'>$comics[nomEditorial]</a></span>";
-                                            ?>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='comic-detail'>
-                                            <?php
-                                            $formato = str_replace(' ', '-', $comics['Formato']);
-                                            echo "<span class='comic-value'><a href='search_data.php?search=$formato'>$comics[Formato]</a></span>";
-                                            ?>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='comic-detail'>
-                                            <?php
-                                            $procedencia = str_replace(' ', '-', $comics['Procedencia']);
-                                            echo "<span class='comic-value'><a href='search_data.php?search=$procedencia'>$comics[Procedencia]</a></span>";
-                                            ?>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='comic-detail'>
-                                            <?php
-                                            echo "<span class='comic-value'><a href='search_data.php?search=$comics[date_published]'>$comics[date_published]</a></span>";
-                                            ?>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='comic-detail'>
-                                            <?php
-                                            $guionistas = explode('-', $comics['nomGuionista']);
-                                            foreach ($guionistas as $guionista) {
-                                                echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($guionista)) . "'>" . $guionista . "</a></span>";
-                                            }
-                                            ?>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='comic-detail'>
-                                            <?php
-                                            $dibujantes = explode('-', $comics['nomDibujante']);
-                                            foreach ($dibujantes as $dibujante) {
-                                                echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($dibujante)) . "'>" . $dibujante . "</a></span>";
-                                            }
-                                            ?>
-                                        </div>
-                                    </td>
-                                    <input type='hidden' name='IDcomic' id='IDcomic' value='<?php echo $comics['IDcomic'] ?>'>
-                            <?php
+                                    ?>
+                                        <tr>
+                                            <td>
+                                                <a href="infoComic.php?IDcomic=<?php echo $comics['IDcomic']; ?>">
+                                                    <img src="<?php echo $comics['Cover']; ?>" alt="profile picture" class="avatarPicture" name="avatarComic" id="avatar" alt="Avatar" style="width: 140px; height: 210px; border-radius: 0;">
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div class='comic-detail'>
+                                                    <?php
+                                                    $titulo = str_replace(' ', ' ', $comics['nomComic']);
+                                                    echo "<span class='comic-value'><a href='search_data.php?search=$titulo'>$titulo</a></span>";
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <td><?php echo $comics['numComic'] ?></td>
+                                            <td>
+                                                <div class='comic-detail'>
+                                                    <?php
+                                                    $variantes = explode('-', $comics['nomVariante']);
+                                                    foreach ($variantes as $variante) {
+                                                        echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($variante)) . "'>" . $variante . "</a></span>";
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class='comic-detail'>
+                                                    <?php
+                                                    $nomEditorial = str_replace(' ', '-', $comics['nomEditorial']);
+                                                    echo "<span class='comic-value'><a href='search_data.php?search=$nomEditorial'>$comics[nomEditorial]</a></span>";
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class='comic-detail'>
+                                                    <?php
+                                                    $formato = str_replace(' ', '-', $comics['Formato']);
+                                                    echo "<span class='comic-value'><a href='search_data.php?search=$formato'>$comics[Formato]</a></span>";
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class='comic-detail'>
+                                                    <?php
+                                                    $procedencia = str_replace(' ', '-', $comics['Procedencia']);
+                                                    echo "<span class='comic-value'><a href='search_data.php?search=$procedencia'>$comics[Procedencia]</a></span>";
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class='comic-detail'>
+                                                    <?php
+                                                    echo "<span class='comic-value'><a href='search_data.php?search=$comics[date_published]'>$comics[date_published]</a></span>";
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class='comic-detail'>
+                                                    <?php
+                                                    $guionistas = explode('-', $comics['nomGuionista']);
+                                                    foreach ($guionistas as $guionista) {
+                                                        echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($guionista)) . "'>" . $guionista . "</a></span>";
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class='comic-detail'>
+                                                    <?php
+                                                    $dibujantes = explode('-', $comics['nomDibujante']);
+                                                    foreach ($dibujantes as $dibujante) {
+                                                        echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($dibujante)) . "'>" . $dibujante . "</a></span>";
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </td>
+                                            <input type='hidden' name='IDcomic' id='IDcomic' value='<?php echo $comics['IDcomic'] ?>'>
+                                    <?php
 
-                                echo "</tr>";
-                                $comics = $registros->fetch();
-                            }
-                        }
-                            ?>
-                            </form>
-                                </tr>
-                        </tbody>
-                    </table>
-                    <h5 class="card-title"></h5>
-                    <p class="card-text"></p>
-                </div>
-            </div>
-            <div id="footer-lite">
-                <div class="content">
-                    <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                    <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                    <!-- add social media with icons -->
-                    <p class="social">
-                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+                                        echo "</tr>";
+                                        $comics = $registros->fetch();
+                                    }
+                                }
+                                    ?>
+                                    </form>
+                                        </tr>
+                                </tbody>
+                            </table>
+                            <h5 class="card-title"></h5>
+                            <p class="card-text"></p>
+                        </div>
+                    </div>
+                    <div class="bgimg-2">
+                        <div id="footer-lite">
+                            <div class="content">
+                                <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+                                <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                                <!-- add social media with icons -->
+                                <p class="social">
+                                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                    </p>
-                    <p class="copyright">©2023 Alejandro Rodriguez</p>
-                </div>
-            </div>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+                                </p>
+                                <p class="copyright">©2023 Alejandro Rodriguez</p>
+                            </div>
+                        </div>
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-            <script src="./assets/js/appLogin.js"></script>
-            <script src="./assets/js/sweetalert2.all.min.js"></script>
-            <script src="./assets/js/functions.js"></script>
+                        <script src="./assets/js/appLogin.js"></script>
+                        <script src="./assets/js/sweetalert2.all.min.js"></script>
+                        <script src="./assets/js/functions.js"></script>
 </body>
 
 </html>
