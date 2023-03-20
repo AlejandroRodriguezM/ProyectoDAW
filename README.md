@@ -255,3 +255,12 @@ Se ha añadido varios ficheros nuevos php que sirven para mostrar comcis de una 
 Se han creado nuevas funciones js para guardar y quitar comics de dichas listas
 Se ha mejorado la base de datos, ahora alberga mas de 15000 entradas en la tabla "comics" y "descripcion_comics"
 Se han eliminado bugs respecto a la hora de realizar busquedas
+
+20/03/2023 Log 1
+Se han cambiado la barra de busqueda, ahora esta en el navbar principar sin muestras de posibles busquedas relacionadas.
+Se ha aplicado el parallax a diferentes paginas, aun falta por terminar.
+Se ha mejorado la muestra de comics u usuarios en la busqueda, ahora solamente muestran de 5 en 5 los comics, y a medida que se scrollea la pagina aparecen mas.
+Se han modificado diferentes funciones para la busqueda de comics.
+Se ha creado una nueva api para mostrar los comics en la busqueda.
+Se han modificado estilos css para que sean mas acordes a la pagina y mejoren su visibilidad.
+Se han arreglado diferentes bugs que no permitian guardar comics en diferentes paginas

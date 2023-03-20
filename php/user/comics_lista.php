@@ -74,27 +74,27 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
 
 
 <script>
-    (function() {
-        const buttons = document.querySelectorAll('.activate, .desactivate');
-        const id_lista = document.getElementById('id_lista');
-        
-        buttons.forEach(function(button) {
-            const id_comic = button.parentElement.dataset.idComic;
-            const id_unico = button.dataset.itemId;
-            
-            if (id_comic) {
-                button.addEventListener('click', function() {
-                    if (button.classList.contains('activate')) {
-                        button.classList.remove('activate');
-                        button.classList.add('desactivate');
-                        quitar_comic_lista(id_comic, id_lista.value);
-                    } else {
-                        button.classList.remove('desactivate');
-                        button.classList.add('activate');
-                        guardar_comic_lista(id_comic, id_lista.value);
-                    }
-                });
-            }
+  (function() {
+    const buttons = document.querySelectorAll('.activate, .desactivate');
+    const id_lista = document.getElementById('id_lista');
+
+    buttons.forEach(function(button) {
+      const id_comic = button.parentElement.dataset.idComic;
+      const id_unico = button.dataset.itemId;
+
+      if (id_comic) {
+        button.addEventListener('click', function() {
+          if (button.classList.contains('activate')) {
+            button.classList.remove('activate');
+            button.classList.add('desactivate');
+            quitar_comic_lista(id_comic, id_lista.value);
+          } else {
+            button.classList.remove('desactivate');
+            button.classList.add('activate');
+            guardar_comic_lista(id_comic, id_lista.value);
+          }
         });
-    })();
+      }
+    });
+  })();
 </script>

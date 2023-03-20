@@ -9,6 +9,10 @@ $id_user = $userData['IDuser'];
 $id_lista = $_GET['id_lista'];
 $data_lista =  get_nombre_lista($id_lista);
 $nombre_lista = $data_lista['nombre_lista'];
+
+if(!check_lista_user($id_user, $id_lista)){
+    header("Location: mislistas.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -141,6 +145,13 @@ $nombre_lista = $data_lista['nombre_lista'];
             background-color: #2980B9;
             cursor: pointer;
         }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
     </style>
 </head>
 
@@ -192,10 +203,11 @@ $nombre_lista = $data_lista['nombre_lista'];
             </div>
 
             <div class="d-flex" role="search" style="margin-right: 15px;">
-                <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-                    Buscar
-                    <i class="bi bi-search"></i>
-                </button>
+                <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
+                    <!-- <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"> -->
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                    <!-- </label> -->
+                </form>
             </div>
 
             <div class="dropdown" id="navbar-user" style="left: 2px !important;">
@@ -271,32 +283,7 @@ $nombre_lista = $data_lista['nombre_lista'];
         Design by Alejandro Rodriguez 2022
     </div>
 
-    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-        <div class="d-flex justify-content-center">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <!-- <script>
-                        const input = document.getElementById('search-data');
-                        input.addEventListener('input', () => autocomplete(input));
-                    </script> -->
-                </label>
-            </form>
-        </div>
 
-        <!-- botones para clasificar que ver  -->
-        <div class="d-flex justify-content-center" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Todo</span>
-            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Usuarios</span>
-            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Comics</span>
-        </div>
-
-        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" id="show_information">
-            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div id="search-result"></div>
-            </form>
-        </div>
-    </fieldset>
 
     <div class="bgimg-1">
         <div class="caption">

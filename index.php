@@ -2,6 +2,10 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 destroyCookiesUserTemporal();
+
+if (isset($_SESSION['email'])) {
+    header('Location: inicio.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +25,7 @@ destroyCookiesUserTemporal();
     <title>Acces user</title>
 </head>
 
-<body onload="checkSesion();" class="inicio">
+<body class="inicio">
     <div class="sec1">
         <div class="container" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
             <div class="svg-container">

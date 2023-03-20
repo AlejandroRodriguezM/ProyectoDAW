@@ -22,6 +22,8 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
 
     <title>Inicio</title>
     <style>
@@ -76,6 +78,13 @@ $email = $_SESSION['email'];
             background-color: #2980B9;
             cursor: pointer;
         }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
     </style>
 </head>
 
@@ -127,10 +136,11 @@ $email = $_SESSION['email'];
             </div>
 
             <div class="d-flex" role="search" style="margin-right: 15px;">
-                <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-                    Buscar
-                    <i class="bi bi-search"></i>
-                </button>
+                <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
+                    <!-- <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"> -->
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                    <!-- </label> -->
+                </form>
             </div>
 
             <div class="dropdown" id="navbar-user" style="left: 2px !important;">
@@ -224,34 +234,6 @@ $email = $_SESSION['email'];
     // }
     ?>
 
-    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'></a>
-        <legend class='info-search'>Búsqueda</legend>
-        <div class="d-flex justify-content-center">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <!-- <script>
-                        const input = document.getElementById('search-data');
-                        input.addEventListener('input', () => autocomplete(input));
-                    </script> -->
-                </label>
-            </form>
-        </div>
-
-        <!-- botones para clasificar que ver  -->
-        <div class="d-flex justify-content-center" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Todo</span>
-            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Usuarios</span>
-            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Comics</span>
-        </div>
-
-        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" id="show_information">
-            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div id="search-result"></div>
-            </form>
-        </div>
-    </fieldset>
 
     <div class="bgimg-1">
         <div class="caption">
@@ -325,7 +307,7 @@ $email = $_SESSION['email'];
                                         <span class='issue-number issue-number-l1'>$numComic</span>
                                     </a>
                                     <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
-                                    
+
                                         if (check_guardado($id_user, $id_comic)) {
                                             echo "<button data-item-id='yXwd2' class='rem' >
                                         <span class='sp-icon'>Lo tengo</span>
@@ -402,6 +384,7 @@ $email = $_SESSION['email'];
                 </div>
             </div>
         </div>
+
         <div class="bgimg-2">
             <div id="footer-lite">
                 <div class="content">
@@ -427,52 +410,52 @@ $email = $_SESSION['email'];
                 </div>
             </div>
         </div>
-        <script>
-            (function() {
-                const buttonsAdd = document.querySelectorAll('.add');
-                buttonsAdd.forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        if (button.classList.contains('add')) {
-                            button.classList.remove('add');
-                            button.classList.add('rem');
-                            const id_comic = button.previousElementSibling.value;
-                            guardar_comic(id_comic);
-                        } else if (button.classList.contains('rem')) {
-                            button.classList.remove('rem');
-                            button.classList.add('add');
-                            const id_comic = button.previousElementSibling.value;
-                            quitar_comic(id_comic);
-                        }
-                    });
+    </div>
+    <script>
+        (function() {
+            const buttonsAdd = document.querySelectorAll('.add');
+            buttonsAdd.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    if (button.classList.contains('add')) {
+                        button.classList.remove('add');
+                        button.classList.add('rem');
+                        const id_comic = button.previousElementSibling.value;
+                        guardar_comic(id_comic);
+                    } else if (button.classList.contains('rem')) {
+                        button.classList.remove('rem');
+                        button.classList.add('add');
+                        const id_comic = button.previousElementSibling.value;
+                        quitar_comic(id_comic);
+                    }
                 });
+            });
 
-                const buttonsRem = document.querySelectorAll('.rem');
-                buttonsRem.forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        if (button.classList.contains('rem')) {
-                            button.classList.remove('rem');
-                            button.classList.add('add');
-                            const id_comic = button.previousElementSibling.value;
-                            quitar_comic(id_comic);
-                        } else if (button.classList.contains('add')) {
-                            button.classList.remove('add');
-                            button.classList.add('rem');
-                            const id_comic = button.previousElementSibling.value;
-                            guardar_comic(id_comic);
+            const buttonsRem = document.querySelectorAll('.rem');
+            buttonsRem.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    if (button.classList.contains('rem')) {
+                        button.classList.remove('rem');
+                        button.classList.add('add');
+                        const id_comic = button.previousElementSibling.value;
+                        quitar_comic(id_comic);
+                    } else if (button.classList.contains('add')) {
+                        button.classList.remove('add');
+                        button.classList.add('rem');
+                        const id_comic = button.previousElementSibling.value;
+                        guardar_comic(id_comic);
 
-                        }
-                    });
+                    }
                 });
-            })();
-        </script>
+            });
+        })();
+    </script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-        <script src="./assets/js/appLogin.js"></script>
-        <script src="./assets/js/sweetalert2.all.min.js"></script>
-        <script src="./assets/js/functions.js"></script>
+    <script src="./assets/js/appLogin.js"></script>
+    <script src="./assets/js/sweetalert2.all.min.js"></script>
+    <script src="./assets/js/functions.js"></script>
 </body>
 
 </html>

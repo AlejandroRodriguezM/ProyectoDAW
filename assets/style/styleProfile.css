@@ -1,5 +1,6 @@
 body {
     background: #f9f9fb;
+    padding-top: 70px; /* Ajusta la cantidad de padding necesaria */
 }
 
 .view-account {

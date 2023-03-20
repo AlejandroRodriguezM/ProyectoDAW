@@ -18,11 +18,13 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
-    <link rel="stylesheet" href="./assets/style/parallax.css">
 
+    <link rel="stylesheet" href="./assets/style/parallax.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
 
     <title>Busqueda</title>
     <style>
@@ -35,6 +37,140 @@ $email = $_SESSION['email'];
             display: flex;
             flex-wrap: wrap;
         }
+
+        .busqueda {
+            border: 1px solid black;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .busqueda h1 {
+            margin: 0;
+            padding: 20px;
+            background-color: #343a40;
+            color: white;
+        }
+
+        .panel_busqueda {
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .contenedor {
+            width: 72% !important;
+            overflow-x: auto;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-radius: 30px;
+        }
+
+        .contenido_busqueda {
+            max-width: 120%;
+            overflow: auto;
+        }
+
+        .table {
+            min-width: 1200px;
+            display: table;
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            background-color: rgb(77, 81, 84);
+            border-collapse: collapse;
+        }
+
+        .table td,
+        .table th {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+            color: white;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody+tbody {
+            border-top: 2px solid #dee2e6;
+        }
+
+        .table .table {
+            background-color: #fff;
+        }
+
+        .table-sm td,
+        .table-sm th {
+            padding: 0.3rem;
+        }
+
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-bordered td,
+        .table-bordered th {
+            border: 1px solid #dee2e6;
+            width: 5%;
+        }
+
+        .table-bordered thead td,
+        .table-bordered thead th {
+            border-bottom-width: 2px;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.075);
+        }
+
+        a {
+            color: white;
+            font-size: 15px;
+        }
+
+        a:hover {
+            color: red;
+        }
+
+        .comic-value {
+            font-family: Arial, sans-serif !important;
+            font-size: 14px !important;
+            color: white;
+        }
+
+        .ver-mas-btn {
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin-left: 1026px !important;
+            text-align: right;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ver-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
     </style>
 </head>
 
@@ -44,7 +180,7 @@ $input_comic = $_GET['search'];
 $input_user = $_GET['search'];
 $count_comic = 0;
 $count_user = 0;
-
+echo "<input type='hidden' name='input_comic' id='input_comic' value='$input_comic'>";
 if (existe_comic($input_comic)) {
     $count_comic = countComicSearch($input_comic);
 }
@@ -73,7 +209,7 @@ if (existe_user($input_user)) {
                                 } elseif ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                                    echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
@@ -90,7 +226,7 @@ if (existe_user($input_user)) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
@@ -102,10 +238,11 @@ if (existe_user($input_user)) {
             </div>
 
             <div class="d-flex" role="search" style="margin-right: 15px;">
-                <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-                    Buscar
-                    <i class="bi bi-search"></i>
-                </button>
+                <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
+                    <!-- <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"> -->
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                    <!-- </label> -->
+                </form>
             </div>
 
             <div class="dropdown" id="navbar-user" style="left: 2px !important;">
@@ -181,214 +318,245 @@ if (existe_user($input_user)) {
         Design by Alejandro Rodriguez 2022
     </div>
 
-    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'></a>
-        <legend class='info-search'>Búsqueda</legend>
-        <div class="d-flex justify-content-center">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <!-- <script>
-                        const input = document.getElementById('search-data');
-                        input.addEventListener('input', () => autocomplete(input));
-                    </script> -->
-                </label>
-            </form>
-        </div>
-
-        <!-- botones para clasificar que ver  -->
-        <div class="d-flex justify-content-center" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Todo</span>
-            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Usuarios</span>
-            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Comics</span>
-        </div>
-
-        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" id="show_information">
-            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div id="search-result"></div>
-            </form>
-        </div>
-    </fieldset>
-
-    <?php
-    if ($count_user > 0) {
-    ?>
-        <div style="margin-left: auto; margin-right: auto; width: 80%">
-            <div class="card-body">
-                <table class="table table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <td>Foto de perfil</td>
-                            <td>Usuario</td>
-                            <td>Nombre</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $registros = search_user($input_user);
-                        $user = $registros->fetch();
-                        while ($user != null) {
-                        ?>
-                            <tr>
-                                <td>
-                                    <a href="infoUser.php?userName=<?php echo $user['userName']; ?>">
-                                        <img src="<?php echo $user['userPicture']; ?>" alt="profile picture" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
-                                    </a>
-                                </td>
-                                <td><?php echo $user['userName']; ?></td>
-                                <td><?php echo $user['email']; ?></td>
-                            </tr>
-                    <?php
-                            $user = $registros->fetch();
-                        }
-                    }
-                    ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <?php
-
-        if ($count_comic > 0) {
-        ?>
-            <div class="bgimg-1">
-                <div class="caption">
-                    <div style="margin-left: auto; margin-right: auto; width: 80%">
-                        <div class="card-body">
-                            <table class="table table-hover">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <td style='text-align:center'>Portada</td>
-                                        <td style='text-align:center'>Nombre del comic</td>
-                                        <td style='text-align:center'>Numero</td>
-                                        <td style='text-align:center'>Variante</td>
-                                        <td style='text-align:center'>Editorial</td>
-                                        <td style='text-align:center'>Formato</td>
-                                        <td style='text-align:center'>Procedencia</td>
-                                        <td style='text-align:center'>Fecha de publicacion</td>
-                                        <td style='text-align:center'>Nombre del guionista</td>
-                                        <td style='text-align:center'>Nombre del dibujante</td>
+    <div class="bgimg-1">
+        <div class="caption">
+            <?php
+            if ($count_user > 0) {
+            ?>
+                <div class="busqueda">
+                    <h1>Busqueda de <?php echo $input_user ?></h1>
+                </div>
+                <div class="contenedor mt-5">
+                    <div class='panel_busqueda'>
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <td>Foto de perfil</td>
+                                    <td>Usuario</td>
+                                    <td>Nombre</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $registros = search_user($input_user);
+                                $user = $registros->fetch();
+                                while ($user != null) {
+                                ?>
+                                    <tr style="background-color:rgb(77,81,84)">
+                                        <td>
+                                            <a href="infoUser.php?userName=<?php echo $user['userName']; ?>">
+                                                <img src="<?php echo $user['userPicture']; ?>" alt="profile picture" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
+                                            </a>
+                                        </td>
+                                        <td><?php echo $user['userName']; ?></td>
+                                        <td><?php echo $user['email']; ?></td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $registros = search_comics($input_comic);
-                                    $comics = $registros->fetch();
-                                    while ($comics != null) {
-
-                                    ?>
-                                        <tr>
-                                            <td>
-                                                <a href="infoComic.php?IDcomic=<?php echo $comics['IDcomic']; ?>">
-                                                    <img src="<?php echo $comics['Cover']; ?>" alt="profile picture" class="avatarPicture" name="avatarComic" id="avatar" alt="Avatar" style="width: 140px; height: 210px; border-radius: 0;">
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <div class='comic-detail'>
-                                                    <?php
-                                                    $titulo = str_replace(' ', ' ', $comics['nomComic']);
-                                                    echo "<span class='comic-value'><a href='search_data.php?search=$titulo'>$titulo</a></span>";
-                                                    ?>
-                                                </div>
-                                            </td>
-                                            <td><?php echo $comics['numComic'] ?></td>
-                                            <td>
-                                                <div class='comic-detail'>
-                                                    <?php
-                                                    $variantes = explode('-', $comics['nomVariante']);
-                                                    foreach ($variantes as $variante) {
-                                                        echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($variante)) . "'>" . $variante . "</a></span>";
-                                                    }
-                                                    ?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class='comic-detail'>
-                                                    <?php
-                                                    $nomEditorial = str_replace(' ', '-', $comics['nomEditorial']);
-                                                    echo "<span class='comic-value'><a href='search_data.php?search=$nomEditorial'>$comics[nomEditorial]</a></span>";
-                                                    ?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class='comic-detail'>
-                                                    <?php
-                                                    $formato = str_replace(' ', '-', $comics['Formato']);
-                                                    echo "<span class='comic-value'><a href='search_data.php?search=$formato'>$comics[Formato]</a></span>";
-                                                    ?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class='comic-detail'>
-                                                    <?php
-                                                    $procedencia = str_replace(' ', '-', $comics['Procedencia']);
-                                                    echo "<span class='comic-value'><a href='search_data.php?search=$procedencia'>$comics[Procedencia]</a></span>";
-                                                    ?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class='comic-detail'>
-                                                    <?php
-                                                    echo "<span class='comic-value'><a href='search_data.php?search=$comics[date_published]'>$comics[date_published]</a></span>";
-                                                    ?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class='comic-detail'>
-                                                    <?php
-                                                    $guionistas = explode('-', $comics['nomGuionista']);
-                                                    foreach ($guionistas as $guionista) {
-                                                        echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($guionista)) . "'>" . $guionista . "</a></span>";
-                                                    }
-                                                    ?>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class='comic-detail'>
-                                                    <?php
-                                                    $dibujantes = explode('-', $comics['nomDibujante']);
-                                                    foreach ($dibujantes as $dibujante) {
-                                                        echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($dibujante)) . "'>" . $dibujante . "</a></span>";
-                                                    }
-                                                    ?>
-                                                </div>
-                                            </td>
-                                            <input type='hidden' name='IDcomic' id='IDcomic' value='<?php echo $comics['IDcomic'] ?>'>
-                                    <?php
-
-                                        echo "</tr>";
-                                        $comics = $registros->fetch();
-                                    }
+                                <?php
+                                    $user = $registros->fetch();
                                 }
-                                    ?>
-                                    </form>
-                                        </tr>
-                                </tbody>
-                            </table>
-                            <h5 class="card-title"></h5>
-                            <p class="card-text"></p>
-                        </div>
-                    </div>
-                    <div class="bgimg-2">
-                        <div id="footer-lite">
-                            <div class="content">
-                                <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                                <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                                <!-- add social media with icons -->
-                                <p class="social">
-                                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                                </p>
-                                <p class="copyright">©2023 Alejandro Rodriguez</p>
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            <?php
+
+            }
+            ?>
+
+            <?php
+            if ($count_comic > 0) {
+            ?>
+                <?php
+                if ($count_comic > 0 && $count_user < 1) {
+                ?>
+                    <div class="busqueda">
+                        <h1>Busqueda de <?php echo $input_comic ?></h1>
+                    </div>
+                <?php
+                }
+                ?>
+                <div class="contenedor mt-5">
+                    <div class='panel_busqueda'>
+                        <table class="comic_table table table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Portada</th>
+                                    <th>Nombre del comic</th>
+                                    <th>Numero</th>
+                                    <th>Variante</th>
+                                    <th>Editorial</th>
+                                    <th>Formato</th>
+                                    <th>Procedencia</th>
+                                    <th>Fecha de publicacion</th>
+                                    <th>Nombre del guionista</th>
+                                    <th>Nombre del dibujante</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <h5 class="card-title"></h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            <?php
+            }
+            if ($count_user > 0 && $count_comic == 0) {
+            ?>
+                <div class="container mt-5">
+                    <div style="display: flex; justify-content: center;">
+                        <div class="last-pubs">
+                            <div class="titulo">
+                                <h2>Recomendaciones</h2>
+                            </div>
+                            <a href='novedades.php'>
+                                <button class="ver-mas-btn">Ver más</button>
+                            </a>
+                            <div class="scrollable-h comic-full">
+                                <div class="scrollable-h-content">
+                                    <ul class="v2-cover-list">
+                                        <?php
+                                        $total_comics = numComics();
+                                        echo "<input type='hidden' id='id_user' value='$id_user'>";
+
+                                        for ($i = 0; $i < 8; $i++) {
+                                            $numero = randomComic();
+                                            $data_comic = getDataComic($numero);
+                                            $id_comic = $data_comic['IDcomic'];
+                                            $titulo = $data_comic['nomComic'];
+                                            $numComic = $data_comic['numComic'];
+                                            $variante = $data_comic['nomVariante'];
+                                            $cover = $data_comic['Cover'];
+                                            echo "<li id='comicyXwd2' class='get-it'>
+                                        <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
+                                        <span class='cover'>
+                                        <img src='$cover' alt='$titulo - $variante / #$numComic'>
+                                        </span>
+                                        <strong><?php echo $titulo ?></strong>
+                                        <span class='issue-number issue-number-l1'>$numComic</span>
+                                    </a>
+                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
+
+                                            if (check_guardado($id_user, $id_comic)) {
+                                                echo "<button data-item-id='yXwd2' class='rem' >
+                                        <span class='sp-icon'>Lo tengo</span>
+                                    </button>";
+                                            } else {
+                                                echo "<button data-item-id='yXwd2' class='add' >
+                                        <span class='sp-icon'>Lo tengo</span>
+                                        </button>";
+                                            }
+                                            echo "</li>";
+                                        }
+                                        ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+                    </div>
+                </div>
 
-                        <script src="./assets/js/appLogin.js"></script>
-                        <script src="./assets/js/sweetalert2.all.min.js"></script>
-                        <script src="./assets/js/functions.js"></script>
+            <?php
+            }
+            ?>
+            <div class="bgimg-2">
+                <div id="footer-lite">
+                    <div class="content">
+                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                        <!-- add social media with icons -->
+                        <p class="social">
+                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                        </p>
+                        <p class="copyright">©2023 Alejandro Rodriguez</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var limit = 5;
+        var offset = 0;
+        var totalComics = 0;
+
+        $(document).ready(function() {
+            loadComics();
+
+            $(window).scroll(function() {
+                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 20) {
+                    offset += limit;
+                    loadComics();
+                }
+            });
+        });
+
+        function loadComics() {
+            var data = {
+                limit: limit,
+                offset: offset,
+                search: "<?php echo $input_comic; ?>"
+            };
+
+            var url = "php/user/resultado_comics.php?" + $.param(data);
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(data) {
+                    var newComicList = '<tbody class="busqueda_comics">' + data + '</tbody>';
+                    $('.comic_table').append(newComicList);
+                }
+            });
+        }
+    </script>
+    <script>
+        (function() {
+            const buttonsAdd = document.querySelectorAll('.add');
+            buttonsAdd.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    if (button.classList.contains('add')) {
+                        button.classList.remove('add');
+                        button.classList.add('rem');
+                        const id_comic = button.previousElementSibling.value;
+                        guardar_comic(id_comic);
+                    } else if (button.classList.contains('rem')) {
+                        button.classList.remove('rem');
+                        button.classList.add('add');
+                        const id_comic = button.previousElementSibling.value;
+                        quitar_comic(id_comic);
+                    }
+                });
+            });
+
+            const buttonsRem = document.querySelectorAll('.rem');
+            buttonsRem.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    if (button.classList.contains('rem')) {
+                        button.classList.remove('rem');
+                        button.classList.add('add');
+                        const id_comic = button.previousElementSibling.value;
+                        quitar_comic(id_comic);
+                    } else if (button.classList.contains('add')) {
+                        button.classList.remove('add');
+                        button.classList.add('rem');
+                        const id_comic = button.previousElementSibling.value;
+                        guardar_comic(id_comic);
+
+                    }
+                });
+            });
+        })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <script src="./assets/js/appLogin.js"></script>
+    <script src="./assets/js/sweetalert2.all.min.js"></script>
+    <script src="./assets/js/functions.js"></script>
+
 </body>
 
 </html>

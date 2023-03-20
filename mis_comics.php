@@ -102,6 +102,31 @@ $email = $_SESSION['email'];
             background-color: #2980B9;
             cursor: pointer;
         }
+
+        .video-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .video-container iframe:nth-child(1) {
+            margin-right: 20px;
+        }
+
+        .video-container iframe:nth-child(2) {
+            margin-right: 20px;
+        }
+
+        .video-container iframe:nth-child(3) {
+            margin-left: auto;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
     </style>
 </head>
 
@@ -153,10 +178,11 @@ $email = $_SESSION['email'];
             </div>
 
             <div class="d-flex" role="search" style="margin-right: 15px;">
-                <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-                    Buscar
-                    <i class="bi bi-search"></i>
-                </button>
+                <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
+                    <!-- <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"> -->
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                    <!-- </label> -->
+                </form>
             </div>
 
             <div class="dropdown" id="navbar-user" style="left: 2px !important;">
@@ -414,7 +440,17 @@ $email = $_SESSION['email'];
             }
 
             ?>
-
+            <div class="container mt-5">
+                <div class="titulo">
+                    <h2>Videos de interes</h2>
+                </div>
+                <hr>
+                <div class="video-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
             <div class="bgimg-2">
                 <div id="footer-lite">
                     <div class="content">

@@ -17,15 +17,33 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
-
+    <link rel="stylesheet" href="./assets/style/parallax.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <title>Perfil de usuario</title>
+
+    <style>
+        .contenedor {
+            width: 50% !important;
+            overflow-x: auto;
+            margin: 0 auto;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            border-radius: 30px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+    </style>
 </head>
 
 <body onload="checkSesionUpdate();showSelected();">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -72,10 +90,11 @@ $email = $_SESSION['email'];
             </div>
 
             <div class="d-flex" role="search" style="margin-right: 15px;">
-                <button class="btn btn-outline-success" type="submit" onclick="toggleFieldset()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-                    Buscar
-                    <i class="bi bi-search"></i>
-                </button>
+                <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
+                    <!-- <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"> -->
+                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                    <!-- </label> -->
+                </form>
             </div>
 
             <div class="dropdown" id="navbar-user" style="left: 2px !important;">
@@ -93,11 +112,10 @@ $email = $_SESSION['email'];
                         if ($userPrivilege == 'admin') {
                             echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                        } elseif($userPrivilege == 'user') {
+                        } elseif ($userPrivilege == 'user') {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                             echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
-                        }
-                        else{
+                        } else {
                             echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                         }
                     }
@@ -109,168 +127,147 @@ $email = $_SESSION['email'];
         </div>
     </nav>
 
-    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-        <a href='inicio.php' class='btn-close btn-lg' aria-label='Close' role='button' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'></a>
-        <legend class='info-search'>Búsqueda</legend>
-        <div class="d-flex justify-content-center">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <!-- <script>
-                        const input = document.getElementById('search-data');
-                        input.addEventListener('input', () => autocomplete(input));
-                    </script> -->
-                </label>
-            </form>
-        </div>
-
-        <!-- botones para clasificar que ver  -->
-        <div class="d-flex justify-content-center" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Todo</span>
-            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Usuarios</span>
-            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Comics</span>
-        </div>
-
-        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" id="show_information">
-            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div id="search-result"></div>
-            </form>
-        </div>
-    </fieldset>
-
-    <div class="container">
-        <div class="view-account">
-            <section class="module">
-                <div class="module-inner">
-                    <div class="side-bar">
-                        <div class="user-info">
-                            <?php
-                            $dataUser = getUserData($emailUser);
-                            $profilePicture = $dataUser['userPicture'];
-                            echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
-                            ?>
-
-                            <ul class="meta list list-unstyled">
-                                <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
-                                    <?php
-                                    $userName = $dataUser['userName'];
-                                    echo "$userName";
-                                    ?>
-                                </li>
-                                <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
-                                    <?php
-                                    $email = $dataUser['email'];
-                                    // echo with style font size 
-                                    echo " " . "<span style='font-size: 0.7em'>$email</span>";
-                                    ?>
-                                </li>
-                            </ul>
-                        </div>
-                        <nav class="side-menu">
-                            <ul class="nav">
-                                <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span>Profile</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="content-panel">
-                        <fieldset class="fieldset">
-                            <h3 class="fieldset-title">Personal Info</h3>
-                            <div class="form-group avatar">
-                            </div>
-
-                            <div class="form-group">
-                                <?php
-                                $userName = $dataUser['userName'];
-                                echo "<label>Nombre de usuario: </label>";
-                                echo " " . "<span>$userName</span>";
-                                ?>
-                            </div>
-                            <div class="form-group">
-                                <?php
-                                echo "<label>Correo electronico: </label>";
-                                echo " " . "<span>$emailUser</span>";
-                                ?>
-                            </div>
-                            <?php
-                            $IDuser = $dataUser['IDuser'];
-                            $infoUser = getInfoAboutUser($IDuser);
-                            $fechaCreacion = $infoUser['fechaCreacion'];
-                            $sobreUser = $infoUser['infoUser'];
-                            $nombre = $infoUser['nombreUser'];
-                            $apellidos = $infoUser['apellidoUser'];
-
-                            echo "<label>Nombre: </label>";
-                            echo " " . "<span>$nombre</span>";
-                            echo "<br>";
-                            echo "<label>Apellidos: </label>";
-                            echo " " . "<span>$apellidos</span>";
-                            echo "<br>";
-                            echo "<label>Fecha de creacion: </label>";
-                            echo " " . "<span>$fechaCreacion</span>";
-                            echo "<br>";
-                            echo "<label>Sobre mi:</label><br>";
-                            echo "<div class='col-xs-12'>";
-                            echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
-                            echo "</div>";
-
-                            ?>
-                        </fieldset>
-                        <hr>
-                        <div class="mb-3">
-                        </div>
-            </section>
-        </div>
+    <div class="card-footer text-muted">
+        Design by Alejandro Rodriguez 2022
     </div>
+    <div class="bgimg-1">
+        <div class="caption">
+            <br>
+            <div class="contenedor mt-5">
+                <div class="view-account" style="width:90%;justify-content: center;margin: 0 auto;">
+                    <section class="module">
+                        <div class="module-inner">
+                            <div class="side-bar">
+                                <div class="user-info">
+                                    <?php
+                                    $dataUser = getUserData($emailUser);
+                                    $profilePicture = $dataUser['userPicture'];
+                                    echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+                                    ?>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
+                                    <ul class="meta list list-unstyled">
+                                        <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
+                                            <?php
+                                            $userName = $dataUser['userName'];
+                                            echo "$userName";
+                                            ?>
+                                        </li>
+                                        <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
+                                            <?php
+                                            $email = $dataUser['email'];
+                                            // echo with style font size 
+                                            echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                            ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <nav class="side-menu">
+                                    <ul class="nav">
+                                        <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span>Profile</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="content-panel">
+                                <fieldset class="fieldset">
+                                    <h3 class="fieldset-title">Personal Info</h3>
+                                    <div class="form-group avatar">
+                                    </div>
 
-    <!-- FORMULARIO INSERTAR -->
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_ticket" onsubmit="return false;">
-                        <h4 class="modal-title">Crear un ticket para administradores</h4>
+                                    <div class="form-group">
+                                        <?php
+                                        $userName = $dataUser['userName'];
+                                        echo "<label>Nombre de usuario: </label>";
+                                        echo " " . "<span>$userName</span>";
+                                        ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <?php
+                                        echo "<label>Correo electronico: </label>";
+                                        echo " " . "<span>$emailUser</span>";
+                                        ?>
+                                    </div>
+                                    <?php
+                                    $IDuser = $dataUser['IDuser'];
+                                    $infoUser = getInfoAboutUser($IDuser);
+                                    $fechaCreacion = $infoUser['fechaCreacion'];
+                                    $sobreUser = $infoUser['infoUser'];
+                                    $nombre = $infoUser['nombreUser'];
+                                    $apellidos = $infoUser['apellidoUser'];
+
+                                    echo "<label>Nombre: </label>";
+                                    echo " " . "<span>$nombre</span>";
+                                    echo "<br>";
+                                    echo "<label>Apellidos: </label>";
+                                    echo " " . "<span>$apellidos</span>";
+                                    echo "<br>";
+                                    echo "<label>Fecha de creacion: </label>";
+                                    echo " " . "<span>$fechaCreacion</span>";
+                                    echo "<br>";
+                                    echo "<label>Sobre mi:</label><br>";
+                                    echo "<div class='col-xs-12'>";
+                                    echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
+                                    echo "</div>";
+
+                                    ?>
+                                </fieldset>
+                                <hr>
+                    </section>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Asunto</label>
-                        <input type="text" id="asunto_usuario" class="form-control">
+            </div>
+        </div>
+        <!-- The Modal -->
+        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <img class="modal-content_img" id="img01">
+        </div>
+
+        <!-- FORMULARIO INSERTAR -->
+        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form method="post" id="form_ticket" onsubmit="return false;">
+                            <h4 class="modal-title">Crear un ticket para administradores</h4>
                     </div>
-                    <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
-                            $id_user = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
-                        }
-                        ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Asunto</label>
+                            <input type="text" id="asunto_usuario" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Mensaje</label>
+                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                $userData = getUserData($email);
+                                $id_user = $userData['IDuser'];
+                                echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                            }
+                            ?>
+                        </div>
                     </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                    </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+            </div>
+        </div>
+        <div class="bgimg-2">
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+                    <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                    </p>
+                    <p class="copyright">©2023 Alejandro Rodriguez</p>
                 </div>
-                </form>
             </div>
         </div>
     </div>
-    <div id="footer-lite">
-        <div class="content">
-            <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-            <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-            <!-- add social media with icons -->
-            <p class="social">
-                <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-
-            </p>
-            <p class="copyright">©2023 Alejandro Rodriguez</p>
-        </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

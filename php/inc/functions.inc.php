@@ -225,7 +225,7 @@ function pictureProfile($email)
 
 function getScreenwriters()
 {
-	$table = get_comic();
+	$table = get_comics();
 	$screenwriters = array();
 	foreach ($table as $row) {
 		$names = preg_split("/[-,]+/", $row["nomGuionista"]);
@@ -244,7 +244,7 @@ function getScreenwriters()
 
 function getArtists()
 {
-	$table = get_comic();
+	$table = get_comics();
 	$artists = array();
 	foreach ($table as $row) {
 		$names = preg_split("/[-,]+/", $row["nomDibujante"]);
@@ -261,7 +261,7 @@ function getArtists()
 
 function getEditorial()
 {
-	$table = get_comic();
+	$table = get_comics();
 	$editorial = array();
 	foreach ($table as $row) {
 		$names = preg_split("/[-,]+/", $row["nomEditorial"]);
@@ -278,7 +278,7 @@ function getEditorial()
 
 function getPortadas()
 {
-	$table = get_comic();
+	$table = get_comics();
 	$editorial = array();
 	foreach ($table as $row) {
 		$names = preg_split("/[-,]+/", $row["nomVariante"]);

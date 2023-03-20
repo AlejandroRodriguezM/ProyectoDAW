@@ -185,51 +185,51 @@ function toggleFieldset() {
 }
 
 function showSelected() {
-    const span1 = document.getElementById('span1');
-    const span2 = document.getElementById('span2');
-    const span3 = document.getElementById('span3');
-    const respuesta = document.getElementById('show_information');
+    // const span1 = document.getElementById('span1');
+    // const span2 = document.getElementById('span2');
+    // const span3 = document.getElementById('span3');
+    // const respuesta = document.getElementById('show_information');
 
-    span1.classList.add('selected');
-    respuesta.style.display = 'block';
-    buscar_todo();
+    // span1.classList.add('selected');
+    // respuesta.style.display = 'block';
+    // buscar_todo();
 
-    const removeSelected = () => {
-        span1.classList.remove('selected');
-        span2.classList.remove('selected');
-        span3.classList.remove('selected');
-    }
+    // const removeSelected = () => {
+    //     span1.classList.remove('selected');
+    //     span2.classList.remove('selected');
+    //     span3.classList.remove('selected');
+    // }
 
-    span1.addEventListener('load', function () {
-        removeSelected();
-        span1.classList.add('selected');
-        respuesta.style.display = 'block';
-        buscar_todo();
-    });
+    // span1.addEventListener('load', function () {
+    //     removeSelected();
+    //     span1.classList.add('selected');
+    //     respuesta.style.display = 'block';
+    //     buscar_todo();
+    // });
 
-    span1.addEventListener('click', () => {
-        removeSelected();
-        span1.classList.add('selected');
-        respuesta.style.display = 'block';
-        buscar_todo();
-    });
+    // span1.addEventListener('click', () => {
+    //     removeSelected();
+    //     span1.classList.add('selected');
+    //     respuesta.style.display = 'block';
+    //     buscar_todo();
+    // });
 
-    span2.addEventListener('click', () => {
-        removeSelected();
-        span2.classList.add('selected');
-        respuesta.style.display = 'block';
-        buscarUsuarios();
-    });
+    // span2.addEventListener('click', () => {
+    //     removeSelected();
+    //     span2.classList.add('selected');
+    //     respuesta.style.display = 'block';
+    //     buscarUsuarios();
+    // });
 
-    span3.addEventListener('click', () => {
-        removeSelected();
-        span3.classList.add('selected');
-        respuesta.style.display = 'block';
-        buscarComics();
-    });
+    // span3.addEventListener('click', () => {
+    //     removeSelected();
+    //     span3.classList.add('selected');
+    //     respuesta.style.display = 'block';
+    //     buscarComics();
+    // });
 
 
-    document.getElementById("searchFieldset").addEventListener("keydown", function (event) {
+    document.getElementById("search-data").addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
             const searchData = document.getElementById("search-data").value;
