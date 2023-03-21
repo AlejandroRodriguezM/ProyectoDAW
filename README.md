@@ -264,3 +264,9 @@ Se han modificado diferentes funciones para la busqueda de comics.
 Se ha creado una nueva api para mostrar los comics en la busqueda.
 Se han modificado estilos css para que sean mas acordes a la pagina y mejoren su visibilidad.
 Se han arreglado diferentes bugs que no permitian guardar comics en diferentes paginas
+
+21/03/2023 Log 1
+Se ha modificado la base de datos, se han descargado todas las portadas y ahora estan en local, las imagenes en red siguen guardadas como copia de seguridad
+Añadida funcionalidad para poder editar o eliminar lista de lectura.
+Se ha limitado el acceso y control de usuario al usuario guest.
+Se han creado 2 nuevas apis para la eliminacion de listas o modificacion de estas.
