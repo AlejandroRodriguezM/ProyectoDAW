@@ -107,7 +107,7 @@ const new_user = async () => {
     }
 
     //pass data to php file
-    var respond = await fetch("php/user/new_user.php", {
+    var respond = await fetch("php/apis/new_user.php", {
         method: 'POST',
         body: data
     });
@@ -123,7 +123,7 @@ const new_user = async () => {
         })
         document.querySelector('#formInsert').reset();
         setTimeout(() => {
-            window.location.href = "index.php";
+            window.location.href = "login.php";
         }, 2000);
     } else {
         Swal.fire({
@@ -168,7 +168,7 @@ const login_user = async () => {
     data.append('pass', password);
 
     //pass data to php file
-    var respond = await fetch("php/user/login_user.php", {
+    var respond = await fetch("php/apis/login_user.php", {
         method: 'POST',
         body: data
     });
@@ -210,7 +210,7 @@ const guest_User = async () => {
     data.append('email', email);
     data.append('pass', password);
     //pass data to php file
-    var respond = await fetch("php/user/guest_user.php", {
+    var respond = await fetch("php/apis/guest_user.php", {
         method: 'POST',
         body: data
     });
@@ -309,7 +309,7 @@ const update_user = async () => {
     }
 
     //pass data to php file
-    var respond = await fetch("php/user/update_user.php", {
+    var respond = await fetch("php/apis/update_user.php", {
         method: 'POST',
         body: data
     });
@@ -382,7 +382,7 @@ const modifying_user = async () => {
     }
 
     //pass data to php file
-    var respond = await fetch("php/user/modify_user.php", {
+    var respond = await fetch("php/apis/modify_user.php", {
         method: 'POST',
         body: data
     });
@@ -434,7 +434,7 @@ const mandar_ticket = async () => {
     data.append("mensaje", mensaje);
 
     //pass data to php file
-    var respond = await fetch("php/user/new_ticket.php", {
+    var respond = await fetch("php/apis/new_ticket.php", {
         method: 'POST',
         body: data
     });
@@ -484,7 +484,7 @@ const responder_ticket = async (ticket_id) => {
     data.append("mensaje", respuesta);
 
     //pass data to php file
-    var respond = await fetch("php/user/respon_ticket.php", {
+    var respond = await fetch("php/apis/respon_ticket.php", {
         method: 'POST',
         body: data
     });
@@ -536,7 +536,7 @@ const nueva_opinion = async () => {
     data.append("puntuacion", puntuacion);
 
     //pass data to php file
-    var respond = await fetch("php/user/nueva_opinion.php", {
+    var respond = await fetch("php/apis/nueva_opinion.php", {
         method: 'POST',
         body: data
     });
@@ -578,7 +578,55 @@ const nueva_lista = async () => {
     data.append("id_user", id_user);
 
     //pass data to php file
-    var respond = await fetch("php/user/new_lista.php", {
+    var respond = await fetch("php/apis/new_lista.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_lista').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
+const modificar_lista = async () => {
+    var nombre_lista = document.querySelector("#nombre_lista_modificar").value;
+    var id_lista = document.querySelector("#id_lista_modificar").value;
+
+
+    if (nombre_lista.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('nombre_lista', nombre_lista);
+    data.append("id_lista", id_lista);
+    //pass data to php file
+    var respond = await fetch("php/apis/modificar_lista.php", {
         method: 'POST',
         body: data
     });
@@ -613,7 +661,7 @@ const guardar_comic = async (id_comic) => {
     data.append("id_comic", id_comic);
     data.append("id_user", id_user);
 
-    const respond = await fetch("php/user/guardar_comic.php", {
+    const respond = await fetch("php/apis/guardar_comic.php", {
         method: "POST",
         body: data,
     });
@@ -640,7 +688,7 @@ const quitar_comic = async (id_comic) => {
     data.append("id_comic", id_comic);
     data.append("id_user", id_user);
 
-    const respond = await fetch("php/user/quitar_comic.php", {
+    const respond = await fetch("php/apis/quitar_comic.php", {
         method: "POST",
         body: data,
     });
@@ -660,12 +708,12 @@ const quitar_comic = async (id_comic) => {
     }
 };
 
-const guardar_comic_lista = async (id_comic,id_lista) => {
+const guardar_comic_lista = async (id_comic, id_lista) => {
     const data = new FormData();
     data.append("id_comic", id_comic);
     data.append("id_lista", id_lista);
 
-    const respond = await fetch("php/user/guardar_comic_lista.php", {
+    const respond = await fetch("php/apis/guardar_comic_lista.php", {
         method: "POST",
         body: data,
     });
@@ -685,13 +733,13 @@ const guardar_comic_lista = async (id_comic,id_lista) => {
     }
 };
 
-const quitar_comic_lista = async (id_comic,id_lista) => {
+const quitar_comic_lista = async (id_comic, id_lista) => {
 
     const data = new FormData();
     data.append("id_comic", id_comic);
     data.append("id_lista", id_lista);
 
-    const respond = await fetch("php/user/quitar_comic_lista.php", {
+    const respond = await fetch("php/apis/quitar_comic_lista.php", {
         method: "POST",
         body: data,
     });
@@ -710,6 +758,42 @@ const quitar_comic_lista = async (id_comic,id_lista) => {
         }, 2000);
     }
 };
+
+const eliminar_lista = async (id_lista) => {
+    const data = new FormData();
+    data.append("id_lista", id_lista);
+
+    const respond = await fetch("php/apis/eliminar_lista.php", {
+        method: "POST",
+        body: data,
+    });
+
+    const result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_lista').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+}
+
 
 
 // const delete_user = async () => {
@@ -717,7 +801,7 @@ const quitar_comic_lista = async (id_comic,id_lista) => {
 //     const data = new FormData();
 //     data.append("id", id);
 //     //pass data to php file
-//     var respond = await fetch("php/user/delete_user.php", {
+//     var respond = await fetch("php/apis/delete_user.php", {
 //         method: 'POST',
 //         body: data
 //     });

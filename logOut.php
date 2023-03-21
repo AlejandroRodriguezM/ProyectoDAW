@@ -4,5 +4,5 @@ require_once "./php/inc/header.inc.php";
 session_start();
 session_destroy();
 deleteCookies();
-header('Location: index.php');
+header('Location: login.php');
 ?>

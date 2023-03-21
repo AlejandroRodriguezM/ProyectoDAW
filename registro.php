@@ -267,7 +267,7 @@ include_once 'php/inc/header.inc.php';
 
                 </div>
                 <div class="mb-3">
-                    <a href="index.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Iniciate session</a>
+                    <a href="login.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Iniciate session</a>
                 </div>
             </form>
         </div>

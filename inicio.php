@@ -4,6 +4,7 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -126,9 +127,15 @@ $email = $_SESSION['email'];
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                    </li>
+                    <?php
+                    if ($userPrivilege != 'guest') {
+                    ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -307,15 +314,16 @@ $email = $_SESSION['email'];
                                         <span class='issue-number issue-number-l1'>$numComic</span>
                                     </a>
                                     <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
-
-                                        if (check_guardado($id_user, $id_comic)) {
-                                            echo "<button data-item-id='yXwd2' class='rem' >
+                                        if ($userPrivilege != 'guest') {
+                                            if (check_guardado($id_user, $id_comic)) {
+                                                echo "<button data-item-id='yXwd2' class='rem' >
                                         <span class='sp-icon'>Lo tengo</span>
                                     </button>";
-                                        } else {
-                                            echo "<button data-item-id='yXwd2' class='add' >
+                                            } else {
+                                                echo "<button data-item-id='yXwd2' class='add' >
                                         <span class='sp-icon'>Lo tengo</span>
                                         </button>";
+                                            }
                                         }
                                         echo "</li>";
                                     }

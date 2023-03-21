@@ -81,9 +81,15 @@ if ($userPrivilege == 'user') {
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                    </li>
+                    <?php
+                    if ($userPrivilege != 'guest') {
+                    ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -187,7 +193,7 @@ if ($userPrivilege == 'user') {
                         <fieldset class="fieldset">
                             <h3 class="fieldset-title">Mensajes</h3>
                             <!-- Aquí se incluye el código PHP para obtener los tickets -->
-                            <?php include 'php/user/tickets_admin.php'; ?>
+                            <?php include 'php/apis/tickets_admin.php'; ?>
                         </fieldset>
                     </form>
                 </div>

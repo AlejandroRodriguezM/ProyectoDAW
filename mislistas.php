@@ -4,6 +4,12 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
+$userData = getUserData($email);
+$userPrivilege = $userData['privilege'];
+
+if($userPrivilege == 'guest'){
+    header("Location: inicio.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +28,8 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
 
     <title>Mis listas de comics</title>
     <style>
@@ -144,6 +152,34 @@ $email = $_SESSION['email'];
             background-color: #2980B9;
             cursor: pointer;
         }
+
+        .card-item {
+            position: relative;
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 220px;
+            left: 190px;
+            padding: 5px 10px;
+            border: none;
+            background-color: #f44336;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .edit-button{
+            position: absolute;
+            top: 245px;
+            right: 205px;
+            padding: 5px 10px;
+            border: none;
+            background-color: #f44336;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -185,9 +221,15 @@ $email = $_SESSION['email'];
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                    </li>
+                    <?php
+                    if ($userPrivilege != 'guest') {
+                    ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -301,6 +343,28 @@ $email = $_SESSION['email'];
         </div>
     </div>
 
+    <!-- FORMULARIO modificar lista -->
+    <div id="modificar_lista" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Modificar lista de lectura</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="nombre_lista_modificar">Nuevo nombre de la lista:</label>
+                        <input type="text" class="form-control" id="nombre_lista_modificar">
+                        <input type="hidden" id="id_lista_modificar">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="modificar_lista()">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
@@ -341,8 +405,10 @@ $email = $_SESSION['email'];
                         echo "<div class='card-content'>";
                         echo "<span class='card-title'>$nombre_lista</span>";
                         echo "<p class='card-text'>Total: $num_comics Comics</p>";
+                        echo "<button class='delete-button' data-lista-id='$id_lista' id='delete-button-$id_lista' onclick='confirmar_eliminacion($id_lista); return false;'>Eliminar</button>";
                         echo "</div>";
                         echo "<img src='assets/img/comic2.jpg' />";
+                        echo "<a href='#' data-bs-toggle='modal' data-bs-target='#modificar_lista' data-lista-id='$id_lista' data-nombre-lista='$nombre_lista' class='edit-button' onclick='abrir_modal_modificar($id_lista); return false;'>Modificar</a>";
                         echo "</div>";
                         echo "</a>";
                         echo "</li>";
@@ -352,6 +418,8 @@ $email = $_SESSION['email'];
                             echo "<div class='clearfix'></div>";
                         }
                     }
+
+
 
                     // Asegurarse de que se añade clearfix si el número total de listas es divisible por 3
                     if ($i % 3 != 0) {
@@ -483,7 +551,6 @@ $email = $_SESSION['email'];
             })();
         </script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 

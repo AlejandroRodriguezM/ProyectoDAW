@@ -221,16 +221,22 @@ if (existe_user($input_user)) {
                                     Sobre WebComics</a>
                             </li>
                             <div class="dropdown-divider"></div>
-                            <li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
+                            <!-- <li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li> -->
                         </ul>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                    </li>
+                    <?php
+                    if ($userPrivilege != 'guest') {
+                    ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -500,7 +506,7 @@ if (existe_user($input_user)) {
                 search: "<?php echo $input_comic; ?>"
             };
 
-            var url = "php/user/resultado_comics.php?" + $.param(data);
+            var url = "php/apis/resultado_comics.php?" + $.param(data);
 
             $.ajax({
                 url: url,

@@ -117,7 +117,7 @@ function buscarUsuarios() {
         // alert(input);
         if (input != "") {
             $.ajax({
-                url: "php/user/search_user.php",
+                url: "php/apis/search_user.php",
                 method: "POST",
                 data: { input: input },
                 success: function (data) {
@@ -136,7 +136,7 @@ function buscarComics() {
         // alert(input);
         if (input != "") {
             $.ajax({
-                url: "php/user/search_comics.php",
+                url: "php/apis/search_comics.php",
                 method: "POST",
                 data: { input: input },
                 success: function (data) {
@@ -155,7 +155,7 @@ function buscar_todo() {
         // alert(input);
         if (input != "") {
             $.ajax({
-                url: "php/user/search_datos.php",
+                url: "php/apis/search_datos.php",
                 method: "POST",
                 data: { input: input },
                 success: function (data) {
@@ -244,7 +244,7 @@ function showSelected() {
 //         const input = $("#search-data").val();
 //         if (input !== "") {
 //             const data = await $.ajax({
-//                 url: "php/user/search_user.php",
+//                 url: "php/apis/search_user.php",
 //                 method: "POST",
 //                 data: { input: input }
 //             });
@@ -257,6 +257,26 @@ function showSelected() {
 //     }
 // }
 
+function confirmar_eliminacion(id_lista) {
+    if (confirm("¿Estás seguro de que deseas eliminar esta lista?")) {
+        eliminar_lista(id_lista);
+    }
+}
+
+function abrir_modal_modificar(id_lista) {
+    // Obtener el nombre de la lista a partir del atributo data-nombre-lista del botón
+    var nombre_lista = $("#edit-button-" + id_lista).data("nombre-lista");
+
+    // Cargar el nombre de la lista en el campo correspondiente del modal
+    $("#nombre_lista_modificar").val(nombre_lista);
+
+    // Guardar el ID de la lista en un campo oculto del modal
+    $("#id_lista_modificar").val(id_lista);
+
+    // Abrir el modal de modificar
+    $("#modificar_lista").modal("show");
+}
+
 //Otra forma de realizar la misma muestra de datos
 // function buscarUsuarios() {
 //     $(document).ready(function () {
@@ -265,7 +285,7 @@ function showSelected() {
 
 //             if (input != "") {
 //                 $.ajax({
-//                     url: 'php/user/search_user_test.php',
+//                     url: 'php/apis/search_user_test.php',
 //                     type: 'GET',
 //                     dataType: 'json',
 //                     // data: { send_obj: JSON.stringify(input) },

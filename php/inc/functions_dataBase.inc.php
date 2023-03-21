@@ -630,6 +630,21 @@ function nueva_lista($id_user, $nombre_lista)
 	return $agregado;
 }
 
+function modificar_lista($id_lista, $nombre_lista)
+{
+	global $conection;
+	$modificada = false;
+	try {
+		$consulta = $conection->prepare("UPDATE lista_comics SET nombre_lista=? WHERE id_lista=?");
+		$consulta->execute(array($nombre_lista, $id_lista));
+		$modificada = true;
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	return $modificada;
+}
+
 function check_guardado($id_user, $id_comic)
 {
 	global $conection;
@@ -812,3 +827,61 @@ function check_lista_user($id_user, $id_lista)
 
 	return $existe;
 }
+
+/**
+ * Elimina una lista de comics y su contenido asociado
+ *
+ * @param int $id_lista El ID de la lista a eliminar
+ * @return bool True si la lista fue eliminada con éxito, False en caso contrario
+ */
+function eliminar_lista($id_lista)
+{
+	global $conection;
+	$eliminado = false;
+	try {
+		if (eliminar_contenido_listas($id_lista)) {
+			$consulta = $conection->prepare("DELETE FROM lista_comics WHERE id_lista=:id_lista");
+			$consulta->bindParam(":id_lista", $id_lista, PDO::PARAM_INT);
+			if ($consulta->execute()) {
+				$eliminado = true;
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	return $eliminado;
+}
+
+/**
+ * Elimina el contenido asociado a una lista de comics
+ *
+ * @param int $id_lista El ID de la lista de la que se eliminará el contenido
+ * @return bool True si el contenido fue eliminado con éxito, False en caso contrario
+ */
+function eliminar_contenido_listas($id_lista)
+{
+	global $conection;
+	$eliminado = false;
+	try {
+		// Primero, verificamos si hay contenido en la lista
+		$consulta_contenido = $conection->prepare("SELECT COUNT(*) FROM contenido_listas WHERE id_lista=?");
+		$consulta_contenido->execute(array($id_lista));
+		$num_filas = $consulta_contenido->fetchColumn();
+
+		if ($num_filas == 0) {
+			// Si no hay contenido, devolvemos true
+			$eliminado = true;
+		} else {
+			// Si hay contenido, lo eliminamos y devolvemos true si se afectaron filas
+			$consulta_eliminar = $conection->prepare("DELETE FROM contenido_listas WHERE id_lista=?");
+			$consulta_eliminar->execute(array($id_lista));
+			$eliminado = $consulta_eliminar->rowCount() > 0;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $eliminado;
+}
+
+

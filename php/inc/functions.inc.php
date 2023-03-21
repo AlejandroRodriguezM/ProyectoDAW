@@ -466,3 +466,21 @@ function select_data_and_check_spaces_pdo()
 	// Close the connection
 	$conection = null;
 }
+
+// function update_cover_database(){
+// 	global $conection;
+// 	$max = 15278;
+
+// 	$id = 9630;
+// 	$contador = 0;
+// 	$id_actual = $id + $contador;
+// 	while($id_actual <= $max){
+// 		$cover = "./assets/covers_img/$id_actual.jpg";
+// 		$consulta = $conection->prepare("UPDATE comics SET cover=:cover WHERE IDcomic=:id");
+// 		$consulta->bindParam(':cover', $cover, PDO::PARAM_STR);
+// 		$consulta->bindParam(':id', $id_actual, PDO::PARAM_INT);
+// 		$consulta->execute();
+// 		$contador++;
+// 		$id_actual = $id + $contador;
+// 	}
+// }

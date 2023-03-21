@@ -193,9 +193,15 @@ if(!check_lista_user($id_user, $id_lista)){
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                    </li>
+                    <?php
+                    if ($userPrivilege != 'guest') {
+                    ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -557,7 +563,7 @@ if(!check_lista_user($id_user, $id_lista)){
             }
 
             $.ajax({
-                url: "php/user/comics_lista.php",
+                url: "php/apis/comics_lista.php",
                 data: data,
                 success: function(data) {
                     totalComics = $(data).filter("#total-comics").val();
@@ -569,7 +575,7 @@ if(!check_lista_user($id_user, $id_lista)){
             });
 
             $.ajax({
-                url: "php/user/comics_user_agregar.php",
+                url: "php/apis/comics_user_agregar.php",
                 data: data,
                 success: function(data) {
                     totalComics = $(data).filter("#total-comics").val();
