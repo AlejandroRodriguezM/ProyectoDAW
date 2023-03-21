@@ -555,6 +555,17 @@ const nueva_opinion = async () => {
             window.location.reload();
         }, 2000);
     }
+    else{
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
 }
 
 const nueva_lista = async () => {
@@ -759,11 +770,48 @@ const quitar_comic_lista = async (id_comic, id_lista) => {
     }
 };
 
-const eliminar_lista = async (id_lista) => {
+const eliminar_lista = async (id_lista,id_user) => {
     const data = new FormData();
     data.append("id_lista", id_lista);
+    data.append("id_user", id_user);
 
     const respond = await fetch("php/apis/eliminar_lista.php", {
+        method: "POST",
+        body: data,
+    });
+
+    const result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_lista').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+}
+
+const eliminar_usuario = async (id_user,emailUser) => {
+    const data = new FormData();
+    data.append("id_user", id_user);
+    data.append("emailUser", emailUser);
+
+    const respond = await fetch("php/apis/eliminar_usuario.php", {
         method: "POST",
         body: data,
     });

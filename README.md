@@ -270,3 +270,11 @@ Se ha modificado la base de datos, se han descargado todas las portadas y ahora 
 Añadida funcionalidad para poder editar o eliminar lista de lectura.
 Se ha limitado el acceso y control de usuario al usuario guest.
 Se han creado 2 nuevas apis para la eliminacion de listas o modificacion de estas.
+
+21/03/2023 Log 2
+Se ha mejorado la seguridad a la hora de usar la base de datos.
+Se ha añadido funcionalidad para eliminar usuario de forma correcta
+Ahora si el usuario invitado hace uso de la alguna funcion de usuario logueado, le aparecera un error
+Se ha creado nueva api para eliminar usuarios
+Se ha mejorado varios aspectos de diferentes ficheros css
+La base de datos ha vuelto al log del 20/03/2023 Log 1 por errores a la hora de subir a github y por el gran peso que las imagenes suponian

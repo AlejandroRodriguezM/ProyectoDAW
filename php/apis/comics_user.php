@@ -8,6 +8,7 @@ $id_user = $userData['IDuser'];
 $limit = intval($_GET['limit']);
 $offset = intval($_GET['offset']);
 
+
 if (isset($_GET['checkboxChecked'])) {
     $search = explode(",", $_GET['checkboxChecked']);
     $search = array_map('trim', $search);

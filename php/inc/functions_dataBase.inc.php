@@ -121,24 +121,34 @@ function update_user($userName, $email, $password)
 function delete_user($email, $idUser)
 {
 	global $conection;
-
+	$delete = false;
 	try {
-		$insertData1 = $conection->prepare("DELETE FROM users WHERE email = ?");
-		$insertData1->bindParam(1, $email);
-		$insertData2 = $conection->prepare("DELETE FROM aboutuser WHERE IDuser = ?");
+		$insertData1 = $conection->prepare("DELETE FROM comics_guardados WHERE user_id = ?");
+		$insertData1->bindParam(1, $idUser);
+		$insertData1->execute();
+		$insertData2 = $conection->prepare("DELETE FROM lista_comics WHERE id_user = ?");
 		$insertData2->bindParam(1, $idUser);
-		$insertData3 = $conection->prepare("DELETE FROM possession WHERE user = ?");
-		$insertData3->bindParam(1, $idUser);
-		$insertData4 = $conection->prepare("DELETE FROM wanted WHERE user = ?");
-		$insertData4->bindParam(1, $idUser);
+		// $insertData3 = $conection->prepare("SELECT COUNT(*) FROM lista_comics WHERE id_user = ?");
+		// $insertData3->bindParam(1, $idUser);
+		$insertData4 = $conection->prepare("DELETE FROM users WHERE email = ?");
+		$insertData4->bindParam(1, $email);
+		$insertData5 = $conection->prepare("DELETE FROM aboutuser WHERE IDuser = ?");
+		$insertData5->bindParam(1, $idUser);
+		$insertData6 = $conection->prepare("DELETE FROM possession WHERE user = ?");
+		$insertData6->bindParam(1, $idUser);
+		$insertData7 = $conection->prepare("DELETE FROM wanted WHERE user = ?");
+		$insertData7->bindParam(1, $idUser);
 		if ($insertData1->execute()) {
+			$insertData4->execute();
 			deleteDirectory($email, $idUser);
 		}
+		$delete == true;
 	} catch (PDOException $e) {
 		$error_Code = $e->getCode();
 		$message = $e->getMessage();
 		die("Code: " . $error_Code . "\nMessage: " . $message);
 	}
+	return $delete;
 }
 
 function update_email($new_email, $old_email)
@@ -834,14 +844,14 @@ function check_lista_user($id_user, $id_lista)
  * @param int $id_lista El ID de la lista a eliminar
  * @return bool True si la lista fue eliminada con éxito, False en caso contrario
  */
-function eliminar_lista($id_lista)
+function eliminar_lista($id_lista,$id_user)
 {
 	global $conection;
 	$eliminado = false;
 	try {
 		if (eliminar_contenido_listas($id_lista)) {
-			$consulta = $conection->prepare("DELETE FROM lista_comics WHERE id_lista=:id_lista");
-			$consulta->bindParam(":id_lista", $id_lista, PDO::PARAM_INT);
+			$consulta = $conection->prepare("DELETE FROM lista_comics WHERE id_lista=? AND id_user=?");
+			$consulta->execute(array($id_lista,$id_user));
 			if ($consulta->execute()) {
 				$eliminado = true;
 			}
@@ -882,6 +892,14 @@ function eliminar_contenido_listas($id_lista)
 		echo "Error: " . $e->getMessage();
 	}
 	return $eliminado;
+}
+
+function lista_usuario($id_usuario){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from lista_comics where id_user=?");
+	$consulta->execute(array($id_usuario));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
 }
 
 

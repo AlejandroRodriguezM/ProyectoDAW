@@ -37,7 +37,7 @@ include_once 'php/inc/header.inc.php';
 
                         svg {
                             position: absolute;
-                            top: 15%;
+                            top: 13%;
                             left: 39%;
                             transform: translate(-50%, -50%);
                         }
@@ -141,23 +141,23 @@ include_once 'php/inc/header.inc.php';
             </svg>
         </div>
         <div class="text-center">
-            <img src="./assets/img/logoWeb.png" class="mt-5" width="150px" alt="">
-            <h3 class="mt-2">REGISTER SYSTEM</h3>
+            <img src="./assets/img/logoWeb.png" class="mt-5" width="250px" alt="">
+            <h3 class="mt-2">DATOS DE REGISTRO</h3>
             <form id="formInsert" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <div class="mb-3">
-                    <label for="name" class="form-label">User name</label>
+                    <label for="name" class="form-label">Nombre de usuario</label>
                     <input type="text" class="form-control" id="name" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
-                    <label for="correo" class="form-label">Email Address</label>
+                    <label for="correo" class="form-label">Correo electronico</label>
                     <input type="email" class="form-control" id="correo" placeholder="name@test.com" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="password" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
-                    <label for="repassword" class="form-label">RePassword</label>
+                    <label for="repassword" class="form-label">Repita contraseña</label>
                     <input type="password" class="form-control" id="repassword" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                 </div>
                 <div class="mb-3">
@@ -178,7 +178,7 @@ include_once 'php/inc/header.inc.php';
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Condiciones de uso</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -267,7 +267,7 @@ include_once 'php/inc/header.inc.php';
 
                 </div>
                 <div class="mb-3">
-                    <a href="login.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Iniciate session</a>
+                    <a href="login.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Iniciar sesion</a>
                 </div>
             </form>
         </div>

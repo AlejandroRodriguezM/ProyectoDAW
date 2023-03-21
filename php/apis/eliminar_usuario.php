@@ -4,28 +4,27 @@ include_once '../inc/header.inc.php';
 $email = $_SESSION['email'];
 $userData = getUserData($email);
 $userPrivilege = $userData['privilege'];
-
 $validate['success'] = array('success' => false, 'message' => "");
 
-if ($userPrivilege != 'guest') {
+if($userPrivilege == 'admin'){
     if ($_POST) {
-        $id_lista = $_POST['id_lista'];
         $id_user = $_POST['id_user'];
+        $email = $_POST['emailUser'];
 
-        if (eliminar_lista($id_lista, $id_user)) {
+        if (delete_user($email, $id_user)) {
             $validate['success'] = true;
-            $validate['message'] = 'La lista se ha eliminado correctamente';
+            $validate['message'] = 'Usuario borrado correctamente';
         } else {
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. No se ha podido eliminar la lista';
+            $validate['message'] = 'ERROR. No se ha podido eliminar al usuario';
         }
     } else {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. No se ha podido eliminar la lista';
     }
-} else {
+}else{
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. Debes de loguearte para poder eliminar una lista';
+    $validate['message'] = 'ERROR. No tienes permisos para eliminar usuarios';
 }
 header('Content-type: application/json');
 echo json_encode($validate);

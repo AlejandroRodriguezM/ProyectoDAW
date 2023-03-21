@@ -6,6 +6,7 @@ destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
 $userData = getUserData($email);
 $userPrivilege = $userData['privilege'];
+$id_user = $userData['IDuser'];
 
 if($userPrivilege == 'guest'){
     header("Location: inicio.php");
@@ -221,15 +222,19 @@ if($userPrivilege == 'guest'){
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-                    <?php
-                    if ($userPrivilege != 'guest') {
-                    ?>
-                        <li class="nav-item">
+
+                        <?php
+                        if ($userPrivilege == 'guest') {
+                        ?>
+                            <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <?php
+                        } else {
+                        ?>
                             <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                        </li>
-                    <?php
-                    }
-                    ?>
+
+                        <?php
+                        }
+                        ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -405,7 +410,7 @@ if($userPrivilege == 'guest'){
                         echo "<div class='card-content'>";
                         echo "<span class='card-title'>$nombre_lista</span>";
                         echo "<p class='card-text'>Total: $num_comics Comics</p>";
-                        echo "<button class='delete-button' data-lista-id='$id_lista' id='delete-button-$id_lista' onclick='confirmar_eliminacion($id_lista); return false;'>Eliminar</button>";
+                        echo "<button class='delete-button' data-lista-id='$id_lista' id='delete-button-$id_lista' onclick='confirmar_eliminacion($id_lista,$id_user); return false;'>Eliminar</button>";
                         echo "</div>";
                         echo "<img src='assets/img/comic2.jpg' />";
                         echo "<a href='#' data-bs-toggle='modal' data-bs-target='#modificar_lista' data-lista-id='$id_lista' data-nombre-lista='$nombre_lista' class='edit-button' onclick='abrir_modal_modificar($id_lista); return false;'>Modificar</a>";
@@ -474,6 +479,7 @@ if($userPrivilege == 'guest'){
                                         <span class='sp-icon'>Lo tengo</span>
                                         </button>";
                                         }
+
                                         echo "</li>";
                                     }
                                     ?>

@@ -214,12 +214,16 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
+
                     <?php
-                    if ($userPrivilege != 'guest') {
+                    if ($userPrivilege == 'guest') {
                     ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                        </li>
+                        <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                    <?php
+                    } else {
+                    ?>
+                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+
                     <?php
                     }
                     ?>
@@ -444,40 +448,34 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                     </div>
                                     <form action="" method='POST' id='form_opinion' onsubmit="return false;" style="width:auto">
                                         <div class="d-flex flex-column form-color p-3">
-                                            <?php
-                                            if ($userPrivilege != 'guest') {
-                                            ?>
-                                                <div class="d-flex flex-wrap align-items-center">
-                                                    <img src='<?php echo $picture ?>' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-                                                    <div class="pr-2">
-                                                        <h6 class="mb-0" style="margin-left:10px"><?php echo $name ?></h6>
-                                                    </div>
-                                                    <textarea id='opinion' class="form-control mt-2" placeholder="Pon tu comentario..." style="width: 100% !important; height: 110px !important; resize: none !important;"></textarea>
-                                                    <div class="d-flex flex-row align-items-center mr-2" id="rating">
-                                                        <label for="rating" class="mr-2">Valoracion:</label>
-                                                        <div class="rating" style="margin-left:5px">
-                                                            <input type="radio" name="rating" value="5" id="5">
-                                                            <label for="5">☆</label>
-                                                            <input type="radio" name="rating" value="4" id="4">
-                                                            <label for="4">☆</label>
-                                                            <input type="radio" name="rating" value="3" id="3">
-                                                            <label for="3">☆</label>
-                                                            <input type="radio" name="rating" value="2" id="2">
-                                                            <label for="2">☆</label>
-                                                            <input type="radio" name="rating" value="1" id="1">
-                                                            <label for="1">☆</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="boton-enviar d-flex flex-wrap align-items-center justify-content-end">
-                                                        <input type="hidden" id='id_user_opinion' value='<?php echo $id_user ?>'>
-                                                        <input type="hidden" id='id_comic' value='<?php echo $id_comic ?>'>
-                                                        <button type="submit" class="btn btn-primary boton-enviar" onclick="nueva_opinion()">Enviar</button>
+                                            <div class="d-flex flex-wrap align-items-center">
+                                                <img src='<?php echo $picture ?>' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
+                                                <div class="pr-2">
+                                                    <h6 class="mb-0" style="margin-left:10px"><?php echo $name ?></h6>
+                                                </div>
+                                                <textarea id='opinion' class="form-control mt-2" placeholder="Pon tu comentario..." style="width: 100% !important; height: 110px !important; resize: none !important;"></textarea>
+                                                <div class="d-flex flex-row align-items-center mr-2" id="rating">
+                                                    <label for="rating" class="mr-2">Valoracion:</label>
+                                                    <div class="rating" style="margin-left:5px">
+                                                        <input type="radio" name="rating" value="5" id="5">
+                                                        <label for="5">☆</label>
+                                                        <input type="radio" name="rating" value="4" id="4">
+                                                        <label for="4">☆</label>
+                                                        <input type="radio" name="rating" value="3" id="3">
+                                                        <label for="3">☆</label>
+                                                        <input type="radio" name="rating" value="2" id="2">
+                                                        <label for="2">☆</label>
+                                                        <input type="radio" name="rating" value="1" id="1">
+                                                        <label for="1">☆</label>
                                                     </div>
                                                 </div>
+                                                <div class="boton-enviar d-flex flex-wrap align-items-center justify-content-end">
+                                                    <input type="hidden" id='id_user_opinion' value='<?php echo $id_user ?>'>
+                                                    <input type="hidden" id='id_comic' value='<?php echo $id_comic ?>'>
+                                                    <button type="submit" class="btn btn-primary boton-enviar" onclick="nueva_opinion()">Enviar</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    <?php
-                                            }
-                                    ?>
                                     </form>
                                     <div class="comentarios"></div>
                                 </div>

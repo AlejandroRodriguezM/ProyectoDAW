@@ -69,17 +69,17 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
             </a>
             <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
 
-    if ($userPrivilege != 'guest') {
-        if (check_guardado($id_user, $id_comic)) {
-            echo "<button data-item-id='yXwd2' class='rem' >
+
+    if (check_guardado($id_user, $id_comic)) {
+        echo "<button data-item-id='yXwd2' class='rem' >
                             <span class='sp-icon'>Lo tengo</span>
                         </button>";
-        } else {
-            echo "<button data-item-id='yXwd2' class='add' >
+    } else {
+        echo "<button data-item-id='yXwd2' class='add' >
                             <span class='sp-icon'>Lo tengo</span>
                             </button>";
-        }
     }
+
 
     echo "</li>";
     $contador++;

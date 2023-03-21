@@ -81,15 +81,19 @@ if ($userPrivilege == 'user') {
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-                    <?php
-                    if ($userPrivilege != 'guest') {
-                    ?>
-                        <li class="nav-item">
+
+                        <?php
+                        if ($userPrivilege == 'guest') {
+                        ?>
+                            <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <?php
+                        } else {
+                        ?>
                             <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                        </li>
-                    <?php
-                    }
-                    ?>
+
+                        <?php
+                        }
+                        ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
