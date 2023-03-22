@@ -48,11 +48,6 @@ if (isset($_POST['avatarUser'])) {
     header("Location: adminInfoUser.php");
 }
 
-if (isset($_POST['status'])) {
-    $emailStatus = $_POST['emailUser'];
-    changeStatusAccount($emailStatus);
-}
-
 ?>
 
 
@@ -86,6 +81,16 @@ if (isset($_POST['status'])) {
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
+                            <?php
+                            if ($userPrivilege != 'guest') {
+                            ?>
+                                <li>
+                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                        Escribe tu opinión</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
                             <div class="dropdown-divider"></div>
                             <li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
                         </ul>
@@ -259,30 +264,21 @@ if (isset($_POST['status'])) {
                                                 <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
                                             </form>
                                         <?php
-                                                } elseif ($user['accountStatus'] == 'block') {
-                                        ?>
-                                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                                <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit' id='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
-                                                <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres desbloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>
-                                                <td style='margin-left: auto; margin-right: auto; width: 10%'>
-                                                    <button class='btn btn-danger' name='del' onclick='confirmar_eliminacion_usuario(<?php echo $user['IDuser']; ?>,"<?php echo $user['email']; ?>")'>
-                                                        <i class='bi bi-trash p-1'></i>Eliminar
-                                                    </button>
-                                                </td>
-                                                <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
-                                                <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
-                                                <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
-                                            </form>
-                                        <?php
                                                 } else {
                                         ?>
                                             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
                                                 <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
                                                 <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
-                                                <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
+                                                <input type='hidden' name='email_usuario' id='email_usuario' value='<?php echo $user['email'] ?>'>
                                                 <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
-                                                <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='return confirm("¿Estas seguro que quieres bloquear al usuario?")'> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
+                                                <?php
+                                                    if ($user['accountStatus'] == 'block') {
+                                                        echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='cambiar_estado(false); return false;'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>";
+                                                    } else {
+                                                        echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='cambiar_estado(true);return false;'> <i class='bi bi-trash p-1'></i>Bloquear</button></td>";
+                                                    }
+                                                ?>
                                                 <td style='margin-left: auto; margin-right: auto; width: 10%'>
                                                     <button class='btn btn-danger' name='del' onclick='confirmar_eliminacion_usuario(<?php echo $user['IDuser']; ?>,"<?php echo $user['email']; ?>")'>
                                                         <i class='bi bi-trash p-1'></i>Eliminar

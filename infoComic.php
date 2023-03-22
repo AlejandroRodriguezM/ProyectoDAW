@@ -206,6 +206,16 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
+                            <?php
+                            if ($userPrivilege != 'guest') {
+                            ?>
+                                <li>
+                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                        Escribe tu opinión</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
                             <div class="dropdown-divider"></div>
                             <li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
                         </ul>

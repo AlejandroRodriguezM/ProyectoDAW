@@ -277,4 +277,12 @@ Se ha añadido funcionalidad para eliminar usuario de forma correcta
 Ahora si el usuario invitado hace uso de la alguna funcion de usuario logueado, le aparecera un error
 Se ha creado nueva api para eliminar usuarios
 Se ha mejorado varios aspectos de diferentes ficheros css
-La base de datos ha vuelto al log del 20/03/2023 Log 1 por errores a la hora de subir a github y por el gran peso que las imagenes suponian
+La base de datos ha vuelto al log del 20/03/2023 Log 1 por errores a la hora de subir a github y por el gran peso que suponian las imagenes 
+
+22/03/2023 Log 1
+Se han creado 2 nuevas apis, para poder bloquear usuarios y para poder hacer que un usuario sea inactivo.
+Se ha mejorado la velocidad de carga de datos de los comics que tienes guardados.
+Ahora es posible escribir comentarios sobre la pagina de forma dinamica, ya no es estatica.
+A la hora de buscar un usuario ahora podemos ver el numero de comics que tiene guardado y cuantas listas de lecturas tiene(Se mejorara para poder ver dichas listas o comics)
+Se ha añadido parallax a mas paginas.
+Ahora el fichero llamado index.php, se llama login.php(index.php sera la landing page que aun no esta creada)

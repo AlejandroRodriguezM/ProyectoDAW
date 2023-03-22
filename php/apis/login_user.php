@@ -18,6 +18,7 @@ if ($_POST) {
             if (checkUser($acceso, $pass_encrypted)) {
                 $row = getUserData($acceso);
                 $email = $row['email'];
+                reactivar_cuenta($email);
                 if ($row['privilege'] == 'admin') {
                     cookiesAdmin($email, $pass_encrypted);
                 }

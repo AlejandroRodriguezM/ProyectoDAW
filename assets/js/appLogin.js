@@ -411,6 +411,47 @@ const modifying_user = async () => {
     }
 }
 
+const cambiar_estado_usuario = async (estado) => {
+    var email = document.querySelector("#email_usuario").value;
+    const data = new FormData();
+    data.append('email', email);
+    if (estado == true) {
+        data.append('estado', true)
+    }
+    else if(estado == false) {
+        data.append('estado', false)
+    }
+    else{
+        data.append('estado', 'desactivar')
+    }
+    //pass data to php file
+    var respond = await fetch("php/apis/desactivar_cuenta.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
 const mandar_ticket = async () => {
     var id = document.querySelector("#id_user_ticket").value;
     var asunto = document.querySelector("#asunto_usuario").value;
@@ -555,7 +596,61 @@ const nueva_opinion = async () => {
             window.location.reload();
         }, 2000);
     }
-    else{
+    else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+}
+
+const nueva_opinion_pagina = async () => {
+    var opinion = document.querySelector("#opinion").value;
+    var id_user = document.querySelector("#id_user_opinion").value;
+
+    console.log(id_user)
+
+    if (opinion.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('idUser', id_user);
+    data.append("opinion", opinion);
+
+    //pass data to php file
+    var respond = await fetch("php/apis/nueva_opinion_pagina.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_opinion').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+    else {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
@@ -770,7 +865,7 @@ const quitar_comic_lista = async (id_comic, id_lista) => {
     }
 };
 
-const eliminar_lista = async (id_lista,id_user) => {
+const eliminar_lista = async (id_lista, id_user) => {
     const data = new FormData();
     data.append("id_lista", id_lista);
     data.append("id_user", id_user);
@@ -806,7 +901,7 @@ const eliminar_lista = async (id_lista,id_user) => {
     }
 }
 
-const eliminar_usuario = async (id_user,emailUser) => {
+const eliminar_usuario = async (id_user, emailUser) => {
     const data = new FormData();
     data.append("id_user", id_user);
     data.append("emailUser", emailUser);

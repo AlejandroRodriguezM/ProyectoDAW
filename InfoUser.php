@@ -39,6 +39,33 @@ $email = $_SESSION['email'];
             width: 100%;
             z-index: 1000;
         }
+
+        .comics-lists {
+            /* display: flex; */
+            align-items: center;
+        }
+
+        .comics-lists p {
+            display: block;
+            margin: 0 10px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            line-height: 1.5em;
+        }
+
+        .comics-lists p:first-child {
+            padding-left: 0;
+        }
+
+        .comics-lists p i {
+            font-size: 1.5em;
+            margin-right: 5px;
+        }
+
+        .icon {
+            width: 70px;
+            height: 70px;
+        }
     </style>
 </head>
 
@@ -72,6 +99,16 @@ $email = $_SESSION['email'];
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
+                            <?php
+                            if ($userPrivilege != 'guest') {
+                            ?>
+                                <li>
+                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                        Escribe tu opinión</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
                             <div class="dropdown-divider"></div>
                             <li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
                         </ul>
@@ -81,18 +118,18 @@ $email = $_SESSION['email'];
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
-                        <?php
-                        if ($userPrivilege == 'guest') {
-                        ?>
-                            <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                    <?php
+                    if ($userPrivilege == 'guest') {
+                    ?>
+                        <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                    <?php
+                    } else {
+                    ?>
+                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
-                        <?php
-                        }
-                        ?>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -136,7 +173,44 @@ $email = $_SESSION['email'];
             </div>
         </div>
     </nav>
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <img class="modal-content_img" id="img01">
+    </div>
 
+    <!-- FORMULARIO INSERTAR -->
+    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <form method="post" id="form_ticket" onsubmit="return false;">
+                        <h4 class="modal-title">Crear un ticket para administradores</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input type="text" id="asunto_usuario" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            $userData = getUserData($email);
+                            $id_user = $userData['IDuser'];
+                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
@@ -221,63 +295,30 @@ $email = $_SESSION['email'];
                                     ?>
                                 </fieldset>
                                 <hr>
+                                <div class="comics-lists">
+                                    <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo  get_total_guardados($IDuser); ?> comics guardados</p>
+                                    <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($IDuser); ?> listas</p>
+                                </div>
                     </section>
                 </div>
             </div>
-        </div>
-        <!-- The Modal -->
-        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <img class="modal-content_img" id="img01">
-        </div>
 
-        <!-- FORMULARIO INSERTAR -->
-        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <form method="post" id="form_ticket" onsubmit="return false;">
-                            <h4 class="modal-title">Crear un ticket para administradores</h4>
+
+            <div class="bgimg-2">
+                <div id="footer-lite">
+                    <div class="content">
+                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                        <!-- add social media with icons -->
+                        <p class="social">
+                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                        </p>
+                        <p class="copyright">©2023 Alejandro Rodriguez</p>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Asunto</label>
-                            <input type="text" id="asunto_usuario" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Mensaje</label>
-                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
-                                $id_user = $userData['IDuser'];
-                                echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                    </div>
-                    </form>
                 </div>
             </div>
         </div>
-        <div class="bgimg-2">
-            <div id="footer-lite">
-                <div class="content">
-                    <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                    <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                    <!-- add social media with icons -->
-                    <p class="social">
-                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-
-                    </p>
-                    <p class="copyright">©2023 Alejandro Rodriguez</p>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

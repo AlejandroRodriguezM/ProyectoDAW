@@ -1,16 +1,15 @@
 <?php
 include_once '../inc/header.inc.php';
 global $conection;
-$id_pag = $_GET['id_comic'];
-$opiniones =  mostrar_opiniones($id_pag);
-if (num_opiniones($id_pag) > 0) {
+
+$opiniones =  mostrar_opiniones_pagina();
+if (numero_opiniones_pagina() > 0) {
     while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
 
-        $id_comic = $data_opinion['id_comic'];
         $id_opinion = $data_opinion['id_opinion'];
         $id_user = $data_opinion['id_usuario'];
-        $opinion = $data_opinion['opinion'];
-        $puntuacion = $data_opinion['puntuacion'];
+        $opinion = $data_opinion['comentario'];
+        $opinion = $data_opinion['fecha_comentario'];
         $data_user = getUserData($id_user);
         $foto_perfil = $data_user['userPicture'];
         $nombre_user = $data_user['userName'];
@@ -27,16 +26,6 @@ if (num_opiniones($id_pag) > 0) {
                 <p class="text-justify comment-text mb-0" style="margin-left: 10px;">' . $opinion . '</p>
                 <div class="d-flex flex-row align-items-center mr-2" id="rating">
                     <div class="rating-lectura" style="margin-left:5px">';
-
-        for ($i = 5; $i >= 1; $i--) {
-            if ($i == $puntuacion) {
-                echo '<input type="radio" name="rating-' . $id_opinion . '" value="' . $i . '" id="' . $i . '" checked disabled>
-                              <label for="' . $i . '">☆</label>';
-            } else {
-                echo '<input type="radio" name="rating-' . $id_opinion . '" value="' . $i . '" id="' . $i . '" disabled>
-                              <label for="' . $i . '">☆</label>';
-            }
-        }
         echo '</div>
         </div>
     </div>

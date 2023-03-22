@@ -257,16 +257,32 @@ function showSelected() {
 //     }
 // }
 
-function confirmar_eliminacion(id_lista,id_user) {
+function confirmar_eliminacion(id_lista, id_user) {
     if (confirm("¿Estás seguro de que deseas eliminar esta lista?")) {
-        eliminar_lista(id_lista,id_user);
+        eliminar_lista(id_lista, id_user);
     }
 }
 
-function confirmar_eliminacion_usuario(id_user,emailUser) {
-    console.log(id_user,emailUser)
+function confirmar_eliminacion_usuario(id_user, emailUser) {
     if (confirm("¿Estás seguro de que deseas eliminar a este usuario?")) {
-        eliminar_usuario(id_user,emailUser);
+        eliminar_usuario(id_user, emailUser);
+    }
+}
+
+function cambiar_estado(boolean) {
+    if (confirm("¿Estás seguro de que deseas cambiar el estado del usuario?")) {
+        if (boolean) {
+            cambiar_estado_usuario(true)
+        }
+        else {
+            cambiar_estado_usuario(false)
+        }
+    }
+}
+
+function desactivar_usuario(){
+    if (confirm("¿Estás seguro de que deseas desactivar el usuario?")) {
+        cambiar_estado_usuario('desactivar')
     }
 }
 

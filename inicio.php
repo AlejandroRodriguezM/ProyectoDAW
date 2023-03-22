@@ -119,6 +119,16 @@ $email = $_SESSION['email'];
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
+                            <?php
+                            if ($userPrivilege != 'guest') {
+                            ?>
+                                <li>
+                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                        Escribe tu opinión</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
                             <div class="dropdown-divider"></div>
                             <li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
                         </ul>
@@ -357,71 +367,79 @@ $email = $_SESSION['email'];
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-8">
                         <div class="headings d-flex justify-content-between align-items-center mb-3">
-                            <h2 style="color: black">Opinion de los usuarios</h2>
+                            <h2 style="color: black">Opiniones de los usuarios</h2>
                         </div>
-                        <div class="card p-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="user d-flex flex-row align-items-center">
-                                    <img src="https://i.imgur.com/hczKIze.jpg" width="30" class="user-img rounded-circle mr-2">
-                                    <span><small class="font-weight-bold text-primary">james_olesenn</small> <small class="font-weight-bold">Hmm, This poster looks cool</small></span>
+                        <?php
+                        $opiniones = mostrar_opiniones_pagina();
+                        if (numero_opiniones_pagina() > 0) {
+                            while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
+
+                                $id_opinion = $data_opinion['id_opinion'];
+                                $id_user = $data_opinion['id_user'];
+                                $opinion = $data_opinion['comentario'];
+                                $fecha_opinion = $data_opinion['fecha_comentario'];
+                                $data_user = getUserData($id_user);
+                                $foto_perfil = $data_user['userPicture'];
+                                $nombre_user = $data_user['userName'];
+                                $email_user = $data_user['email'];
+
+                                echo '<div class="card p-3 mt-2">
+                                        <div class="d-flex justify-content-between align-items-center">';
+                        ?>
+                                <a href="infoUser.php?userName=<?php echo $email_user ?>">
+                            <?php
+                                echo '<img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
+                                        </a>
+                                        <div class="w-100">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex flex-row align-items-center">
+                                                    <span class="mr-2" style="font-weight:bold;;margin-left:10px">Nombre de usuario: ' . $nombre_user . '</span>
+                                                </div>
+                                                <small>' . $fecha_opinion . '</small>
+                                            </div>
+                                            <p class="text-justify comment-text mb-0" style="margin-top:5px;margin-left:10px">' . $opinion . '</p>
+                                            <div class="d-flex flex-row align-items-center mr-2" id="rating">
+                                                <div class="rating-lectura" style="margin-left:5px">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <small>2 days ago</small>
-                            </div>
-                        </div>
-                        <div class="card p-3 mt-2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="user d-flex flex-row align-items-center">
-                                    <img src="https://i.imgur.com/C4egmYM.jpg" width="30" class="user-img rounded-circle mr-2">
-                                    <span><small class="font-weight-bold text-primary">olan_sams</small> <small class="font-weight-bold">Loving your work and profile! </small></span>
-                                </div>
-                                <small>3 days ago</small>
-                            </div>
-                        </div>
-                        <div class="card p-3 mt-2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="user d-flex flex-row align-items-center">
-                                    <img src="https://i.imgur.com/0LKZQYM.jpg" width="30" class="user-img rounded-circle mr-2">
-                                    <span><small class="font-weight-bold text-primary">rashida_jones</small> <small class="font-weight-bold">Really cool Which filter are you using? </small></span>
-                                </div>
-                                <small>3 days ago</small>
-                            </div>
-                        </div>
-                        <div class="card p-3 mt-2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="user d-flex flex-row align-items-center">
-                                    <img src="https://i.imgur.com/ZSkeqnd.jpg" width="30" class="user-img rounded-circle mr-2">
-                                    <span><small class="font-weight-bold text-primary">simona_rnasi</small> <small class="font-weight-bold text-primary">@macky_lones</small> <small class="font-weight-bold text-primary">@rashida_jones</small> <small class="font-weight-bold">Thanks </small></span>
-                                </div>
-                                <small>3 days ago</small>
-                            </div>
-                        </div>
+                            </div>';
+                            }
+                        } else {
+                            echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';
+                            echo '<div class="user d-flex flex-row align-items-center"><span class="font-weight-bold text-primary">No hay opiniones</span></div>';
+                            echo '</div></div>';
+                        }
+                            ?>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="bgimg-2">
-            <div id="footer-lite">
-                <div class="content">
-                    <p class="helpcenter">
-                        <a href="http://www.example.com/help">Ayuda</a>
-                    </p>
-                    <p class="legal">
-                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                        <span>·</span>
-                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                        <span>·</span>
-                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                        <span>·</span>
-                        <a href="about.php" style="color:black">Quiénes somos</a>
-                    </p>
-                    <!-- add social media with icons -->
-                    <p class="social">
-                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                    </p>
-                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+            <div class="bgimg-2">
+                <div id="footer-lite">
+                    <div class="content">
+                        <p class="helpcenter">
+                            <a href="http://www.example.com/help">Ayuda</a>
+                        </p>
+                        <p class="legal">
+                            <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                            <span>·</span>
+                            <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                            <span>·</span>
+                            <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                            <span>·</span>
+                            <a href="about.php" style="color:black">Quiénes somos</a>
+                        </p>
+                        <!-- add social media with icons -->
+                        <p class="social">
+                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                            <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                        </p>
+                        <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -215,23 +215,27 @@ function returnNameUser($email)
 	return $consulta;
 }
 
-function changeStatusAccount($email)
+function changeStatusAccount($email, $estado)
 {
 	global $conection;
-	$userData = getUserData($email);
+	$cambio = false;
 	try {
-		if ($userData['accountStatus'] == 'active') {
+		if ($estado == 'true') {
 			$consulta = $conection->prepare("UPDATE users SET accountStatus = 'block' WHERE email = ?");
-		} elseif ($userData['accountStatus'] == 'block') {
+		} elseif ($estado == 'false') {
 			$consulta = $conection->prepare("UPDATE users SET accountStatus = 'active' WHERE email = ?");
+		} else {
+			$consulta = $conection->prepare("UPDATE users SET accountStatus = 'inactive' WHERE email = ?");
 		}
 
 		$consulta->execute(array($email));
+		$cambio = true;
 	} catch (PDOException $e) {
 		$error_Code = $e->getCode();
 		$message = $e->getMessage();
 		die("Code: " . $error_Code . "\nMessage: " . $message);
 	}
+	return $cambio;
 }
 
 function insertAbourUser($IDuser, $infoUser, $fechaCreacion)
@@ -590,6 +594,20 @@ function agregar_opinion($id_user, $id_comic, $opinion, $puntuacion)
 	return $agregado;
 }
 
+function agregar_opinion_pagina($id_user, $opinion)
+{
+	global $conection;
+	$agregado = false;
+	try {
+		$consulta = $conection->prepare("INSERT INTO opiniones_pagina(id_user,comentario,fecha_comentario) VALUES (?,?,?)");
+		$consulta->execute(array($id_user, $opinion, date("Y-m-d")));
+		$agregado = true;
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $agregado;
+}
+
 function num_opiniones($id_comic)
 {
 	global $conection;
@@ -613,8 +631,24 @@ function mostrar_opiniones($id_comic)
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from opiniones_comics where id_comic=?");
 	$consulta->execute(array($id_comic));
+	return $consulta;
+}
+
+function mostrar_opiniones_pagina()
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from opiniones_pagina");
 	$consulta->execute();
 	return $consulta;
+}
+
+function numero_opiniones_pagina()
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT count(*) from opiniones_pagina");
+	$consulta->execute();
+	$resultado = $consulta->fetch();
+	return $resultado[0];
 }
 
 function valoracion_media($id_comic)
@@ -844,14 +878,14 @@ function check_lista_user($id_user, $id_lista)
  * @param int $id_lista El ID de la lista a eliminar
  * @return bool True si la lista fue eliminada con éxito, False en caso contrario
  */
-function eliminar_lista($id_lista,$id_user)
+function eliminar_lista($id_lista, $id_user)
 {
 	global $conection;
 	$eliminado = false;
 	try {
 		if (eliminar_contenido_listas($id_lista)) {
 			$consulta = $conection->prepare("DELETE FROM lista_comics WHERE id_lista=? AND id_user=?");
-			$consulta->execute(array($id_lista,$id_user));
+			$consulta->execute(array($id_lista, $id_user));
 			if ($consulta->execute()) {
 				$eliminado = true;
 			}
@@ -894,7 +928,8 @@ function eliminar_contenido_listas($id_lista)
 	return $eliminado;
 }
 
-function lista_usuario($id_usuario){
+function lista_usuario($id_usuario)
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * from lista_comics where id_user=?");
 	$consulta->execute(array($id_usuario));
@@ -902,4 +937,13 @@ function lista_usuario($id_usuario){
 	return $consulta;
 }
 
-
+function reactivar_cuenta($email)
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("UPDATE users SET accountStatus = 'active' WHERE email = ? AND accountStatus != 'block'");
+		$consulta->execute(array($email));
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+}
