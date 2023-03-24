@@ -101,7 +101,7 @@ if ($userPrivilege == 'guest') {
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                                 } elseif ($userPrivilege == 'admin') {
-                                    echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                                    echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
@@ -140,7 +140,7 @@ if ($userPrivilege == 'guest') {
                     <?php
                     } else {
                     ?>
-                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
                     <?php
                     }
@@ -172,7 +172,7 @@ if ($userPrivilege == 'guest') {
                     <?php
                     if (isset($_SESSION['email'])) {
                         if ($userPrivilege == 'admin') {
-                            echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                         } elseif ($userPrivilege == 'user') {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
@@ -197,7 +197,7 @@ if ($userPrivilege == 'guest') {
         <div class="caption">
             <br>
             <div class="contenedor mt-5">
-            <div class="view-account" style="width:90%;justify-content: center;margin: 0 auto;">
+                <div class="view-account" style="width:90%;justify-content: center;margin: 0 auto;">
                     <section class="module">
                         <div class="module-inner">
                             <div class="side-bar">
@@ -235,8 +235,18 @@ if ($userPrivilege == 'guest') {
                                 </div>
                                 <nav class="side-menu">
                                     <ul class="nav">
-                                        <li class='active'><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
-                                        <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
+                                        <li class='active'><a href="infoPerfil.php"><span class="fa fa-user"></span> Perfil</a></li>
+                                        <?php
+                                        if ($userPrivilege != 'guest') {
+                                            echo "<li><a href='solicitudes_amistad.php'><span class='fa fa-user'></span>Solicitudes de amistad</a></li>";
+                                        }
+                                        ?>
+                                        <?php
+                                        if ($userPrivilege != 'guest') {
+                                            echo "<li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>";
+                                        }
+                                        ?>
+                                        <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Ajustes</a></li>
                                         <?php
                                         if ($userPrivilege == 'user') {
                                             echo "<li><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
@@ -247,7 +257,7 @@ if ($userPrivilege == 'guest') {
                             </div>
                             <div class="content-panel">
                                 <fieldset class="fieldset">
-                                    <h3 class="fieldset-title">Personal Info</h3>
+                                    <h3 class="fieldset-title">Información</h3>
                                     <div class="form-group avatar">
                                     </div>
                                     <div class="form-group">

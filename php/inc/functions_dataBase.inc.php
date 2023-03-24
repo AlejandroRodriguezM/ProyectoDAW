@@ -12,6 +12,15 @@ function checkUser($acceso, $password)
 	return $exist;
 }
 
+function info_user_id($id)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from users WHERE IDuser = ?");
+	$consulta->execute(array($id));
+	$info = $consulta->fetch(PDO::FETCH_ASSOC);
+	return $info;
+}
+
 function checkEmail($email)
 {
 	global $conection;
@@ -222,10 +231,33 @@ function changeStatusAccount($email, $estado)
 	try {
 		if ($estado == 'true') {
 			$consulta = $conection->prepare("UPDATE users SET accountStatus = 'block' WHERE email = ?");
+			$consulta = $conection->prepare("UPDATE users SET tipo_perfil = 'privado' WHERE email = ?");
 		} elseif ($estado == 'false') {
 			$consulta = $conection->prepare("UPDATE users SET accountStatus = 'active' WHERE email = ?");
 		} else {
 			$consulta = $conection->prepare("UPDATE users SET accountStatus = 'inactive' WHERE email = ?");
+			$consulta = $conection->prepare("UPDATE users SET tipo_perfil = 'privado' WHERE email = ?");
+		}
+
+		$consulta->execute(array($email));
+		$cambio = true;
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $cambio;
+}
+
+function cambiar_privacidad($email, $estado)
+{
+	global $conection;
+	$cambio = false;
+	try {
+		if ($estado == 'true') {
+			$consulta = $conection->prepare("UPDATE users SET tipo_perfil = 'privado' WHERE email = ?");
+		} elseif ($estado == 'false') {
+			$consulta = $conection->prepare("UPDATE users SET tipo_perfil = 'publico' WHERE email = ?");
 		}
 
 		$consulta->execute(array($email));
@@ -390,7 +422,7 @@ function checkUserName($userName)
 function search_user($search)
 {
 	global $conection;
-	$consulta = $conection->prepare("SELECT userName,email,userPicture from users WHERE userName LIKE ? OR email LIKE ?");
+	$consulta = $conection->prepare("SELECT userName,email,userPicture from users WHERE userName LIKE ? OR email LIKE ? AND accountStatus = 'active' AND tipo_perfil = 'publico'");
 	$consulta->execute(array("%$search%", "%$search%"));
 	return $consulta;
 }
@@ -947,3 +979,258 @@ function reactivar_cuenta($email)
 		echo "Error: " . $e->getMessage();
 	}
 }
+
+function estado_solicitud($id_destinatario,$id_solicitante){
+	global $conection;
+	$consulta = $conection->prepare("SELECT estado_solicitud from solicitudes_amistad where id_usuario_destinatario=? AND id_usuario_solicitante = ?");
+	$consulta->execute(array($id_destinatario,$id_solicitante));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function num_amistades($id_usuario){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from amistades_usuario where id_usuario=?");
+	$consulta->execute(array($id_usuario));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function solicitudes_amistad($id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from solicitudes_amistad where id_usuario_destinatario=? AND estado_solicitud='en espera'");
+	$consulta->execute(array($id_user));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function num_solicitudes_amistad($id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from solicitudes_amistad where id_usuario_destinatario=? AND estado_solicitud='en espera'");
+	$consulta->execute(array($id_user));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function solicitudes_amistad_enviadas($id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from solicitudes_amistad where id_usuario_solicitante= ? AND estado_solicitud='en espera'");
+	$consulta->execute(array($id_user));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function num_solicitudes_amistad_enviadas($id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from solicitudes_amistad where id_usuario_solicitante = ? AND estado_solicitud='en espera'");
+	$consulta->execute(array($id_user));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function aceptar_solicitud($id_remitente,$id_mi_usuario){
+	global $conection;
+	$aceptado = false;
+	try {
+		$consulta1 = $conection->prepare("UPDATE solicitudes_amistad SET estado_solicitud = 'aceptada' WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
+		$consulta1->execute(array($id_remitente,$id_mi_usuario));
+		$consulta2 = $conection->prepare("INSERT INTO amistades_usuario (id_usuario,id_amigo) VALUES (?,?)");
+		$consulta2->execute(array($id_remitente,$id_mi_usuario));
+		$consulta3 = $conection->prepare("INSERT INTO amistades_usuario (id_usuario,id_amigo) VALUES (?,?)");
+		$consulta3->execute(array($id_mi_usuario,$id_remitente));
+		$aceptado = true;
+		
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $aceptado;
+}
+
+function rechazar_solicitud($id_remitente,$id_mi_usuario){
+	global $conection;
+	$rechazado = false;
+	try {
+		$consulta1 = $conection->prepare("UPDATE solicitudes_amistad SET estado_solicitud = 'rechazada' WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
+		$consulta1->execute(array($id_remitente,$id_mi_usuario));
+		$rechazado = true;
+		
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	return $rechazado;
+}
+
+function cancelar_solicitud($id_remitente,$id_mi_usuario){
+	global $conection;
+	$cancelado = false;
+	try {
+		$consulta = $conection->prepare("DELETE FROM solicitudes_amistad WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
+		$consulta->execute(array($id_mi_usuario,$id_remitente));
+		$cancelado = true;
+		
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	return $cancelado;
+}
+
+function comprobar_solicitud($id_solicitante,$id_mi_usuario){
+	global $conection;
+	$existe = false;
+	$consulta = $conection->prepare("SELECT * from solicitudes_amistad where id_usuario_solicitante=? AND id_usuario_destinatario=? AND estado_solicitud='en espera'");
+	$consulta->execute(array($id_solicitante,$id_mi_usuario));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	if($consulta){
+		$existe = true;
+	}
+	return $existe;
+}
+
+function comprobar_amistad($id_amigo,$id_mi_usuario){
+	global $conection;
+	$existe = false;
+	$consulta = $conection->prepare("SELECT * from amistades_usuario where id_usuario=? AND id_amigo=?");
+	$consulta->execute(array($id_mi_usuario,$id_amigo));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	if($consulta){
+		$existe = true;
+	}
+	return $existe;
+}
+
+function enviar_solicitud($id_destinatario,$id_solicitante){
+	global $conection;
+	$enviado = false;
+	try {
+		$consulta = $conection->prepare("INSERT INTO solicitudes_amistad (id_usuario_destinatario,id_usuario_solicitante) VALUES (?,?)");
+		$consulta->execute(array($id_destinatario,$id_solicitante));
+		$enviado = true;
+		
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	return $enviado;
+}
+
+function eliminar_amigo($id_amigo,$id_mi_usuario){
+	global $conection;
+	$eliminado = false;
+	try {
+		$consulta1 = $conection->prepare("DELETE FROM amistades_usuario WHERE id_usuario = ? AND id_amigo = ?");
+		$consulta1->execute(array($id_mi_usuario,$id_amigo));
+		$consulta2 = $conection->prepare("DELETE FROM amistades_usuario WHERE id_usuario = ? AND id_amigo = ?");
+		$consulta2->execute(array($id_amigo,$id_mi_usuario));
+		$consulta3 = $conection->prepare("DELETE FROM solicitudes_amistad WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
+		$consulta3->execute(array($id_amigo,$id_mi_usuario));
+		$eliminado = true;
+		
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	return $eliminado;
+}
+
+function amigos($id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from amistades_usuario where id_usuario=?");
+	$consulta->execute(array($id_user));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function num_amigos($id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from amistades_usuario where id_usuario=?");
+	$consulta->execute(array($id_user));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+function bloquear_usuario($id_destinatario,$id_solicitante){
+	global $conection;
+	$bloqueado = false;
+	try {
+		$consulta1 = $conection->prepare("INSERT INTO usuarios_bloqueados (id_usuario_bloqueado,id_solicitante) VALUES (?,?)");
+		$consulta1->execute(array($id_destinatario,$id_solicitante));
+
+		$consulta2 = $conection->prepare("SELECT COUNT(*) from amistades_usuario where id_amigo=?");
+		$consulta2->execute(array($id_destinatario));
+		$consulta2 = $consulta2->fetchColumn();
+		if($consulta2 > 0){
+			$consulta3 = $conection->prepare("DELETE FROM amistades_usuario WHERE id_usuario = ? AND id_amigo = ?");
+			$consulta3->execute(array($id_destinatario,$id_solicitante));
+			$consulta4 = $conection->prepare("DELETE FROM amistades_usuario WHERE id_usuario = ? AND id_amigo = ?");
+			$consulta4->execute(array($id_solicitante,$id_destinatario));
+		}
+		$num_solicitudes = num_solicitudes_amistad($id_destinatario);
+
+		if($num_solicitudes > 0){
+			$consulta5 = $conection->prepare("DELETE FROM solicitudes_amistad WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
+			$consulta5->execute(array($id_solicitante,$id_destinatario));
+		}
+
+		$bloqueado = true;
+		
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	return $bloqueado;
+}
+
+function desbloquear_usuario($id_destinatario,$id_solicitante){
+	global $conection;
+	$desbloqueado = false;
+	try {
+		$consulta1 = $conection->prepare("DELETE FROM usuarios_bloqueados WHERE id_usuario_bloqueado = ? AND id_solicitante = ?");
+		$consulta1->execute(array($id_destinatario,$id_solicitante));
+		$desbloqueado = true;
+		
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+
+	return $desbloqueado;
+}
+
+function comprobar_bloqueo($id_destinatario,$id_solicitante){
+	global $conection;
+	$bloqueado = false;
+	$consulta = $conection->prepare("SELECT * from usuarios_bloqueados where id_usuario_bloqueado=? AND id_solicitante=?");
+	$consulta->execute(array($id_destinatario,$id_solicitante));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	if($consulta){
+		$bloqueado = true;
+	}
+	return $bloqueado;
+}
+
+function num_usuarios_bloqueados($id_mi_usuario){
+	global $conection;
+	$consulta = $conection->prepare("SELECT COUNT(*) from usuarios_bloqueados where id_solicitante=?");
+	$consulta->execute(array($id_mi_usuario));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+function usuarios_bloqueados($id_mi_usuario){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * from usuarios_bloqueados where id_solicitante=?");
+	$consulta->execute(array($id_mi_usuario));
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function tipo_privacidad($id_user){
+	global $conection;
+	$consulta = $conection->prepare("SELECT tipo_perfil from users where IDuser=?");
+	$consulta->execute(array($id_user));
+	$consulta = $consulta->fetchColumn();
+	return $consulta;
+}
+
+
+

@@ -7,6 +7,7 @@ destroyCookiesUserTemporal();;
 $email = $_SESSION['email'];
 $userData = getUserData($email);
 $userPrivilege = $userData['privilege'];
+$tipo_perfil = $userData['tipo_perfil'];
 if ($userPrivilege == 'guest') {
     header('Location: inicio.php');
 }
@@ -71,7 +72,7 @@ if ($userPrivilege == 'guest') {
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                                 } elseif ($userPrivilege == 'admin') {
-                                    echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                                    echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
@@ -110,7 +111,7 @@ if ($userPrivilege == 'guest') {
                     <?php
                     } else {
                     ?>
-                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
                     <?php
                     }
@@ -142,7 +143,7 @@ if ($userPrivilege == 'guest') {
                     <?php
                     if (isset($_SESSION['email'])) {
                         if ($userPrivilege == 'admin') {
-                            echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                         } elseif ($userPrivilege == 'user') {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
@@ -203,7 +204,17 @@ if ($userPrivilege == 'guest') {
                                 <nav class="side-menu">
                                     <ul class="nav">
                                         <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
-                                        <li class='active'><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Settings</a></li>
+                                        <?php
+                                        if ($userPrivilege != 'guest') {
+                                            echo "<li><a href='solicitudes_amistad.php'><span class='fa fa-user'></span>Solicitudes de amistad</a></li>";
+                                        }
+                                        ?>
+                                        <?php
+                                        if ($userPrivilege != 'guest') {
+                                            echo "<li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>";
+                                        }
+                                        ?>
+                                        <li class='active'><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Opciones</a></li>
                                         <?php
                                         if ($userPrivilege == 'user') {
                                             echo "<li><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
@@ -215,7 +226,7 @@ if ($userPrivilege == 'guest') {
                             <div class="content-panel">
                                 <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <fieldset class="fieldset">
-                                        <h3 class="fieldset-title">Personal Info</h3>
+                                        <h3 class="fieldset-title">Información</h3>
                                         <div class="form-group avatar" style="width: 420px;">
                                             <figure>
                                                 <?php
@@ -292,12 +303,16 @@ if ($userPrivilege == 'guest') {
                                     <div class="mb-3">
                                         <div class="col-md-5 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0 botones">
                                             <input class="btn btn-primary" type="button" onclick="update_user();" value="Actualizar perfil" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important;margin-right:10px;">
-                                            <input type='hidden'  name='email_usuario' id='email_usuario' value='<?php echo $email ?>'>
+                                            <input type='hidden' name='email_usuario' id='email_usuario' value='<?php echo $email ?>'>
                                             <?php
-                                            if ($userPrivilege == 'admin') {
-                                                echo '<input class="btn btn-danger" type="button" onclick="" value="Desactivar usuario" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important" disabled>';
+                                            if ($tipo_perfil == 'publico') {
+                                                if ($userPrivilege == 'admin') {
+                                                    echo '<input class="btn btn-danger" type="button" value="Hacer perfil privado" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png), pointer!important;" disabled>';
+                                                } else {
+                                                    echo '<input class="btn btn-danger" type="button" onclick="cambiar_privacidad(true); return false;" value="Hacer perfil privado" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png), pointer!important;">';
+                                                }
                                             } else {
-                                                echo '<input class="btn btn-danger" type="button" onclick="desactivar_usuario(); return false;" value="Desactivar usuario" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important" >';
+                                                echo '<input class="btn btn-danger" type="button" onclick="cambiar_privacidad(false); return false;"value="Hacer perfil publico" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important;" >';
                                             }
                                             ?>
                                             <script>
@@ -320,6 +335,13 @@ if ($userPrivilege == 'guest') {
                                                 document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
                                             </script>
                                         </div>
+                                        <?php
+                                        if ($userPrivilege == 'admin') {
+                                            echo '<input class="btn btn-danger" type="button" value="Desactivar usuario" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png), pointer!important; float:right;margin-top:-52px" disabled>';
+                                        } else {
+                                            echo '<input class="btn btn-danger" type="button" onclick="desactivar_usuario(); return false;" value="Desactivar usuario" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important; float:right;margin-top:-52px" >';
+                                        }
+                                        ?>
                                     </div>
                                 </form>
                             </div>

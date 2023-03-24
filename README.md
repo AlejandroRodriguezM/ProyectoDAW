@@ -73,7 +73,7 @@ Arreglado bug que no permitia mostrar correctamente datos cuando se modificaba e
 Arreglado bug que no permitia cambiar de imagen de perfil desde perfil de usuario.
 Se ha modificado las imagenes del crud de usuarios, para que al pulsarla nos lleve a su pagina de informacion
 Cuando se accede a la pagina de informacion del usuario, solamente se podra modificar si es "admin" o "user" pero nunca guest.
-Se ha creado una nueva pagina llamada "adminInfoUser.php" donde se podra ver la informacion de usuarios y se ha enlazado junto con la de "actualizandoUser.php"
+Se ha creado una nueva pagina llamada "admin_info_usuario.php" donde se podra ver la informacion de usuarios y se ha enlazado junto con la de "admin_actualizar_usuario.php"
 Se ha arreglado un bug que no permitia mostrar datos esenciales como session o cookies cuando se modificaba un usuario administrador que este activo a la hora de realizar el cambio.
 Se han arreglado errores de direccion de diferentes ficheros ya que se cambiaron nombres de las paginas.
 
@@ -225,8 +225,8 @@ Cambios en parallax, en pruebas
 
 13/02/2023 Log 3
 Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
-Se ha añadido la funcion de la pestaña "Mi coleccion" en el fichero micoleccion.php
-Se han creado 2 ficheros nuevos relacionados a micoleccion.php:
+Se ha añadido la funcion de la pestaña "Mi coleccion" en el fichero mi_coleccion.php
+Se han creado 2 ficheros nuevos relacionados a mi_coleccion.php:
  - mis_comics.php
  - listas_lectura.php
 Para poder ver correctamente mis_comics.php, se ha creado otra API llamada comics_user.php, donde solamente se mostraran aquellos comics que tenga el usuario guardados en
@@ -286,3 +286,19 @@ Ahora es posible escribir comentarios sobre la pagina de forma dinamica, ya no e
 A la hora de buscar un usuario ahora podemos ver el numero de comics que tiene guardado y cuantas listas de lecturas tiene(Se mejorara para poder ver dichas listas o comics)
 Se ha añadido parallax a mas paginas.
 Ahora el fichero llamado index.php, se llama login.php(index.php sera la landing page que aun no esta creada)
+
+24/03/2023 Log 1
+Se han creado 7 nuevas apis, para controlar la amistad con otro usuario:
+ - Para agregar como amigo
+ - Para dejar de ser amigo
+ - Para enviar peticion de amistad
+ - Para cancelar peticion de amistad
+ - Para bloquear un usuario
+ - Para desbloquear un usuario
+ - Cambiar la privacidad de una cuenta
+Se han mejorado los estilos de todas las paginas del proyecto
+Se han añadido nuevas pestañas en la zona "mi perfil" para ver las solicitudes de amistad, ver los amigos que tienes y ver las solicitudes que has mandado
+Ahora es posible mandar solicitud de amistad a otros usuarios, al igual que poder bloquearlos, rechazar invitacion o cancelar solicitud de amistad
+Se han arreglado varios bugs que no permitian ver ciertos datos siendo administrador
+Se han añadido nuevas tablas a la base de datos
+Se han añadido alrededor de 15 funciones nuevas para el uso de las apis

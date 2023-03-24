@@ -286,6 +286,18 @@ function desactivar_usuario(){
     }
 }
 
+function cambiar_privacidad(boolean){
+    if (confirm("¿Estás seguro de que deseas cambiar tu estado actual de privacidad?")) {
+        if (boolean) {
+            cambiar_privacidad_usuario(true)
+        }
+        else {
+            cambiar_privacidad_usuario(false)
+        }
+        
+    }
+}
+
 function abrir_modal_modificar(id_lista) {
     // Obtener el nombre de la lista a partir del atributo data-nombre-lista del botón
     var nombre_lista = $("#edit-button-" + id_lista).data("nombre-lista");

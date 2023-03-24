@@ -28,12 +28,21 @@ if ($userPrivilege == 'user') {
     <link rel="stylesheet" href="./assets/style/ticket_style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_style.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
-
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/style/parallax.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <title>Panel de tickets administrador</title>
     <style>
+        .contenedor {
+            width: 80% !important;
+            overflow-x: auto;
+            margin: 0 auto;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            border-radius: 30px;
+        }
+
         .navbar {
             position: fixed;
             top: 0;
@@ -60,7 +69,7 @@ if ($userPrivilege == 'user') {
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                                 } elseif ($userPrivilege == 'admin') {
-                                    echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                                    echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
@@ -92,18 +101,18 @@ if ($userPrivilege == 'user') {
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
-                        <?php
-                        if ($userPrivilege == 'guest') {
-                        ?>
-                            <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                    <?php
+                    if ($userPrivilege == 'guest') {
+                    ?>
+                        <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                    <?php
+                    } else {
+                    ?>
+                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
-                        <?php
-                        }
-                        ?>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -138,7 +147,7 @@ if ($userPrivilege == 'user') {
                     <?php
                     if (isset($_SESSION['email'])) {
                         if ($userPrivilege == 'admin') {
-                            echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                         } elseif ($userPrivilege == 'user') {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
@@ -155,81 +164,91 @@ if ($userPrivilege == 'user') {
         </div>
     </nav>
 
+    <div class="card-footer text-muted">
+        Design by Alejandro Rodriguez 2022
+    </div>
 
-
-    <div class="view-account">
-        <section class="module">
-            <div class="module-inner">
-                <div class="side-bar">
-                    <div class="user-info">
-                        <?php
-                        $dataUser = getUserData($email);
-                        $profilePicture = $dataUser['userPicture'];
-                        echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
-                        ?>
-                        <ul class="meta list list-unstyled">
-                            <li class="name">
-                                <label for="" style="font-size: 0.8em;">Nombre:</label>
-                                <?php
-                                $dataUser = getUserData($email);
-                                $userName = $dataUser['userName'];
-                                echo "$userName";
-                                ?>
-                            </li>
-                            <li class="email">
-                                <label for="" style="font-size: 0.8em;">Mail: </label>
-                                <?php
-                                $dataUser = getUserData($email);
-                                $email = $dataUser['email'];
-                                echo " " . "<span style='font-size: 0.7em'>$email</span>";
-                                ?>
-                            </li>
-                            <li class="activity">
-                                <label for="" style="font-size: 0.8em;">Logged in: </label>
-                                <?php
-                                $hora = $_SESSION['hour'];
-                                echo "$hora";
-                                ?>
-                            </li>
-                        </ul>
-                    </div>
-                    <nav class="side-menu">
-                        <ul class="nav">
-                            <li><a href="adminPanelUser.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
-                            <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
-                            <li><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
-                            <li class="active"><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="content-panel">
-                    <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                        <fieldset class="fieldset">
-                            <h3 class="fieldset-title">Mensajes</h3>
-                            <!-- Aquí se incluye el código PHP para obtener los tickets -->
-                            <?php include 'php/apis/tickets_admin.php'; ?>
-                        </fieldset>
-                    </form>
+    <div class="bgimg-1">
+        <div class="caption">
+            <br>
+            <div class="contenedor mt-5">
+                <div class="view-account" style="width:90%;justify-content: center;margin: 0 auto;">
+                    <section class="module">
+                        <div class="module-inner">
+                            <div class="side-bar">
+                                <div class="user-info">
+                                    <?php
+                                    $dataUser = getUserData($email);
+                                    $profilePicture = $dataUser['userPicture'];
+                                    echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+                                    ?>
+                                    <ul class="meta list list-unstyled">
+                                        <li class="name">
+                                            <label for="" style="font-size: 0.8em;">Nombre:</label>
+                                            <?php
+                                            $dataUser = getUserData($email);
+                                            $userName = $dataUser['userName'];
+                                            echo "$userName";
+                                            ?>
+                                        </li>
+                                        <li class="email">
+                                            <label for="" style="font-size: 0.8em;">Mail: </label>
+                                            <?php
+                                            $dataUser = getUserData($email);
+                                            $email = $dataUser['email'];
+                                            echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                            ?>
+                                        </li>
+                                        <li class="activity">
+                                            <label for="" style="font-size: 0.8em;">Logged in: </label>
+                                            <?php
+                                            $hora = $_SESSION['hour'];
+                                            echo "$hora";
+                                            ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <nav class="side-menu">
+                                    <ul class="nav">
+                                        <li><a href="admin_panel_usuario.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
+                                        <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
+                                        <li><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
+                                        <li class="active"><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="content-panel">
+                                <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                    <fieldset class="fieldset">
+                                        <h3 class="fieldset-title">Mensajes</h3>
+                                        <!-- Aquí se incluye el código PHP para obtener los tickets -->
+                                        <?php include 'php/apis/tickets_admin.php'; ?>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
-        </section>
-    </div>
 
+            <!-- The Modal -->
+            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <img class="modal-content_img" id="img01">
+            </div>
+            <div class="bgimg-2">
+                <div id="footer-lite">
+                    <div class="content">
+                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                        <!-- add social media with icons -->
+                        <p class="social">
+                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
-    <div id="footer-lite">
-        <div class="content">
-            <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-            <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-            <!-- add social media with icons -->
-            <p class="social">
-                <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-
-            </p>
-            <p class="copyright">©2023 Alejandro Rodriguez</p>
+                        </p>
+                        <p class="copyright">©2023 Alejandro Rodriguez</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

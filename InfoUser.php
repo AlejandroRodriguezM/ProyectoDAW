@@ -5,7 +5,18 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 $emailUser = $_GET['userName'];
 $email = $_SESSION['email'];
+$userData = getUserData($emailUser);
+$id_user = $userData['IDuser'];
+
+if (isset($_POST['edit'])) {
+    $email_user_edit = $_POST['emailUser'];
+    $IDuser = $_POST['IDuser'];
+    $passwordUser = obtain_password($email_user_edit);
+    cookiesUserTemporal($email_user_edit, $passwordUser, $IDuser);
+    header("Location: admin_actualizar_usuario.php");
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,6 +77,72 @@ $email = $_SESSION['email'];
             width: 70px;
             height: 70px;
         }
+
+        .solicitud_enviada {
+            border-radius: 10px;
+            margin-top: -10px;
+        }
+
+        .cancelar:hover {
+            background-color: red !important;
+            border-color: #ffc107 !important;
+            color: white !important;
+        }
+
+        .cancelar:hover span {
+            content: "";
+            display: none;
+        }
+
+        .cancelar:hover:before {
+            content: "Cancelar solicitud";
+        }
+
+        .cancelar:hover:after {
+            content: "";
+        }
+
+        .amistad:hover {
+            /* text-transform: uppercase; */
+            background-color: red !important;
+            border-color: #ffc107 !important;
+            color: white !important;
+        }
+
+        .amistad:hover span {
+            content: "";
+            display: none;
+        }
+
+        .amistad:hover:before {
+            content: "Dejar de ser amigo";
+
+        }
+
+        .amistad:hover:after {
+            content: "";
+        }
+
+        .bloqueado:hover {
+            /* text-transform: uppercase; */
+            background-color: blue !important;
+            border-color: #ffc107 !important;
+            color: white !important;
+        }
+
+        .bloqueado:hover span {
+            content: "";
+            display: none;
+        }
+
+        .bloqueado:hover:before {
+            content: "Desbloquear";
+
+        }
+
+        .bloqueado:hover:after {
+            content: "";
+        }
     </style>
 </head>
 
@@ -86,7 +163,7 @@ $email = $_SESSION['email'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                                 } elseif ($userPrivilege == 'admin') {
-                                    echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                                    echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
@@ -125,7 +202,7 @@ $email = $_SESSION['email'];
                     <?php
                     } else {
                     ?>
-                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
                     <?php
                     }
@@ -157,7 +234,7 @@ $email = $_SESSION['email'];
                     <?php
                     if (isset($_SESSION['email'])) {
                         if ($userPrivilege == 'admin') {
-                            echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                         } elseif ($userPrivilege == 'user') {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
@@ -184,6 +261,7 @@ $email = $_SESSION['email'];
             <div class="modal-content">
                 <div class="modal-header">
                     <form method="post" id="form_ticket" onsubmit="return false;">
+
                         <h4 class="modal-title">Crear un ticket para administradores</h4>
                 </div>
                 <div class="modal-body">
@@ -225,35 +303,78 @@ $email = $_SESSION['email'];
                                 <div class="user-info">
                                     <?php
                                     $dataUser = getUserData($emailUser);
+                                    $id_usuario_user = $dataUser['IDuser'];
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
 
                                     <ul class="meta list list-unstyled">
-                                        <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
+                                        <li class="name"><label for="" style="font-size: 0.8em;">Nombre de usuario:</label>
                                             <?php
                                             $userName = $dataUser['userName'];
-                                            echo "$userName";
+                                            echo "@$userName";
                                             ?>
                                         </li>
-                                        <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
+                                        <li class="activity">
+                                            <label for="" style="font-size: 0.8em;">Logged in: </label>
                                             <?php
-                                            $email = $dataUser['email'];
-                                            // echo with style font size 
-                                            echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                            $hora = $_SESSION['hour'];
+                                            echo "$hora";
                                             ?>
                                         </li>
                                     </ul>
                                 </div>
                                 <nav class="side-menu">
                                     <ul class="nav">
-                                        <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span>Profile</a></li>
+                                        <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span>Perfil</a></li>
                                     </ul>
                                 </nav>
                             </div>
                             <div class="content-panel">
                                 <fieldset class="fieldset">
-                                    <h3 class="fieldset-title">Personal Info</h3>
+
+                                    <h3 class="fieldset-title">Información
+                                        <?php
+                                        // Verificar si el usuario actual está bloqueado por el usuario que está viendo el perfil
+                                        if (comprobar_bloqueo($id_user, $id_usuario_user)) {
+                                            echo "<button class='btn btn-danger solicitud_enviada' onclick='' style='float:right;margin-right:10px'>Estás bloqueado</button>";
+                                        } else {
+                                            // Código para enviar solicitudes y mostrar el estado de la amistad
+                                            if (comprobar_amistad($id_usuario_user, $id_user)) {
+                                                echo "<button class='btn btn-success solicitud_enviada amistad' onclick='eliminar_amigo($id_usuario_user,$id_user)' style='float:right'><span>Ya sois amigos</span></button>";
+                                            } elseif (estado_solicitud($id_usuario_user, $id_user) == 'cancelada') {
+                                                echo '<button class="btn btn-primary solicitud_enviada" style="float:right">Te ha rechazado</button>';
+                                            } elseif (!comprobar_bloqueo($id_usuario_user, $id_user) && estado_solicitud($id_usuario_user, $id_user) == 'en espera') {
+                                                echo "<button class='btn btn-secondary solicitud_enviada cancelar' onclick='cancelar_solicitud($id_usuario_user,$id_user)' style='float:right'><span>Solicitud enviada</span></button>";
+                                            } else {
+                                                if (estado_solicitud($id_user, $id_usuario_user) == 'en espera') {
+                                                    echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_usuario_user,$id_user)' style='float:right'><span>Rechazar solicitud</span></button>";
+                                                    echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_usuario_user,$id_user)' style='float:right;margin-right:10px'><span>Aceptar solicitud</span></button>";
+                                                } else if (!comprobar_bloqueo($id_usuario_user, $id_user)) {
+                                                    echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_usuario_user,$id_user)' style='float:right;margin-right:10px'>Enviar solicitud</button>";
+                                                }
+                                            }
+
+                                            // Código para bloquear o desbloquear al usuario
+                                            if (!comprobar_bloqueo($id_usuario_user, $id_user)) {
+                                                echo "<button class='btn btn-danger solicitud_enviada' onclick='bloquear_usuario($id_user,$id_usuario_user)' style='float:right;margin-right:10px'><span>Bloquear usuario</span></button>";
+                                            } else {
+                                                echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_user,$id_usuario_user)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
+                                            }
+                                        }
+                                        if ($userPrivilege == 'admin') {
+                                        ?>
+                                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style='float:right'>
+                                            <?php
+                                            echo "<button class='btn btn-danger solicitud_enviada' name='edit' id='edit' style='float:right;margin-right:10px;'><span>Editar usuario</span></button>";
+                                            echo "<td><input type='hidden' name='IDuser' id='IDuser' value='$id_usuario_user'></td>";
+                                            echo "<td><input type='hidden' name='nameUser' id='nameUser' value='$userName'></td>";
+                                            echo "<td><input type='hidden' name='emailUser' id='emailUser' value='$emailUser'></td>";
+                                            echo "</form>";
+                                        }
+                                            ?>
+                                    </h3>
+
                                     <div class="form-group avatar">
                                     </div>
 
@@ -264,40 +385,60 @@ $email = $_SESSION['email'];
                                         echo " " . "<span>$userName</span>";
                                         ?>
                                     </div>
-                                    <div class="form-group">
-                                        <?php
-                                        echo "<label>Correo electronico: </label>";
-                                        echo " " . "<span>$emailUser</span>";
-                                        ?>
-                                    </div>
                                     <?php
-                                    $IDuser = $dataUser['IDuser'];
-                                    $infoUser = getInfoAboutUser($IDuser);
-                                    $fechaCreacion = $infoUser['fechaCreacion'];
-                                    $sobreUser = $infoUser['infoUser'];
-                                    $nombre = $infoUser['nombreUser'];
-                                    $apellidos = $infoUser['apellidoUser'];
+                                    // comprobar si el usuario actual está bloqueado por el usuario a mostrar
+                                    if (comprobar_bloqueo($id_usuario_user, $id_user)) {
+                                        echo "<p>Este usuario te ha bloqueado</p>";
+                                    }
+                                    // comprobar si la cuenta del usuario a mostrar es privada y si el usuario actual no es amigo
+                                    elseif (tipo_privacidad($id_usuario_user) == 'privado' && !comprobar_amistad($id_usuario_user, $id_user)) {
+                                        echo "<p>Este usuario tiene la cuenta privada</p>";
+                                    }
+                                    // si no está bloqueado y la cuenta no es privada o si es amigo, mostrar la información
+                                    else {
+                                        $infoUser = getInfoAboutUser($id_usuario_user);
+                                        $fechaCreacion = $infoUser['fechaCreacion'];
+                                        $sobreUser = $infoUser['infoUser'];
+                                        $nombre = $infoUser['nombreUser'];
+                                        $apellidos = $infoUser['apellidoUser'];
 
-                                    echo "<label>Nombre: </label>";
-                                    echo " " . "<span>$nombre</span>";
-                                    echo "<br>";
-                                    echo "<label>Apellidos: </label>";
-                                    echo " " . "<span>$apellidos</span>";
-                                    echo "<br>";
-                                    echo "<label>Fecha de creacion: </label>";
-                                    echo " " . "<span>$fechaCreacion</span>";
-                                    echo "<br>";
-                                    echo "<label>Sobre mi:</label><br>";
-                                    echo "<div class='col-xs-12'>";
-                                    echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
-                                    echo "</div>";
-
+                                        echo "<label>Nombre: </label>";
+                                        echo " " . "<span>$nombre</span>";
+                                        echo "<br>";
+                                        echo "<label>Apellidos: </label>";
+                                        echo " " . "<span>$apellidos</span>";
+                                        echo "<br>";
+                                        echo "<label>Fecha de creacion: </label>";
+                                        echo " " . "<span>$fechaCreacion</span>";
+                                        echo "<br>";
+                                        echo "<label>Sobre mi:</label><br>";
+                                        echo "<div class='col-xs-12'>";
+                                        echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
+                                        echo "</div>";
+                                    }
                                     ?>
                                 </fieldset>
                                 <hr>
                                 <div class="comics-lists">
-                                    <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo  get_total_guardados($IDuser); ?> comics guardados</p>
-                                    <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($IDuser); ?> listas</p>
+                                    <?php
+                                    // comprobar si el usuario actual está bloqueado por el usuario a mostrar
+                                    if (comprobar_bloqueo($id_usuario_user, $id_user)) {
+                                        echo "<p>Este usuario te ha bloqueado</p>";
+                                    }
+                                    // comprobar si la cuenta del usuario a mostrar es privada y si el usuario actual no es amigo
+                                    elseif (tipo_privacidad($id_usuario_user) == 'privado' && !comprobar_amistad($id_usuario_user, $id_user)) {
+                                        echo "<p>Este usuario tiene la cuenta privada</p>";
+                                    }
+                                    // si no está bloqueado y la cuenta no es privada o si es amigo, mostrar la información
+                                    else {
+                                    ?>
+                                        <p>Numero de amigos: <?php echo num_amistades($id_usuario_user) ?></p>
+                                        <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo get_total_guardados($id_usuario_user); ?> comics guardados</p>
+                                        <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_usuario_user); ?> listas</p>
+                                    <?php
+                                    }
+                                    ?>
+
                                 </div>
                     </section>
                 </div>

@@ -399,7 +399,7 @@ const modifying_user = async () => {
         document.querySelector('#formUpdate').reset();
         localStorage.setItem('UserName', name);
         setTimeout(() => {
-            window.location.href = "adminPanelUser.php";
+            window.location.href = "admin_panel_usuario.php";
         }, 2000);
     } else {
         Swal.fire({
@@ -418,14 +418,52 @@ const cambiar_estado_usuario = async (estado) => {
     if (estado == true) {
         data.append('estado', true)
     }
-    else if(estado == false) {
+    else if (estado == false) {
         data.append('estado', false)
     }
-    else{
+    else {
         data.append('estado', 'desactivar')
     }
     //pass data to php file
     var respond = await fetch("php/apis/desactivar_cuenta.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
+const cambiar_privacidad_usuario = async (estado) => {
+    var email = document.querySelector("#email_usuario").value;
+    const data = new FormData();
+    data.append('email', email);
+    if (estado == true) {
+        data.append('estado', true)
+    }
+    else if (estado == false) {
+        data.append('estado', false)
+    }
+    //pass data to php file
+    var respond = await fetch("php/apis/cambiar_privacidad.php", {
         method: 'POST',
         body: data
     });
@@ -937,6 +975,275 @@ const eliminar_usuario = async (id_user, emailUser) => {
     }
 }
 
+const aceptar_solicitud = (id_solicitante, id_destinatario) => {
+    const data = new FormData();
+    data.append("id_solicitante", id_solicitante);
+    data.append("id_destinatario", id_destinatario);
+
+    fetch("php/apis/aceptar_solicitud.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+
+}
+
+const enviar_solicitud = (id_solicitante, id_destinatario) => {
+    const data = new FormData();
+    data.append("id_solicitante", id_solicitante);
+    data.append("id_destinatario", id_destinatario);
+
+    fetch("php/apis/enviar_solicitud.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+
+}
+
+const rechazar_solicitud = (id_solicitante, id_destinatario) => {
+    const data = new FormData();
+    data.append("id_solicitante", id_solicitante);
+    data.append("id_destinatario", id_destinatario);
+
+    fetch("php/apis/rechazar_solicitud.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+const cancelar_solicitud = (id_solicitante, id_destinatario) => {
+    const data = new FormData();
+    data.append("id_solicitante", id_solicitante);
+    data.append("id_destinatario", id_destinatario);
+
+    fetch("php/apis/cancelar_solicitud.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+const eliminar_amigo = (id_solicitante, id_destinatario) => {
+    const data = new FormData();
+    data.append("id_solicitante", id_solicitante);
+    data.append("id_destinatario", id_destinatario);
+
+    fetch("php/apis/eliminar_amigo.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+const bloquear_usuario = (id_solicitante, id_destinatario) => {
+    const data = new FormData();
+    data.append("id_solicitante", id_solicitante);
+    data.append("id_destinatario", id_destinatario);
+
+    fetch("php/apis/bloquear_user.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+const desbloquear_usuario = (id_solicitante, id_destinatario) => {
+    const data = new FormData();
+    data.append("id_solicitante", id_solicitante);
+    data.append("id_destinatario", id_destinatario);
+
+    fetch("php/apis/desbloquear_user.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+
 
 
 // const delete_user = async () => {
@@ -961,7 +1268,7 @@ const eliminar_usuario = async (id_user, emailUser) => {
 //         document.querySelector('#formUpdate').reset();
 //         localStorage.setItem('UserName', name);
 //         setTimeout(() => {
-//             window.location.href = "adminPanelUser.php";
+//             window.location.href = "admin_panel_usuario.php";
 //         }, 2000);
 //     } else {
 //         Swal.fire({

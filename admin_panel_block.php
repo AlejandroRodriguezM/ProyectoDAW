@@ -17,11 +17,21 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/style/parallax.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <title>Lista de bloqueados</title>
     <style>
+        .contenedor {
+            width: 80% !important;
+            overflow-x: auto;
+            margin: 0 auto;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            border-radius: 30px;
+        }
+
         .navbar {
             position: fixed;
             top: 0;
@@ -37,7 +47,7 @@ if (isset($_POST['edit'])) {
     $IDuser = $_POST['IDuser'];
     $passwordUser = obtain_password($emailUser);
     cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
-    header("Location: actualizandoUser.php");
+    header("Location: admin_actualizar_usuario.php");
 }
 
 if (isset($_POST['avatarUser'])) {
@@ -45,7 +55,7 @@ if (isset($_POST['avatarUser'])) {
     $IDuser = $_POST['IDuser'];
     $passwordUser = obtain_password($emailUser);
     cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
-    header("Location: adminInfoUser.php");
+    header("Location: admin_info_usuario.php");
 }
 ?>
 
@@ -67,7 +77,7 @@ if (isset($_POST['avatarUser'])) {
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                                 } elseif ($userPrivilege == 'admin') {
-                                    echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                                    echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
@@ -106,7 +116,7 @@ if (isset($_POST['avatarUser'])) {
                     <?php
                     } else {
                     ?>
-                        <a class="nav-link" href="micoleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
                     <?php
                     }
@@ -138,7 +148,7 @@ if (isset($_POST['avatarUser'])) {
                     <?php
                     if (isset($_SESSION['email'])) {
                         if ($userPrivilege == 'admin') {
-                            echo "<li><a class='dropdown-item' href='adminPanelUser.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                         } elseif ($userPrivilege == 'user') {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
@@ -159,144 +169,152 @@ if (isset($_POST['avatarUser'])) {
         Design by Alejandro Rodriguez 2022
     </div>
 
-    <div class="view-account">
-        <section class="module">
-            <div class="module-inner">
-                <div class="side-bar">
-                    <div class="user-info">
-                        <?php
-                        $dataUser = getUserData($email);
-                        $profilePicture = $dataUser['userPicture'];
-                        echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
-                        ?>
-                        <ul class="meta list list-unstyled">
-                            <li class="name">
-                                <label for="" style="font-size: 0.8em;">Nombre:</label>
-                                <?php
-                                $dataUser = getUserData($email);
-                                $userName = $dataUser['userName'];
-                                echo "$userName";
-                                ?>
-                            </li>
-                            <li class="email">
-                                <label for="" style="font-size: 0.8em;">Mail: </label>
-                                <?php
-                                $dataUser = getUserData($email);
-                                $email = $dataUser['email'];
-                                echo " " . "<span style='font-size: 0.7em'>$email</span>";
-                                ?>
-                            </li>
-                            <li class="activity">
-                                <label for="" style="font-size: 0.8em;">Logged in: </label>
-                                <?php
-                                $hora = $_SESSION['hour'];
-                                echo "$hora";
-                                ?>
-                            </li>
-                        </ul>
-                    </div>
-                    <nav class="side-menu">
-                        <ul class="nav">
-                            <li><a href="adminPanelUser.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
-                            <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
-                            <li class="active"><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
-                            <li><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="content-panel">
-                    <div style="margin-right: auto; width: 80%">
-                        <div class="card-body">
-                            <table class="table table-hover">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <td>ID</td>
-                                        <td>Imagen de perfil</td>
-                                        <td>Nombre</td>
-                                        <td>Correo</td>
-                                        <td>Privilegio</td>
-                                        <td>Estado</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                            <?php
-                                            $registros = showUsers();
-                                            $user = $registros->fetch();
-                                            while ($user != null) {
-                                                $userData = getUserData($user['email']);
-                                                $userPrivilege = $userData['privilege'];
-                                                $estado_cuenta = $userData['accountStatus'];
-                                            ?>
-                                    <tr>
-                                        <?php
-                                                if ($estado_cuenta == 'block') {
-                                        ?>
-                                            <td name='IDuser'><?php echo $user['IDuser'] ?></td>
-
-                                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                                <td><input type="hidden" name="avatarUser"><input type="image" src="<?php echo $user['userPicture'] ?>" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;"></td>
-                                                <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
-                                                <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
-                                                <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
-                                            </form>
-                                            <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
-                                            <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
-                                            <td><?php echo $user['privilege'] ?></td>
-                                            <td><?php echo $user['accountStatus'] ?></td>
-
-
-                                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-
-                                                <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
-                                                <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
-                                                <input type='hidden' name='email_usuario' id='email_usuario' value='<?php echo $user['email'] ?>'>
-                                                <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
-                                                <?php
-                                                    if ($estado_cuenta == 'block') {
-                                                        echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='cambiar_estado(false); return false;'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>";
-                                                    }
-                                                ?>
-                                                <td style='margin-left: auto; margin-right: auto; width: 10%'>
-                                                    <button class='btn btn-danger' name='del' onclick='confirmar_eliminacion_usuario(<?php echo $user['IDuser']; ?>,"<?php echo $user['email']; ?>")'>
-                                                        <i class='bi bi-trash p-1'></i>Eliminar
-                                                    </button>
-                                                </td>
-                                            </form>
+    <div class="bgimg-1">
+        <div class="caption">
+            <br>
+            <div class="contenedor mt-5">
+                <div class="view-account" style="width:90%;justify-content: center;margin: 0 auto;">
+                    <section class="module">
+                        <div class="module-inner">
+                            <div class="side-bar">
+                                <div class="user-info">
                                     <?php
-                                                }
-                                                echo "</tr>";
-                                                $user = $registros->fetch();
-                                            }
+                                    $dataUser = getUserData($email);
+                                    $profilePicture = $dataUser['userPicture'];
+                                    echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
-                                    </form>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <h5 class="card-title"></h5>
-                            <p class="card-text"></p>
+                                    <ul class="meta list list-unstyled">
+                                        <li class="name">
+                                            <label for="" style="font-size: 0.8em;">Nombre:</label>
+                                            <?php
+                                            $dataUser = getUserData($email);
+                                            $userName = $dataUser['userName'];
+                                            echo "$userName";
+                                            ?>
+                                        </li>
+                                        <li class="email">
+                                            <label for="" style="font-size: 0.8em;">Mail: </label>
+                                            <?php
+                                            $dataUser = getUserData($email);
+                                            $email = $dataUser['email'];
+                                            echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                            ?>
+                                        </li>
+                                        <li class="activity">
+                                            <label for="" style="font-size: 0.8em;">Logged in: </label>
+                                            <?php
+                                            $hora = $_SESSION['hour'];
+                                            echo "$hora";
+                                            ?>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <nav class="side-menu">
+                                    <ul class="nav">
+                                        <li><a href="admin_panel_usuario.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
+                                        <li><a href=""><span class="fa fa-cog"></span>Lista de comics</a></li>
+                                        <li class="active"><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
+                                        <li><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="content-panel">
+                                <div style="margin-right: auto; width: 80%">
+                                    <div class="card-body">
+                                        <table class="table table-hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>Imagen de perfil</td>
+                                                    <td>Nombre</td>
+                                                    <td>Correo</td>
+                                                    <td>Privilegio</td>
+                                                    <td>Estado</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                                        <?php
+                                                        $registros = showUsers();
+                                                        $user = $registros->fetch();
+                                                        while ($user != null) {
+                                                            $userData = getUserData($user['email']);
+                                                            $userPrivilege = $userData['privilege'];
+                                                            $estado_cuenta = $userData['accountStatus'];
+                                                        ?>
+                                                <tr>
+                                                    <?php
+                                                            if ($estado_cuenta == 'block') {
+                                                    ?>
+                                                        <td name='IDuser'><?php echo $user['IDuser'] ?></td>
+
+                                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                                            <td><input type="hidden" name="avatarUser"><input type="image" src="<?php echo $user['userPicture'] ?>" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;"></td>
+                                                            <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
+                                                            <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
+                                                            <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
+                                                        </form>
+                                                        <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
+                                                        <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
+                                                        <td><?php echo $user['privilege'] ?></td>
+                                                        <td><?php echo $user['accountStatus'] ?></td>
+
+
+                                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+
+                                                            <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
+                                                            <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
+                                                            <input type='hidden' name='email_usuario' id='email_usuario' value='<?php echo $user['email'] ?>'>
+                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
+                                                            <?php
+                                                                if ($estado_cuenta == 'block') {
+                                                                    echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='cambiar_estado(false); return false;'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>";
+                                                                }
+                                                            ?>
+                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'>
+                                                                <button class='btn btn-danger' name='del' onclick='confirmar_eliminacion_usuario(<?php echo $user['IDuser']; ?>,"<?php echo $user['email']; ?>")'>
+                                                                    <i class='bi bi-trash p-1'></i>Eliminar
+                                                                </button>
+                                                            </td>
+                                                        </form>
+                                                <?php
+                                                            }
+                                                            echo "</tr>";
+                                                            $user = $registros->fetch();
+                                                        }
+                                                ?>
+                                                </form>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <h5 class="card-title"></h5>
+                                        <p class="card-text"></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </section>
+                </div>
+            </div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <img class="modal-content_img" id="img01">
+            </div>
+            <div class="bgimg-2">
+                <div id="footer-lite">
+                    <div class="content">
+                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
+                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                        <!-- add social media with icons -->
+                        <p class="social">
+                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                        </p>
+                        <p class="copyright">©2023 Alejandro Rodriguez</p>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
-    <div id="footer-lite">
-        <div class="content">
-            <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-            <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-            <!-- add social media with icons -->
-            <p class="social">
-                <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-            </p>
-            <p class="copyright">©2023 Alejandro Rodriguez</p>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
