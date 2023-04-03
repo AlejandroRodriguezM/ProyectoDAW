@@ -3,7 +3,7 @@ session_start();
 include_once '../inc/header.inc.php';
 global $conection;
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+$userData = obtener_datos_usuario($email);
 $id_user = $userData['IDuser'];
 $limit = intval($_GET['limit']);
 $offset = intval($_GET['offset']);

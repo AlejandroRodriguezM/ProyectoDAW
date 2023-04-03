@@ -4,7 +4,8 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+guardar_ultima_conexion($email);
+$userData = obtener_datos_usuario($email);
 $name = $userData['userName'];
 $id_user = $userData['IDuser'];
 ?>
@@ -70,7 +71,7 @@ $id_user = $userData['IDuser'];
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -207,7 +208,7 @@ $id_user = $userData['IDuser'];
                                     $id_user = $data_opinion['id_user'];
                                     $opinion = $data_opinion['comentario'];
                                     $fecha_opinion = $data_opinion['fecha_comentario'];
-                                    $data_user = getUserData($id_user);
+                                    $data_user = obtener_datos_usuario($id_user);
                                     $foto_perfil = $data_user['userPicture'];
                                     $nombre_user = $data_user['userName'];
                                     $email_user = $data_user['email'];
@@ -284,7 +285,7 @@ $id_user = $userData['IDuser'];
                                 <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                                 <?php
                                 if (isset($_SESSION['email'])) {
-                                    $userData = getUserData($email);
+                                    $userData = obtener_datos_usuario($email);
                                     $id_user = $userData['IDuser'];
                                     echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                                 }

@@ -5,7 +5,8 @@ checkCookiesUser();
 destroyCookiesUserTemporal();
 
 $email = $_SESSION['email'];
-$dataUser = getUserData($email);
+guardar_ultima_conexion($email);
+$dataUser = obtener_datos_usuario($email);
 $IDuser = $dataUser['IDuser'];
 $infoUser = getInfoAboutUser($IDuser);
 
@@ -96,7 +97,7 @@ if ($userPrivilege == 'guest') {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -203,15 +204,16 @@ if ($userPrivilege == 'guest') {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($email);
+                                    $dataUser = obtener_datos_usuario($email);
                                     $profilePicture = $dataUser['userPicture'];
+                                    $id_usuario = $dataUser['IDuser'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
                                     <ul class="meta list list-unstyled">
                                         <li class="name">
                                             <label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $userName = $dataUser['userName'];
                                             echo "$userName";
                                             ?>
@@ -219,16 +221,15 @@ if ($userPrivilege == 'guest') {
                                         <li class="email">
                                             <label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $email = $dataUser['email'];
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                             ?>
                                         </li>
                                         <li class="activity">
-                                            <label for="" style="font-size: 0.8em;">Logged in: </label>
+                                            <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
-                                            $hora = $_SESSION['hour'];
-                                            echo "$hora";
+                                            echo comprobar_ultima_conexion($id_usuario);
                                             ?>
                                         </li>
                                     </ul>
@@ -246,7 +247,7 @@ if ($userPrivilege == 'guest') {
                                             echo "<li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>";
                                         }
                                         ?>
-                                        <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Ajustes</a></li>
+                                        <li><a href="modificar_perfil.php"><span class="fa fa-cog"></span> Ajustes</a></li>
                                         <?php
                                         if ($userPrivilege == 'user') {
                                             echo "<li><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
@@ -323,7 +324,7 @@ if ($userPrivilege == 'guest') {
                                 <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                                 <?php
                                 if (isset($_SESSION['email'])) {
-                                    $userData = getUserData($email);
+                                    $userData = obtener_datos_usuario($email);
                                     $id_user = $userData['IDuser'];
                                     echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                                 }

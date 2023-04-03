@@ -4,6 +4,7 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
+guardar_ultima_conexion($email);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +25,7 @@ $email = $_SESSION['email'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="./assets/js/functions.js"></script>
 
 
     <title>Busqueda</title>
@@ -202,7 +204,7 @@ if (existe_user($input_user)) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -318,7 +320,7 @@ if (existe_user($input_user)) {
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
+                            $userData = obtener_datos_usuario($email);
                             $id_user = $userData['IDuser'];
                             echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                         }
@@ -575,7 +577,7 @@ if (existe_user($input_user)) {
 
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
+    
 
 </body>
 

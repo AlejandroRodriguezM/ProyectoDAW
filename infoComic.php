@@ -3,7 +3,8 @@ session_start();
 include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+guardar_ultima_conexion($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 
 $id_comic = $_GET['IDcomic'];
@@ -186,7 +187,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 $name = $userData['userName'];
                                 $id_user = $userData['IDuser'];
@@ -307,7 +308,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
+                            $userData = obtener_datos_usuario($email);
                             $id_user = $userData['IDuser'];
                             echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                         }

@@ -17,17 +17,17 @@ if ($_POST) {
         $validate['success'] = false;
         $validate['message'] = 'You cannot use system reserved words';
     } else {
-        if (checkEmail($email)) {
+        if (check_email_user($email)) {
             header("HTTP/1.1 409 Conflict");
             $validate['success'] = false;
             $validate['message'] = 'The email is already in use';
-        } else if (checkUserName($userName)) {
+        } else if (check_nombre_user($userName)) {
             header("HTTP/1.1 409 Conflict");
             $validate['success'] = false;
             $validate['message'] = 'That username already exists';
         } else {
-            if (new_user($userName, $email, $password)) {
-                $row = getUserData($email);
+            if (crear_usuario($userName, $email, $password)) {
+                $row = obtener_datos_usuario($email);
                 $id = $row['IDuser'];
                 insertAbourUser($id, "No information about the user $email", $fechaCreacion);
                 createDirectory($email, $id);

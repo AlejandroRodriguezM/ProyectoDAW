@@ -4,6 +4,7 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
+guardar_ultima_conexion($email);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,6 +83,7 @@ $email = $_SESSION['email'];
         a {
             color: black;
         }
+
         .navbar {
             position: fixed;
             top: 0;
@@ -103,7 +105,7 @@ $email = $_SESSION['email'];
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -140,18 +142,18 @@ $email = $_SESSION['email'];
                         <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
-                        <?php
-                        if ($userPrivilege == 'guest') {
-                        ?>
-                            <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                    <?php
+                    if ($userPrivilege == 'guest') {
+                    ?>
+                        <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                    <?php
+                    } else {
+                    ?>
+                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
-                        <?php
-                        }
-                        ?>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link active" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
@@ -219,7 +221,7 @@ $email = $_SESSION['email'];
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
+                            $userData = obtener_datos_usuario($email);
                             $id_user = $userData['IDuser'];
                             echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                         }

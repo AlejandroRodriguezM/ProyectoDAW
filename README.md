@@ -93,7 +93,7 @@ Ahora el nombre de usuario es una clave primaria y no se puede repetir
 La base de datos ha sido actualizada (Voz de avast antivirus)
 
 27/12/2022 Log 4
-Se ha modificado los ficheros de update_user.php y "modify_user.php" para que no acepten el cambio si el nuevo nombre de usuario ya existe
+Se ha modificado los ficheros de actualizar_usuario.php y "modify_user.php" para que no acepten el cambio si el nuevo nombre de usuario ya existe
 Se ha arreglado bug a la hora de modificar nombre de usuario desde poanel administrador como de usuario nornal.
 
 27/12/2022 Log 5
@@ -302,3 +302,12 @@ Ahora es posible mandar solicitud de amistad a otros usuarios, al igual que pode
 Se han arreglado varios bugs que no permitian ver ciertos datos siendo administrador
 Se han añadido nuevas tablas a la base de datos
 Se han añadido alrededor de 15 funciones nuevas para el uso de las apis
+
+03/04/2023 Log 1
+Se han creado nuevas apis, para controlar el bloqueo de un usuario a la pagina
+Se ha limpiado el codigo en funciones_dataBase.inc.php
+Se ha añadido ampliamente la seguridad y la posible inyeccion de codigo a la base de datos en el fichero mencionado anteriormente
+Se han eliminado funciones que no tenian ningun uso
+Se han cambiado el nombre de funciones
+Se ha creado una nueva columna en aboutuser para que registre la ultima hora de conexion de un usuario
+Se ha mejorado varios bugs que raltentizaban la pagina a la hora de buscar comics con mas de 1 palabra

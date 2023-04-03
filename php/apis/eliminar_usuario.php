@@ -2,7 +2,7 @@
 session_start();
 include_once '../inc/header.inc.php';
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 $validate['success'] = array('success' => false, 'message' => "");
 
@@ -11,7 +11,7 @@ if($userPrivilege == 'admin'){
         $id_user = $_POST['id_user'];
         $email = $_POST['emailUser'];
 
-        if (delete_user($email, $id_user)) {
+        if (eliminar_usuario($email, $id_user)) {
             $validate['success'] = true;
             $validate['message'] = 'Usuario borrado correctamente';
         } else {

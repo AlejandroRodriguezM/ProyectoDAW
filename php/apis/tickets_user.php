@@ -4,7 +4,7 @@ include_once './php/inc/header.inc.php';
 global $conection;
 $conn = $conection;
 $email_user = $_SESSION['email'];
-$data = getUserData($email_user);
+$data = obtener_datos_usuario($email_user);
 $id_user = $data['IDuser'];
 $nombre_user = $data['userName'];
 // Consulta para obtener los tickets

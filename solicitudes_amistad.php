@@ -5,7 +5,8 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();;
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+guardar_ultima_conexion($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 $id_usuario = $userData['IDuser'];
 if ($userPrivilege == 'guest') {
@@ -69,7 +70,7 @@ if ($userPrivilege == 'guest') {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -176,21 +177,21 @@ if ($userPrivilege == 'guest') {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($email);
+                                    $dataUser = obtener_datos_usuario($email);
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
                                     <ul class="meta list list-unstyled">
                                         <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $userName = $dataUser['userName'];
                                             echo "$userName";
                                             ?>
                                         </li>
                                         <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $email = $dataUser['email'];
                                             // echo with style font size 
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
@@ -217,7 +218,7 @@ if ($userPrivilege == 'guest') {
                                             echo "<li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>";
                                         }
                                         ?>
-                                        <li><a href="modificarPerfil.php"><span class="fa fa-cog"></span>Ajustes</a></li>
+                                        <li><a href="modificar_perfil.php"><span class="fa fa-cog"></span>Ajustes</a></li>
                                         <?php
                                         if ($userPrivilege == 'user') {
                                             echo "<li><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
@@ -253,7 +254,7 @@ if ($userPrivilege == 'guest') {
                                                             $solicitudes = solicitudes_amistad($id_usuario);
                                                             foreach ($solicitudes as $solicitud) {
                                                                 $id_solicitante = $solicitud['id_usuario_solicitante'];
-                                                                $dato_usuario = info_user_id($id_solicitante);
+                                                                $dato_usuario = obtener_datos_usuario($id_solicitante);
                                                                 $email_user = $dato_usuario['email'];
                                                                 $nombre_solicitante = $dato_usuario['userName'];
                                                                 $imagen_solicitante = $dato_usuario['userPicture'];
@@ -290,7 +291,7 @@ if ($userPrivilege == 'guest') {
                                                                                 $solicitudes = solicitudes_amistad_enviadas($id_usuario);
                                                                                 foreach ($solicitudes as $solicitud) {
                                                                                     $id_solicitante = $solicitud['id_usuario_destinatario'];
-                                                                                    $dato_usuario = info_user_id($id_solicitante);
+                                                                                    $dato_usuario = obtener_datos_usuario($id_solicitante);
                                                                                     $nombre_solicitante = $dato_usuario['userName'];
                                                                                     $imagen_solicitante = $dato_usuario['userPicture'];
                                                                                     echo "<td><img src='$imagen_solicitante' style='width: 50px; height: 50px;'></td>";
@@ -341,7 +342,7 @@ if ($userPrivilege == 'guest') {
                                 <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                                 <?php
                                 if (isset($_SESSION['email'])) {
-                                    $userData = getUserData($email);
+                                    $userData = obtener_datos_usuario($email);
                                     $id_user = $userData['IDuser'];
                                     echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                                 }

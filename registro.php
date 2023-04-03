@@ -244,7 +244,7 @@ include_once 'php/inc/header.inc.php';
                 </div>
 
                 <div class="mb-3">
-                    <input type="button" class="btn btn-danger form-control" onclick="new_user();" value="Registrar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                    <input type="button" class="btn btn-danger form-control" onclick="crear_usuario();" value="Registrar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                     <script>
                         function handleFileSelect(evt) {
                             var f = evt.target.files[0]; // FileList object

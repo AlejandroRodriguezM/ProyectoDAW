@@ -12,7 +12,7 @@ if ($_POST) {
     $fecha = date('Y-m-d H:i:s');
     $user = $_SESSION['userName'];
     $email = $_SESSION['email'];
-    $row = getUserData($email);
+    $row = obtener_datos_usuario($email);
     $privilegio = $row['privilege'];
     if (in_array(strtolower($mensaje_ticket), $reservedWords)) {
         http_response_code(400);

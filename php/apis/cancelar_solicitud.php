@@ -2,7 +2,7 @@
 session_start();
 include_once '../inc/header.inc.php';
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 
 $validate['success'] = array('success' => false, 'message' => "");

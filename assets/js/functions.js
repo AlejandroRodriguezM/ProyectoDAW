@@ -269,24 +269,24 @@ function confirmar_eliminacion_usuario(id_user, emailUser) {
     }
 }
 
-function cambiar_estado(boolean) {
-    if (confirm("¿Estás seguro de que deseas cambiar el estado del usuario?")) {
+function bloquear_usuario_desautorizar(boolean, email) {
+    if (confirm("¿Estás seguro de que deseas bloquear al usuario?")) {
         if (boolean) {
-            cambiar_estado_usuario(true)
+            desautorizar_usuario(boolean, email)
         }
         else {
-            cambiar_estado_usuario(false)
+            desautorizar_usuario(boolean, email)
         }
     }
 }
 
-function desactivar_usuario(){
+function desactivar_usuario() {
     if (confirm("¿Estás seguro de que deseas desactivar el usuario?")) {
-        cambiar_estado_usuario('desactivar')
+        desactivar_cuenta();
     }
 }
 
-function cambiar_privacidad(boolean){
+function cambiar_privacidad(boolean) {
     if (confirm("¿Estás seguro de que deseas cambiar tu estado actual de privacidad?")) {
         if (boolean) {
             cambiar_privacidad_usuario(true)
@@ -294,7 +294,7 @@ function cambiar_privacidad(boolean){
         else {
             cambiar_privacidad_usuario(false)
         }
-        
+
     }
 }
 

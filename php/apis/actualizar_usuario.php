@@ -8,7 +8,7 @@ if ($_POST) {
     $email = $_POST['email'];
     $name = $_POST['nameUser'];
     $lastname = $_POST['lastnameUser'];
-    $row = getUserData($email);
+    $row = obtener_datos_usuario($email);
     $image = $_POST['userPicture'];
     if (empty($image)) {
         $image = $row['userPicture'];
@@ -27,7 +27,7 @@ if ($_POST) {
     }
     $reservedWords = reservedWords();
 
-    if (checkUserName($userName) && $userName != $oldUserName) {
+    if (check_nombre_user($userName) && $userName != $oldUserName) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. That user name alredy exist';
         header('HTTP/1.1 409 Conflict');
@@ -37,11 +37,11 @@ if ($_POST) {
             $validate['message'] = 'ERROR. You cant use system reserved words';
             header('HTTP/1.1 400 Bad Request');
         } else {
-            if (update_user($userName, $email, $password)) {
+            if (actualizar_usuario($userName, $email, $password)) {
                 updateSaveImage($email, $image);
                 insertURL($email, $id);
                 cookiesUser($email, $password);
-                $row = getUserData($email);
+                $row = obtener_datos_usuario($email);
                 if ($row['privilege'] == 'admin') {
                     cookiesAdmin($email, $password);
                 }

@@ -4,7 +4,8 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+guardar_ultima_conexion($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 
 if($userPrivilege == 'guest'){
@@ -159,7 +160,7 @@ if($userPrivilege == 'guest'){
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -275,7 +276,7 @@ if($userPrivilege == 'guest'){
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
+                            $userData = obtener_datos_usuario($email);
                             $id_user = $userData['IDuser'];
                             echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                         }
@@ -305,7 +306,7 @@ if($userPrivilege == 'guest'){
                         <input type="text" id="nombre_lista" class="form-control">
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
+                            $userData = obtener_datos_usuario($email);
                             $id_user = $userData['IDuser'];
                             echo "<input type='hidden' id='id_user' value='$id_user'>";
                         }

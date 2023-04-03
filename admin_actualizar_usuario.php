@@ -4,6 +4,7 @@ include_once 'php/inc/header.inc.php';
 
 checkCookiesAdmin();
 $email = $_COOKIE['adminUser'];
+guardar_ultima_conexion($email);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +48,7 @@ if (isset($_COOKIE['loginUser']) && isset($_COOKIE['passwordUser'])) {
     $emailUser = $_COOKIE['loginUserTemp'];
     $IDuser = $_COOKIE['idTemp'];
     $password = $_COOKIE['passwordUserTemp'];
-    $dataUser = getUserData($emailUser);
+    $dataUser = obtener_datos_usuario($emailUser);
     $nameUser = $dataUser['userName'];
 } else {
     $emailUser = $_POST['email'];
@@ -74,7 +75,7 @@ if (isset($_POST['adminPanel'])) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -181,21 +182,21 @@ if (isset($_POST['adminPanel'])) {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($emailUser);
+                                    $dataUser = obtener_datos_usuario($emailUser);
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
                                     <ul class="meta list list-unstyled">
                                         <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = getUserData($emailUser);
+                                            $dataUser = obtener_datos_usuario($emailUser);
                                             $userName = $dataUser['userName'];
                                             echo "$userName";
                                             ?>
                                         </li>
                                         <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = getUserData($emailUser);
+                                            $dataUser = obtener_datos_usuario($emailUser);
                                             $email = $dataUser['email'];
                                             echo " " . "<span style='font-size: 0.7em'>$emailUser</span>";
                                             ?>
@@ -222,7 +223,7 @@ if (isset($_POST['adminPanel'])) {
                                         <div class="form-group avatar" style="width: 420px;">
                                             <figure>
                                                 <?php
-                                                $dataUser = getUserData($emailUser);
+                                                $dataUser = obtener_datos_usuario($emailUser);
                                                 $profilePicture = $dataUser['userPicture'];
                                                 ?>
                                                 <div class="image-upload">
@@ -238,7 +239,7 @@ if (isset($_POST['adminPanel'])) {
                                         <?php
                                         $IDuser = $dataUser['IDuser'];
                                         $infoUser = getInfoAboutUser($IDuser);
-                                        $infoCuenta = getUserData($IDuser);
+                                        $infoCuenta = obtener_datos_usuario($IDuser);
                                         $nombre_cuenta = $infoCuenta['userName'];
                                         $nameUser = $infoUser['nombreUser'];
                                         $lastName = $infoUser['apellidoUser'];

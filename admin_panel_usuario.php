@@ -4,6 +4,7 @@ include_once 'php/inc/header.inc.php';
 checkCookiesAdmin();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
+guardar_ultima_conexion($email);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,17 +44,17 @@ $email = $_SESSION['email'];
 
 <?php
 if (isset($_POST['edit'])) {
-    $emailUser = $_POST['emailUser'];
+    $nombre_otro_usuario = $_POST['emailUser'];
     $IDuser = $_POST['IDuser'];
-    $passwordUser = obtain_password($emailUser);
-    cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
+    $passwordUser = obtain_password($nombre_otro_usuario);
+    cookiesUserTemporal($nombre_otro_usuario, $passwordUser, $IDuser);
     header("Location: admin_actualizar_usuario.php");
 }
 if (isset($_POST['avatarUser'])) {
-    $emailUser = $_POST['emailUser'];
+    $nombre_otro_usuario = $_POST['emailUser'];
     $IDuser = $_POST['IDuser'];
-    $passwordUser = obtain_password($emailUser);
-    cookiesUserTemporal($emailUser, $passwordUser, $IDuser);
+    $passwordUser = obtain_password($nombre_otro_usuario);
+    cookiesUserTemporal($nombre_otro_usuario, $passwordUser, $IDuser);
     header("Location: admin_info_usuario.php");
 }
 ?>
@@ -71,14 +72,14 @@ if (isset($_POST['avatarUser'])) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                                 } elseif ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                                    echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
                                 } else {
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
@@ -89,16 +90,11 @@ if (isset($_POST['avatarUser'])) {
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
-                            <?php
-                            if ($userPrivilege != 'guest') {
-                            ?>
-                                <li>
-                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
-                                        Escribe tu opinión</a>
-                                </li>
-                            <?php
-                            }
-                            ?>
+
+                            <li>
+                                <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                    Escribe tu opinión</a>
+                            </li>
                             <div class="dropdown-divider"></div>
                             <li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
                         </ul>
@@ -145,16 +141,9 @@ if (isset($_POST['avatarUser'])) {
                 </button>
                 <ul class="dropdown-menu">
                     <?php
-                    if (isset($_SESSION['email'])) {
-                        if ($userPrivilege == 'admin') {
-                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
-                            echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                        } elseif ($userPrivilege == 'user') {
-                            echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                            echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
-                        } else {
-                            echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
-                        }
+                    if ($userPrivilege == 'admin') {
+                        echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                        echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                     }
                     echo "<div class='dropdown-divider'></div>";
                     echo "<li> <button class='dropdown-item' onclick='closeSesion()' name='closeSesion' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button> </i>";
@@ -178,7 +167,7 @@ if (isset($_POST['avatarUser'])) {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($email);
+                                    $dataUser = obtener_datos_usuario($email);
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
@@ -186,7 +175,7 @@ if (isset($_POST['avatarUser'])) {
                                         <li class="name">
                                             <label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $userName = $dataUser['userName'];
                                             echo "$userName";
                                             ?>
@@ -194,7 +183,7 @@ if (isset($_POST['avatarUser'])) {
                                         <li class="email">
                                             <label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $email = $dataUser['email'];
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                             ?>
@@ -278,25 +267,28 @@ if (isset($_POST['avatarUser'])) {
                                                     <?php
                                                             } else {
                                                     ?>
-                                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
-                                                            <?php
-                                                                if ($user['accountStatus'] == 'block') {
-                                                                    echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='cambiar_estado(false); return false;'> <i class='bi bi-trash p-1'></i>Desbloquear</button></td>";
-                                                                } else {
-                                                                    echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='cambiar_estado(true);return false;'> <i class='bi bi-trash p-1'></i>Bloquear</button></td>";
-                                                                }
-                                                            ?>
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'>
-                                                                <button class='btn btn-danger' name='del' onclick='confirmar_eliminacion_usuario(<?php echo $user['IDuser']; ?>,"<?php echo $user['email']; ?>")'>
-                                                                    <i class='bi bi-trash p-1'></i>Eliminar
-                                                                </button>
-                                                            </td>
-
+                                                        <form id="form_lista" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                                             <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
                                                             <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
                                                             <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
+                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-success' name='edit'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
+                                                            <?php
+                                                                if ($user['accountStatus'] == 'block') {
+                                                                    echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='bloquear_usuario_desautorizar(false, \"{$user['email']}\");return false;'> <i class='bi bi-trash p-1'></i>Desbloquear</button>
+                                                                    </td>";
+                                                                } else {
+                                                                    echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='bloquear_usuario_desautorizar(true, \"{$user['email']}\");return false;'> <i class='bi bi-trash p-1'></i>Bloquear</button>
+                                                                    </td>";
+                                                                }
+                                                            ?>
+                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'>
+                                                                <button class="btn btn-danger" name="del" onclick="confirmar_eliminacion_usuario(<?php echo $user['IDuser']; ?>, '<?php echo $user['email']; ?>'); return false;">
+                                                                    <i class="bi bi-trash p-1"></i>Eliminar
+                                                                </button>
+
+                                                            </td>
+
+
                                                         </form>
                                                 <?php
                                                             }

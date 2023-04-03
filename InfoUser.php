@@ -3,9 +3,10 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 checkCookiesUser();
-$emailUser = $_GET['userName'];
+$nombre_otro_usuario = $_GET['userName'];
 $email = $_SESSION['email'];
-$userData = getUserData($emailUser);
+guardar_ultima_conexion($email);
+$userData = obtener_datos_usuario($nombre_otro_usuario);
 $id_user = $userData['IDuser'];
 
 if (isset($_POST['edit'])) {
@@ -158,7 +159,7 @@ if (isset($_POST['edit'])) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -274,7 +275,7 @@ if (isset($_POST['edit'])) {
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $userData = getUserData($email);
+                            $userData = obtener_datos_usuario($email);
                             $id_user = $userData['IDuser'];
                             echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                         }
@@ -302,8 +303,8 @@ if (isset($_POST['edit'])) {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($emailUser);
-                                    $id_usuario_user = $dataUser['IDuser'];
+                                    $dataUser = obtener_datos_usuario($nombre_otro_usuario);
+                                    $id_otro_usuario = $dataUser['IDuser'];
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
@@ -316,10 +317,9 @@ if (isset($_POST['edit'])) {
                                             ?>
                                         </li>
                                         <li class="activity">
-                                            <label for="" style="font-size: 0.8em;">Logged in: </label>
+                                            <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
-                                            $hora = $_SESSION['hour'];
-                                            echo "$hora";
+                                            echo comprobar_ultima_conexion($id_otro_usuario);
                                             ?>
                                         </li>
                                     </ul>
@@ -336,30 +336,30 @@ if (isset($_POST['edit'])) {
                                     <h3 class="fieldset-title">Información
                                         <?php
                                         // Verificar si el usuario actual está bloqueado por el usuario que está viendo el perfil
-                                        if (comprobar_bloqueo($id_user, $id_usuario_user)) {
+                                        if (comprobar_bloqueo($id_user, $id_otro_usuario)) {
                                             echo "<button class='btn btn-danger solicitud_enviada' onclick='' style='float:right;margin-right:10px'>Estás bloqueado</button>";
                                         } else {
                                             // Código para enviar solicitudes y mostrar el estado de la amistad
-                                            if (comprobar_amistad($id_usuario_user, $id_user)) {
-                                                echo "<button class='btn btn-success solicitud_enviada amistad' onclick='eliminar_amigo($id_usuario_user,$id_user)' style='float:right'><span>Ya sois amigos</span></button>";
-                                            } elseif (estado_solicitud($id_usuario_user, $id_user) == 'cancelada') {
+                                            if (comprobar_amistad($id_otro_usuario, $id_user)) {
+                                                echo "<button class='btn btn-success solicitud_enviada amistad' onclick='eliminar_amigo($id_otro_usuario,$id_user)' style='float:right'><span>Ya sois amigos</span></button>";
+                                            } elseif (estado_solicitud($id_otro_usuario, $id_user) == 'cancelada') {
                                                 echo '<button class="btn btn-primary solicitud_enviada" style="float:right">Te ha rechazado</button>';
-                                            } elseif (!comprobar_bloqueo($id_usuario_user, $id_user) && estado_solicitud($id_usuario_user, $id_user) == 'en espera') {
-                                                echo "<button class='btn btn-secondary solicitud_enviada cancelar' onclick='cancelar_solicitud($id_usuario_user,$id_user)' style='float:right'><span>Solicitud enviada</span></button>";
+                                            } elseif (!comprobar_bloqueo($id_otro_usuario, $id_user) && estado_solicitud($id_otro_usuario, $id_user) == 'en espera') {
+                                                echo "<button class='btn btn-secondary solicitud_enviada cancelar' onclick='cancelar_solicitud($id_otro_usuario,$id_user)' style='float:right'><span>Solicitud enviada</span></button>";
                                             } else {
-                                                if (estado_solicitud($id_user, $id_usuario_user) == 'en espera') {
-                                                    echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_usuario_user,$id_user)' style='float:right'><span>Rechazar solicitud</span></button>";
-                                                    echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_usuario_user,$id_user)' style='float:right;margin-right:10px'><span>Aceptar solicitud</span></button>";
-                                                } else if (!comprobar_bloqueo($id_usuario_user, $id_user)) {
-                                                    echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_usuario_user,$id_user)' style='float:right;margin-right:10px'>Enviar solicitud</button>";
+                                                if (estado_solicitud($id_user, $id_otro_usuario) == 'en espera') {
+                                                    echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_otro_usuario,$id_user)' style='float:right'><span>Rechazar solicitud</span></button>";
+                                                    echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_otro_usuario,$id_user)' style='float:right;margin-right:10px'><span>Aceptar solicitud</span></button>";
+                                                } else if (!comprobar_bloqueo($id_otro_usuario, $id_user)) {
+                                                    echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_otro_usuario,$id_user)' style='float:right;margin-right:10px'>Enviar solicitud</button>";
                                                 }
                                             }
 
                                             // Código para bloquear o desbloquear al usuario
-                                            if (!comprobar_bloqueo($id_usuario_user, $id_user)) {
-                                                echo "<button class='btn btn-danger solicitud_enviada' onclick='bloquear_usuario($id_user,$id_usuario_user)' style='float:right;margin-right:10px'><span>Bloquear usuario</span></button>";
+                                            if (!comprobar_bloqueo($id_otro_usuario, $id_user)) {
+                                                echo "<button class='btn btn-danger solicitud_enviada' onclick='bloquear_usuario($id_user,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Bloquear usuario</span></button>";
                                             } else {
-                                                echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_user,$id_usuario_user)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
+                                                echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_user,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
                                             }
                                         }
                                         if ($userPrivilege == 'admin') {
@@ -367,9 +367,9 @@ if (isset($_POST['edit'])) {
                                             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style='float:right'>
                                             <?php
                                             echo "<button class='btn btn-danger solicitud_enviada' name='edit' id='edit' style='float:right;margin-right:10px;'><span>Editar usuario</span></button>";
-                                            echo "<td><input type='hidden' name='IDuser' id='IDuser' value='$id_usuario_user'></td>";
+                                            echo "<td><input type='hidden' name='IDuser' id='IDuser' value='$id_otro_usuario'></td>";
                                             echo "<td><input type='hidden' name='nameUser' id='nameUser' value='$userName'></td>";
-                                            echo "<td><input type='hidden' name='emailUser' id='emailUser' value='$emailUser'></td>";
+                                            echo "<td><input type='hidden' name='emailUser' id='emailUser' value='$nombre_otro_usuario'></td>";
                                             echo "</form>";
                                         }
                                             ?>
@@ -387,20 +387,20 @@ if (isset($_POST['edit'])) {
                                     </div>
                                     <?php
                                     // comprobar si el usuario actual está bloqueado por el usuario a mostrar
-                                    if (comprobar_bloqueo($id_usuario_user, $id_user)) {
+                                    if (comprobar_bloqueo($id_otro_usuario, $id_user)) {
                                         echo "<p>Este usuario te ha bloqueado</p>";
                                     }
                                     // comprobar si la cuenta del usuario a mostrar es privada y si el usuario actual no es amigo
-                                    elseif (tipo_privacidad($id_usuario_user) == 'privado' && !comprobar_amistad($id_usuario_user, $id_user)) {
+                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_user)) {
                                         echo "<p>Este usuario tiene la cuenta privada</p>";
                                     }
                                     // si no está bloqueado y la cuenta no es privada o si es amigo, mostrar la información
                                     else {
-                                        $infoUser = getInfoAboutUser($id_usuario_user);
-                                        $fechaCreacion = $infoUser['fechaCreacion'];
-                                        $sobreUser = $infoUser['infoUser'];
+                                        $infoUser = getInfoAboutUser($id_otro_usuario);
                                         $nombre = $infoUser['nombreUser'];
                                         $apellidos = $infoUser['apellidoUser'];
+                                        $fechaCreacion = $infoUser['fechaCreacion'];
+                                        $sobreUser = $infoUser['infoUser'];
 
                                         echo "<label>Nombre: </label>";
                                         echo " " . "<span>$nombre</span>";
@@ -422,19 +422,19 @@ if (isset($_POST['edit'])) {
                                 <div class="comics-lists">
                                     <?php
                                     // comprobar si el usuario actual está bloqueado por el usuario a mostrar
-                                    if (comprobar_bloqueo($id_usuario_user, $id_user)) {
+                                    if (comprobar_bloqueo($id_otro_usuario, $id_user)) {
                                         echo "<p>Este usuario te ha bloqueado</p>";
                                     }
                                     // comprobar si la cuenta del usuario a mostrar es privada y si el usuario actual no es amigo
-                                    elseif (tipo_privacidad($id_usuario_user) == 'privado' && !comprobar_amistad($id_usuario_user, $id_user)) {
+                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_user)) {
                                         echo "<p>Este usuario tiene la cuenta privada</p>";
                                     }
                                     // si no está bloqueado y la cuenta no es privada o si es amigo, mostrar la información
                                     else {
                                     ?>
-                                        <p>Numero de amigos: <?php echo num_amistades($id_usuario_user) ?></p>
-                                        <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo get_total_guardados($id_usuario_user); ?> comics guardados</p>
-                                        <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_usuario_user); ?> listas</p>
+                                        <p>Numero de amigos: <?php echo num_amistades($id_otro_usuario) ?></p>
+                                        <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo get_total_guardados($id_otro_usuario); ?> comics guardados</p>
+                                        <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_otro_usuario); ?> listas</p>
                                     <?php
                                     }
                                     ?>

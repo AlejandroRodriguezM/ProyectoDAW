@@ -3,7 +3,7 @@ session_start();
 include_once '../inc/header.inc.php';
 global $conection;
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 
 $id_user = $userData['IDuser'];
@@ -34,17 +34,6 @@ if (isset($_GET['checkboxChecked'])) {
 } else {
     $comics = return_comic_published($limit, $offset);
 }
-
-
-// if (isset($_GET['comic'])) {
-//     $search = urldecode(trim($_GET['comic']));
-//     echo "<h1>$search</h1>";
-//     $where_clause = " WHERE nomGuionista LIKE '%" . $search . "%' OR nomDibujante LIKE '%" . $search . "%' OR nomVariante LIKE '%" . $search . "%' OR nomEditorial = '" . $search . "'";
-//     $comics = $conection->prepare("SELECT * FROM comics" . $where_clause);
-//     $comics->execute();
-// } else {
-//     $comics = return_comic_published($limit, $offset);
-// }
 
 
 $contador = 0;

@@ -5,7 +5,8 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();;
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+guardar_ultima_conexion($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 if ($userPrivilege == 'guest') {
     header('Location: logOut.php');
@@ -64,7 +65,7 @@ if ($userPrivilege == 'user') {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -178,7 +179,7 @@ if ($userPrivilege == 'user') {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($email);
+                                    $dataUser = obtener_datos_usuario($email);
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
@@ -186,7 +187,7 @@ if ($userPrivilege == 'user') {
                                         <li class="name">
                                             <label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $userName = $dataUser['userName'];
                                             echo "$userName";
                                             ?>
@@ -194,7 +195,7 @@ if ($userPrivilege == 'user') {
                                         <li class="email">
                                             <label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $email = $dataUser['email'];
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                             ?>

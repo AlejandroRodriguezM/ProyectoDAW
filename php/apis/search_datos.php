@@ -24,8 +24,7 @@ if (isset($_POST['input'])) {
                                 <?php
                                 if ($countComics > 0) {
                                     $registros = search_comics($input);
-                                    $comics = $registros->fetch();
-                                    while ($comics != null) {
+                                    while ($registros != null) {
                                 ?>
                         <tr>
                             <td>
@@ -38,13 +37,12 @@ if (isset($_POST['input'])) {
                             <input type='hidden' name='IDcomic' id='IDcomic' value='<?php echo $comics['IDcomic'] ?>'>
                         </tr>
                     <?php
-                                        $comics = $registros->fetch();
+                                        $registros = search_comics($input);
                                     }
                                 }
                                 if ($countUsers > 0) {
                                     $registros = search_user($input);
-                                    $user = $registros->fetch();
-                                    while ($user != null) {
+                                    while ($registros != null) {
                     ?>
                         <tr>
                             <td>
@@ -57,7 +55,7 @@ if (isset($_POST['input'])) {
                             <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
                         </tr>
                 <?php
-                                        $user = $registros->fetch();
+                                        $registros = search_user($input);
                                     }
                                 }
                 ?>

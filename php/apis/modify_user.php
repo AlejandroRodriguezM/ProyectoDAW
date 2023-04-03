@@ -2,7 +2,7 @@
 session_start();
 include_once '../inc/header.inc.php';
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 
 $validate['success'] = array('success' => false, 'message' => "");
@@ -13,9 +13,12 @@ if ($userPrivilege != 'guest') {
         $lastname = $_POST['lastnameUser'];
         $password = $_COOKIE['passwordUserTemp'];
         $emailOld = $_COOKIE['loginUserTemp'];
+
         $emailNew = $_POST['email'];
+        // var_dump($emailOld . ' ' . $emailNew);
         $image = $_POST['userPicture'];
-        $row = getUserData($emailOld);
+        $row = obtener_datos_usuario($emailOld);
+        
         $id = $row['IDuser'];
         $oldUSerName = $row['userName'];
         $reservedWords = reservedWords();
@@ -25,7 +28,7 @@ if ($userPrivilege != 'guest') {
         if (empty($image)) {
             $image = $row['userPicture'];
         }
-        if (checkUserName($userName) && $userName != $oldUSerName) {
+        if (check_nombre_user($userName) && $userName != $oldUSerName) {
             header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
             $validate['message'] = 'ERROR. That user name already exists';
@@ -34,7 +37,7 @@ if ($userPrivilege != 'guest') {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. You cannot use system reserved words';
         } elseif ($emailOld == $emailNew) {
-            if (update_user($userName, $emailOld, $password)) {
+            if (actualizar_usuario($userName, $emailOld, $password)) {
                 header("HTTP/1.1 200 OK");
                 updateSaveImage($emailNew, $image);
                 updateAboutUser($id, "", $name, $lastname);
@@ -45,20 +48,20 @@ if ($userPrivilege != 'guest') {
                 $validate['success'] = false;
                 $validate['message'] = 'ERROR. The user did not save correctly';
             }
-        } elseif (checkEmail($emailNew)) {
+        } elseif (check_email_user($emailNew)) {
             header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
             $validate['message'] = 'ERROR. The email is already in use';
         } else {
-            if (update_user($userName, $emailOld, $password)) {
+            if (actualizar_usuario($userName, $emailOld, $password)) {
                 if ($row['privilege'] == 'admin') {
                     unset($_SESSION['email']);
                     $_SESSION['email'] = $emailNew;
                     cookiesUser($emailNew, $password);
                     cookiesAdmin($emailNew, $password);
                 }
-                updateAboutUser($id, $infoUser, $name, $lastname);
-                update_email($emailNew, $emailOld);
+                updateAboutUser($id, '', $name, $lastname);
+                actualizar_email($emailNew, $emailOld);
                 createDirectory($emailNew, $id);
                 updateSaveImage($emailNew, $image);
                 insertURL($emailNew, $id);

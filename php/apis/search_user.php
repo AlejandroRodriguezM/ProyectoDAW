@@ -22,8 +22,7 @@ if (isset($_POST['input'])) {
                             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                 <?php
                                 $registros = search_user($input);
-                                $user = $registros->fetch();
-                                while ($user != null) {
+                                while ($registros != null) {
                                 ?>
                         <tr>
                             <td>
@@ -37,7 +36,7 @@ if (isset($_POST['input'])) {
                         <?php
 
                                     echo "</tr>";
-                                    $user = $registros->fetch();
+                                    $registros = search_user($input);
                                 }
                         ?>
                         </form>

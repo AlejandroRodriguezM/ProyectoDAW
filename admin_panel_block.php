@@ -4,6 +4,7 @@ include_once 'php/inc/header.inc.php';
 checkCookiesAdmin();
 destroyCookiesUserTemporal();
 $email = $_SESSION['email'];
+guardar_ultima_conexion($email);
 
 ?>
 <!DOCTYPE html>
@@ -72,7 +73,7 @@ if (isset($_POST['avatarUser'])) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -179,7 +180,7 @@ if (isset($_POST['avatarUser'])) {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($email);
+                                    $dataUser = obtener_datos_usuario($email);
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
@@ -187,7 +188,7 @@ if (isset($_POST['avatarUser'])) {
                                         <li class="name">
                                             <label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $userName = $dataUser['userName'];
                                             echo "$userName";
                                             ?>
@@ -195,7 +196,7 @@ if (isset($_POST['avatarUser'])) {
                                         <li class="email">
                                             <label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $email = $dataUser['email'];
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                             ?>
@@ -239,7 +240,7 @@ if (isset($_POST['avatarUser'])) {
                                                         $registros = showUsers();
                                                         $user = $registros->fetch();
                                                         while ($user != null) {
-                                                            $userData = getUserData($user['email']);
+                                                            $userData = obtener_datos_usuario($user['email']);
                                                             $userPrivilege = $userData['privilege'];
                                                             $estado_cuenta = $userData['accountStatus'];
                                                         ?>

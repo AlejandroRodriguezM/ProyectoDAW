@@ -5,6 +5,7 @@ include_once 'php/inc/header.inc.php';
 checkCookiesAdmin();
 $email = $_COOKIE['adminUser'];
 $emailUser = $_COOKIE['loginUserTemp'];
+guardar_ultima_conexion($email);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,7 +56,7 @@ $emailUser = $_COOKIE['loginUserTemp'];
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -162,7 +163,7 @@ $emailUser = $_COOKIE['loginUserTemp'];
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($emailUser);
+                                    $dataUser = obtener_datos_usuario($emailUser);
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
@@ -170,23 +171,22 @@ $emailUser = $_COOKIE['loginUserTemp'];
                                     <ul class="meta list list-unstyled">
                                         <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = getUserData($emailUser);
+                                            $dataUser = obtener_datos_usuario($emailUser);
                                             $userName = $dataUser['userName'];
+                                            $id_otro_usuario = $dataUser['IDuser'];
                                             echo "$userName";
                                             ?>
                                         </li>
                                         <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = getUserData($emailUser);
                                             $emailUser = $dataUser['email'];
                                             // echo with style font size
                                             echo " " . "<span style='font-size: 0.7em'>$emailUser</span>";
                                             ?>
                                         </li>
-                                        <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
+                                        <li class="activity"><label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
-                                            $hora = $_SESSION['hour'];
-                                            echo "$hora";
+                                            echo comprobar_ultima_conexion($id_otro_usuario);
                                             ?>
                                         </li>
                                     </ul>
@@ -195,7 +195,7 @@ $emailUser = $_COOKIE['loginUserTemp'];
                                     <ul class="nav">
                                         <li class="active"><a href="infoPerfil.php"><span class="fa fa-user"></span>Perfil</a></li>
                                         <?php
-                                        $userData = getUserData($emailUser);
+                                        $userData = obtener_datos_usuario($emailUser);
                                         $userPrivilege = $userData['privilege'];
                                         if ($userData['privilege'] != 'guest') {
                                             echo "<li><a href='admin_actualizar_usuario.php'><span class='fa fa-cog'></span>Opciones</a></li>";
@@ -212,7 +212,7 @@ $emailUser = $_COOKIE['loginUserTemp'];
 
                                     <div class="form-group">
                                         <?php
-                                        $dataUser = getUserData($emailUser);
+                                        $dataUser = obtener_datos_usuario($emailUser);
                                         $userName = $dataUser['userName'];
                                         echo "<label>Nombre de usuario: </label>";
                                         echo " " . "<span>$userName</span>";
@@ -220,14 +220,14 @@ $emailUser = $_COOKIE['loginUserTemp'];
                                     </div>
                                     <div class="form-group">
                                         <?php
-                                        $dataUser = getUserData($emailUser);
+                                        $dataUser = obtener_datos_usuario($emailUser);
                                         $emailUser = $dataUser['email'];
                                         echo "<label>Correo electronico: </label>";
                                         echo " " . "<span>$emailUser</span>";
                                         ?>
                                     </div>
                                     <?php
-                                    $dataUser = getUserData($emailUser);
+                                    $dataUser = obtener_datos_usuario($emailUser);
                                     $IDuser = $dataUser['IDuser'];
                                     $infoUser = getInfoAboutUser($IDuser);
                                     $fechaCreacion = $infoUser['fechaCreacion'];

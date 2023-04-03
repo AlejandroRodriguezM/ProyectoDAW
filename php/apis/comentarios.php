@@ -11,7 +11,7 @@ if (num_opiniones($id_pag) > 0) {
         $id_user = $data_opinion['id_usuario'];
         $opinion = $data_opinion['opinion'];
         $puntuacion = $data_opinion['puntuacion'];
-        $data_user = getUserData($id_user);
+        $data_user = obtener_datos_usuario($id_user);
         $foto_perfil = $data_user['userPicture'];
         $nombre_user = $data_user['userName'];
 

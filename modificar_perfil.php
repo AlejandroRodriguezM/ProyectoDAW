@@ -5,7 +5,8 @@ include_once 'php/inc/header.inc.php';
 checkCookiesUser();
 destroyCookiesUserTemporal();;
 $email = $_SESSION['email'];
-$userData = getUserData($email);
+guardar_ultima_conexion($email);
+$userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 $tipo_perfil = $userData['tipo_perfil'];
 if ($userPrivilege == 'guest') {
@@ -27,6 +28,9 @@ if ($userPrivilege == 'guest') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <title>Ajustes de usuario</title>
     <style>
         .navbar {
@@ -67,7 +71,7 @@ if ($userPrivilege == 'guest') {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = getUserData($email);
+                                $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'guest') {
                                     echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
@@ -173,21 +177,21 @@ if ($userPrivilege == 'guest') {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = getUserData($email);
+                                    $dataUser = obtener_datos_usuario($email);
                                     $profilePicture = $dataUser['userPicture'];
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
                                     <ul class="meta list list-unstyled">
                                         <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $userName = $dataUser['userName'];
                                             echo "$userName";
                                             ?>
                                         </li>
                                         <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = getUserData($email);
+                                            $dataUser = obtener_datos_usuario($email);
                                             $email = $dataUser['email'];
                                             // echo with style font size 
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
@@ -203,7 +207,7 @@ if ($userPrivilege == 'guest') {
                                 </div>
                                 <nav class="side-menu">
                                     <ul class="nav">
-                                        <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
+                                        <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Perfil</a></li>
                                         <?php
                                         if ($userPrivilege != 'guest') {
                                             echo "<li><a href='solicitudes_amistad.php'><span class='fa fa-user'></span>Solicitudes de amistad</a></li>";
@@ -214,7 +218,7 @@ if ($userPrivilege == 'guest') {
                                             echo "<li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>";
                                         }
                                         ?>
-                                        <li class='active'><a href="modificarPerfil.php"><span class="fa fa-cog"></span> Opciones</a></li>
+                                        <li class='active'><a href="modificar_perfil.php"><span class="fa fa-cog"></span>Ajustes</a></li>
                                         <?php
                                         if ($userPrivilege == 'user') {
                                             echo "<li><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
@@ -230,7 +234,7 @@ if ($userPrivilege == 'guest') {
                                         <div class="form-group avatar" style="width: 420px;">
                                             <figure>
                                                 <?php
-                                                $dataUser = getUserData($email);
+                                                $dataUser = obtener_datos_usuario($email);
                                                 $profilePicture = $dataUser['userPicture'];
                                                 ?>
                                                 <div class="image-upload">
@@ -302,7 +306,7 @@ if ($userPrivilege == 'guest') {
                                     <hr>
                                     <div class="mb-3">
                                         <div class="col-md-5 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0 botones">
-                                            <input class="btn btn-primary" type="button" onclick="update_user();" value="Actualizar perfil" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important;margin-right:10px;">
+                                            <input class="btn btn-primary" type="button" onclick="actualizar_usuario();" value="Actualizar perfil" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important;margin-right:10px;">
                                             <input type='hidden' name='email_usuario' id='email_usuario' value='<?php echo $email ?>'>
                                             <?php
                                             if ($tipo_perfil == 'publico') {
@@ -372,7 +376,7 @@ if ($userPrivilege == 'guest') {
                                 <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                                 <?php
                                 if (isset($_SESSION['email'])) {
-                                    $userData = getUserData($email);
+                                    $userData = obtener_datos_usuario($email);
                                     $id_user = $userData['IDuser'];
                                     echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                                 }
@@ -403,9 +407,7 @@ if ($userPrivilege == 'guest') {
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/functions.js"></script>

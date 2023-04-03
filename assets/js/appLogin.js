@@ -20,7 +20,7 @@ const closeSesion = () => {
     window.location.href = "logOut.php";
 }
 
-const new_user = async () => {
+const crear_usuario = async () => {
 
     var email = document.querySelector("#correo").value;
     var password = document.querySelector("#password").value;
@@ -107,7 +107,7 @@ const new_user = async () => {
     }
 
     //pass data to php file
-    var respond = await fetch("php/apis/new_user.php", {
+    var respond = await fetch("php/apis/crear_usuario.php", {
         method: 'POST',
         body: data
     });
@@ -239,7 +239,7 @@ const guest_User = async () => {
     }
 }
 
-const update_user = async () => {
+const actualizar_usuario = async () => {
     var email = document.querySelector("#correo").value;
     var password = document.querySelector("#password").value;
     var repassword = document.querySelector("#repassword").value;
@@ -309,7 +309,7 @@ const update_user = async () => {
     }
 
     //pass data to php file
-    var respond = await fetch("php/apis/update_user.php", {
+    var respond = await fetch("php/apis/actualizar_usuario.php", {
         method: 'POST',
         body: data
     });
@@ -326,7 +326,7 @@ const update_user = async () => {
         document.querySelector('#formUpdate').reset();
         localStorage.setItem('UserName', name);
         setTimeout(() => {
-            window.location.href = "modificarPerfil.php";
+            window.location.href = "modificar_perfil.php";
         }, 2000);
     } else {
         Swal.fire({
@@ -397,7 +397,6 @@ const modifying_user = async () => {
             footer: "Web Comics"
         })
         document.querySelector('#formUpdate').reset();
-        localStorage.setItem('UserName', name);
         setTimeout(() => {
             window.location.href = "admin_panel_usuario.php";
         }, 2000);
@@ -411,21 +410,45 @@ const modifying_user = async () => {
     }
 }
 
-const cambiar_estado_usuario = async (estado) => {
+const desactivar_cuenta = async () => {
     var email = document.querySelector("#email_usuario").value;
     const data = new FormData();
     data.append('email', email);
-    if (estado == true) {
-        data.append('estado', true)
-    }
-    else if (estado == false) {
-        data.append('estado', false)
-    }
-    else {
-        data.append('estado', 'desactivar')
-    }
     //pass data to php file
     var respond = await fetch("php/apis/desactivar_cuenta.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.href = "logOut.php";
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
+const desautorizar_usuario = async (estado, email) => {
+    const data = new FormData();
+    data.append('email', email);
+    data.append('estado', estado);
+    console.log(estado);
+    //pass data to php file
+    var respond = await fetch("php/apis/desautorizar_usuario.php", {
         method: 'POST',
         body: data
     });
@@ -1246,12 +1269,12 @@ const desbloquear_usuario = (id_solicitante, id_destinatario) => {
 
 
 
-// const delete_user = async () => {
+// const eliminar_usuario = async () => {
 //     var id = document.querySelector("#IDuser").value;
 //     const data = new FormData();
 //     data.append("id", id);
 //     //pass data to php file
-//     var respond = await fetch("php/apis/delete_user.php", {
+//     var respond = await fetch("php/apis/eliminar_usuario.php", {
 //         method: 'POST',
 //         body: data
 //     });

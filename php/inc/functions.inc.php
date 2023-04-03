@@ -90,6 +90,13 @@ function checkCookiesUser()
 		echo '<script type="text/JavaScript"> 
 		localStorage.clear();
 	 </script>';
+		$data_usuario_bloqueado = obtener_datos_usuario($_SESSION['email']);
+		$id_user = $data_usuario_bloqueado['IDuser'];
+		$asunto_ticket = 'Usuario bloqueado';
+		$descripcion_ticket = 'El usuario ' . $data_usuario_bloqueado['userName'] .  ' con el email ' . $data_usuario_bloqueado['email'] . ' ha intentado acceder a la pagina y ha sido bloqueado.';
+		$fecha = date("Y-m-d H:i:s");
+		$estado = 'abierto';
+		new_ticket($id_user, $asunto_ticket, $descripcion_ticket, $fecha, $estado);
 		die("Error. You are block <a href='logOut.php'>Log in</a>");
 	}
 }
@@ -173,7 +180,7 @@ function saveImage($email, $idUser)
 
 function updateSaveImage($email, $image)
 {
-	$dataUser = getUserData($email);
+	$dataUser = obtener_datos_usuario($email);
 	$newImage = $_POST['userPicture'];
 	$idUser = $dataUser['IDuser'];
 	$email = explode("@", $email);
@@ -218,7 +225,7 @@ function deleteDirectory($email, $idUser)
 
 function pictureProfile($email)
 {
-	$dataUser = getUserData($email);
+	$dataUser = obtener_datos_usuario($email);
 	$profilePicture = $dataUser['userPicture'];
 	return $profilePicture;
 }
@@ -385,8 +392,9 @@ function getPortadas_user($id_user)
 	return $portadas;
 }
 
-function mostrar_datos($datos)
+function mostrar_datos($datos): void
 {
+	// Ordenar por clave
 	ksort($datos);
 	echo "<table class='custom-table'>
 	<thead>
@@ -395,6 +403,7 @@ function mostrar_datos($datos)
 	</thead>
 	<tbody>";
 
+	// Iterar por los valores
 	foreach ($datos as $key => $value) {
 		echo "<tr>
 		<td>$key</td>
@@ -437,35 +446,6 @@ function mostrar_datos($datos)
 //         });
 //     </script>";
 // }
-
-function select_data_and_check_spaces_pdo()
-{
-	try {
-		global $conection;
-		// Select all data from the table
-		$stmt = $conection->prepare("SELECT * FROM comics");
-		$stmt->execute();
-
-		// Fetch all the rows into an array
-		$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		// Check if the first character of each string in the data is a space
-		foreach ($data as $row) {
-			foreach ($row as $value) {
-				if (is_string($value) && strpos($value, ' ') !== false) {
-					$id = $row['IDcomic'];
-
-					echo "Found a string starting with a space: $value\n " . ":$id ;";
-				}
-			}
-		}
-	} catch (PDOException $e) {
-		echo "Error: " . $e->getMessage();
-	}
-
-	// Close the connection
-	$conection = null;
-}
 
 // function update_cover_database(){
 // 	global $conection;

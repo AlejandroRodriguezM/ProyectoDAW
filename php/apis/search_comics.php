@@ -22,8 +22,7 @@ if (isset($_POST['input'])) {
                             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                 <?php
                                 $registros = search_comics($input);
-                                $comics = $registros->fetch();
-                                while ($comics != null) {
+                                while ($registros != null) {
                                 ?>
                         <tr>
                             <td>
@@ -36,7 +35,7 @@ if (isset($_POST['input'])) {
                         <?php
 
                                     echo "</tr>";
-                                    $comics = $registros->fetch();
+                                    $registros = search_comics($input);
                                 }
                         ?>
                         </form>
