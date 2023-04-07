@@ -96,7 +96,9 @@ echo "<input type='hidden' id='id_user' value='$id_user'>";
                         }
 
                     }
-                    loadComics();
+                    if (!document.getElementById('index')) {
+                        loadComics();
+                    }
                 });
             }
         });

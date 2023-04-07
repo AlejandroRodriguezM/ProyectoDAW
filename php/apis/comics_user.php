@@ -93,30 +93,6 @@ if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
 
 ?>
 <script>
-    numero_pagina = 1;
-    total_paginas = Math.ceil(total_comics / 8);
-
-    if (btnMas) {
-        btnMas.addEventListener('click', function() {
-            numero_pagina++;
-            actualizarPagina();
-        });
-    }
-
-    if (btnAtras) {
-        btnAtras.addEventListener('click', function() {
-            numero_pagina--;
-            actualizarPagina();
-        });
-    }
-
-    function actualizarPagina() {
-        var paginaActual = numero_pagina;
-        var paginaTotal = total_paginas;
-        var paginaTexto = "Página " + paginaActual + " de " + paginaTotal;
-        document.getElementById("num_pagina").textContent = paginaTexto;
-    }
-
     (function() {
         const buttons = document.querySelectorAll('.add, .rem');
 
@@ -133,7 +109,6 @@ if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
 
                         });
                     }
-
                     limit = 8;
                     offset = 0;
                 });

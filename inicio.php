@@ -94,6 +94,40 @@ if (isset($_SESSION['email'])) {
             width: 100%;
             z-index: 1000;
         }
+
+        .desactivate {
+            background-color: white !important;
+            color: #00c9b7;
+            border: none;
+            padding: 0;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 150px;
+            height: 50px;
+        }
+
+        .activate {
+            color: white;
+            background-color: #00c9b7 !important;
+            display: block;
+            position: relative;
+            margin-top: 6px;
+            width: 100%;
+            height: 34px;
+            background-color: transparent;
+            border: solid 1px #00c9b7;
+            border-radius: 4px;
+        }
+
+        .activate>.sp-icon {
+            background-image: url('assets/img/tick_white.png') !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: 20px !important;
+        }
     </style>
 </head>
 
@@ -342,60 +376,9 @@ if (isset($_SESSION['email'])) {
                     </button>
                 </div>
             </div>
-            <div class="container mt-5">
-                <div style="display: flex; justify-content: center;">
-                    <div class="last-pubs">
-                        <div class="titulo">
-                            <h2>Recomendaciones</h2>
-                        </div>
-                        <a href='novedades.php'>
-                            <button class="ver-mas-btn">Ver más</button>
-                        </a>
-                        <div class="scrollable-h comic-full">
-                            <div class="scrollable-h-content">
-                                <ul class="v2-cover-list">
-                                    <?php
-                                    $total_comics = numComics();
-                                    if (isset($_SESSION['email'])) {
-                                        echo "<input type='hidden' id='id_user' value='$id_user'>";
-                                    }
-                                    for ($i = 0; $i < 8; $i++) {
-                                        $numero = randomComic();
-                                        $data_comic = getDataComic($numero);
-                                        $id_comic = $data_comic['IDcomic'];
-                                        $titulo = $data_comic['nomComic'];
-                                        $numComic = $data_comic['numComic'];
-                                        $variante = $data_comic['nomVariante'];
-                                        $cover = $data_comic['Cover'];
-                                        echo "<li id='comicyXwd2' class='get-it'>
-                                        <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
-                                        <span class='cover'>
-                                        <img src='$cover' alt='$titulo - $variante / #$numComic'>
-                                        </span>
-                                        <strong><?php echo $titulo ?></strong>
-                                        <span class='issue-number issue-number-l1'>$numComic</span>
-                                    </a>
-                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
-                                        if (isset($_SESSION['email'])) {
-                                            if (check_guardado($id_user, $id_comic)) {
-                                                echo "<button data-item-id='yXwd2' class='rem' >
-                                        <span class='sp-icon'>Lo tengo</span>
-                                    </button>";
-                                            } else {
-                                                echo "<button data-item-id='yXwd2' class='add' >
-                                        <span class='sp-icon'>Lo tengo</span>
-                                        </button>";
-                                            }
-                                        }
 
-                                        echo "</li>";
-                                    }
-                                    ?>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class='recomendaciones' id="index">
+
             </div>
             <div class="container mt-5">
                 <div class="titulo">
@@ -490,45 +473,30 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
     </div>
+
     <script>
-        (function() {
-            const buttonsAdd = document.querySelectorAll('.add');
-            buttonsAdd.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    if (button.classList.contains('add')) {
-                        button.classList.remove('add');
-                        button.classList.add('rem');
-                        const id_comic = button.previousElementSibling.value;
-                        guardar_comic(id_comic);
-                    } else if (button.classList.contains('rem')) {
-                        button.classList.remove('rem');
-                        button.classList.add('add');
-                        const id_comic = button.previousElementSibling.value;
-                        quitar_comic(id_comic);
-                    }
-                });
-            });
+        function comics_recomendados() {
 
-            const buttonsRem = document.querySelectorAll('.rem');
-            buttonsRem.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    if (button.classList.contains('rem')) {
-                        button.classList.remove('rem');
-                        button.classList.add('add');
-                        const id_comic = button.previousElementSibling.value;
-                        quitar_comic(id_comic);
-                    } else if (button.classList.contains('add')) {
-                        button.classList.remove('add');
-                        button.classList.add('rem');
-                        const id_comic = button.previousElementSibling.value;
-                        guardar_comic(id_comic);
+            var data = {
+                num_comics: 8
+            };
 
-                    }
-                });
+
+            $.ajax({
+                url: "php/apis/recomendaciones_comics.php",
+                data: data,
+                success: function(data) {
+                    totalComics = $(data).filter("#total-comics").val();
+
+                    // Elimina la lista anterior antes de agregar la nueva
+
+                    $('.recomendaciones').html('');
+                    $(data).appendTo('.recomendaciones');
+                }
             });
-        })();
+        }
+        comics_recomendados()
     </script>
-
 
 </body>
 

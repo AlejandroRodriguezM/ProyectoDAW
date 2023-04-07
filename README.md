@@ -324,3 +324,6 @@ Ahora hay un boton para mostrar mas comics en las paginas mencionadas anteriorme
 Se ha añadido mas seguridad al codigo para evitar inyeccion de codigo maligno.
 Ahora se guarda correctamente la ultima hora de conexion de un usuario.
 Se han mejorado algunas funciones en appLogin.js y functions.js
+
+07/04/2023 Log 2
+Arreglado bug a la hora de cargar comics en recomendaciones_comics.php, que a veces el loadComics() no deberia de cargar, ahora funciona correctamente

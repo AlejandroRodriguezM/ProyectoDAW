@@ -562,6 +562,7 @@ if (!check_lista_user($id_user, $id_lista)) {
                 }
             });
         }
+        
     </script>
     <script>
         function toggleDropdown(element) {
