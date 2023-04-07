@@ -311,3 +311,16 @@ Se han eliminado funciones que no tenian ningun uso
 Se han cambiado el nombre de funciones
 Se ha creado una nueva columna en aboutuser para que registre la ultima hora de conexion de un usuario
 Se ha mejorado varios bugs que raltentizaban la pagina a la hora de buscar comics con mas de 1 palabra
+
+07/04/2023 Log 1
+Se ha creado una nueva API llamada "filtador_comics.php"
+Se ha creado una nueva api llamada recomendaciones_comics.php"
+Se ha eliminado la funcion de usuario invitado, ahora ya no existe session para el, a partir de ahora cualquiera puede visitar la pagina, pero solamente podras
+ver cosas mas interesantes si estas logueado
+Se ha mejorado funciones de filtrado de comics para que funcionen con un ajax
+Ahora es posible ver que a la hora de agregar comics a tu usuario desde mis_comics.php y contenido_lista.php, que se realice con ajax para que sea una gran mejora de la experiencia.
+Se mejorado la velocidad de carga de los comics
+Ahora hay un boton para mostrar mas comics en las paginas mencionadas anteriormente, se ahorra carga de datos y se mejora la velocidad del servidor.
+Se ha añadido mas seguridad al codigo para evitar inyeccion de codigo maligno.
+Ahora se guarda correctamente la ultima hora de conexion de un usuario.
+Se han mejorado algunas funciones en appLogin.js y functions.js

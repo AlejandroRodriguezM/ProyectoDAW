@@ -80,22 +80,46 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
 
 ?>
 
+
+
 <script>
     (function() {
         const buttons = document.querySelectorAll('.add, .rem');
+
         buttons.forEach(function(button) {
+            const id_comic = button.previousElementSibling.value;
+
             button.addEventListener('click', function() {
-                const id_comic = button.previousElementSibling.value;
-                if (button.classList.contains('add')) {
-                    button.classList.toggle('add');
-                    button.classList.toggle('rem');
-                    guardar_comic(id_comic);
-                } else if (button.classList.contains('rem')) {
-                    button.classList.toggle('rem');
-                    button.classList.toggle('add');
-                    quitar_comic(id_comic);
+                if (!button.classList.contains('invisible')) {
+                    button.classList.add('invisible');
+
+                    if (button.classList.contains('add')) {
+                        guardar_comic(id_comic, function() {
+                            console.log('guardar');
+                            loadComics();
+
+                            button.classList.remove('invisible');
+                            button.classList.toggle('add');
+                            button.classList.toggle('rem');
+                        });
+                    } else {
+                        quitar_comic(id_comic, function() {
+                            console.log('eliminar');
+                            loadComics();
+
+                            button.classList.remove('invisible');
+                            button.classList.toggle('add');
+                            button.classList.toggle('rem');
+                        });
+                    }
                 }
             });
+        });
+
+        window.addEventListener('scroll', function() {
+            if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight) {
+                loadComics();
+            }
         });
     })();
 </script>

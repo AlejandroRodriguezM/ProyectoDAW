@@ -20,6 +20,25 @@ const closeSesion = () => {
     window.location.href = "logOut.php";
 }
 
+const iniciar_sesion = () => {
+    localStorage.clear();
+    //window location in php/user
+    window.location.href = "logOut.php";
+}
+
+const no_logueado = async () => {
+    Swal.fire({
+        icon: "error",
+        title: "ERROR.",
+        text: "You have to log in to access this page",
+        footer: "Web Comics"
+    })
+    setTimeout(() => {
+        window.location.reload();
+        localStorage.setItem('UserName', 'Invitado');
+    }, 2000);
+}
+
 const crear_usuario = async () => {
 
     var email = document.querySelector("#correo").value;
@@ -202,17 +221,9 @@ const login_user = async () => {
 }
 
 const guest_User = async () => {
-
-    var email = "guest@webComics.com";
-    var password = "guest";
-
-    const data = new FormData();
-    data.append('email', email);
-    data.append('pass', password);
     //pass data to php file
     var respond = await fetch("php/apis/guest_user.php", {
-        method: 'POST',
-        body: data
+        method: 'POST'
     });
 
     var result = await respond.json();
@@ -224,8 +235,7 @@ const guest_User = async () => {
             text: result.message,
             footer: "Web Comics"
         })
-        document.querySelector('#formIniciar').reset();
-        localStorage.setItem('UserName', result.userName);
+        localStorage.setItem('UserName', 'Invitado');
         setTimeout(() => {
             window.location.href = "inicio.php";
         }, 2000);
@@ -821,7 +831,7 @@ const modificar_lista = async () => {
     }
 }
 
-const guardar_comic = async (id_comic) => {
+const guardar_comic = async (id_comic, callback) => {
     const id_user = document.querySelector("#id_user").value;
 
     const data = new FormData();
@@ -846,9 +856,14 @@ const guardar_comic = async (id_comic) => {
             window.location.reload();
         }, 2000);
     }
+
+    if (callback) {
+        callback();
+        
+    }
 };
 
-const quitar_comic = async (id_comic) => {
+const quitar_comic = async (id_comic, callback) => {
     const id_user = document.querySelector("#id_user").value;
 
     const data = new FormData();
@@ -873,9 +888,15 @@ const quitar_comic = async (id_comic) => {
             window.location.reload();
         }, 2000);
     }
+
+    if (callback) {
+        callback();
+        
+    }
 };
 
-const guardar_comic_lista = async (id_comic, id_lista) => {
+
+const guardar_comic_lista = async (id_comic, id_lista, callback) => {
     const data = new FormData();
     data.append("id_comic", id_comic);
     data.append("id_lista", id_lista);
@@ -898,9 +919,13 @@ const guardar_comic_lista = async (id_comic, id_lista) => {
             window.location.reload();
         }, 2000);
     }
+
+    if (callback) {
+        callback();
+    }
 };
 
-const quitar_comic_lista = async (id_comic, id_lista) => {
+const quitar_comic_lista = async (id_comic, id_lista, callback) => {
 
     const data = new FormData();
     data.append("id_comic", id_comic);
@@ -924,7 +949,12 @@ const quitar_comic_lista = async (id_comic, id_lista) => {
             window.location.reload();
         }, 2000);
     }
+
+    if (callback) {
+        callback();
+    }
 };
+
 
 const eliminar_lista = async (id_lista, id_user) => {
     const data = new FormData();

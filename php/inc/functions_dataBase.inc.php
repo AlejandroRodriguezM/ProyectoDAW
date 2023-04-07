@@ -749,6 +749,22 @@ function numComics(): int
 	return $consulta;
 }
 
+function numComics_usuario(int $id_usuario): int
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT COUNT(*) from comics_guardados where user_id=?");
+		if ($consulta->execute(array($id_usuario))) {
+			$consulta = $consulta->fetchColumn();
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $consulta;
+}
+
 function agregar_opinion(int $id_user, int $id_comic, string $opinion, int $puntuacion): bool
 {
 	global $conection;
@@ -941,6 +957,19 @@ function check_guardado_lista(int $id_lista, int $id_comic): bool
 	return $guardado;
 }
 
+function numero_comics_lista($id_lista){
+	global $conection;
+	$id_lista = htmlspecialchars($id_lista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT COUNT(*) from contenido_listas where id_lista=?");
+		$consulta->execute(array($id_lista));
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	$resultado = $consulta->fetch();
+	return $resultado[0];
+}
+
 function guardar_comic(int $id_user, int $id_comic): bool
 {
 	global $conection;
@@ -955,12 +984,11 @@ function guardar_comic(int $id_user, int $id_comic): bool
 
 		if ($user) {
 			$consulta = $conection->prepare("INSERT INTO comics_guardados(user_id,comic_id) VALUES (?,?)");
-			if ($consulta->execute(array($id_user, $id_comic))) {
-				$agregado = true;
-			}
+			$consulta->execute(array($id_user, $id_comic));
+			$agregado = true;
 		} else {
 			// User does not exist
-			echo "Error: user not found";
+			$agregado = false;
 		}
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
@@ -976,8 +1004,14 @@ function quitar_comic(int $id_user, int $id_comic): bool
 	$id_user = htmlspecialchars($id_user, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$consulta = $conection->prepare("DELETE FROM comics_guardados WHERE user_id=? AND comic_id=?");
-		if ($consulta->execute(array($id_comic, $id_comic))) {
+		// Check if user exists
+		$user_query = $conection->prepare("SELECT * FROM users WHERE IDuser = ?");
+		$user_query->execute([$id_user]);
+		$user = $user_query->fetch();
+
+		if ($user) {
+			$consulta = $conection->prepare("DELETE FROM comics_guardados WHERE user_id=? AND comic_id=?");
+			$consulta->execute(array($id_user, $id_comic));
 			$agregado = true;
 		}
 	} catch (PDOException $e) {
@@ -994,9 +1028,8 @@ function guardar_comic_lista(int $id_comic, int $id_lista): bool
 	$id_lista = htmlspecialchars($id_lista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		$consulta = $conection->prepare("INSERT INTO contenido_listas(id_comic,id_lista) VALUES (?,?)");
-		if ($consulta->execute(array($id_comic, $id_lista))) {
-			$agregado = true;
-		}
+		$consulta->execute(array($id_comic, $id_lista));
+		$agregado = true;
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
@@ -1011,9 +1044,8 @@ function quitar_comic_lista(int $id_comic, int $id_lista): bool
 	$id_lista = htmlspecialchars($id_lista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		$consulta = $conection->prepare("DELETE FROM contenido_listas WHERE id_comic=? AND id_lista=?");
-		if ($consulta->execute(array($id_comic, $id_lista))) {
-			$agregado = true;
-		}
+		($consulta->execute(array($id_comic, $id_lista)));
+		$agregado = true;
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
@@ -1221,7 +1253,7 @@ function reactivar_cuenta(string $email): void
 	}
 }
 
-function estado_solicitud(int $id_destinatario, int $id_solicitante) : string
+function estado_solicitud(int $id_destinatario, int $id_solicitante): string
 {
 	global $conection;
 	try {
@@ -1583,7 +1615,8 @@ function tipo_privacidad(int $id_user): string
 	return $tipo_privacidad;
 }
 
-function guardar_ultima_conexion($email_usuario){
+function guardar_ultima_conexion($email_usuario)
+{
 	global $conection;
 	$email_usuario = htmlspecialchars($email_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
@@ -1595,13 +1628,13 @@ function guardar_ultima_conexion($email_usuario){
 		//guarda la fecha de la ultima conexion
 		$consulta2 = $conection->prepare("UPDATE aboutuser SET ultima_conexion=NOW() WHERE IDuser=?");
 		$consulta2->execute(array($id_usuario));
-
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
 }
 
-function comprobar_ultima_conexion($id_usuario){
+function comprobar_ultima_conexion($id_usuario)
+{
 	global $conection;
 	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
@@ -1609,9 +1642,34 @@ function comprobar_ultima_conexion($id_usuario){
 		$consulta = $conection->prepare("SELECT ultima_conexion from aboutuser where IDuser=?");
 		$consulta->execute(array($id_usuario));
 		$ultima_conexion = $consulta->fetchColumn();
-
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
 	return $ultima_conexion;
+}
+
+function comics_lista($userData, $limit, $offset, $conection)
+{
+	$id_user = $userData['IDuser'];
+	$id_lista = $_GET['id_lista'];
+	if (isset($_GET['checkboxChecked'])) {
+		$search = explode(",", $_GET['checkboxChecked']);
+		$search = array_map('trim', $search);
+		$search = array_map('urldecode', $search);
+		$search_count = count($search);
+		if ($search_count == 1) {
+			$where_clause = " WHERE comics_guardados.comic_id = comics.IDcomic AND comics_guardados.user_id = $id_user AND (nomVariante LIKE '%" . $search[0] . "%' OR nomGuionista LIKE '%" . $search[0] . "%' OR nomDibujante LIKE '%" . $search[0] . "%' OR nomEditorial = '" . $search[0] . "')";
+		} else {
+			$where_clauses = [];
+			for ($i = 0; $i < $search_count; $i++) {
+				$where_clauses[] = "(nomGuionista LIKE '%" . $search[$i] . "%' OR nomDibujante LIKE '%" . $search[$i] . "%' OR nomVariante LIKE '%" . $search[$i] . "%' OR nomEditorial = '" . $search[$i] . "')";
+			}
+			$where_clause = " WHERE comics_guardados.comic_id = comics.IDcomic AND comics_guardados.user_id = $id_user AND (" . implode(' OR ', $where_clauses) . ")";
+		}
+		$comics = $conection->prepare("SELECT * FROM comics_guardados,comics" . $where_clause);
+		$comics->execute();
+	} else {
+		$comics = get_comics_guardados($limit, $offset, $id_user);
+	}
+	return $comics;
 }

@@ -312,6 +312,37 @@ function abrir_modal_modificar(id_lista) {
     $("#modificar_lista").modal("show");
 }
 
+function actualizar_filtrado() {
+    $(document).ready(function () {
+        $.ajax({
+            url: 'php/apis/filtrador_comics.php',
+            type: 'GET',
+            success: function (response) {
+                $('.filtrado_comics').html(response);
+            }
+        });
+    });
+}
+
+// function actualizar_filtrado_lista(id_lista) {
+//     $(document).ready(function () {
+//         $.ajax({
+//             url: 'php/apis/filtrador_comics.php',
+//             type: 'POST', // Cambiar el tipo de petición a POST
+//             data: { id_lista: id_lista }, // Agregar el dato id_lista
+//             success: function (response) {
+//                 $('.filtrado_comics').html(response);
+//             }
+//         });
+//     });
+// }
+
+
+
+
+
+
+
 //Otra forma de realizar la misma muestra de datos
 // function buscarUsuarios() {
 //     $(document).ready(function () {

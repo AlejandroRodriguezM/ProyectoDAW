@@ -24,20 +24,6 @@ function destroyCookiesUser()
 	setcookie('passwordUser', '', time() - 3600, '/');
 }
 
-function cookiesGuest()
-{
-	$email = 'guest@webComics.com';
-	$password = 'guest';
-	setcookie('loginUser', $email, time() + 3600, '/');
-	setcookie('passwordUser', $password, time() + 3600, '/');
-}
-
-function destroyCookiesGuest()
-{
-	setcookie('loginGuest', '', time() - 3600, '/');
-	setcookie('passwordGuest', '', time() - 3600, '/');
-}
-
 function cookiesUserTemporal($email, $password, $id)
 {
 	setcookie('loginUserTemp', $email, time() + 3600, '/');
@@ -101,6 +87,12 @@ function checkCookiesUser()
 	}
 }
 
+function comprobar_sesion(){
+	if(!isset($_SESSION['email'])){
+		header('Location: ../index.php');
+	}
+}
+
 /**
  * Log out and delete user and admin cookies
  *
@@ -118,7 +110,6 @@ function deleteCookies()
 	destroyCookiesAdmin();
 	destroyCookiesUser();
 	destroyCookiesUserTemporal();
-	destroyCookiesGuest();
 }
 
 /**
@@ -392,6 +383,98 @@ function getPortadas_user($id_user)
 	return $portadas;
 }
 
+function getScreenwriters_lista($id_lista)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT contenido_listas.*, comics.* 
+	FROM contenido_listas, comics
+	WHERE contenido_listas.id_lista=? AND contenido_listas.id_comic=comics.IDcomic AND comics.nomGuionista IS NOT NULL");
+	$consulta->execute(array($id_lista));
+	$comics = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+	$screenwriters = array();
+	foreach ($comics as $row) {
+		$names = preg_split("/[-,]+/", $row["nomGuionista"]);
+		foreach ($names as $name) {
+			$name = trim($name);
+			if (!isset($screenwriters[$name])) {
+				$screenwriters[$name] = 0;
+			}
+			$screenwriters[$name]++;
+		}
+	}
+	return $screenwriters;
+}
+
+function getArtists_lista($id_lista)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT contenido_listas.*, comics.* 
+	FROM contenido_listas, comics
+	WHERE contenido_listas.id_lista=? AND contenido_listas.id_comic=comics.IDcomic AND comics.nomDibujante IS NOT NULL");
+	$consulta->execute(array($id_lista));
+	$comics = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+	$artists = array();
+	foreach ($comics as $row) {
+		$names = preg_split("/[-,]+/", $row["nomDibujante"]);
+		foreach ($names as $name) {
+			$name = trim($name);
+			if (!isset($artists[$name])) {
+				$artists[$name] = 0;
+			}
+			$artists[$name]++;
+		}
+	}
+	return $artists;
+}
+
+function getEditorial_lista($id_lista)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT contenido_listas.*, comics.* 
+	FROM contenido_listas, comics
+	WHERE contenido_listas.id_lista=? AND contenido_listas.id_comic=comics.IDcomic AND comics.nomEditorial IS NOT NULL");
+	$consulta->execute(array($id_lista));
+	$comics = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+	$editorial = array();
+	foreach ($comics as $row) {
+		$names = preg_split("/[-,]+/", $row["nomEditorial"]);
+		foreach ($names as $name) {
+			$name = trim($name);
+			if (!isset($editorial[$name])) {
+				$editorial[$name] = 0;
+			}
+			$editorial[$name]++;
+		}
+	}
+	return $editorial;
+}
+
+function getPortadas_lista($id_lista)
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT contenido_listas.*, comics.* 
+	FROM contenido_listas, comics
+	WHERE contenido_listas.id_lista=? AND contenido_listas.id_comic=comics.IDcomic AND comics.nomVariante IS NOT NULL");
+	$consulta->execute(array($id_lista));
+	$comics = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+	$portadas = array();
+	foreach ($comics as $row) {
+		$names = preg_split("/[-,]+/", $row["nomVariante"]);
+		foreach ($names as $name) {
+			$name = trim($name);
+			if (!isset($editorial[$name])) {
+				$portadas[$name] = 0;
+			}
+			$portadas[$name]++;
+		}
+	}
+	return $portadas;
+}
+
 function mostrar_datos($datos): void
 {
 	// Ordenar por clave
@@ -408,11 +491,12 @@ function mostrar_datos($datos): void
 		echo "<tr>
 		<td>$key</td>
 	<td>
-	<input type='checkbox' id='comic' name='comic' value='$key'>
+	<input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
 	<input type='hidden' name='comic_value' value='$key'>
 	</td>
 	</tr>";
 	}
+	
 	echo "</tbody>
 		</table>";
 }

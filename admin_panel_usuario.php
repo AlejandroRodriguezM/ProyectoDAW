@@ -3,8 +3,10 @@ session_start();
 include_once 'php/inc/header.inc.php';
 checkCookiesAdmin();
 destroyCookiesUserTemporal();
-$email = $_SESSION['email'];
-guardar_ultima_conexion($email);
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+    guardar_ultima_conexion($email);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +24,12 @@ guardar_ultima_conexion($email);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <script src="./assets/js/appLogin.js"></script>
+    <script src="./assets/js/sweetalert2.all.min.js"></script>
+    <script src="./assets/js/functions.js"></script>
     <title>Panel de administracion</title>
     <style>
         .contenedor {
@@ -61,7 +69,7 @@ if (isset($_POST['avatarUser'])) {
 
 
 <body onload="checkSesionUpdate();showSelected();">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -74,9 +82,7 @@ if (isset($_POST['avatarUser'])) {
                             if (isset($_SESSION['email'])) {
                                 $userData = obtener_datos_usuario($email);
                                 $userPrivilege = $userData['privilege'];
-                                if ($userPrivilege == 'guest') {
-                                    echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
-                                } elseif ($userPrivilege == 'admin') {
+                                if ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                     echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
@@ -90,34 +96,68 @@ if (isset($_POST['avatarUser'])) {
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                            ?>
+                                <li>
+                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                        Escribe tu opinión</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
 
-                            <li>
-                                <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
-                                    Escribe tu opinión</a>
-                            </li>
-                            <div class="dropdown-divider"></div>
-                            <li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a></li>
+
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                            ?>
+                                <div class="dropdown-divider"></div>
+                                <li>
+                                    <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
+                                </li>
+                            <?php
+                            } else {
+                            ?>
+                                <li>
+                                    <button class="dropdown-item" onclick="iniciar_sesion()" name="loginSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Iniciar sesion</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
                         </ul>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
-                    <?php
-                    if ($userPrivilege != 'guest') {
-                    ?>
-                        <a class="nav-link" href="logOut.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                    <?php
-                    } else {
-                    ?>
-                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-
-                    <?php
-                    }
-                    ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                        ?>
+                            <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+
+                        <?php
+                        } else {
+                        ?>
+                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <?php
+                        }
+                        ?>
+                    </li>
+
+                    <li class="nav-item">
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                        ?>
+                            <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <?php
+                        } else {
+                        ?>
+                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <?php
+                        }
+                        ?>
                     </li>
                 </ul>
             </div>
@@ -132,8 +172,12 @@ if (isset($_POST['avatarUser'])) {
 
             <div class="dropdown" id="navbar-user" style="left: 2px !important;">
                 <?php
-                $picture = pictureProfile($email);
-                echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
+                if (isset($_SESSION['email'])) {
+                    $picture = pictureProfile($email);
+                    echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
+                } else {
+                    echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
+                }
                 ?>
 
                 <!-- imagen de perfil  -->
@@ -141,12 +185,21 @@ if (isset($_POST['avatarUser'])) {
                 </button>
                 <ul class="dropdown-menu">
                     <?php
-                    if ($userPrivilege == 'admin') {
-                        echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
-                        echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
+                    if (isset($_SESSION['email'])) {
+                        if ($userPrivilege == 'admin') {
+                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                            echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
+                        } elseif ($userPrivilege == 'user') {
+                            echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
+                            echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
+                        } else {
+                            echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
+                        }
+                        echo "<div class='dropdown-divider'></div>";
+                        echo "<li> <button class='dropdown-item' onclick='closeSesion()' name='closeSesion' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button> </i>";
+                    } else {
+                        echo "<li><button class='dropdown-item' onclick='iniciar_sesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                     }
-                    echo "<div class='dropdown-divider'></div>";
-                    echo "<li> <button class='dropdown-item' onclick='closeSesion()' name='closeSesion' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button> </i>";
                     ?>
                 </ul>
             </div>
@@ -242,18 +295,7 @@ if (isset($_POST['avatarUser'])) {
                                                     <td><?php echo $user['privilege'] ?></td>
                                                     <td><?php echo $user['accountStatus'] ?></td>
                                                     <?php
-                                                            if ($user['privilege'] == 'guest') {
-                                                    ?>
-                                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-success' disabled> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
-                                                            <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
-                                                            <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
-                                                            <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
-                                                        </form>
-                                                    <?php
-                                                            } elseif ($user['privilege'] == 'admin') {
+                                                    if ($user['privilege'] == 'admin') {
                                                     ?>
                                                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                                             <td style='margin-left: auto; margin-right: auto; width: 10%'><button name='edit' class='btn btn-success'> <i class='bi bi-pencil-square p-1'></i>Editar</button></td>
@@ -332,12 +374,7 @@ if (isset($_POST['avatarUser'])) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-    <script src="./assets/js/appLogin.js"></script>
-    <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
 </body>
 
 </html>

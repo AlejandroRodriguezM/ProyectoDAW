@@ -32,8 +32,11 @@ if (isset($_GET['checkboxChecked'])) {
 
 
 $contador = 0;
-$total_comics = numComics();
+$contador2 = 8; // contador para mostrar los botones de navegación
+$total_comics = numComics_usuario($id_user);
 echo "<input type='hidden' id='id_user' value='$id_user'>";
+echo "<input type='hidden' id='total_comics' value='$total_comics'>";
+
 while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
     $id_comic = $data_comic['IDcomic'];
     $numero = $data_comic['numComic'];
@@ -53,39 +56,165 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
                 </a>
                 <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
     if (check_guardado($id_user, $id_comic)) {
-        echo "<button data-item-id='yXwd2' class='rem' >
+        echo "<button data-item-id='yXwd2' class='rem' data-id-comic='$id_comic'>
                     <span class='sp-icon'>Lo tengo</span>
                 </button>";
     } else {
-        echo "<button data-item-id='yXwd2' class='add' >
+        echo "<button data-item-id='yXwd2' class='add' data-id-comic='$id_comic'>
                     <span class='sp-icon'>Lo tengo</span>
                     </button>";
     }
     echo "</li>";
     $contador++;
+    $contador2++;
     if ($contador % 8 === 0) {
         echo "<ul></ul>";
     }
 }
+// $contador2 = isset($_COOKIE['contador2']) ? $_COOKIE['contador2'] : 8;
+
+if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
+    echo "<div class='navigation-buttons'>";
+    if ($contador2 % $total_comics != 1) {
+        echo '<button class="navigation-buttons" id="cargar-mas" name="cargar-mas" onclick="cargarMasComics(); ocultarBotones()">Cargar más</button>';
+    }
+
+    if ($contador2 >= 8) { // Solo muestra el botón 'Atrás' si se han cargado al menos 2 páginas completas
+        echo '<button class="navigation-buttons" id="cargar-menos" onclick="cargarComicsAnteriores(); ocultarBotones()">Atras</button>';
+    }
+
+    echo "</div>";
+    echo "<div id='paginas'></div>";
+} elseif ($contador2 >= 1 && $contador2 < 8 && $total_comics > $contador2 && ceil($total_comics / 8) > 1) {
+    echo "<div class='navigation-buttons'>";
+    echo '<button id="cargar-mas" onclick="cargarMasComics(); ocultarBotones()">Cargar más</button>';
+    echo "</div>";
+}
 
 ?>
-
 <script>
+    numero_pagina = 1;
+    total_paginas = Math.ceil(total_comics / 8);
+
+    if (btnMas) {
+        btnMas.addEventListener('click', function() {
+            numero_pagina++;
+            actualizarPagina();
+        });
+    }
+
+    if (btnAtras) {
+        btnAtras.addEventListener('click', function() {
+            numero_pagina--;
+            actualizarPagina();
+        });
+    }
+
+    function actualizarPagina() {
+        var paginaActual = numero_pagina;
+        var paginaTotal = total_paginas;
+        var paginaTexto = "Página " + paginaActual + " de " + paginaTotal;
+        document.getElementById("num_pagina").textContent = paginaTexto;
+    }
+
     (function() {
         const buttons = document.querySelectorAll('.add, .rem');
+
         buttons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                const id_comic = button.previousElementSibling.value;
-                if (button.classList.contains('add')) {
-                    button.classList.remove('add');
-                    button.classList.add('rem');
-                    guardar_comic(id_comic);
-                } else if (button.classList.contains('rem')) {
-                    button.classList.remove('rem');
-                    button.classList.add('add');
-                    quitar_comic(id_comic);
-                }
-            });
+            const id_comic = button.previousElementSibling.value;
+
+            if (id_comic) {
+                button.addEventListener('click', function() {
+                    if (button.classList.contains('rem')) {
+                        quitar_comic(id_comic, function() {
+                            $('.recomendaciones').html('');
+                            loadComics()
+                            addComic()
+
+                        });
+                    }
+
+                    limit = 8;
+                    offset = 0;
+                });
+            }
         });
     })();
+</script>
+
+<script>
+    function searchData(id) {
+        let input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput" + id);
+        filter = input.value.toUpperCase();
+        table = document.getElementById("dropdownContent" + id);
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+<script>
+    var btnAtras = document.getElementById('cargar-menos');
+    var btnMas = document.getElementById('cargar-mas');
+    var total_comics = document.getElementById('total_comics').value;
+
+    if (btnAtras && offset < 8) {
+        btnAtras.classList.add('invisible');
+
+        if (btnMas) {
+            btnMas.style.display = 'flex';
+            btnMas.style.margin = '0 auto';
+            btnMas.style.justifyContent = 'center';
+        }
+    } else if (btnAtras) {
+        btnAtras.classList.remove('invisible');
+
+        if (btnMas) {
+            btnMas.style.margin = '';
+        }
+    }
+
+    if (btnMas && (offset + 8) > total_comics) {
+        btnMas.classList.add('invisible');
+
+        if (btnAtras) {
+            btnAtras.style.display = 'flex';
+            btnAtras.style.margin = '0 auto';
+            btnAtras.style.justifyContent = 'center';
+        }
+    } else if (btnMas) {
+        btnMas.classList.remove('invisible');
+
+        if (btnAtras) {
+            btnAtras.style.margin = '';
+        }
+    }
+
+    function ocultarBotones() {
+        $('.navigation-buttons').hide();
+    }
+
+    function cargarMasComics() {
+        offset += 8;
+        limit = 8; // aumentar el límite
+        loadComics(offset);
+        $('.new-comic-list').remove();
+    }
+
+    function cargarComicsAnteriores() {
+        offset -= 8; // actualizar el offset
+        limit = 8; // disminuir el límite
+        loadComics(offset);
+        $('.new-comic-list').remove();
+    }
 </script>
