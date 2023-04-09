@@ -7,10 +7,15 @@ $nombre_otro_usuario = $_GET['userName'];
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_user);
 }
-
-$userData = obtener_datos_usuario($nombre_otro_usuario);
-$id_user = $userData['IDuser'];
+else{
+    header("Location: inicio.php");
+}
+echo "<input type='hidden' id='num_comics' value=''>";
 
 if (isset($_POST['edit'])) {
     $email_user_edit = $_POST['emailUser'];
@@ -54,12 +59,7 @@ if (isset($_POST['edit'])) {
             border-radius: 30px;
         }
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
+        
 
         .comics-lists {
             /* display: flex; */
@@ -489,18 +489,27 @@ if (isset($_POST['edit'])) {
             </div>
 
 
-            <div class="bgimg-2">
-                <div id="footer-lite">
-                    <div class="content">
-                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                        <!-- add social media with icons -->
-                        <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                        </p>
-                        <p class="copyright">©2023 Alejandro Rodriguez</p>
-                    </div>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>

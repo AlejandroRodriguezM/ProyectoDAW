@@ -859,8 +859,8 @@ const guardar_comic = async (id_comic, callback) => {
 
     if (callback) {
         callback();
-        
     }
+
 };
 
 const quitar_comic = async (id_comic, callback) => {
@@ -891,7 +891,6 @@ const quitar_comic = async (id_comic, callback) => {
 
     if (callback) {
         callback();
-        
     }
 };
 

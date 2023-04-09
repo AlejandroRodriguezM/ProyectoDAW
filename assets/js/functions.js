@@ -324,6 +324,102 @@ function actualizar_filtrado() {
     });
 }
 
+function actualizar_filtrado_completo() {
+    $(document).ready(function () {
+        $.ajax({
+            url: 'php/apis/filtrador_comics_completo.php',
+            type: 'GET',
+            success: function (response) {
+                $('.filtrado_comics').html(response);
+            }
+        });
+    });
+}
+
+function handleCheckboxChange() {
+    var checkboxes = document.querySelectorAll('input[type=checkbox]');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].removeEventListener('change', checkboxChanged);
+        checkboxes[i].addEventListener('change', checkboxChanged);
+    }
+}
+
+function checkboxChanged() {
+    offset = 0;
+    if ($("input[type='checkbox']:checked").length > 0) {
+        checkboxChecked = $("input[type='checkbox']:checked").val();
+    }
+    if (checkboxChecked) {
+        $('.new-comic-list').html('');
+        $('.comic-list').html('');
+        loadComics(checkboxChecked);
+        if (document.getElementById('contenido')) {
+            addComic(checkboxChecked);
+            }
+    } else {
+        $('.new-comic-list').html('');
+        $('.comic-list').html('');
+        loadComics(checkboxChecked);
+        if (document.getElementById('contenido')) {
+        addComic(checkboxChecked);
+        }
+    }
+}
+
+function toggleDropdown(element) {
+    var dropdownContent1 = document.getElementById("dropdownContent1");
+    var dropdownContent2 = document.getElementById("dropdownContent2");
+    var dropdownContent3 = document.getElementById("dropdownContent3");
+    var dropdownContent4 = document.getElementById("dropdownContent4");
+
+    if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
+        dropdownContent1.style.display = "none";
+        dropdownContent2.style.display = "none";
+        dropdownContent3.style.display = "none";
+        dropdownContent4.style.display = "none";
+    } else {
+        dropdownContent1.style.display = "none";
+        dropdownContent2.style.display = "none";
+        dropdownContent3.style.display = "none";
+        dropdownContent4.style.display = "none";
+        element.querySelector(".dropdown-content").style.display = "block";
+    }
+}
+
+function closeDropdown(dropdownContent) {
+    dropdownContent.style.display = "none";
+}
+
+document.addEventListener("click", function (event) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var i = 0; i < dropdowns.length; i++) {
+        var dropdown = dropdowns[i];
+        if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
+            dropdown.style.display = "none";
+        }
+    }
+});
+
+function searchData(id) {
+    let input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchInput" + id);
+    filter = input.value.toUpperCase();
+    table = document.getElementById("dropdownContent" + id);
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
 // function actualizar_filtrado_lista(id_lista) {
 //     $(document).ready(function () {
 //         $.ajax({

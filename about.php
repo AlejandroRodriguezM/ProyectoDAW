@@ -1,12 +1,17 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-//checkCookiesUser();
-destroyCookiesUserTemporal();
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_user);
+    echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 }
+echo "<input type='hidden' id='num_comics' value=''>";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,13 +19,18 @@ if (isset($_SESSION['email'])) {
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -28,17 +38,12 @@ if (isset($_SESSION['email'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
+    <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
     <title>Sobre web Comics</title>
     <style>
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
+        
 
         .video-container {
             display: flex;
@@ -63,7 +68,7 @@ if (isset($_SESSION['email'])) {
 
 
 <body onload="checkSesionUpdate();showSelected();">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -74,8 +79,6 @@ if (isset($_SESSION['email'])) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = obtener_datos_usuario($email);
-                                $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
@@ -213,8 +216,7 @@ if (isset($_SESSION['email'])) {
                 <div>
                     <!-- //presentacion de quien soy  -->
                     <div class="card-body">
-                        <h5 class="card-titl
-                e">Bienvenido a WebComics</h5>
+                        <h5 class="card-title">Bienvenido a WebComics</h5>
                         <p class="card-text">
                             Esta pagina es un trabajo de fin de
                             curso del grado superior de DAW en el
@@ -287,29 +289,28 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
 
-            <div class="bgimg-2">
-                <div id="footer-lite">
-                    <div class="content">
-                        <p class="helpcenter">
-                            <a href="http://www.example.com/help">Ayuda</a>
-                        </p>
-                        <p class="legal">
-                            <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                            <span>·</span>
-                            <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                            <span>·</span>
-                            <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                            <span>·</span>
-                            <a href="about.php" style="color:black">Quiénes somos</a>
-                        </p>
-                        <!-- add social media with icons -->
-                        <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                            <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            <!-- <div class="bgimg-2"> -->
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                        </p>
-                        <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
-                    </div>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>

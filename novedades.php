@@ -6,7 +6,15 @@ destroyCookiesUserTemporal();
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_user);
+} else {
+    header('Location: inicio.php');
 }
+echo "<input type='hidden' id='num_comics' value=''>";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,22 +26,28 @@ if (isset($_SESSION['email'])) {
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./assets/style/style.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
     <title>Novedades</title>
     <style>
+
         .custom-table {
             width: 300px;
             margin: 20px auto;
@@ -75,6 +89,7 @@ if (isset($_SESSION['email'])) {
         .side-bar {
             position: fixed;
             margin-top: -30px;
+            margin-left: 20px;
             color: black;
         }
 
@@ -91,17 +106,28 @@ if (isset($_SESSION['email'])) {
             color: black;
         }
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
+        .navigation-buttons button,
+        .navigation-buttons_agregar button {
+            background-color: #4CAF50;
+            /* Fondo verde */
+            color: white;
+            /* Letras blancas */
+            border: none;
+            /* Sin borde */
+            padding: 10px 16px;
+            /* Espacio alrededor del texto */
+            font-size: 16px;
+            /* Tamaño de fuente */
+            cursor: pointer;
+            /* Cambia el cursor al pasar sobre el botón */
+            margin-right: 10px;
+            /* Margen entre botones */
         }
     </style>
 </head>
 
 <body onload="checkSesionUpdate();showSelected()">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -289,76 +315,8 @@ if (isset($_SESSION['email'])) {
                 <section class="module">
                     <div class="module-inner">
                         <div class="side-bar">
-                            <br>
-                            <div class="container mt-5" style="background-color: white;margin-left:10px">
-                                <nav class="side-menu">
-                                    <ul class="nav">
-                                        <li class="dropdown" onclick="toggleDropdown(this)">
-                                            <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Escritores</a>
-                                            <div id="dropdownContent1" class="dropdown-content" onclick="closeDropdown(this)">
-                                                <input type="text" name="buscador_navegacion" id="searchInput1" onkeyup="searchData(1)">
-                                                <?php
-                                                $tabla_escritores = getScreenwriters();
-                                                mostrar_datos($tabla_escritores);
-                                                ?>
-                                            </div>
-                                        </li>
+                            <div class='filtrado_comics'>
 
-                                        <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
-                                            <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Artistas</a>
-                                            <div id="dropdownContent2" class="dropdown-content" onclick="closeDropdown(this)">
-                                                <input type="text" name="buscador_navegacion" id="searchInput2" onkeyup="searchData(2)">
-                                                <?php
-                                                $tabla_escritores = getArtists();
-                                                mostrar_datos($tabla_escritores);
-                                                ?>
-                                            </div>
-                                        </li>
-
-                                        <li class="dropdown" onclick="toggleDropdown(this)">
-                                            <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Portadas</a>
-                                            <div id="dropdownContent3" class="dropdown-content" onclick="closeDropdown(this)">
-                                                <input type="text" name="buscador_navegacion" id="searchInput3" onkeyup="searchData(3)">
-                                                <?php
-                                                $tabla_escritores = getPortadas();
-                                                mostrar_datos($tabla_escritores);
-                                                ?>
-                                            </div>
-                                        </li>
-
-                                        <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
-                                            <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Editorial</a>
-                                            <div id="dropdownContent4" class="dropdown-content" onclick="closeDropdown(this)">
-                                                <input type="text" id="searchInput4" onkeyup="searchData(4)">
-                                                <?php
-                                                $tabla_editorial = getEditorial();
-                                                mostrar_datos($tabla_editorial);
-                                                ?>
-                                            </div>
-                                        </li>
-
-                                        <script>
-                                            function searchData(id) {
-                                                let input, filter, table, tr, td, i, txtValue;
-                                                input = document.getElementById("searchInput" + id);
-                                                filter = input.value.toUpperCase();
-                                                table = document.getElementById("dropdownContent" + id);
-                                                tr = table.getElementsByTagName("tr");
-                                                for (i = 0; i < tr.length; i++) {
-                                                    td = tr[i].getElementsByTagName("td")[0];
-                                                    if (td) {
-                                                        txtValue = td.textContent || td.innerText;
-                                                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                                            tr[i].style.display = "";
-                                                        } else {
-                                                            tr[i].style.display = "none";
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        </script>
-                                    </ul>
-                                </nav>
                             </div>
                         </div>
                     </div>
@@ -377,17 +335,27 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
 
-            <div class="bgimg-2">
-                <div id="footer-lite">
-                    <div class="content">
-                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                        <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                        </p>
-                        <p class="copyright">©2023 Alejandro Rodriguez</p>
-                    </div>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>
@@ -407,35 +375,9 @@ if (isset($_SESSION['email'])) {
 
         $(document).ready(function() {
             loadComics(checkboxChecked);
-
-            $(window).scroll(function() {
-                if ($(window).scrollTop() + $(window).height() >= $(document).height() - 20 && checkboxChecked == null) {
-                    offset += limit;
-                    loadComics(checkboxChecked);
-
-                }
-            });
-
-            var checkboxes = document.querySelectorAll('input[type=checkbox]');
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].addEventListener('change', function() {
-                    if ($("input[type='checkbox']:checked").length > 0) {
-                        checkboxChecked = $("input[type='checkbox']:checked").val();
-                    }
-                    if (checkboxChecked) {
-                        offset = 0;
-                        $('.new-comic-list').remove();
-                        loadComics(checkboxChecked);
-                    } else {
-                        offset = 0;
-                        $('.new-comic-list').remove();
-                        loadComics(checkboxChecked);
-                    }
-                });
-            }
         });
 
-        function loadComics() {
+        function loadComics(offset = 0) {
             var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
                 return encodeURIComponent(this.value);
             }).get();
@@ -461,44 +403,8 @@ if (isset($_SESSION['email'])) {
                 }
             });
         }
+        actualizar_filtrado_completo()
     </script>
-
-    <script>
-        function toggleDropdown(element) {
-            var dropdownContent1 = document.getElementById("dropdownContent1");
-            var dropdownContent2 = document.getElementById("dropdownContent2");
-            var dropdownContent3 = document.getElementById("dropdownContent3");
-            var dropdownContent4 = document.getElementById("dropdownContent4");
-
-            if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-            } else {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-                element.querySelector(".dropdown-content").style.display = "block";
-            }
-        }
-
-        function closeDropdown(dropdownContent) {
-            dropdownContent.style.display = "none";
-        }
-
-        document.addEventListener("click", function(event) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var dropdown = dropdowns[i];
-                if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
-                    dropdown.style.display = "none";
-                }
-            }
-        });
-    </script>
-
 </body>
 
 </html>

@@ -2,19 +2,23 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 //checkCookiesUser();
+
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
     $nombre_usuario = $userData['userName'];
+    $id_user = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_user);
 }
-
 
 $id_comic = $_GET['IDcomic'];
 $data_comic = getDataComic($id_comic);
 $profilePicture = $data_comic['Cover'];
 $descripcion = get_descripcion($id_comic)['descripcion_comics'];
+echo "<input type='hidden' id='num_comics' value=''>";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,26 +26,102 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
-    <link rel="stylesheet" href="./assets/style/coment_section.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/functions.js"></script>
+
     <title>Informacion del comic</title>
     <style>
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            /* Cambiado de row a row-reverse */
+            align-items: center;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            display: inline-block;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            line-height: 20px;
+            text-align: center;
+            color: #ccc;
+            transition: color 0.3s;
+        }
+
+        .rating label.active {
+            color: #ff9f1c;
+        }
+
+        .rating label:hover,
+        .rating label:hover~label,
+        .rating input:checked~label {
+            color: #ff9f1c;
+        }
+
+        /* Estilo para las estrellas generadas por PHP */
+
+        .rating-php {
+            display: flex;
+            flex-direction: row-reverse;
+            /* Cambiado de row a row-reverse */
+            align-items: center;
+        }
+
+        .rating-php input {
+            display: none;
+        }
+
+        .rating-php label {
+            font-size: 20px;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            color: #ccc;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        .rating-php label:hover,
+        .rating-php label:hover~label,
+        .rating-php input:checked~label {
+            color: #ff9f1c;
+        }
+
+        .rating-php input:checked+label {
+            color: #ff9f1c;
+        }
+
         .comic-details {
             display: flex;
             flex-wrap: wrap;
@@ -73,26 +153,6 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
         .row {
             display: flex;
             flex-wrap: wrap;
-        }
-
-        .ver-mas-btn {
-            background-color: #3498DB;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            margin-left: 880px !important;
-            text-align: right;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .ver-mas-btn:hover {
-            background-color: #2980B9;
-            cursor: pointer;
         }
 
         .titulo {
@@ -175,11 +235,85 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
             background-size: cover;
         }
 
-        .navbar {
-            position: fixed;
-            top: 0;
+        .last-pubs2 {
+            position: relative;
+            padding: 20px;
+            /* background-color: #fff; */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .ver-mas-btn {
+            position: absolute;
+            bottom: 260px;
+            left: 10px;
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .ver-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
+        }
+
+        .desactivate {
+            background-color: white !important;
+            color: #00c9b7;
+            border: none;
+            padding: 0;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 150px;
+            height: 50px;
+        }
+
+        .activate {
+            color: white;
+            background-color: #00c9b7 !important;
+            display: block;
+            position: relative;
+            margin-top: 6px;
             width: 100%;
-            z-index: 1000;
+            height: 34px;
+            background-color: transparent;
+            border: solid 1px #00c9b7;
+            border-radius: 4px;
+        }
+
+        .activate>.sp-icon {
+            background-image: url('assets/img/tick_white.png') !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-size: 20px !important;
+        }
+
+
+
+        .comment {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: block;
+            clear: both;
+        }
+
+        .comment-info {
+            max-width: 500px;
+            /* o el ancho que desees */
+        }
+
+        .comment:not(:last-child) {
+            border-bottom: none;
         }
     </style>
 </head>
@@ -510,17 +644,20 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                                     echo "<div class='d-flex flex-row align-items-center mr-2' id='rating'>";
                                                     echo "<label for='rating' class='mr-2'>Valoracion:</label>";
                                                     echo "<div class='rating' style='margin-left:5px'>";
+                                                    echo "<label for='5'>★</label>";
                                                     echo "<input type='radio' name='rating' value='5' id='5'>";
-                                                    echo "<label for='5'>☆</label>";
+                                                    echo "<label for='4'>★</label>";
                                                     echo "<input type='radio' name='rating' value='4' id='4'>";
-                                                    echo "<label for='4'>☆</label>";
+                                                    echo "<label for='3'>★</label>";
                                                     echo "<input type='radio' name='rating' value='3' id='3'>";
-                                                    echo "<label for='3'>☆</label>";
+                                                    echo "<label for='2'>★</label>";
                                                     echo "<input type='radio' name='rating' value='2' id='2'>";
-                                                    echo "<label for='2'>☆</label>";
+                                                    echo "<label for='1'>★</label>";
                                                     echo "<input type='radio' name='rating' value='1' id='1'>";
-                                                    echo "<label for='1'>☆</label>";
-                                                    echo "</div>";
+
+
+
+
                                                     echo "</div>";
                                                     echo "<div class='boton-enviar d-flex flex-wrap align-items-center justify-content-end'>";
                                                     echo "<input type='hidden' id='id_user_opinion' value='" . $id_user . "'>";
@@ -534,81 +671,43 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                         </div>
                                     </form>
                                     <div class="comentarios"></div>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </section>
+
                 </div>
+
             </div>
 
-            <div class="container mt-5">
-                <div style="display: flex; justify-content: center;">
-                    <div class="last-pubs">
-                        <div class="titulo">
-                            <h2>Recomendaciones</h2>
-                        </div>
-                        <a href='novedades.php'>
-                            <button class="ver-mas-btn">Ver más</button>
-                        </a>
-                        <div class="scrollable-h comic-full">
-                            <div class="scrollable-h-content">
-                                <ul class="v2-cover-list">
-                                    <?php
-                                    $total_comics = numComics();
-                                    if (isset($_SESSION['email'])) {
-                                        echo "<input type='hidden' id='id_user' value='$id_user'>";
-                                    }
-                                    for ($i = 0; $i < 7; $i++) {
-                                        $numero = randomComic();
-                                        $data_comic = getDataComic($numero);
-                                        $id_comic = $data_comic['IDcomic'];
-                                        $titulo = $data_comic['nomComic'];
-                                        $numComic = $data_comic['numComic'];
-                                        $variante = $data_comic['nomVariante'];
-                                        $cover = $data_comic['Cover'];
-                                        echo "<li id='comicyXwd2' class='get-it'>
-                                        <a href='infoComic.php?IDcomic=$id_comic' title='$titulo - Variante: $variante / $numComic' class='title'>
-                                        <span class='cover'>
-                                        <img src='$cover' alt='$titulo - $variante / #$numComic'>
-                                        </span>
-                                        <strong><?php echo $titulo ?></strong>
-                                        <span class='issue-number issue-number-l1'>$numComic</span>
-                                    </a>
-                                    <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
-                                        if (isset($_SESSION['email'])) {
-                                            if (check_guardado($id_user, $id_comic)) {
-                                                echo "<button data-item-id='yXwd2' class='rem' >
-                                        <span class='sp-icon'>Lo tengo</span>
-                                    </button>";
-                                            } else {
-                                                echo "<button data-item-id='yXwd2' class='add' >
-                                        <span class='sp-icon'>Lo tengo</span>
-                                        </button>";
-                                            }
-                                        }
+            <div class='recomendaciones' id="index"></div>
 
-                                        echo "</li>";
-                                    }
-                                    ?>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="bgimg-2">
-                <div id="footer-lite">
-                    <div class="content">
-                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                        <!-- add social media with icons -->
-                        <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                        </p>
-                        <p class="copyright">©2023 Alejandro Rodriguez</p>
-                    </div>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>
@@ -617,42 +716,38 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script>
-        (function() {
-            const buttonsAdd = document.querySelectorAll('.add');
-            buttonsAdd.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    if (button.classList.contains('add')) {
-                        button.classList.remove('add');
-                        button.classList.add('rem');
-                        const id_comic = button.previousElementSibling.value;
-                        guardar_comic(id_comic);
-                    } else if (button.classList.contains('rem')) {
-                        button.classList.remove('rem');
-                        button.classList.add('add');
-                        const id_comic = button.previousElementSibling.value;
-                        quitar_comic(id_comic);
-                    }
-                });
-            });
+        var resizeTimer;
 
-            const buttonsRem = document.querySelectorAll('.rem');
-            buttonsRem.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    if (button.classList.contains('rem')) {
-                        button.classList.remove('rem');
-                        button.classList.add('add');
-                        const id_comic = button.previousElementSibling.value;
-                        quitar_comic(id_comic);
-                    } else if (button.classList.contains('add')) {
-                        button.classList.remove('add');
-                        button.classList.add('rem');
-                        const id_comic = button.previousElementSibling.value;
-                        guardar_comic(id_comic);
+        function comics_recomendados() {
+            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+            var width = $(window).width();
+            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
 
-                    }
-                });
+            var data = {
+                num_comics: num_comics
+            };
+            $.ajax({
+                url: "php/apis/recomendaciones_comics.php",
+                data: data,
+                success: function(data) {
+                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
+                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
+                    $('.container.mt-5').css('width', container_width + 'px');
+
+                    totalComics = $(data).filter("#total-comics").val();
+
+                    // Elimina la lista anterior antes de agregar la nueva
+                    $('.recomendaciones').html('');
+                    $(data).appendTo('.recomendaciones');
+                }
             });
-        })();
+        }
+        comics_recomendados();
+        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+        $(window).on('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(comics_recomendados, 100);
+        });
     </script>
     <script>
         $(document).ready(function() {
@@ -704,6 +799,25 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                 button.classList.add("active");
                 guardar_comic(id_comic);
             }
+        });
+    </script>
+
+    <script>
+        const rating = document.querySelector('.rating');
+        const ratingLabels = rating.querySelectorAll('label');
+
+        ratingLabels.forEach((label) => {
+            label.addEventListener('click', () => {
+                // Añadir clase active al label seleccionado
+                label.classList.add('active');
+
+                // Eliminar clase active de los demás labels
+                ratingLabels.forEach((otherLabel) => {
+                    if (otherLabel !== label) {
+                        otherLabel.classList.remove('active');
+                    }
+                });
+            });
         });
     </script>
 

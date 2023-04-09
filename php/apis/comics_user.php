@@ -27,6 +27,9 @@ if (isset($_GET['checkboxChecked'])) {
     $comics = $conection->prepare("SELECT * FROM comics_guardados,comics" . $where_clause);
     $comics->execute();
 } else {
+    if ($offset < 8) {
+        $offset = 0;
+    }
     $comics = get_comics_guardados($limit, $offset, $id_user);
 }
 
@@ -75,7 +78,7 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
 
 if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
     echo "<div class='navigation-buttons'>";
-    if ($contador2 % $total_comics != 1) {
+    if ($contador2 / $total_comics != 1) {
         echo '<button class="navigation-buttons" id="cargar-mas" name="cargar-mas" onclick="cargarMasComics(); ocultarBotones()">Cargar más</button>';
     }
 
@@ -93,6 +96,9 @@ if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
 
 ?>
 <script>
+    var btnAtras = document.getElementById('cargar-menos');
+    var btnMas = document.getElementById('cargar-mas');
+    var total_comics = document.getElementById('total_comics').value;
     (function() {
         const buttons = document.querySelectorAll('.add, .rem');
 
@@ -103,45 +109,19 @@ if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
                 button.addEventListener('click', function() {
                     if (button.classList.contains('rem')) {
                         quitar_comic(id_comic, function() {
-                            $('.recomendaciones').html('');
-                            loadComics()
+                            if ((offset - 8) < (total_comics - offset)) {
+                                offset -= 8;
+                            }
+                            $('.new-comic-list').html('');
+                            loadComics(offset)
                             addComic()
 
                         });
                     }
-                    limit = 8;
-                    offset = 0;
                 });
             }
         });
     })();
-</script>
-
-<script>
-    function searchData(id) {
-        let input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("searchInput" + id);
-        filter = input.value.toUpperCase();
-        table = document.getElementById("dropdownContent" + id);
-        tr = table.getElementsByTagName("tr");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-</script>
-
-<script>
-    var btnAtras = document.getElementById('cargar-menos');
-    var btnMas = document.getElementById('cargar-mas');
-    var total_comics = document.getElementById('total_comics').value;
 
     if (btnAtras && offset < 8) {
         btnAtras.classList.add('invisible');
@@ -192,4 +172,7 @@ if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
         loadComics(offset);
         $('.new-comic-list').remove();
     }
+
+    console.log(offset)
+    console.log(limit)
 </script>

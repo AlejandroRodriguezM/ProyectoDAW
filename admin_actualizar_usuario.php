@@ -1,10 +1,17 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-
 checkCookiesAdmin();
-$email = $_COOKIE['adminUser'];
-guardar_ultima_conexion($email);
+destroyCookiesUserTemporal();
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+    guardar_ultima_conexion($email);
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_user);
+    echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,9 +23,14 @@ guardar_ultima_conexion($email);
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
+    <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
-
+    <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -26,9 +38,10 @@ guardar_ultima_conexion($email);
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
+    <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
+
     <title>Editar datos usuario</title>
 
     <style>
@@ -71,7 +84,7 @@ if (isset($_POST['adminPanel'])) {
 ?>
 
 <body onload="checkSesionUpdate();showSelected();">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -82,8 +95,6 @@ if (isset($_POST['adminPanel'])) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = obtener_datos_usuario($email);
-                                $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
@@ -316,35 +327,8 @@ if (isset($_POST['adminPanel'])) {
                                         </div>
                                     </fieldset>
                                     <hr>
-                                    <div class="mb-3">
-                                        <div class="col-md-5 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
-                                            <table>
-                                                <tr>
-                                                    <td><input class="btn btn-primary" type="button" onclick="modifying_user();" value="Actualizar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important "></td>
-                                                    <td><input class="btn btn-primary" type="submit" name="adminPanel" id="adminPanel" value="Volver" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important "></td>
-                                                </tr>
-                                            </table>
-                                            <script>
-                                                function handleFileSelect(evt) {
-                                                    var f = evt.target.files[0]; // FileList object
-                                                    var reader = new FileReader();
-                                                    // Closure to capture the file information.
-                                                    reader.onload = (function(theFile) {
-                                                        return function(e) {
-                                                            var binaryData = e.target.result;
-                                                            //Converting Binary Data to base 64
-                                                            var base64String = window.btoa(binaryData);
-                                                            //save into var globally string
-                                                            image = base64String;
-                                                        };
-                                                    })(f);
-                                                    // Read in the image file as a data URL
-                                                    reader.readAsBinaryString(f);
-                                                }
-                                                document.getElementById('files').addEventListener('change', handleFileSelect, false);
-                                            </script>
-                                        </div>
-                                    </div>
+
+
                                 </form>
                             </div>
                         </div>
@@ -352,22 +336,28 @@ if (isset($_POST['adminPanel'])) {
                 </div>
             </div>
 
-            <!-- The Modal -->
-            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <img class="modal-content_img" id="img01">
-            </div>
-            <div class="bgimg-2">
-                <div id="footer-lite">
-                    <div class="content">
-                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                        <!-- add social media with icons -->
-                        <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            <!-- <div class="bgimg-2"> -->
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                        </p>
-                        <p class="copyright">©2023 Alejandro Rodriguez</p>
-                    </div>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>

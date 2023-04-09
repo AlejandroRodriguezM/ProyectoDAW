@@ -6,6 +6,11 @@ destroyCookiesUserTemporal();
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_user);
+    echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: inicio.php');
 }
@@ -29,7 +34,7 @@ if (!check_lista_user($id_user, $id_lista)) {
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <link rel="stylesheet" href="./assets/style/style.css">
+    <!-- <link rel="stylesheet" href="./assets/style/style.css"> -->
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
@@ -421,17 +426,27 @@ if (!check_lista_user($id_user, $id_lista)) {
             }
             ?>
 
-            <div class="bgimg-2">
-                <div id="footer-lite">
-                    <div class="content">
-                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                        <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                        </p>
-                        <p class="copyright">©2023 Alejandro Rodriguez</p>
-                    </div>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>
@@ -457,12 +472,6 @@ if (!check_lista_user($id_user, $id_lista)) {
             loadComics();
             addComic();
             comics_recomendados()
-            // $(window).scroll(function() {
-            //     if ($(window).scrollTop() + $(window).height() >= $(document).height() - 20 && checkboxChecked == null) {
-            //         offset += limit;
-            //         addComic();
-            //     }
-            // });
         });
         var id_lista = document.querySelector('#id_lista').value;
 
@@ -529,40 +538,42 @@ if (!check_lista_user($id_user, $id_lista)) {
 
                         // loadComics()
                     }
-                    $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-2');
+                    $('<div class="new-comic-list" id="contenido"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-2');
                 }
             });
         }
 
+        var resizeTimer;
+
         function comics_recomendados() {
-            // offset = 0;
-            var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                return encodeURIComponent(this.value);
-            }).get();
+            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+            var width = $(window).width();
+            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
 
             var data = {
-                num_comics: 8
+                num_comics: num_comics
             };
-
-            if (selectedCheckboxes.length > 0) {
-                data.checkboxChecked = selectedCheckboxes.join(",");
-            }
-
             $.ajax({
                 url: "php/apis/recomendaciones_comics.php",
                 data: data,
                 success: function(data) {
+                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
+                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
+                    $('.container.mt-5').css('width', container_width + 'px');
+
                     totalComics = $(data).filter("#total-comics").val();
 
                     // Elimina la lista anterior antes de agregar la nueva
-                    if (offset_lista == 0) {
-                        $('.recomendaciones').html('');
-                    }
+                    $('.recomendaciones').html('');
                     $(data).appendTo('.recomendaciones');
                 }
             });
         }
-        
+        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+        $(window).on('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(comics_recomendados, 100);
+        });
     </script>
     <script>
         function toggleDropdown(element) {
@@ -598,29 +609,6 @@ if (!check_lista_user($id_user, $id_lista)) {
                 }
             }
         });
-
-        function handleCheckboxChange() {
-            var checkboxes = document.querySelectorAll('input[type=checkbox]');
-
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].addEventListener('change', function() {
-                    if ($("input[type='checkbox']:checked").length > 0) {
-                        checkboxChecked = $("input[type='checkbox']:checked").val();
-                    }
-                    if (checkboxChecked) {
-                        offset = 0;
-                        $('.new-comic-list').remove();
-                        loadComics();
-                        addComic(checkboxChecked);
-                    } else {
-                        offset = 0;
-                        $('.new-comic-list').remove();
-                        loadComics();
-                        addComic(checkboxChecked);
-                    }
-                });
-            }
-        }
     </script>
 
     <script>

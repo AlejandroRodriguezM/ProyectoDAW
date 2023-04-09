@@ -7,12 +7,14 @@ destroyCookiesUserTemporal();;
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_user);
+    echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: inicio.php');
 }
-$userData = obtener_datos_usuario($email);
-$userPrivilege = $userData['privilege'];
-$id_usuario = $userData['IDuser'];
 
 ?>
 <!DOCTYPE html>
@@ -21,15 +23,18 @@ $id_usuario = $userData['IDuser'];
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <link rel="stylesheet" href="./assets/style/ticket_style.css">
-    <link rel="stylesheet" href="./assets/style/bandeja_style.css">
+    <link rel="stylesheet" href="./assets/style/style.css">
+    <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
-
+    <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -37,17 +42,12 @@ $id_usuario = $userData['IDuser'];
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
+    <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
     <title>Mis amigos</title>
     <style>
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
+        
 
         .contenedor {
             width: 50% !important;
@@ -58,12 +58,7 @@ $id_usuario = $userData['IDuser'];
             border-radius: 30px;
         }
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
+        
     </style>
 </head>
 
@@ -205,6 +200,51 @@ $id_usuario = $userData['IDuser'];
         </div>
     </nav>
 
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <img class="modal-content_img" id="img01">
+    </div>
+
+    <!-- FORMULARIO INSERTAR -->
+    <?php
+    if (isset($_SESSION['email'])) {
+    ?>
+        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form method="post" id="form_ticket" onsubmit="return false;">
+                            <h4 class="modal-title">Crear un ticket para administradores</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Asunto</label>
+                            <input type="text" id="asunto_usuario" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Mensaje</label>
+                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                $userData = obtener_datos_usuario($email);
+                                $id_user = $userData['IDuser'];
+                                echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php
+    }
+    ?>
+
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
@@ -266,8 +306,8 @@ $id_usuario = $userData['IDuser'];
                                 <fieldset class="fieldset">
                                     <h3 class="fieldset-title">Lista de amigos</h3>
                                     <?php
-                                    $num_usuarios_bloqueados = num_usuarios_bloqueados($id_usuario);
-                                    $num_amigos = num_amigos($id_usuario);
+                                    $num_usuarios_bloqueados = num_usuarios_bloqueados($id_user);
+                                    $num_amigos = num_amigos($id_user);
                                     if ($num_usuarios_bloqueados > 0 || $num_amigos > 0) {
                                     ?>
                                         <div style="margin-right: auto; width: 80%">
@@ -285,25 +325,24 @@ $id_usuario = $userData['IDuser'];
                                                         <?php
 
                                                         if ($num_usuarios_bloqueados > 0) {
-                                                            $usuarios_bloqueados = usuarios_bloqueados($id_usuario);
+                                                            $usuarios_bloqueados = usuarios_bloqueados($id_user);
                                                             foreach ($usuarios_bloqueados as $usuario_bloqueado) {
                                                                 echo "<tr>";
-                                                                $id_usuario_bloqueado = $usuario_bloqueado['id_usuario_bloqueado'];
-                                                                $usuario_bloqueado_data = obtener_datos_usuario($id_usuario_bloqueado);
+                                                                $id_user_bloqueado = $usuario_bloqueado['id_usuario_bloqueado'];
+                                                                $usuario_bloqueado_data = obtener_datos_usuario($id_user_bloqueado);
                                                                 $email_user = $usuario_bloqueado_data['email'];
                                                                 $imagen_usuario_bloqueado = $usuario_bloqueado_data['userPicture'];
                                                                 $nombre_usuario_bloqueado = $usuario_bloqueado_data['userName'];
                                                                 echo "<td><a href='infoUser.php?userName=$email_user'><img src='$imagen_usuario_bloqueado' style='width: 50px; height: 50px;'></a></td>";
                                                                 echo "<td>$nombre_usuario_bloqueado</td>";
-                                                                echo "<td><button class='btn btn-success' name='aceptar' onclick='desbloquear_usuario($id_usuario,$id_usuario_bloqueado); return false;'> <i class='bi bi-pencil-square p-1'></i>Desbloquear</button></td>";
+                                                                echo "<td><button class='btn btn-success' name='aceptar' onclick='desbloquear_usuario($id_user,$id_user_bloqueado); return false;'> <i class='bi bi-pencil-square p-1'></i>Desbloquear</button></td>";
+                                                                echo "</tr>";
                                                             }
                                                         }
-                                                        echo "</tr>";
-                                                        ?>
-                                                        <?php
+
 
                                                         if ($num_amigos > 0) {
-                                                            $amigos = amigos($id_usuario);
+                                                            $amigos = amigos($id_user);
                                                             foreach ($amigos as $amigo) {
                                                                 echo "<tr>";
                                                                 $id_solicitante = $amigo['id_amigo'];
@@ -314,8 +353,8 @@ $id_usuario = $userData['IDuser'];
 
                                                                 echo "<td><a href='infoUser.php?userName=$email_user'><img src='$imagen_solicitante' style='width: 50px; height: 50px;'></a></td>";
                                                                 echo "<td>$nombre_solicitante</td>";
-                                                                echo "<td><button class='btn btn-success' name='aceptar' onclick='bloquear_usuario($id_usuario,$id_solicitante); return false;'> <i class='bi bi-pencil-square p-1'></i>Bloquear</button></td>";
-                                                                echo "<td><button class='btn btn-danger' name='rechazar' onclick='eliminar_amigo($id_solicitante,$id_usuario); return false;'> <i class='bi bi-trash p-1'></i>Eliminar</button></td>";
+                                                                echo "<td><button class='btn btn-success' name='aceptar' onclick='bloquear_usuario($id_user,$id_solicitante); return false;'> <i class='bi bi-pencil-square p-1'></i>Bloquear</button></td>";
+                                                                echo "<td><button class='btn btn-danger' name='rechazar' onclick='eliminar_amigo($id_solicitante,$id_user); return false;'> <i class='bi bi-trash p-1'></i>Eliminar</button></td>";
                                                             }
                                                         }
                                                         echo "</tr>";
@@ -337,64 +376,31 @@ $id_usuario = $userData['IDuser'];
                         </div>
                     </section>
                 </div>
-            </div>
 
 
-            <!-- The Modal -->
-            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <img class="modal-content_img" id="img01">
-            </div>
 
-            <!-- FORMULARIO INSERTAR -->
-            <?php
-            if (isset($_SESSION['email'])) {
-            ?>
-                <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <form method="post" id="form_ticket" onsubmit="return false;">
-                                    <h4 class="modal-title">Crear un ticket para administradores</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label>Asunto</label>
-                                    <input type="text" id="asunto_usuario" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Mensaje</label>
-                                    <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                                    <?php
-                                    if (isset($_SESSION['email'])) {
-                                        $userData = obtener_datos_usuario($email);
-                                        $id_user = $userData['IDuser'];
-                                        echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                                <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                            </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            <?php
-            }
-            ?>
-            <div class="bgimg-2">
+                <!-- <div class="bgimg-2"> -->
                 <div id="footer-lite">
                     <div class="content">
-                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
+                        <p class="helpcenter">
+                            <a href="http://www.example.com/help">Ayuda</a>
+                        </p>
+                        <p class="legal">
+                            <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                            <span>·</span>
+                            <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                            <span>·</span>
+                            <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                            <span>·</span>
+                            <a href="about.php" style="color:black">Quiénes somos</a>
+                        </p>
                         <!-- add social media with icons -->
                         <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a> <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                            <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
                         </p>
-                        <p class="copyright">©2023 Alejandro Rodriguez</p>
+                        <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                     </div>
                 </div>
             </div>

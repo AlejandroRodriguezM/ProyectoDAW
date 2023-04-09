@@ -327,3 +327,35 @@ Se han mejorado algunas funciones en appLogin.js y functions.js
 
 07/04/2023 Log 2
 Arreglado bug a la hora de cargar comics en recomendaciones_comics.php, que a veces el loadComics() no deberia de cargar, ahora funciona correctamente
+
+09/04/2023 Log 1
+El log sera grande, asi que sientate que te voy a contar una historia sobre aquel dia que hice este cambio:
+
+Se han creado mas de 3 ficheros nuevos de css, que sirven como primer paso a la responsividad de la pagina.
+Se ha mejorado el css en casi todas las paginas, eliminando fallos estetiques evidentes.
+Se ha limpiado bastante codigo de js, respecto al funcionamiento de varias funciones esenciales de la pagina, como el control de sesion, aunque aun tiene bugs
+Se ha mejorado y arreglado varios bugs sobre los comics que se muestran en recomendacion
+Ahora al pulsar en recargar comics, no te llevara a la pagina de novedades, simplemente cargara otros x numero de comics.
+Ahora en recomendados se mostraran x numero de comcis, siendo X un calculo que se hace viendo que resolucion o dispositivo esta siendo cargado
+Se ha mejorado la velocidad de la pagina eliminando llamadas excesivas a la base de datos.
+Ahora novedades cargara de 30 en 30 comics, como en mis_comics.php y contenido_lista.php
+Se ha eliminado toda funcionalidad que tenga que ver con el scroll
+Se ha mejorado el parallax para que a la hora de hacer zoom out, se vea completo y no haya bug visuales
+Se ha mejorado la responsividad de casi todo en pantalla, aunque aun queda hacer responsive la barra principal de navegacion
+Se ha mejorado en infoComics.php el como se puntua un comic.
+Se ha sustituido el input radio por estrellas, para hacerlo visualmente mas atractivo
+Ahora se puede comentar de una forma mas elegante, sin bugs en pantalla.(Queda por mejorar el como se muestran, ya que ahora es simple y feo)
+Se ha propuesto hacer una eliminacion de cookies de datos sensibles, posiblemente sea la siguiente tarea a cumplir.
+Lista de tareas para futuros commits:
+- Hacer Ajax para la lista de cómics y contenido lista
+- Hacer una confirmación de cuenta de usuario
+- Hacer un "¿Has olvidado tu contraseña?"
+- Hacer una pestaña llamada "Mi tablón"
+- Arreglar la comprobación de sesión en todas las pestañas
+- Crear una página "Not found"
+- Posibilidad de mandar en modo de cuestionario un comic para subirlo a la base de datos
+- Que se puedan ver las listas de cómics y listas de lectura de otro usuario si lo tiene público
+- Posibilidad de ocultar una lista cara a los demás menos al administrador
+- Crear un sistema de mensajes privados
+- Poder comentar en las novedades de tus amigos
+Fin de la semana santa.

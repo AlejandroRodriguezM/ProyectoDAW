@@ -6,47 +6,50 @@ destroyCookiesUserTemporal();
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
-}
-else{
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    $name = $userData['userName'];
+
+    $numero_comics = get_total_guardados($id_user);
+    echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+} else {
     header('Location: inicio.php');
 }
-$userData = obtener_datos_usuario($email);
-$name = $userData['userName'];
-$id_user = $userData['IDuser'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
-    <link rel="stylesheet" href="./assets/style/coment_section.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/style/style.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
     <title>Escribe tu comentario</title>
     <style>
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
         .video-container {
             display: flex;
             justify-content: flex-end;
@@ -70,7 +73,7 @@ $id_user = $userData['IDuser'];
 
 
 <body onload="checkSesionUpdate();showSelected();">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -211,10 +214,10 @@ $id_user = $userData['IDuser'];
     </div>
     <div class="bgimg-1">
         <div class="caption">
-        <br>
+            <br>
             <div class="container mt-5">
 
-                <div class="card">
+                <div class="card" >
                     <div class="p-3">
                         <h6>Escribe tu opinión</h6>
                     </div>
@@ -235,33 +238,35 @@ $id_user = $userData['IDuser'];
                     </form>
                 </div>
             </div>
-            <div class="comentarios">
-                <div class="container mt-5">
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-md-8">
-                            <div class="headings d-flex justify-content-between align-items-center mb-3">
+            <div class="container mt-5">
+                <div style="display: flex; justify-content: center;">
+                    <div class="last-pubs2 col-md-8">
+                        <div class="headings ">
+                            <div class="titulo">
                                 <h2 style="color: black">Opiniones de los usuarios</h2>
                             </div>
-                            <?php
-                            $opiniones = mostrar_opiniones_pagina();
-                            if (numero_opiniones_pagina() > 0) {
-                                while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
+                        </div>
 
-                                    $id_opinion = $data_opinion['id_opinion'];
-                                    $id_user = $data_opinion['id_user'];
-                                    $opinion = $data_opinion['comentario'];
-                                    $fecha_opinion = $data_opinion['fecha_comentario'];
-                                    $data_user = obtener_datos_usuario($id_user);
-                                    $foto_perfil = $data_user['userPicture'];
-                                    $nombre_user = $data_user['userName'];
-                                    $email_user = $data_user['email'];
+                        <?php
+                        $opiniones = mostrar_opiniones_pagina();
+                        if (numero_opiniones_pagina() > 0) {
+                            while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
 
-                                    echo '<div class="card p-3 mt-2">
+                                $id_opinion = $data_opinion['id_opinion'];
+                                $id_user = $data_opinion['id_user'];
+                                $opinion = $data_opinion['comentario'];
+                                $fecha_opinion = $data_opinion['fecha_comentario'];
+                                $data_user = obtener_datos_usuario($id_user);
+                                $foto_perfil = $data_user['userPicture'];
+                                $nombre_user = $data_user['userName'];
+                                $email_user = $data_user['email'];
+
+                                echo '<div class="card p-4 mt-1">
                                         <div class="d-flex justify-content-between align-items-center">';
-                            ?>
-                                    <a href="infoUser.php?userName=<?php echo $email_user ?>">
-                                <?php
-                                    echo '<img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
+                        ?>
+                                <a href="infoUser.php?userName=<?php echo $email_user ?>">
+                            <?php
+                                echo '<img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
                                         </a>
                                         <div class="w-100">
                                                 <div class="d-flex justify-content-between align-items-center">
@@ -278,17 +283,15 @@ $id_user = $userData['IDuser'];
                                     </div>
                                 </div>
                             </div>';
-                                }
-                            } else {
-                                echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';
-                                echo '<div class="user d-flex flex-row align-items-center"><span class="font-weight-bold text-primary">No hay opiniones</span></div>';
-                                echo '</div></div>';
                             }
-                                ?>
-                        </div>
+                        } else {
+                            echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';
+                            echo '<div class="user d-flex flex-row align-items-center"><span class="font-weight-bold text-primary">No hay opiniones</span></div>';
+                            echo '</div></div>';
+                        }
+                            ?>
                     </div>
                 </div>
-
             </div>
 
 
@@ -297,7 +300,6 @@ $id_user = $userData['IDuser'];
                 <div class="titulo">
                     <h2>Videos de interes</h2>
                 </div>
-                <hr>
                 <div class="video-container">
                     <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -343,18 +345,27 @@ $id_user = $userData['IDuser'];
                     </div>
                 </div>
             </div>
-            <div class="bgimg-2">
-                <div id="footer-lite">
-                    <div class="content">
-                        <p class="helpcenter"><a href="http://www.example.com/help">Ayuda</a></p>
-                        <p class="legal"><a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F">Condiciones de uso</a><span>·</span><a href="https://policies.google.com/privacy?hl=es">Política de privacidad</a><span>·</span><a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/">Mis cookies</a><span>·</span><a href="about.php">Quiénes somos</a></p>
-                        <!-- add social media with icons -->
-                        <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                            <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-                        </p>
-                        <p class="copyright">©2023 Alejandro Rodriguez</p>
-                    </div>
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>

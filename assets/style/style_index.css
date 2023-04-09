@@ -4,12 +4,6 @@ body {
     padding: 0;
 }
 
-@media (max-width: 767px) {
-    body {
-        font-size: 14px;
-    }
-}
-
 .container {
     background-color: white;
     border-radius: 10px;
@@ -17,12 +11,6 @@ body {
     margin: auto;
     margin-top: 2%;
     padding: 20px;
-}
-
-@media (max-width: 767px) {
-    .container {
-        width: 90%;
-    }
 }
 
 .sec1 {
@@ -41,11 +29,6 @@ form {
     margin: auto;
 }
 
-@media (max-width: 767px) {
-    form {
-        width: 80%;
-    }
-}
 
 label {
     font-size: 18px;
@@ -73,4 +56,232 @@ button[type="submit"] {
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
+}
+
+.inicio {
+    background-image: url("../img/background.jpg");
+    background-color: #cccccc;
+}
+
+/* Estilos para resoluciones menores a 768px (dispositivos móviles) */
+@media (max-width: 767px) {
+    body {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 90%;
+    }
+
+    form {
+        width: 80%;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        font-size: 14px;
+        margin-bottom: 15px;
+        padding: 8px;
+    }
+
+    button[type="submit"] {
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+}
+
+/* Estilos para resoluciones mayores a 767px y menores a 992px (tabletas) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container {
+        width: 70%;
+    }
+
+    form {
+        width: 60%;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        font-size: 16px;
+        margin-bottom: 20px;
+        padding: 10px;
+    }
+
+    button[type="submit"] {
+        padding: 10px 20px;
+        font-size: 18px;
+    }
+}
+
+/* Estilos para resoluciones mayores a 991px y menores a 1200px */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .container {
+        width: 50%;
+    }
+
+    form {
+        width: 50%;
+    }
+}
+
+/* Estilos para resoluciones mayores a 1200px */
+@media (min-width: 1200px) {
+    .container {
+        width: 30%;
+    }
+
+    form {
+        width: 400px;
+    }
+}
+
+/* Estilos para resoluciones menores a 576px (teléfonos pequeños) */
+@media (max-width: 575px) {
+    body {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 95%;
+    }
+
+    form {
+        width: 90%;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        font-size: 14px;
+        margin-bottom: 15px;
+        padding: 8px;
+    }
+
+    button[type="submit"] {
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+}
+
+/* Estilos para resoluciones mayores a 576px y menores a 768px (teléfonos medianos) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .container {
+        width: 90%;
+    }
+
+    form {
+        width: 80%;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        font-size: 14px;
+        margin-bottom: 15px;
+        padding: 8px;
+    }
+
+    button[type="submit"] {
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+}
+
+/* Estilos para resoluciones mayores a 767px y menores a 992px (tabletas pequeñas) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container {
+        width: 70%;
+    }
+
+    form {
+        width: 60%;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        font-size: 16px;
+        margin-bottom: 20px;
+        padding: 10px;
+    }
+
+    button[type="submit"] {
+        padding: 10px 20px;
+        font-size: 18px;
+    }
+}
+
+/* Estilos para resoluciones entre 992px y 1199px (tabletas y dispositivos móviles en posición horizontal) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .container {
+        width: 50%;
+    }
+
+    form {
+        width: 350px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        font-size: 18px;
+        margin-bottom: 15px;
+        padding: 8px;
+    }
+
+    button[type="submit"] {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+}
+
+/* Estilos para resoluciones menores a 991px (dispositivos móviles en posición vertical) */
+@media (max-width: 991px) {
+    .container {
+        width: 80%;
+    }
+
+    form {
+        width: 250px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        font-size: 16px;
+        margin-bottom: 10px;
+        padding: 6px;
+    }
+
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+}
+
+/* Estilos para resoluciones menores a 767px (dispositivos móviles en posición vertical) */
+@media (max-width: 767px) {
+    .container {
+        width: 90%;
+        margin-top: 10px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        font-size: 14px;
+        margin-bottom: 5px;
+        padding: 4px;
+    }
+
+    button[type="submit"] {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
 }

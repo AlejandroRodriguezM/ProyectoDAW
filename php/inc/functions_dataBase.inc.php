@@ -1119,6 +1119,18 @@ function get_total_guardados(int $id_user): int
 	return $consulta->fetchColumn();
 }
 
+function get_total_comics(): int
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT COUNT(*) from comics_guardados ORDER BY RAND() LIMIT 8");
+		$consulta->execute();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $consulta->fetchColumn();
+}
+
 function get_descripcion(int $id): array
 {
 	global $conection;

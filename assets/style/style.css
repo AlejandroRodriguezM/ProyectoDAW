@@ -1,4 +1,9 @@
-
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    background-color: #F2F2F2;
+}
 
 .titulo {
     display: flex;
@@ -7,6 +12,10 @@
     height: 100px;
     background-color: #FFC107;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin-bottom: 60px;
 }
 
 .titulo h2 {
@@ -71,18 +80,14 @@
     border-radius: 50%;
 }
 
-.inicio {
-    background-image: url("../img/background.jpg");
-    background-color: #cccccc;
-}
 
 .container {
-    background-color: white;
-    border-radius: 10px;
-    width: 30%;
-    margin: auto;
-    margin-top: 2%;
-    padding: 20px;
+    /* background-color: white; */
+    border-radius: 10px !important;
+    width: 100% !important;
+    margin: auto !important;
+    /* padding: 20px !important; */
+    margin-top: 50px !important;
 }
 
 .sec1 {
@@ -97,6 +102,13 @@
 }
 
 @media screen and (max-width: 1024px) {
+
+    /* Estilos para dispositivos más pequeños, como teléfonos móviles */
+
+    body{
+        font-size: 14px;
+    }
+
     div {
         width: 90%;
         margin: 0 auto;
@@ -113,7 +125,7 @@
     }
 
     button {
-        padding: 10px 20px;
+        padding: 1em;
         font-size: 1em;
     }
 
@@ -132,5 +144,251 @@
 
     ul {
         padding: 0;
+    }
+
+    /* Estilos para dispositivos en orientación horizontal */
+    @media screen and (max-width: 768px) and (orientation: landscape) {
+        div {
+            width: 80% !important;
+        }
+    }
+
+    /* Estilos para dispositivos en orientación vertical */
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+
+        body{
+            font-size: 12px !important;
+
+        }
+        div {
+            width: 100% !important;
+        }
+
+        .titulo h2 {
+            font-size: 24px !important;
+        }
+
+        .chosenUserProfile {
+            width: 80px !important;
+            height: 80px !important;
+            border-width: 3px !important;
+        }
+
+        .avatarPicture {
+            width: 30px !important;
+            height: 30px !important;
+        }
+
+        .container {
+            width: 90% !important;
+            padding: 10px !important;
+        }
+
+        .menu_botones {
+            font-size: 20px !important;
+        }
+
+        .sec1 {
+            padding-top: 20px !important;
+        }
+
+
+    }
+
+    /* Estilos para dispositivos en orientación horizontal */
+    @media screen and (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+        div {
+            width: 80% !important;
+        }
+
+        body{
+            font-size: 14px !important;
+        }
+
+        .titulo h2 {
+            font-size: 30px !important;
+        }
+
+        .chosenUserProfile {
+            width: 90px !important;
+            height: 90px !important;
+        }
+
+        .avatarPicture {
+            width: 40px !important;
+            height: 40px !important;
+        }
+
+        .container {
+            width: 80% !important;
+        }
+
+        .menu_botones {
+            font-size: 22px !important;
+        }
+
+        .sec1 {
+            padding-top: 20px !important;
+        }
+
+
+    }
+}
+
+/* Estilos para dispositivos móviles y tabletas en orientación vertical */
+@media screen and (max-width: 767px) {
+
+    body{
+        font-size: 12px !important;
+
+    }
+
+    .titulo h2 {
+        font-size: 24px !important;
+    }
+
+    .chosenUserProfile {
+        width: 80px !important;
+        height: 80px !important;
+        border-width: 3px !important;
+    }
+
+    .avatarPicture {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .container {
+        width: 90% !important;
+        padding: 10px !important;
+    }
+
+    .menu_botones {
+        font-size: 20px !important;
+    }
+
+    .sec1 {
+        padding-top: 20px !important;
+    }
+}
+
+/* Estilos para tabletas en orientación horizontal y monitores pequeños */
+@media screen and (min-width: 768px) and (max-width: 1199px) and (orientation: landscape) {
+
+    body{
+        font-size: 14px !important;
+    }
+
+    .titulo h2 {
+        font-size: 30px !important;
+    }
+
+    .chosenUserProfile {
+        width: 90px !important;
+        height: 90px !important;
+    }
+
+    .avatarPicture {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .container {
+        width: 80% !important;
+    }
+
+    .menu_botones {
+        font-size: 22px !important;
+    }
+
+    .sec1 {
+        padding-top: 30px !important;
+    }
+}
+
+/* Estilos para tabletas en orientación vertical y monitores grandes */
+@media screen and (min-width: 768px) and (max-width: 1199px) and (orientation: portrait) {
+    .titulo h2 {
+        font-size: 36px;
+    }
+
+    .chosenUserProfile {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .avatarPicture {
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .container {
+        width: 70% !important;
+    }
+
+    .menu_botones {
+        font-size: 24px !important;
+    }
+
+    .sec1 {
+        padding-top: 40px !important;
+    }
+}
+
+/* Estilos para monitores grandes */
+@media screen and (min-width: 1200px) {
+    .titulo h2 {
+        font-size: 48px !important;
+    }
+
+    .chosenUserProfile {
+        width: 106px !important;
+        height: 106px !important;
+    }
+
+    .avatarPicture {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    /* .container {
+        width: 50% !important;
+    } */
+
+    .menu_botones {
+        font-size: 25px !important;
+    }
+
+    .sec1 {
+        padding-top: 50px !important;
+    }
+}
+
+@media (min-width: 1400px) {
+
+    .titulo h2 {
+        font-size: 30px !important;
+    }
+
+    .chosenUserProfile {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
+    .avatarPicture {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    /* .container {
+        width: 50% !important;
+    } */
+
+    .menu_botones {
+        font-size: 30px !important;
+    }
+
+    .sec1 {
+        padding-top: 60px !important;
     }
 }

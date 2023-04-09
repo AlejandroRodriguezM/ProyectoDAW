@@ -2,14 +2,18 @@
 session_start();
 include_once '../inc/header.inc.php';
 global $conection;
-$email = $_SESSION['email'];
-$userData = obtener_datos_usuario($email);
-$id_user = $userData['IDuser'];
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+    $userData = obtener_datos_usuario($email);
+    $id_user = $userData['IDuser'];
+    echo "<input type='hidden' id='id_user' value='$id_user'>";
+}
+
 
 $num_comics = intval($_GET['num_comics']);
-$numero_comics = get_total_guardados($id_user);
+$numero_comics = get_total_comics();
 echo "<input type='hidden' class='num_comics' id='num_comics' value='$numero_comics'>";
-echo "<input type='hidden' id='id_user' value='$id_user'>";
+
 
 ?>
 <div class="container mt-5">
@@ -18,15 +22,23 @@ echo "<input type='hidden' id='id_user' value='$id_user'>";
             <div class="titulo">
                 <h2>Recomendaciones</h2>
             </div>
-            <a href='novedades.php'>
-                <button class="ver-mas-btn">Ver más</button>
-            </a>
+            <?php
+            if (isset($_SESSION['email'])) {
+            ?>
+                <a href='#'>
+                    <button id="ver-mas-btn" class="ver-mas-btn" onclick="comics_recomendados()">Recargar comics</button>
+                </a>
+
+
+            <?php
+            }
+            ?>
+
             <div class="scrollable-h comic-full">
                 <div class="scrollable-h-content">
-                    <ul class="v2-cover-list">
+                    <ul id="recomendaciones" class="v2-cover-list">
                         <?php
                         $total_comics = numComics();
-                        echo "<input type='hidden' id='id_user' value='$id_user'>";
                         for ($i = 0; $i < $num_comics; $i++) {
                             $numero = randomComic();
                             $data_comic = getDataComic($numero);
@@ -44,15 +56,16 @@ echo "<input type='hidden' id='id_user' value='$id_user'>";
                             <span class='issue-number issue-number-l1'>$numComic</span>
                         </a>
                         <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
-
-                            if (check_guardado($id_user, $id_comic)) {
-                                echo "<button data-item-id='yXwd2' class='activate' >
+                            if (isset($_SESSION['email'])) {
+                                if (check_guardado($id_user, $id_comic)) {
+                                    echo "<button id='id-recomendacion' data-item-id='yXwd2' class='activate' >
                             <span class='sp-icon'>Lo tengo</span>
                         </button>";
-                            } else {
-                                echo "<button data-item-id='yXwd2' class='desactivate' >
+                                } else {
+                                    echo "<button id='id-recomendacion' data-item-id='yXwd2' class='desactivate' >
                             <span class='sp-icon'>Lo tengo</span>
                             </button>";
+                                }
                             }
                             echo "</li>";
                         }
@@ -75,32 +88,47 @@ echo "<input type='hidden' id='id_user' value='$id_user'>";
             if (id_comic) {
                 button.addEventListener('click', function() {
 
-                    if (!button.classList.contains('invisible')) {
-                        button.classList.add('invisible');
+                    if (button.classList.contains('desactivate')) {
+                        guardar_comic(id_comic, function() {
+                            $('.new-comic-list').html('');
+                            button.classList.toggle('activate');
+                            button.classList.toggle('desactivate');
+                        }, button);
+                    } else if (button.classList.contains('activate')) {
+                        quitar_comic(id_comic, function() {
+                            $('.new-comic-list').html('');
 
-                        if (button.classList.contains('desactivate')) {
-                            guardar_comic(id_comic, function() {
-                                console.log('guardar');
-                                button.classList.remove('invisible');
-                                button.classList.toggle('activate');
-                                button.classList.toggle('desactivate');
-                            });
-                        } else {
-                            quitar_comic(id_comic, function() {
-                                console.log('eliminar');
-                                button.classList.remove('invisible');
-                                button.classList.toggle('activate');
-                                button.classList.toggle('desactivate');
+                            button.classList.toggle('activate');
+                            button.classList.toggle('desactivate');
 
-                            });
+                        }, button);
+                    }
+
+                    function safeLoadComics() {
+                        if (typeof loadComics === 'function') {
+                            loadComics(offset);
                         }
+                    }
 
-                    }
-                    if (!document.getElementById('index')) {
-                        loadComics();
-                    }
+                    // Call safeLoadComics() instead of loadComics()
+                    safeLoadComics();
                 });
             }
         });
     })();
+
+    function posicionarBotonVerMas() {
+        var numComics = $("#recomendaciones li").length;
+        var anchoContenedor = $("#recomendaciones").width();
+        var anchoBoton = $(".ver-mas-btn").width();
+        var margenDerecho = 20;
+        var espacioLibre = anchoContenedor - (anchoBoton + margenDerecho);
+        var posicionIzquierda = espacioLibre + "px";
+        $(".ver-mas-btn").css("margin-left", posicionIzquierda);
+    }
+
+    $(document).ready(function() {
+        posicionarBotonVerMas();
+        $(window).resize(posicionarBotonVerMas);
+    });
 </script>

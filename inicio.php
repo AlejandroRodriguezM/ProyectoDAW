@@ -1,12 +1,17 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-// //checkCookiesUser();
-// destroyCookiesUserTemporal();
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_user);
 }
+echo "<input type='hidden' id='num_comics' value=''>";
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,20 +23,25 @@ if (isset($_SESSION['email'])) {
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./assets/style/style.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
+    <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
 
 
     <title>Inicio</title>
@@ -50,25 +60,18 @@ if (isset($_SESSION['email'])) {
             color: #00913b;
         }
 
-        .video-container {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        .video-container iframe:nth-child(1) {
-            margin-right: 20px;
-        }
-
-        .video-container iframe:nth-child(2) {
-            margin-right: 20px;
-        }
-
-        .video-container iframe:nth-child(3) {
-            margin-left: auto;
+        .last-pubs2 {
+            position: relative;
+            padding: 20px;
+            /* background-color: #fff; */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
         }
 
         .ver-mas-btn {
+            position: absolute;
+            bottom: 260px;
+            left: 10px;
             background-color: #3498DB;
             border: none;
             color: #fff;
@@ -77,10 +80,7 @@ if (isset($_SESSION['email'])) {
             text-decoration: none;
             font-size: 18px;
             transition: all 0.3s ease;
-            margin-left: 1026px !important;
-            text-align: right;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            text-align: center;
         }
 
         .ver-mas-btn:hover {
@@ -88,11 +88,24 @@ if (isset($_SESSION['email'])) {
             cursor: pointer;
         }
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
+        .recargar-mas-btn {
+            position: absolute;
+            bottom: 260px;
+            left: 70px;
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .recargar-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
         }
 
         .desactivate {
@@ -143,8 +156,6 @@ if (isset($_SESSION['email'])) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = obtener_datos_usuario($email);
-                                $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
@@ -295,8 +306,6 @@ if (isset($_SESSION['email'])) {
                             <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = obtener_datos_usuario($email);
-                                $id_user = $userData['IDuser'];
                                 echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
                             }
                             ?>
@@ -317,25 +326,6 @@ if (isset($_SESSION['email'])) {
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
-
-    <!-- AQUI VA EL CONTENIDO DE LA PAGINA -->
-    <?php
-    // global $conection;
-    // //update table comics
-    // //count rows in comics
-    // $query = "SELECT COUNT(*) FROM comics";
-    // $count = $conection->prepare($query);
-    // $count->execute();
-    // $count = $count->fetchColumn();
-    // $num = $count;
-    // for ($i = 1; $i <= $count; $i++) {
-    //     echo $i;
-    //     $query = "UPDATE comics SET Cover = './assets/covers_img/$i.jpg' where IDcomic = $i";
-    //     $insertData = $conection->prepare($query);
-    //     $insertData->execute();
-    // }
-    ?>
-
 
     <div class="bgimg-1">
         <div class="caption">
@@ -381,23 +371,29 @@ if (isset($_SESSION['email'])) {
 
             </div>
             <div class="container mt-5">
-                <div class="titulo">
-                    <h2>Videos de interes</h2>
-                </div>
-                <hr>
-                <div class="video-container">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div style="display: flex; justify-content: center;">
+                    <div class="last-pubs2">
+                        <div class="titulo">
+                            <h2>Videos de interes</h2>
+                        </div>
+                        <hr>
+                        <div class="video-container">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <div class="container mt-5">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-8">
-                        <div class="headings d-flex justify-content-between align-items-center mb-3">
-                            <h2 style="color: black">Opiniones de los usuarios</h2>
+                <div style="display: flex; justify-content: center;">
+                    <div class="last-pubs2 col-md-8">
+                        <div class="headings ">
+                            <div class="titulo">
+                                <h2 style="color: black">Opiniones de los usuarios</h2>
+                            </div>
                         </div>
+
                         <?php
                         $opiniones = mostrar_opiniones_pagina();
                         if (numero_opiniones_pagina() > 0) {
@@ -412,7 +408,7 @@ if (isset($_SESSION['email'])) {
                                 $nombre_user = $data_user['userName'];
                                 $email_user = $data_user['email'];
 
-                                echo '<div class="card p-3 mt-2">
+                                echo '<div class="card p-4 mt-1">
                                         <div class="d-flex justify-content-between align-items-center">';
                         ?>
                                 <a href="infoUser.php?userName=<?php echo $email_user ?>">
@@ -446,56 +442,67 @@ if (isset($_SESSION['email'])) {
             </div>
 
 
-            <div class="bgimg-2">
-                <div id="footer-lite">
-                    <div class="content">
-                        <p class="helpcenter">
-                            <a href="http://www.example.com/help">Ayuda</a>
-                        </p>
-                        <p class="legal">
-                            <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                            <span>·</span>
-                            <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                            <span>·</span>
-                            <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                            <span>·</span>
-                            <a href="about.php" style="color:black">Quiénes somos</a>
-                        </p>
-                        <!-- add social media with icons -->
-                        <p class="social">
-                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                            <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            <!-- <div class="bgimg-2"> -->
+            <div id="footer-lite">
+                <div class="content">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="legal">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                        </p>
-                        <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
-                    </div>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        var resizeTimer;
+
         function comics_recomendados() {
+            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+            var width = $(window).width();
+            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
 
             var data = {
-                num_comics: 8
+                num_comics: num_comics
             };
-
-
             $.ajax({
                 url: "php/apis/recomendaciones_comics.php",
                 data: data,
                 success: function(data) {
+                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
+                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
+                    $('.container.mt-5').css('width', container_width + 'px');
+
                     totalComics = $(data).filter("#total-comics").val();
 
                     // Elimina la lista anterior antes de agregar la nueva
-
                     $('.recomendaciones').html('');
                     $(data).appendTo('.recomendaciones');
                 }
             });
         }
-        comics_recomendados()
+        
+        comics_recomendados();
+        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+        $(window).on('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(comics_recomendados, 100);
+        });
     </script>
 
 </body>

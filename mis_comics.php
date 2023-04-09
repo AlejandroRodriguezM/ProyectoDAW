@@ -6,15 +6,16 @@ destroyCookiesUserTemporal();
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+
+    $numero_comics = get_total_guardados($id_user);
+    echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: inicio.php');
 }
-$userData = obtener_datos_usuario($email);
-$userPrivilege = $userData['privilege'];
-$id_user = $userData['IDuser'];
 
-$numero_comics = get_total_guardados($id_user);
-echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,17 +27,22 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./assets/style/style.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
@@ -100,6 +106,51 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
             color: black;
         }
 
+        .video-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .video-container iframe:nth-child(1) {
+            margin-right: 20px;
+        }
+
+        .video-container iframe:nth-child(2) {
+            margin-right: 20px;
+        }
+
+        .video-container iframe:nth-child(3) {
+            margin-left: auto;
+        }
+
+        .last-pubs2 {
+            position: relative;
+            padding: 10px;
+            /* background-color: #fff; */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .ver-mas-btn {
+            position: absolute;
+            bottom: 60%;
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .ver-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
+        }
+
         .desactivate {
             background-color: white !important;
             color: #00c9b7;
@@ -134,51 +185,6 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
             background-size: 20px !important;
         }
 
-        .ver-mas-btn {
-            background-color: #3498DB;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            margin-left: 1026px !important;
-            text-align: right;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .ver-mas-btn:hover {
-            background-color: #2980B9;
-            cursor: pointer;
-        }
-
-        .video-container {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-        }
-
-        .video-container iframe:nth-child(1) {
-            margin-right: 20px;
-        }
-
-        .video-container iframe:nth-child(2) {
-            margin-right: 20px;
-        }
-
-        .video-container iframe:nth-child(3) {
-            margin-left: auto;
-        }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
         .navigation-buttons button {
             background-color: #4CAF50;
             /* Fondo verde */
@@ -194,6 +200,10 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
             /* Cambia el cursor al pasar sobre el botón */
             margin-right: 10px;
             /* Margen entre botones */
+        }
+
+        .container {
+            padding: 30px;
         }
     </style>
 </head>
@@ -375,33 +385,6 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
         Design by Alejandro Rodriguez 2022
     </div>
 
-    <fieldset class='searchFieldset' id="searchFieldset" style="display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-        <div class="d-flex justify-content-center">
-            <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <!-- <script>
-                        const input = document.getElementById('search-data');
-                        input.addEventListener('input', () => autocomplete(input));
-                    </script> -->
-                </label>
-            </form>
-        </div>
-
-        <!-- botones para clasificar que ver  -->
-        <div class="d-flex justify-content-center" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-            <span id="span1" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Todo</span>
-            <span id="span2" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Usuarios</span>
-            <span id="span3" style="cursor: pointer; display: inline-block;padding: 8px 16px;margin: 8px;border: 1px solid #ccc;border-radius: 4px;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">Comics</span>
-        </div>
-
-        <div style="margin-left: auto; margin-right: auto; width: 80%; display: none;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important" id="show_information">
-            <form class="table table-hover" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div id="search-result"></div>
-            </form>
-        </div>
-    </fieldset>
-
     <div class="bgimg-1">
         <div class="caption">
             <div class="view-account">
@@ -428,7 +411,7 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
                 </div>
             </div>
 
-            <div class='recomendaciones'>
+            <div class='recomendaciones' id="index">
 
             </div>
 
@@ -467,7 +450,6 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
                     <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
-            <!-- </div> -->
         </div>
     </div>
 
@@ -481,43 +463,16 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
         $('input[type=checkbox]').on('change', function() {
             if ($(this).prop('checked') != true) {
                 checkboxChecked = null;
+
             }
         });
+        loadComics(offset);
+        comics_recomendados();
 
-        $(document).ready(function() {
-            loadComics(checkboxChecked);
-            addComic();
-
-            // $(window).scroll(function() {
-            //     if ($(window).scrollTop() + $(window).height() >= $(document).height() - 20 && checkboxChecked == null) {
-            //         offset += limit;
-            //         loadComics();
-            //     }
-            // });
-
-            var checkboxes = document.querySelectorAll('input[type=checkbox]');
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].addEventListener('change', function() {
-                    if ($("input[type='checkbox']:checked").length > 0) {
-                        checkboxChecked = $("input[type='checkbox']:checked").val();
-                    }
-                    if (checkboxChecked) {
-                        offset = 0;
-                        $('.new-comic-list').remove();
-                        loadComics(checkboxChecked);
-                        addComic();
-                    } else {
-                        offset = 0;
-                        $('.new-comic-list').remove();
-                        loadComics(checkboxChecked);
-                        addComic();
-                    }
-                });
-            }
-        });
 
         function loadComics(offset = 0) {
             var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
+
                 return encodeURIComponent(this.value);
             }).get();
 
@@ -529,6 +484,7 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
             if (selectedCheckboxes.length > 0) {
                 data.checkboxChecked = selectedCheckboxes.join(",");
             }
+
             $.ajax({
                 url: "php/apis/comics_user.php",
                 data: data,
@@ -536,118 +492,46 @@ echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
                     totalComics = $(data).filter("#total-comics").val();
                     if (offset == 0) {
                         $('.new-comic-list').html('');
-                        // addComic()
                     }
                     $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs1');
                 }
             });
-
         }
 
-        function addComic() {
+        var resizeTimer;
+
+        function comics_recomendados() {
             actualizar_filtrado()
-            // offset = 0;
-            var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                return encodeURIComponent(this.value);
-            }).get();
+            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+            var width = $(window).width();
+            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
 
             var data = {
-                num_comics: 8
+                num_comics: num_comics
             };
-
-            if (selectedCheckboxes.length > 0) {
-                data.checkboxChecked = selectedCheckboxes.join(",");
-            }
-
             $.ajax({
                 url: "php/apis/recomendaciones_comics.php",
                 data: data,
                 success: function(data) {
+                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
+                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
+                    $('.container.mt-5').css('width', container_width + 'px');
+
                     totalComics = $(data).filter("#total-comics").val();
+
+                    // Elimina la lista anterior antes de agregar la nueva
+                    $('.recomendaciones').html('');
                     $(data).appendTo('.recomendaciones');
-
-
                 }
             });
         }
-    </script>
-    <script>
-        function toggleDropdown(element) {
-            var dropdownContent1 = document.getElementById("dropdownContent1");
-            var dropdownContent2 = document.getElementById("dropdownContent2");
-            var dropdownContent3 = document.getElementById("dropdownContent3");
-            var dropdownContent4 = document.getElementById("dropdownContent4");
 
-            if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-            } else {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-                element.querySelector(".dropdown-content").style.display = "block";
-            }
-        }
-
-        function closeDropdown(dropdownContent) {
-            dropdownContent.style.display = "none";
-        }
-
-        document.addEventListener("click", function(event) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var dropdown = dropdowns[i];
-                if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
-                    dropdown.style.display = "none";
-                }
-            }
+        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+        $(window).on('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(comics_recomendados, 100);
         });
-
-        function handleCheckboxChange() {
-            var checkboxes = document.querySelectorAll('input[type=checkbox]');
-
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].addEventListener('change', function() {
-                    if ($("input[type='checkbox']:checked").length > 0) {
-                        checkboxChecked = $("input[type='checkbox']:checked").val();
-                    }
-                    if (checkboxChecked) {
-                        offset = 0;
-                        $('.new-comic-list').remove();
-                        loadComics(checkboxChecked);
-                    } else {
-                        offset = 0;
-                        $('.new-comic-list').remove();
-                        loadComics(checkboxChecked);
-                    }
-                });
-            }
-        }
     </script>
-    <script>
-        function searchData(id) {
-            let input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput" + id);
-            filter = input.value.toUpperCase();
-            table = document.getElementById("dropdownContent" + id);
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
-
 
 </body>
 

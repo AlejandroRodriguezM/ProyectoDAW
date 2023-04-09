@@ -1,0 +1,346 @@
+/* Media queries */
+
+/* Extra small devices (phones, 576px and down) */
+@media only screen and (max-width: 576px) {
+    .v2-cover-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cover {
+        width: 100%;
+    }
+
+    .last-pubs2 {
+        margin-top: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .scrollable-h-content {
+        gap: 0.5rem;
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+
+    .issue-number-l1 {
+        font-size: 0.8rem;
+    }
+
+    .activate,
+    .desactivate {
+        margin: 0.25rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .v2-cover-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cover {
+        width: 100%;
+    }
+
+    .last-pubs2 {
+        margin-top: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .scrollable-h-content {
+        gap: 0.5rem;
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+
+    .issue-number-l1 {
+        font-size: 0.8rem;
+    }
+
+    .activate,
+    .desactivate {
+        margin: 0.25rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .v2-cover-list {
+        flex-wrap: wrap;
+    }
+
+    .last-pubs2 {
+        margin-top: 3rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+    }
+
+    .scrollable-h-content {
+        gap: 1rem;
+    }
+
+    .title {
+        font-size: 1.2rem;
+    }
+
+    .issue-number-l1 {
+        font-size: 1rem;
+    }
+
+    .activate,
+    .desactivate {
+        margin: 0.5rem;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .v2-cover-list {
+        flex-wrap: wrap;
+    }
+
+    .last-pubs2 {
+        margin-top: 3rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 1.5rem;
+        padding: 1.5rem 3rem;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+    }
+
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .last-pubs2 {
+        margin-top: 4rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 2rem;
+        padding: 2rem 4rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+    }
+}
+
+/* Media queries */
+
+/* Extra small devices (phones, 576px and down) */
+@media only screen and (max-width: 576px) and (orientation: portrait) {
+
+    /* styles for portrait orientation on phones */
+    .v2-cover-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cover {
+        width: 100%;
+    }
+
+    .last-pubs2 {
+        margin-top: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .scrollable-h-content {
+        gap: 0.5rem;
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+
+    .issue-number-l1 {
+        font-size: 0.8rem;
+    }
+
+    .activate,
+    .desactivate {
+        margin: 0.25rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+@media only screen and (max-width: 576px) and (orientation: landscape) {
+
+    /* styles for landscape orientation on phones */
+    .v2-cover-list {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .cover {
+        width: 50%;
+    }
+
+    .last-pubs2 {
+        margin-top: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .scrollable-h-content {
+        gap: 0.5rem;
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+
+    .issue-number-l1 {
+        font-size: 0.8rem;
+    }
+
+    .activate,
+    .desactivate {
+        margin: 0.25rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media only screen and (min-width: 576px) and (max-width: 767px) and (orientation: portrait) {
+
+    /* styles for portrait orientation on landscape phones */
+    .v2-cover-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cover {
+        width: 100%;
+    }
+
+    .last-pubs2 {
+        margin-top: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .scrollable-h-content {
+        gap: 0.5rem;
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+
+    .issue-number-l1 {
+        font-size: 0.8rem;
+    }
+
+    .activate,
+    .desactivate {
+        margin: 0.25rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) and (orientation: landscape) {
+    .v2-cover-list {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cover {
+        width: 50%;
+        max-width: 200px;
+        margin-right: 1rem;
+    }
+
+    .last-pubs2 {
+        margin-top: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .ver-mas-btn {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .scrollable-h-content {
+        gap: 0.5rem;
+    }
+
+    .title {
+        font-size: 1rem;
+    }
+
+    .issue-number-l1 {
+        font-size: 0.8rem;
+    }
+
+    .activate,
+    .desactivate {
+        margin: 0.25rem;
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
