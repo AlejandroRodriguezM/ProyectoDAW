@@ -1,20 +1,19 @@
 <?php
 session_start();
-include_once 'php/inc/header.inc.php';
-
-//checkCookiesUser();
-destroyCookiesUserTemporal();;
+include_once 'php/inc/header.inc.php';;
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
+    $userName = $userData['userName'];
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
+    $id_usuario = $userData['IDuser'];
     $tipo_perfil = $userData['tipo_perfil'];
-    $numero_comics = get_total_guardados($id_user);
+    $picture = $userData['userPicture'];
+    $numero_comics = get_total_guardados($id_usuario);
     echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
-    header('Location: inicio.php');
+    header('Location: index.php');
 }
 
 ?>
@@ -28,23 +27,28 @@ if (isset($_SESSION['email'])) {
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <link rel="stylesheet" href="./assets/style/footer_style.css">
-    <link rel="stylesheet" href="./assets/style/parallax.css">
     <link rel="stylesheet" href="./assets/style/style.css">
+    <!-- <link rel="stylesheet" href="./assets/style/bandeja_comics.css"> -->
+    <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <link rel="stylesheet" href="./assets/style/novedades.css">
+    <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
     <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
+    <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <script src="./assets/js/functions.js"></script>
+    <script src="./assets/js/temporizador.js"></script>
     <title>Ajustes de usuario</title>
     <style>
-        
-
         .contenedor {
             width: 50% !important;
             overflow-x: auto;
@@ -56,15 +60,22 @@ if (isset($_SESSION['email'])) {
 
         .botones {
             display: flex;
-            /* margin: 0 10px; */
             margin-bottom: 15px;
             font-size: 1.2em;
             line-height: 1.5em;
+            /* margin-right:30px; */
         }
     </style>
 </head>
 
 <body onload="checkSesionUpdate();showSelected();">
+<div id="session-expiration">
+        <div id="session-expiration-message">
+            <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
+            <button id="session-expiration-continue-btn">Continuar</button>
+            <button id="session-expiration-logout-btn">Cerrar sesión</button>
+        </div>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -76,8 +87,6 @@ if (isset($_SESSION['email'])) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = obtener_datos_usuario($email);
-                                $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
@@ -124,7 +133,7 @@ if (isset($_SESSION['email'])) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
                     <li class="nav-item">
@@ -168,12 +177,7 @@ if (isset($_SESSION['email'])) {
 
             <div class="dropdown" id="navbar-user" style="left: 2px !important;">
                 <?php
-                if (isset($_SESSION['email'])) {
-                    $picture = pictureProfile($email);
-                    echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
-                } else {
-                    echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
-                }
+                echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
                 ?>
 
                 <!-- imagen de perfil  -->
@@ -181,21 +185,15 @@ if (isset($_SESSION['email'])) {
                 </button>
                 <ul class="dropdown-menu">
                     <?php
-                    if (isset($_SESSION['email'])) {
-                        if ($userPrivilege == 'admin') {
-                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
-                            echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                        } elseif ($userPrivilege == 'user') {
-                            echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                            echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
-                        } else {
-                            echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
-                        }
-                        echo "<div class='dropdown-divider'></div>";
-                        echo "<li> <button class='dropdown-item' onclick='closeSesion()' name='closeSesion' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button> </i>";
-                    } else {
-                        echo "<li><button class='dropdown-item' onclick='iniciar_sesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
+                    if ($userPrivilege == 'admin') {
+                        echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
+                        echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
+                    } elseif ($userPrivilege == 'user') {
+                        echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
+                        echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
                     }
+                    echo "<div class='dropdown-divider'></div>";
+                    echo "<li> <button class='dropdown-item' onclick='closeSesion()' name='closeSesion' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button> </i>";
                     ?>
                 </ul>
             </div>
@@ -215,30 +213,23 @@ if (isset($_SESSION['email'])) {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = obtener_datos_usuario($email);
-                                    $profilePicture = $dataUser['userPicture'];
-                                    echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+                                    echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$picture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
                                     <ul class="meta list list-unstyled">
                                         <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = obtener_datos_usuario($email);
-                                            $userName = $dataUser['userName'];
-                                            echo "$userName";
+
+                                            echo $userName;
                                             ?>
                                         </li>
                                         <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = obtener_datos_usuario($email);
-                                            $email = $dataUser['email'];
-                                            // echo with style font size 
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                             ?>
                                         </li>
-                                        <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
+                                        <li class="activity"><label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
-                                            $hora = $_SESSION['hour'];
-                                            echo "$hora";
+                                            echo comprobar_ultima_conexion($id_usuario);
                                             ?>
                                         </li>
                                     </ul>
@@ -285,32 +276,32 @@ if (isset($_SESSION['email'])) {
                                         ?>
 
                                         <div class="form-group" style="margin-top: 5px;">
-                                            <label class="col-md-2 col-sm-3 col-xs-12 control-label">User Name</label>
+                                            <label class="col-md-2 col-sm-3 col-xs-12 control-label" style="display: inline-block !important;">Nombre de usuario</label>
                                             <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                                 <input type="text" class="form-control" id="name" value="<?php echo $dataUser['userName'] ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                                 <input type="hidden" id="correo" value="<?php echo $email ?>">
                                             </div>
                                         </div>
                                         <div class="form-group" style="margin-top: 5px;">
-                                            <label class="col-md-2 col-sm-3 col-xs-12 control-label">Your name</label>
+                                            <label class="col-md-2 col-sm-3 col-xs-12 control-label">Tu nombre</label>
                                             <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                                 <input type="text" class="form-control" id="nameUser" value="<?php echo $nameUser ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
                                             </div>
                                         </div>
                                         <div class="form-group" style="margin-top: 5px;">
-                                            <label class="col-md-2 col-sm-3 col-xs-12 control-label">You lastname</label>
+                                            <label class="col-md-2 col-sm-3 col-xs-12 control-label">Tu apellido</label>
                                             <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                                 <input type="text" class="form-control" id="lastnameUser" value="<?php echo $lastName ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                             </div>
                                         </div>
                                         <div class="form-group" style="margin-top: 5px;">
-                                            <label class="col-md-2 col-sm-3 col-xs-12 control-label">New Password</label>
+                                            <label class="col-md-2 col-sm-3 col-xs-12 control-label">Nueva contraseña</label>
                                             <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                                 <input type="password" class="form-control" id="password" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                             </div>
                                         </div>
                                         <div class="form-group" style="margin-top: 5px;">
-                                            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Repit new Password</label>
+                                            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Repite la contraseña</label>
                                             <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                                 <input type="password" class="form-control" id="repassword" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                             </div>
@@ -373,12 +364,13 @@ if (isset($_SESSION['email'])) {
                                         if ($userPrivilege == 'admin') {
                                             echo '<input class="btn btn-danger" type="button" value="Desactivar usuario" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png), pointer!important; float:right;margin-top:-52px" disabled>';
                                         } else {
-                                            echo '<input class="btn btn-danger" type="button" onclick="desactivar_usuario(); return false;" value="Desactivar usuario" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important; float:right;margin-top:-52px" >';
+                                            echo '<input class="btn btn-danger" type="button" onclick="desactivar_usuario(); return false;" value="Desactivar usuario" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important; float:right;" >';
                                         }
                                         ?>
                                     </div>
                                 </form>
                             </div>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -407,8 +399,8 @@ if (isset($_SESSION['email'])) {
                                 <?php
                                 if (isset($_SESSION['email'])) {
                                     $userData = obtener_datos_usuario($email);
-                                    $id_user = $userData['IDuser'];
-                                    echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                                    $id_usuario = $userData['IDuser'];
+                                    echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                                 }
                                 ?>
                             </div>

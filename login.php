@@ -1,10 +1,10 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-destroyCookiesUserTemporal();
+// 
 
 if (isset($_SESSION['email'])) {
-    header('Location: inicio.php');
+    header('Location: index.php');
 }
 ?>
 

@@ -1411,9 +1411,9 @@ input[type=submit].add, input[type=button].add, button.add {
     border-color: #639400
 }
 
-input[type=submit].add:hover, input[type=button].add:hover, button.add:hover {
+/* input[type=submit].add:hover, input[type=button].add:hover, button.add:hover {
     background-color: #65a930
-}
+} */
 
 input[type=submit].save, input[type=button].save, button.save, a.bt.buy-action, a.bt.next, strong.fubt.save {
     background-color: #29b6f6;
@@ -4603,10 +4603,11 @@ ul.v2-cover-list li button {
     margin-top: 6px;
     width: 100%;
     height: 34px;
-    background-color: transparent;
+    background-color: white;
     border: solid 1px #00c9b7;
     border-radius: 4px
 }
+
 
 ul.v2-cover-list li button.ldbt span {
     display: none

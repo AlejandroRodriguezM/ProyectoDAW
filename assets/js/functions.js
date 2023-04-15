@@ -269,8 +269,8 @@ function confirmar_eliminacion_usuario(id_user, emailUser) {
     }
 }
 
-function bloquear_usuario_desautorizar(boolean, email) {
-    if (confirm("¿Estás seguro de que deseas bloquear al usuario?")) {
+function cambiar_autorizacion(boolean, email) {
+    if (confirm("¿Estás seguro de quieres cambiar el estado de la cuenta?")) {
         if (boolean) {
             desautorizar_usuario(boolean, email)
         }

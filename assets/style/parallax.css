@@ -5,15 +5,12 @@
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+    overflow: hidden;
 }
 
 
 .mt-5 {
     background-color: #ffffff88;
-}
-
-.add {
-    background-color: white !important;
 }
 
 .bgimg-1 {

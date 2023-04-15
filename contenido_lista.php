@@ -1,8 +1,8 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-//checkCookiesUser();
-destroyCookiesUserTemporal();
+
+
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
@@ -12,7 +12,7 @@ if (isset($_SESSION['email'])) {
     $numero_comics = get_total_guardados($id_user);
     echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
-    header('Location: inicio.php');
+    header('Location: index.php');
 }
 $userData = obtener_datos_usuario($email);
 $id_user = $userData['IDuser'];
@@ -34,11 +34,12 @@ if (!check_lista_user($id_user, $id_lista)) {
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <!-- <link rel="stylesheet" href="./assets/style/style.css"> -->
+    <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -48,7 +49,7 @@ if (!check_lista_user($id_user, $id_lista)) {
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-
+    <script src="./assets/js/temporizador.js"></script>
     <title>Lista <?php echo $nombre_lista ?></title>
     <style>
         .custom-table {
@@ -162,12 +163,7 @@ if (!check_lista_user($id_user, $id_lista)) {
             cursor: pointer;
         }
 
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
+
 
         .navigation-buttons button,
         .navigation-buttons_agregar button {
@@ -190,6 +186,13 @@ if (!check_lista_user($id_user, $id_lista)) {
 </head>
 
 <body onload="checkSesionUpdate();showSelected()">
+<div id="session-expiration">
+        <div id="session-expiration-message">
+            <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
+            <button id="session-expiration-continue-btn">Continuar</button>
+            <button id="session-expiration-logout-btn">Cerrar sesión</button>
+        </div>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -249,7 +252,7 @@ if (!check_lista_user($id_user, $id_lista)) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
                     <li class="nav-item">

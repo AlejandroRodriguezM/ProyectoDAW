@@ -40,11 +40,8 @@ if ($_POST) {
             if (actualizar_usuario($userName, $email, $password)) {
                 updateSaveImage($email, $image);
                 insertURL($email, $id);
-                cookiesUser($email, $password);
+                // cookiesUser($email, $password);
                 $row = obtener_datos_usuario($email);
-                if ($row['privilege'] == 'admin') {
-                    cookiesAdmin($email, $password);
-                }
                 updateAboutUser($id, $infoUser, $name, $lastname);
                 $validate['success'] = true;
                 $validate['message'] = 'The user save correctly';

@@ -12,105 +12,91 @@ function errorLogin($email_userName, $password_user)
 	return $error;
 }
 
-function cookiesUser($email, $password)
-{
-	setcookie('loginUser', $email, time() + 3600, '/');
-	setcookie('passwordUser', $password, time() + 3600, '/');
-}
+// function cookiesUser($email, $password)
+// {
+// 	setcookie('loginUser', $email, time() + 3600, '/');
+// 	setcookie('passwordUser', $password, time() + 3600, '/');
+// }
 
-function destroyCookiesUser()
-{
-	setcookie('loginUser', '', time() - 3600, '/');
-	setcookie('passwordUser', '', time() - 3600, '/');
-}
+// function destroyCookiesUser()
+// {
+// 	setcookie('loginUser', '', time() - 3600, '/');
+// 	setcookie('passwordUser', '', time() - 3600, '/');
+// }
 
-function cookiesUserTemporal($email, $password, $id)
-{
-	setcookie('loginUserTemp', $email, time() + 3600, '/');
-	setcookie('passwordUserTemp', $password, time() + 3600, '/');
-	setcookie('idTemp', $id, time() + 3600, '/');
-}
+// function cookiesUserTemporal($email, $password, $id)
+// {
+// 	setcookie('loginUserTemp', $email, time() + 3600, '/');
+// 	setcookie('passwordUserTemp', $password, time() + 3600, '/');
+// 	setcookie('idTemp', $id, time() + 3600, '/');
+// }
 
-function destroyCookiesUserTemporal()
-{
-	setcookie('loginUserTemp', '', time() - 3600, '/');
-	setcookie('passwordUserTemp', '', time() - 3600, '/');
-	setcookie('idTemp', '', time() - 3600, '/');
-}
+// function destroyCookiesUserTemporal()
+// {
+// 	setcookie('loginUserTemp', '', time() - 3600, '/');
+// 	setcookie('passwordUserTemp', '', time() - 3600, '/');
+// 	setcookie('idTemp', '', time() - 3600, '/');
+// }
 
-function cookiesAdmin($email, $password)
-{
-	setcookie('adminUser', $email, time() + 3600, '/');
-	setcookie('passwordAdmin', $password, time() + 3600, '/');
-}
+// function cookiesAdmin($email, $password)
+// {
+// 	setcookie('adminUser', $email, time() + 3600, '/');
+// 	setcookie('passwordAdmin', $password, time() + 3600, '/');
+// }
 
-function destroyCookiesAdmin()
-{
-	setcookie('adminUser', '', time() - 3600, '/');
-	setcookie('passwordAdmin', '', time() - 3600, '/');
-}
 
-function checkCookiesAdmin()
+function check_session_admin(String $email)
 {
-	if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser']) || !isset($_COOKIE['adminUser']) || !isset($_COOKIE['passwordAdmin'])) {
+	if (obtener_privilegio($email)) {
+		if (obtener_privilegio($email) == 'user') {
+			echo '<script type="text/JavaScript"> 
+			localStorage.clear();
+			 </script>';
+			die("Error. You are not the administrator. Talk to the administrator if you have more problems <a href='logOut.php'>Log in</a>");
+		}
+	} else {
 		echo '<script type="text/JavaScript"> 
 		localStorage.clear();
-     </script>';
+		 </script>';
 		die("Error. You are not the administrator. Talk to the administrator if you have more problems <a href='logOut.php'>Log in</a>");
-	} elseif (checkStatus($_COOKIE['adminUser'])) {
-		echo '<script type="text/JavaScript"> 
-		localStorage.clear();
-	 </script>';
-		die("Error. You are block <a href='logOut.php'>Log in</a>");
 	}
 }
 
-function checkCookiesUser()
-{
-	if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
-		echo '<script type="text/JavaScript"> 
-		localStorage.clear();
-     </script>';
-		die("Error. You are not logged <a href='logOut.php'>Log in</a>");
-	} elseif (checkStatus($_SESSION['email'])) {
-		echo '<script type="text/JavaScript"> 
-		localStorage.clear();
-	 </script>';
-		$data_usuario_bloqueado = obtener_datos_usuario($_SESSION['email']);
-		$id_user = $data_usuario_bloqueado['IDuser'];
-		$asunto_ticket = 'Usuario bloqueado';
-		$descripcion_ticket = 'El usuario ' . $data_usuario_bloqueado['userName'] .  ' con el email ' . $data_usuario_bloqueado['email'] . ' ha intentado acceder a la pagina y ha sido bloqueado.';
-		$fecha = date("Y-m-d H:i:s");
-		$estado = 'abierto';
-		new_ticket($id_user, $asunto_ticket, $descripcion_ticket, $fecha, $estado);
-		die("Error. You are block <a href='logOut.php'>Log in</a>");
-	}
-}
+// function checkCookiesUser()
+// {
+// 	if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
+// 		echo '<script type="text/JavaScript"> 
+// 		localStorage.clear();
+//      </script>';
+// 		die("Error. You are not logged <a href='logOut.php'>Log in</a>");
+// 	} elseif (checkStatus($_SESSION['email'])) {
+// 		echo '<script type="text/JavaScript"> 
+// 		localStorage.clear();
+// 	 </script>';
+// 		$data_usuario_bloqueado = obtener_datos_usuario($_SESSION['email']);
+// 		$id_user = $data_usuario_bloqueado['IDuser'];
+// 		$asunto_ticket = 'Usuario bloqueado';
+// 		$descripcion_ticket = 'El usuario ' . $data_usuario_bloqueado['userName'] .  ' con el email ' . $data_usuario_bloqueado['email'] . ' ha intentado acceder a la pagina y ha sido bloqueado.';
+// 		$fecha = date("Y-m-d H:i:s");
+// 		$estado = 'abierto';
+// 		new_ticket($id_user, $asunto_ticket, $descripcion_ticket, $fecha, $estado);
+// 		die("Error. You are block <a href='logOut.php'>Log in</a>");
+// 	}
+// }
 
-function comprobar_sesion(){
-	if(!isset($_SESSION['email'])){
-		header('Location: ../index.php');
-	}
-}
 
-/**
- * Log out and delete user and admin cookies
- *
- * @return void
- */
-function deleteCookies()
-{
-	session_start();
-	session_destroy();
+// function deleteCookies()
+// {
+// 	session_start();
+// 	session_destroy();
 
-	echo '<script type="text/JavaScript">
-	localStorage.clear();
-	</script>';
+// 	echo '<script type="text/JavaScript">
+// 	localStorage.clear();
+// 	</script>';
 
-	destroyCookiesAdmin();
-	destroyCookiesUser();
-	destroyCookiesUserTemporal();
-}
+// 	destroyCookiesUser();
+// 	destroyCookiesUserTemporal();
+// }
 
 /**
  * Function that is used to check that reserved words cannot be saved
@@ -496,7 +482,7 @@ function mostrar_datos($datos): void
 	</td>
 	</tr>";
 	}
-	
+
 	echo "</tbody>
 		</table>";
 }

@@ -4,13 +4,15 @@ var image;
 
 const checkSesion = () => {
     if (sesion != null) {
-        window.location.href = "inicio.php";
+        window.location.href = "index.php";
     }
 }
 
 const checkSesionUpdate = () => {
     if (sesion != null) {
         document.querySelector('#user').innerHTML = sesion;
+    }else{
+        document.querySelector('#user').innerHTML = 'Invitado';
     }
 }
 
@@ -205,7 +207,7 @@ const login_user = async () => {
         localStorage.setItem('UserName', result.userName);
 
         setTimeout(() => {
-            window.location.href = "inicio.php";
+            window.location.href = "index.php";
         }, 2000);
     } else {
         Swal.fire({
@@ -237,7 +239,7 @@ const guest_User = async () => {
         })
         localStorage.setItem('UserName', 'Invitado');
         setTimeout(() => {
-            window.location.href = "inicio.php";
+            window.location.href = "index.php";
         }, 2000);
     } else {
         Swal.fire({

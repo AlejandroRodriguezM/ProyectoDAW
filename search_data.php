@@ -1,8 +1,8 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-//checkCookiesUser();
-destroyCookiesUserTemporal();
+
+
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
@@ -31,6 +31,7 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
     <link rel="stylesheet" href="./assets/style/media_videos.css">
     <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
+    <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -41,7 +42,7 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-
+    <script src="./assets/js/temporizador.js"></script>
 
     <title>Busqueda</title>
     <style>
@@ -201,6 +202,13 @@ if (existe_user($input_user)) {
 ?>
 
 <body onload="checkSesionUpdate();showSelected();">
+    <div id="session-expiration">
+        <div id="session-expiration-message">
+            <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
+            <button id="session-expiration-continue-btn">Continuar</button>
+            <button id="session-expiration-logout-btn">Cerrar sesión</button>
+        </div>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -260,7 +268,7 @@ if (existe_user($input_user)) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
                     <li class="nav-item">

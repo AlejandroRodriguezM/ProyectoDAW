@@ -83,7 +83,7 @@ function obtener_datos_usuario(string $acces): array
 	$acces = htmlspecialchars($acces, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		// Preparar la consulta SQL con sentencias preparadas
-		$stmt = $conection->prepare("SELECT * FROM users WHERE email=:acces OR userName=:acces OR IDuser=:acces");
+		$stmt = $conection->prepare("SELECT IDuser,privilege,userName,email,userPicture,accountStatus,tipo_perfil FROM users WHERE email=:acces OR userName=:acces OR IDuser=:acces");
 		$stmt->bindParam(':acces', $acces, PDO::PARAM_STR);
 		// Ejecutar la consulta
 		$stmt->execute();
@@ -96,6 +96,27 @@ function obtener_datos_usuario(string $acces): array
 	}
 	// Devolver los datos
 	return $row;
+}
+
+function obtener_privilegio(String $email): String
+{
+	global $conection;
+
+	// Validar y filtrar la entrada
+	$email = htmlspecialchars($email, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		// Preparar la consulta SQL con sentencias preparadas
+		$stmt = $conection->prepare("SELECT privilege FROM users WHERE email= ?");
+		$stmt->bindParam(1, $email, PDO::PARAM_STR);
+		// Ejecutar la consulta
+		$stmt->execute();
+		// Obtener los datos de la consulta
+        $privilegio = $stmt->fetch(PDO::FETCH_COLUMN);
+	} catch (PDOException $e) {
+		die("Code: " . $e->getCode() . "\nMessage: " . $e->getMessage());
+	}
+	// Devolver los datos
+	return $privilegio;
 }
 
 

@@ -4,7 +4,7 @@ var email = localStorage.getItem('correo');
 
 const checkSesion = () => {
     if (sesion != null) {
-        window.location.href = "inicio.php";
+        window.location.href = "index.php";
     }
     document.querySelector('#user').innerHTML = sesion;
 }

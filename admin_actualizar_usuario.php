@@ -1,16 +1,20 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-checkCookiesAdmin();
-destroyCookiesUserTemporal();
+
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_user);
-    echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+    if ($userPrivilege == 'admin') {
+        $id_user = $userData['IDuser'];
+        $numero_comics = get_total_guardados($id_user);
+        $picture = $userData['userPicture'];
+        echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+    }else{
+        header('Location: logOut.php');
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -31,6 +35,7 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
     <link rel="stylesheet" href="./assets/style/media_videos.css">
     <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
+    <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -41,7 +46,7 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-
+    <script src="./assets/js/temporizador.js"></script>
     <title>Editar datos usuario</title>
 
     <style>
@@ -53,23 +58,15 @@ if (isset($_SESSION['email'])) {
             padding-bottom: 30px;
             border-radius: 30px;
         }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
     </style>
 </head>
 
 <?php
-if (isset($_COOKIE['loginUser']) && isset($_COOKIE['passwordUser'])) {
-    $emailUser = $_COOKIE['loginUserTemp'];
-    $IDuser = $_COOKIE['idTemp'];
-    $password = $_COOKIE['passwordUserTemp'];
+if (isset($_SESSION['usuario_temporal'])) {
+    $emailUser = $_SESSION['usuario_temporal'];
     $dataUser = obtener_datos_usuario($emailUser);
     $nameUser = $dataUser['userName'];
+    $IDuser = $dataUser['IDuser'];
 } else {
     $emailUser = $_POST['email'];
     $nameUser = $_POST['name'];
@@ -78,12 +75,18 @@ if (isset($_COOKIE['loginUser']) && isset($_COOKIE['passwordUser'])) {
 }
 
 if (isset($_POST['adminPanel'])) {
-    destroyCookiesUserTemporal();
     header('Location: admin_panel_usuario.php');
 }
 ?>
 
 <body onload="checkSesionUpdate();showSelected();">
+<div id="session-expiration">
+        <div id="session-expiration-message">
+            <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
+            <button id="session-expiration-continue-btn">Continuar</button>
+            <button id="session-expiration-logout-btn">Cerrar sesión</button>
+        </div>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
         <div class="container-fluid" style="background-color: #343a40;">
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -129,19 +132,13 @@ if (isset($_POST['adminPanel'])) {
                                     <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
                                 </li>
                             <?php
-                            } else {
-                            ?>
-                                <li>
-                                    <button class="dropdown-item" onclick="iniciar_sesion()" name="loginSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Iniciar sesion</a>
-                                </li>
-                            <?php
                             }
                             ?>
                         </ul>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="inicio.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
                     <li class="nav-item">
@@ -150,10 +147,6 @@ if (isset($_POST['adminPanel'])) {
                         ?>
                             <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                         <?php
                         }
                         ?>
@@ -164,10 +157,6 @@ if (isset($_POST['adminPanel'])) {
                         if (isset($_SESSION['email'])) {
                         ?>
                             <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                         <?php
                         }
                         ?>
@@ -186,7 +175,6 @@ if (isset($_POST['adminPanel'])) {
             <div class="dropdown" id="navbar-user" style="left: 2px !important;">
                 <?php
                 if (isset($_SESSION['email'])) {
-                    $picture = pictureProfile($email);
                     echo "<img src='$picture' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
                 } else {
                     echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
@@ -252,7 +240,7 @@ if (isset($_POST['adminPanel'])) {
                                             echo " " . "<span style='font-size: 0.7em'>$emailUser</span>";
                                             ?>
                                         </li>
-                                        <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
+                                        <li class="activity"><label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
                                             $hora = $_SESSION['hour'];
                                             echo "$hora";
@@ -263,7 +251,7 @@ if (isset($_POST['adminPanel'])) {
                                 <nav class="side-menu">
                                     <ul class="nav">
                                         <li><a href="admin_info_usuario.php"><span class="fa fa-user"></span>Perfil</a></li>
-                                        <li class="active"><a href="admin_actualizar_usuario.php"><span class="fa fa-cog"></span>Updating user data</a></li>
+                                        <li class="active"><a href="admin_actualizar_usuario.php"><span class="fa fa-cog"></span>Editar</a></li>
                                     </ul>
                                 </nav>
                             </div>

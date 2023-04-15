@@ -57,8 +57,6 @@ if ($userPrivilege != 'guest') {
                 if ($row['privilege'] == 'admin') {
                     unset($_SESSION['email']);
                     $_SESSION['email'] = $emailNew;
-                    cookiesUser($emailNew, $password);
-                    cookiesAdmin($emailNew, $password);
                 }
                 updateAboutUser($id, '', $name, $lastname);
                 actualizar_email($emailNew, $emailOld);
