@@ -374,3 +374,8 @@ se ha creado un modal que pregunta al usuario si quiere continuar con su sesion,
  - Se ha arreglado el mandar tickets entre usuarios y administradores
  - Se han creado nuevas apis, para poder hacer que los mensajes privados se vean a tiempo real con AJAX
  - Se han creado nuevos ficheros css, para los mensajes privados
+
+16/04/2023 Log 2
+ - Se han añadido 2 tablas en la base de datos para los mensajes entre usuarios
+ - Se ha arreglado un problema con las claves foraneas en respuestas_tickets
+ - Ahora si el usuario no hace nada en 60min, se cierra la sesion automaticamente
