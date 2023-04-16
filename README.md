@@ -365,3 +365,12 @@ Fin de la semana santa.
 - Se ha creado un nuevo fichero js para poder controlar el tiempo que el usuario pasa dentro de la web, en caso de que pasen 60min y no responda el usuario
 se ha creado un modal que pregunta al usuario si quiere continuar con su sesion, en caso de cancelar o que sea ignorado, se cerrada automaticamente
 - Se ha cambiado el nombre del fichero inicio.php a index.php, ya que sera la landing page
+
+
+16/04/2023 Log 1
+ - Se han arreglado varios bugs visuales.
+ - Se ha agregado la pestaña de mensajes privados
+ - Ahora es posible mandar mensajes entre usuarios.
+ - Se ha arreglado el mandar tickets entre usuarios y administradores
+ - Se han creado nuevas apis, para poder hacer que los mensajes privados se vean a tiempo real con AJAX
+ - Se han creado nuevos ficheros css, para los mensajes privados

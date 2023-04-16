@@ -8,18 +8,20 @@ if ($_POST) {
     $ticket_id = $_POST['ticket_id'];
     $mensaje_ticket = $_POST['mensaje'];
     $estado = $_POST['estado'];
+    $usuario_id = $_POST['user_id'];
+    $email = $_SESSION['email'];
+    $user_dato = obtener_datos_usuario($email);
+    $nombre_admin = $user_dato['userName'];
     $reservedWords = reservedWords();
     $fecha = date('Y-m-d H:i:s');
-    $user = $_SESSION['userName'];
-    $email = $_SESSION['email'];
-    $row = obtener_datos_usuario($email);
+    $row = obtener_datos_usuario($usuario_id);
     $privilegio = $row['privilege'];
     if (in_array(strtolower($mensaje_ticket), $reservedWords)) {
         http_response_code(400);
         $validate['success'] = false;
         $validate['message'] = 'ERROR. You cant use system reserved words';
     } else {
-        if (respond_tickets($ticket_id, $mensaje_ticket, $fecha, $user, $privilegio)) {
+        if (respond_tickets($ticket_id,$usuario_id, $mensaje_ticket, $fecha, $nombre_admin, $privilegio)) {
 
             cambiar_estado($estado, $ticket_id);
 

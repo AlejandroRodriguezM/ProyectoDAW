@@ -60,7 +60,7 @@ if (isset($_SESSION['email'])) {
 </head>
 
 <body onload="checkSesionUpdate();showSelected();">
-<div id="session-expiration">
+    <div id="session-expiration">
         <div id="session-expiration-message">
             <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
             <button id="session-expiration-continue-btn">Continuar</button>
@@ -250,15 +250,19 @@ if (isset($_SESSION['email'])) {
                                 </div>
                                 <nav class="side-menu">
                                     <ul class="nav">
-                                        <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Perfil</a></li>
+                                        <li><a href="infoPerfil.php"><span class="fa fa-user"></span>Perfil</a></li>
                                         <li><a href='solicitudes_amistad.php'><span class='fa fa-user'></span>Solicitudes de amistad</a></li>
                                         <li class='active'><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>
-                                        <li><a href="modificar_perfil.php"><span class="fa fa-cog"></span>Ajustes</a></li>
+                                        <li><a href="modificar_perfil.php"><span class="fa fa-cog"></span> Opciones</a></li>
                                         <?php
                                         if ($userPrivilege == 'user') {
-                                            echo "<li><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
+                                            echo "<li ><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
+                                        } else {
+                                            echo "<li ><a href='panel_tickets_admin.php'><span class='fa fa-cog'></span>Tickets administrador</a></li>";
                                         }
                                         ?>
+                                        <li><a href="mensajes_usuario.php"><span class="fa fa-cog"></span>Mis mensajes</a></li>
+
                                     </ul>
                                 </nav>
                             </div>

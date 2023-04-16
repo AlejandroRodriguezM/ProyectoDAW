@@ -63,7 +63,6 @@ if ($userPrivilege != 'guest') {
                 createDirectory($emailNew, $id);
                 updateSaveImage($emailNew, $image);
                 insertURL($emailNew, $id);
-                destroyCookiesUserTemporal();
                 deleteDirectory($emailOld, $id);
                 $validate['success'] = true;
                 $validate['message'] = 'The user has been updated';

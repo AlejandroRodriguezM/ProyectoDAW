@@ -576,8 +576,55 @@ const mandar_ticket = async () => {
     }
 }
 
+const mandar_mensaje = async () => {
+    var id_usuario_destinatario = document.querySelector("#id_usuario_destinatario").value;
+    var id_usuario_remitente = document.querySelector("#id_usuario_remitente").value;
+    var mensaje = document.querySelector("#mensaje_usuario_enviar").value;
+
+
+
+    if (mensaje.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('id_usuario_destinatario', id_usuario_destinatario);
+    data.append("id_usuario_remitente", id_usuario_remitente);
+    data.append("mensaje", mensaje);
+
+    //pass data to php file
+    var respond = await fetch("php/apis/new_mensaje.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        document.querySelector('#form_ticket').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
 const responder_ticket = async (ticket_id) => {
-    var id = document.querySelector("#ticket_id_" + ticket_id).value;
+    var id_ticket = document.querySelector("#ticket_id_" + ticket_id).value;
+    var id_usuario = document.querySelector("#user_id_" + ticket_id).value;
     var estado = document.querySelector("#estado_" + ticket_id).value;
     var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
 
@@ -593,7 +640,8 @@ const responder_ticket = async (ticket_id) => {
 
     //insert to data base in case of everything go correct.
     const data = new FormData();
-    data.append('ticket_id', id);
+    data.append('ticket_id', id_ticket);
+    data.append("user_id", id_usuario);
     data.append("estado", estado);
     data.append("mensaje", respuesta);
 

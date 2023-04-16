@@ -3,16 +3,20 @@ session_start();
 include_once 'php/inc/header.inc.php';
 
 
-$nombre_otro_usuario = $_GET['userName'];
+
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_user);
-}
-else{
+    $id_mi_usuario = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_mi_usuario);
+
+    $nombre_otro_usuario = $_GET['userName'];
+    $dataUser = obtener_datos_usuario($nombre_otro_usuario);
+    $id_otro_usuario = $dataUser['IDuser'];
+    $profilePicture = $dataUser['userPicture'];
+} else {
     header("Location: index.php");
 }
 echo "<input type='hidden' id='num_comics' value=''>";
@@ -37,6 +41,8 @@ if (isset($_POST['edit'])) {
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
+    <link rel="stylesheet" href="./assets/style/style.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -59,7 +65,7 @@ if (isset($_POST['edit'])) {
             border-radius: 30px;
         }
 
-        
+
 
         .comics-lists {
             /* display: flex; */
@@ -157,7 +163,7 @@ if (isset($_POST['edit'])) {
 </head>
 
 <body onload="checkSesionUpdate();showSelected();">
-<div id="session-expiration">
+    <div id="session-expiration">
         <div id="session-expiration-message">
             <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
             <button id="session-expiration-continue-btn">Continuar</button>
@@ -324,9 +330,7 @@ if (isset($_POST['edit'])) {
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $userData = obtener_datos_usuario($email);
-                            $id_user = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                            echo "<input type='hidden' id='id_user_ticket' value='$id_mi_usuario'>";
                         }
                         ?>
                     </div>
@@ -334,6 +338,35 @@ if (isset($_POST['edit'])) {
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
                     <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="mensaje_privado" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <form method="post" id="form_ticket" onsubmit="return false;">
+
+                        <h4 class="modal-title">Mensaje para usuario <?php echo $nombre_otro_usuario ?></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea class="form-control" id="mensaje_usuario_enviar" style="resize:none;"></textarea>
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            echo "<input type='hidden' id='id_usuario_remitente' value='$id_mi_usuario'>";
+                            echo "<input type='hidden' id='id_usuario_destinatario' value='$id_otro_usuario'>";
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_mensaje()">
                 </div>
                 </form>
             </div>
@@ -352,9 +385,7 @@ if (isset($_POST['edit'])) {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = obtener_datos_usuario($nombre_otro_usuario);
-                                    $id_otro_usuario = $dataUser['IDuser'];
-                                    $profilePicture = $dataUser['userPicture'];
+
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
 
@@ -386,30 +417,30 @@ if (isset($_POST['edit'])) {
                                         <?php
                                         if (isset($_SESSION['email'])) {
                                             // Verificar si el usuario actual está bloqueado por el usuario que está viendo el perfil
-                                            if (comprobar_bloqueo($id_user, $id_otro_usuario)) {
+                                            if (comprobar_bloqueo($id_mi_usuario, $id_otro_usuario)) {
                                                 echo "<button class='btn btn-danger solicitud_enviada' onclick='' style='float:right;margin-right:10px'>Estás bloqueado</button>";
                                             } else {
                                                 // Código para enviar solicitudes y mostrar el estado de la amistad
-                                                if (comprobar_amistad($id_otro_usuario, $id_user)) {
-                                                    echo "<button class='btn btn-success solicitud_enviada amistad' onclick='eliminar_amigo($id_otro_usuario,$id_user)' style='float:right'><span>Ya sois amigos</span></button>";
-                                                } elseif (estado_solicitud($id_otro_usuario, $id_user) == 'cancelada') {
+                                                if (comprobar_amistad($id_otro_usuario, $id_mi_usuario)) {
+                                                    echo "<button class='btn btn-success solicitud_enviada amistad' onclick='eliminar_amigo($id_otro_usuario,$id_mi_usuario)' style='float:right'><span>Ya sois amigos</span></button>";
+                                                } elseif (estado_solicitud($id_otro_usuario, $id_mi_usuario) == 'cancelada') {
                                                     echo '<button class="btn btn-primary solicitud_enviada" style="float:right">Te ha rechazado</button>';
-                                                } elseif (!comprobar_bloqueo($id_otro_usuario, $id_user) && estado_solicitud($id_otro_usuario, $id_user) == 'en espera') {
-                                                    echo "<button class='btn btn-secondary solicitud_enviada cancelar' onclick='cancelar_solicitud($id_otro_usuario,$id_user)' style='float:right'><span>Solicitud enviada</span></button>";
+                                                } elseif (!comprobar_bloqueo($id_otro_usuario, $id_mi_usuario) && estado_solicitud($id_otro_usuario, $id_mi_usuario) == 'en espera') {
+                                                    echo "<button class='btn btn-secondary solicitud_enviada cancelar' onclick='cancelar_solicitud($id_otro_usuario,$id_mi_usuario)' style='float:right'><span>Solicitud enviada</span></button>";
                                                 } else {
-                                                    if (estado_solicitud($id_user, $id_otro_usuario) == 'en espera') {
-                                                        echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_otro_usuario,$id_user)' style='float:right'><span>Rechazar solicitud</span></button>";
-                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_otro_usuario,$id_user)' style='float:right;margin-right:10px'><span>Aceptar solicitud</span></button>";
-                                                    } else if (!comprobar_bloqueo($id_otro_usuario, $id_user)) {
-                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_otro_usuario,$id_user)' style='float:right;margin-right:10px'>Enviar solicitud</button>";
+                                                    if (estado_solicitud($id_mi_usuario, $id_otro_usuario) == 'en espera') {
+                                                        echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_otro_usuario,$id_mi_usuario)' style='float:right'><span>Rechazar solicitud</span></button>";
+                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_otro_usuario,$id_mi_usuario)' style='float:right;margin-right:10px'><span>Aceptar solicitud</span></button>";
+                                                    } else if (!comprobar_bloqueo($id_otro_usuario, $id_mi_usuario)) {
+                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_otro_usuario,$id_mi_usuario)' style='float:right;margin-right:10px'>Enviar solicitud</button>";
                                                     }
                                                 }
 
                                                 // Código para bloquear o desbloquear al usuario
-                                                if (!comprobar_bloqueo($id_otro_usuario, $id_user)) {
-                                                    echo "<button class='btn btn-danger solicitud_enviada' onclick='bloquear_usuario($id_user,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Bloquear usuario</span></button>";
+                                                if (!comprobar_bloqueo($id_otro_usuario, $id_mi_usuario)) {
+                                                    echo "<button class='btn btn-danger solicitud_enviada' onclick='bloquear_usuario($id_mi_usuario,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Bloquear usuario</span></button>";
                                                 } else {
-                                                    echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_user,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
+                                                    echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_mi_usuario,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
                                                 }
                                             }
                                             if ($userPrivilege == 'admin') {
@@ -438,11 +469,11 @@ if (isset($_POST['edit'])) {
                                     </div>
                                     <?php
                                     // comprobar si el usuario actual está bloqueado por el usuario a mostrar
-                                    if (comprobar_bloqueo($id_otro_usuario, $id_user)) {
+                                    if (comprobar_bloqueo($id_otro_usuario, $id_mi_usuario)) {
                                         echo "<p>Este usuario te ha bloqueado</p>";
                                     }
                                     // comprobar si la cuenta del usuario a mostrar es privada y si el usuario actual no es amigo
-                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_user)) {
+                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_mi_usuario)) {
                                         echo "<p>Este usuario tiene la cuenta privada</p>";
                                     }
                                     // si no está bloqueado y la cuenta no es privada o si es amigo, mostrar la información
@@ -473,16 +504,23 @@ if (isset($_POST['edit'])) {
                                 <div class="comics-lists">
                                     <?php
                                     // comprobar si el usuario actual está bloqueado por el usuario a mostrar
-                                    if (comprobar_bloqueo($id_otro_usuario, $id_user)) {
+                                    if (comprobar_bloqueo($id_otro_usuario, $id_mi_usuario)) {
                                         echo "<p>Este usuario te ha bloqueado</p>";
                                     }
                                     // comprobar si la cuenta del usuario a mostrar es privada y si el usuario actual no es amigo
-                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_user)) {
+                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_mi_usuario)) {
                                         echo "<p>Este usuario tiene la cuenta privada</p>";
                                     }
                                     // si no está bloqueado y la cuenta no es privada o si es amigo, mostrar la información
                                     else {
+                                        if (comprobar_mensaje($id_otro_usuario, $id_mi_usuario)) {
+                                            echo '<button class="btn btn-primary" onclick="location.href=\'./mensajes_usuario.php\'">Ver mensaje privado</button>';
+                                        } else {
+                                            // echo '<button class="btn btn-primary"></button>';
+                                            echo "<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#mensaje_privado' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Enviar mensaje privado</button>";
+                                        }
                                     ?>
+                                        <!-- boton para mandar mensaje privado  -->
                                         <p>Numero de amigos: <?php echo num_amistades($id_otro_usuario) ?></p>
                                         <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo get_total_guardados($id_otro_usuario); ?> comics guardados</p>
                                         <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_otro_usuario); ?> listas</p>
@@ -491,6 +529,8 @@ if (isset($_POST['edit'])) {
                                     ?>
 
                                 </div>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>

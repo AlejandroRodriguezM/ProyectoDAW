@@ -530,13 +530,14 @@ echo "<input type='hidden' id='num_comics' value=''>";
                                     ?>
 
                                     <?php
-                                    if (!isset($_SESSION['email'])) {
+                                    if (isset($_SESSION['email'])) {
                                         if (check_guardado($id_user, $id_comic)) {
                                             echo "<button id='myButton' class='active'></button>";
                                         }
-                                    } else {
-                                        echo "<button id='myButton'></button>";
                                     }
+                                    // else {
+                                    //     echo "<button id='myButton'></button>";
+                                    // }
                                     ?>
 
                                 </div>

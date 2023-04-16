@@ -30,7 +30,8 @@ if ($userPrivilege == 'user') {
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
-    <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
+    <!-- <link rel="stylesheet" href="./assets/style/bandeja_comics.css"> -->
+    <link rel="stylesheet" href="./assets/style/bandeja_style.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
@@ -38,6 +39,7 @@ if ($userPrivilege == 'user') {
     <link rel="stylesheet" href="./assets/style/media_videos.css">
     <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
+    <link rel="stylesheet" href="./assets/style/ticket_style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">

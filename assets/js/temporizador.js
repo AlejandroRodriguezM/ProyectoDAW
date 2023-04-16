@@ -27,8 +27,8 @@ function resetTimeout() {
 }
 
 function doInactive() {
-    localStorage.clear();
-    window.location.href = 'sesion_caducada.php';
+    // localStorage.clear();
+    // window.location.href = 'sesion_caducada.php';
 }
 
 function showWarning() {

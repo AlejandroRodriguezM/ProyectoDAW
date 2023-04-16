@@ -111,7 +111,7 @@ function obtener_privilegio(String $email): String
 		// Ejecutar la consulta
 		$stmt->execute();
 		// Obtener los datos de la consulta
-        $privilegio = $stmt->fetch(PDO::FETCH_COLUMN);
+		$privilegio = $stmt->fetch(PDO::FETCH_COLUMN);
 	} catch (PDOException $e) {
 		die("Code: " . $e->getCode() . "\nMessage: " . $e->getMessage());
 	}
@@ -426,7 +426,150 @@ function new_ticket(int $id_user, string $asunto_ticket, string $descripcion_tic
 	return $confirmado;
 }
 
-function respond_tickets(int $ticket_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
+function new_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente, String $mensaje_usuario): bool
+{
+	global $conection;
+	$confirmado = false;
+	$id_usuario_destinatario = htmlspecialchars($id_usuario_destinatario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_usuario_remitente = htmlspecialchars($id_usuario_remitente, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$mensaje_usuario = htmlspecialchars($mensaje_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$fecha = date('Y-m-d H:i:s');
+	$fechaCreacion = date('Y-m-d', strtotime(str_replace('-', '/', $fecha)));
+	$conversacion_id = identificador_conversacion($id_usuario_remitente, $id_usuario_destinatario);
+
+
+	// var_dump($id_usuario_remitente);
+	try {
+		if (!existe_conversacion($id_usuario_remitente, $id_usuario_destinatario)) {
+			$insertData1 = $conection->prepare("INSERT INTO nuevo_mensajes_usuarios (id_usuario_destinatario,id_usuario_remitente,id_conversacion) VALUES (?,?,?)");
+			$insertData1->bindParam(1, $id_usuario_destinatario);
+			$insertData1->bindParam(2, $id_usuario_remitente);
+			$insertData1->bindParam(3, $conversacion_id);
+			$insertData1->execute();
+		}
+		$mensaje_id = identificador_mensaje($id_usuario_destinatario, $id_usuario_remitente);
+		$insertData2 = $conection->prepare("INSERT INTO respuestas_mensajes_usuarios (id_conversacion,id_mensaje,id_usuario_envio,mensaje_usuario,fecha_envio_mensaje) VALUES (?,?,?,?,?)");
+		$insertData2->bindParam(1, $conversacion_id);
+		$insertData2->bindParam(2, $mensaje_id);
+		$insertData2->bindParam(3, $id_usuario_remitente);
+		$insertData2->bindParam(4, $mensaje_usuario);
+		$insertData2->bindParam(5, $fechaCreacion);
+
+		if ($insertData2->execute()) {
+			$confirmado = true;
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $confirmado;
+}
+
+function identificador_conversacion(int $id_usuario_remitente, int $id_usuario_destinatario): int
+{
+	global $conection;
+	$conversacion_id = 1;
+	try {
+		$consulta = $conection->prepare("SELECT id_conversacion as max_conversacion_id FROM nuevo_mensajes_usuarios WHERE (id_usuario_remitente = ? AND id_usuario_destinatario = ?) OR (id_usuario_remitente = ? AND id_usuario_destinatario = ?)");
+		if ($consulta->execute(array($id_usuario_remitente, $id_usuario_destinatario, $id_usuario_destinatario, $id_usuario_remitente))) {
+			if ($consulta->rowCount() > 0) {
+				$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+				$conversacion_id = $resultado['max_conversacion_id'];
+			} else {
+				$consulta = $conection->prepare("SELECT MAX(id_conversacion) as max_conversacion_id FROM nuevo_mensajes_usuarios");
+				if ($consulta->execute()) {
+					$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+					$conversacion_id = $resultado['max_conversacion_id'] + 1;
+				}
+			}
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $conversacion_id;
+}
+
+function identificador_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente): int
+{
+	global $conection;
+	$id_usuario_destinatario = htmlspecialchars($id_usuario_destinatario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_usuario_remitente = htmlspecialchars($id_usuario_remitente, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+	try {
+		$consulta = $conection->prepare("SELECT id_mensaje FROM nuevo_mensajes_usuarios WHERE (id_usuario_remitente = ? AND id_usuario_destinatario = ?) OR (id_usuario_remitente = ? AND id_usuario_destinatario = ?)");
+		$consulta->bindParam(1, $id_usuario_remitente);
+		$consulta->bindParam(2, $id_usuario_destinatario);
+		$consulta->bindParam(3, $id_usuario_destinatario);
+		$consulta->bindParam(4, $id_usuario_remitente);
+
+		if ($consulta->execute()) {
+			$consulta = $consulta->fetch(PDO::FETCH_COLUMN);
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $consulta;
+}
+
+
+function existe_conversacion(int $id_remitente, int $id_destinatario): bool
+{
+	global $conection;
+	$confirmado = false;
+	$id_remitente = htmlspecialchars($id_remitente, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_destinatario = htmlspecialchars($id_destinatario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+	try {
+		$consulta = $conection->prepare("SELECT id_conversacion FROM nuevo_mensajes_usuarios WHERE (id_usuario_remitente = ? AND id_usuario_destinatario = ?) OR (id_usuario_remitente = ? AND id_usuario_destinatario = ?)");
+		$consulta->bindParam(1, $id_remitente);
+		$consulta->bindParam(2, $id_destinatario);
+		$consulta->bindParam(3, $id_destinatario);
+		$consulta->bindParam(4, $id_remitente);
+		$consulta->execute();
+
+		if ($consulta->rowCount() > 0) {
+			$confirmado = true;
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $confirmado;
+}
+
+
+
+function comprobar_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente): bool
+{
+	global $conection;
+	$confirmado = false;
+	$id_usuario_destinatario = htmlspecialchars($id_usuario_destinatario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_usuario_remitente = htmlspecialchars($id_usuario_remitente, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+	try {
+		$insertData = $conection->prepare("SELECT * FROM nuevo_mensajes_usuarios WHERE id_usuario_destinatario = ? AND id_usuario_remitente = ?");
+		$insertData->bindParam(1, $id_usuario_destinatario);
+		$insertData->bindParam(2, $id_usuario_remitente);
+		$insertData->execute();
+
+		if ($insertData->rowCount() > 0) {
+			$confirmado = true;
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $confirmado;
+}
+
+function respond_tickets(int $ticket_id,int $usuario_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
 {
 	global $conection;
 	$confirmado = false;
@@ -436,12 +579,13 @@ function respond_tickets(int $ticket_id, string $mensaje_ticket, string $fecha, 
 	$nombre_admin = htmlspecialchars($nombre_admin, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$privilegio_user = htmlspecialchars($privilegio_user, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$insertData = $conection->prepare("INSERT INTO tickets_respuestas (ticket_id, respuesta_ticket, fecha_respuesta, nombre_admin,privilegio_user) VALUES (?,?,?,?,?)");
+		$insertData = $conection->prepare("INSERT INTO tickets_respuestas (ticket_id,user_id,respuesta_ticket, fecha_respuesta, nombre_admin,privilegio_user) VALUES (?,?,?,?,?,?)");
 		$insertData->bindParam(1, $ticket_id);
-		$insertData->bindParam(2, $mensaje_ticket);
-		$insertData->bindParam(3, $fecha);
-		$insertData->bindParam(4, $nombre_admin);
-		$insertData->bindParam(5, $privilegio_user);
+		$insertData->bindParam(2, $usuario_id);
+		$insertData->bindParam(3, $mensaje_ticket);
+		$insertData->bindParam(4, $fecha);
+		$insertData->bindParam(5, $nombre_admin);
+		$insertData->bindParam(6, $privilegio_user);
 		if ($insertData->execute()) {
 			$confirmado = true;
 		}
@@ -451,6 +595,14 @@ function respond_tickets(int $ticket_id, string $mensaje_ticket, string $fecha, 
 		die("Code: " . $error_Code . "\nMessage: " . $message);
 	}
 	return $confirmado;
+}
+
+function datos_tickets(){
+	global $conection;
+	$consulta = $conection->prepare("SELECT * FROM tickets");
+	$consulta->execute();
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
 }
 
 function cambiar_estado(string $estado, int $id): void
@@ -486,6 +638,51 @@ function getTickets(int $id): array
 	}
 	return $consulta;
 }
+
+function get_mensajes(int $id_usuario): array
+{
+	global $conection;
+	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT * from nuevo_mensajes_usuarios where id_usuario_destinatario = ? OR id_usuario_remitente = ?");
+		if ($consulta->execute(array($id_usuario, $id_usuario))) {
+			$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $consulta;
+}
+
+function get_conversacion(int $id_conversacion): array
+{
+	global $conection;
+	$id_conversacion = htmlspecialchars($id_conversacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		// $consulta = $conection->prepare("
+		//     SELECT nm.id_mensaje, rm.id_respuesta_mensaje, nm.id_usuario_remitente, nm.id_usuario_destinatario, rm.mensaje_usuario, rm.fecha_envio_mensaje, rm.estado_mensaje, rm.mensaje_denunciado 
+		//     FROM nuevo_mensajes_usuarios nm 
+		//     LEFT JOIN respuestas_mensajes_usuarios rm 
+		//     ON nm.id_mensaje = rm.id_mensaje 
+		//     WHERE nm.id_usuario_remitente = ? OR nm.id_usuario_destinatario = ?
+		//     ORDER BY rm.fecha_envio_mensaje ASC");
+
+		$consulta = $conection->prepare("SELECT * FROM respuestas_mensajes_usuarios WHERE id_conversacion = ?  ORDER BY fecha_envio_mensaje ASC");
+
+		if ($consulta->execute(array($id_conversacion))) {
+			$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $consulta;
+}
+
+
 
 function getTickets_user(int $id): array
 {
@@ -978,7 +1175,8 @@ function check_guardado_lista(int $id_lista, int $id_comic): bool
 	return $guardado;
 }
 
-function numero_comics_lista($id_lista){
+function numero_comics_lista($id_lista)
+{
 	global $conection;
 	$id_lista = htmlspecialchars($id_lista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
