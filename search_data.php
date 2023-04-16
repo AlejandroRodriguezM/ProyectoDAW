@@ -8,8 +8,8 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_user);
+    $id_usuario = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 }
 ?>
@@ -58,7 +58,7 @@ if (isset($_SESSION['email'])) {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         img {
             max-width: 200px;
@@ -316,7 +316,7 @@ if (existe_user($input_user)) {
                     <li class="nav-item">
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                            $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                             // Imprimir el enlace con el número de mensajes sin leer
                             echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -400,8 +400,8 @@ if (existe_user($input_user)) {
                         <?php
                         if (isset($_SESSION['email'])) {
                             $userData = obtener_datos_usuario($email);
-                            $id_user = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                            $id_usuario = $userData['IDuser'];
+                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                         }
                         ?>
                     </div>
@@ -520,7 +520,7 @@ if (existe_user($input_user)) {
                                         <?php
                                         $total_comics = numComics();
                                         if (isset($_SESSION['email'])) {
-                                            echo "<input type='hidden' id='id_user' value='$id_user'>";
+                                            echo "<input type='hidden' id='id_user' value='$id_usuario'>";
                                         }
                                         for ($i = 0; $i < 8; $i++) {
                                             $numero = randomComic();
@@ -540,7 +540,7 @@ if (existe_user($input_user)) {
                                     </a>
                                     <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
                                             if (isset($_SESSION['email'])) {
-                                                if (check_guardado($id_user, $id_comic)) {
+                                                if (check_guardado($id_usuario, $id_comic)) {
                                                     echo "<button data-item-id='yXwd2' class='rem' >
                                         <span class='sp-icon'>Lo tengo</span>
                                     </button>";

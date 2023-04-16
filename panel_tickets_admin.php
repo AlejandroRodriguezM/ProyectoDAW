@@ -8,10 +8,10 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
+    $id_usuario = $userData['IDuser'];
     $picture = $userData['userPicture'];
     $userName = $userData['userName'];
-    $numero_comics = get_total_guardados($id_user);
+    $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: index.php');
@@ -64,7 +64,7 @@ if ($userPrivilege == 'user') {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .contenedor {
             width: 80% !important;
@@ -130,7 +130,7 @@ if ($userPrivilege == 'user') {
 
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -205,7 +205,7 @@ if ($userPrivilege == 'user') {
                                         <li class="activity">
                                             <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
-                                            echo comprobar_ultima_conexion($id_user);
+                                            echo comprobar_ultima_conexion($id_usuario);
                                             ?>
                                         </li>
                                     </ul>

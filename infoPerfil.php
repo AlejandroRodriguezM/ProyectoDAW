@@ -7,16 +7,16 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
+    $id_usuario = $userData['IDuser'];
     $profilePicture = $userData['userPicture'];
     $userName = $userData['userName'];
     $picture = $userData['userPicture'];
-    $infoUser = getInfoAboutUser($id_user);
+    $infoUser = getInfoAboutUser($id_usuario);
     $fechaCreacion = $infoUser['fechaCreacion'];
     $sobreUser = $infoUser['infoUser'];
     $nombre = $infoUser['nombreUser'];
     $apellidos = $infoUser['apellidoUser'];
-    $numero_comics = get_total_guardados($id_user);
+    $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: index.php');
@@ -67,7 +67,7 @@ if (isset($_SESSION['email'])) {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .contenedor {
             width: 50% !important;
@@ -198,7 +198,7 @@ if (isset($_SESSION['email'])) {
 
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -352,8 +352,8 @@ if (isset($_SESSION['email'])) {
                                 </fieldset>
                                 <hr>
                                 <div class="comics-lists">
-                                    <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo  get_total_guardados($id_user); ?> comics guardados</p>
-                                    <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_user); ?> listas</p>
+                                    <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo  get_total_guardados($id_usuario); ?> comics guardados</p>
+                                    <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_usuario); ?> listas</p>
                                 </div>
                             </div>
                     </section>
@@ -384,8 +384,8 @@ if (isset($_SESSION['email'])) {
                                 <?php
                                 if (isset($_SESSION['email'])) {
                                     $userData = obtener_datos_usuario($email);
-                                    $id_user = $userData['IDuser'];
-                                    echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                                    $id_usuario = $userData['IDuser'];
+                                    echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                                 }
                                 ?>
                             </div>

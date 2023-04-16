@@ -8,8 +8,8 @@ if (isset($_SESSION['email'])) {
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
     if ($userPrivilege == 'admin') {
-        $id_user = $userData['IDuser'];
-        $numero_comics = get_total_guardados($id_user);
+        $id_usuario = $userData['IDuser'];
+        $numero_comics = get_total_guardados($id_usuario);
         $picture = $userData['userPicture'];
         $privilegio_admin = $userData['privilege'];
         //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
@@ -63,7 +63,7 @@ if (isset($_SESSION['email'])) {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .contenedor {
             width: 50% !important;
@@ -162,7 +162,7 @@ if (isset($_POST['adminPanel'])) {
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -236,7 +236,7 @@ if (isset($_POST['adminPanel'])) {
                                         </li>
                                         <li class="activity"><label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
-                                            echo comprobar_ultima_conexion($id_user);
+                                            echo comprobar_ultima_conexion($id_usuario);
                                             ?>
                                         </li>
                                     </ul>

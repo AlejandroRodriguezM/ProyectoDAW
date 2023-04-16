@@ -8,10 +8,10 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
+    $id_usuario = $userData['IDuser'];
     $name = $userData['userName'];
 
-    $numero_comics = get_total_guardados($id_user);
+    $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: index.php');
@@ -64,7 +64,7 @@ if (isset($_SESSION['email'])) {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .video-container {
             display: flex;
@@ -182,7 +182,7 @@ if (isset($_SESSION['email'])) {
 
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -261,7 +261,7 @@ if (isset($_SESSION['email'])) {
                                 </div>
                                 <textarea id='opinion' class="form-control mt-2" placeholder="Pon tu comentario..." style="width: 100% !important; height: 110px !important; resize: none !important;"></textarea>
                                 <div class="boton-enviar d-flex flex-wrap align-items-center justify-content-end">
-                                    <input type="hidden" id='id_user_opinion' value='<?php echo $id_user ?>'>
+                                    <input type="hidden" id='id_user_opinion' value='<?php echo $id_usuario ?>'>
                                     <button type="submit" class="btn btn-primary boton-enviar" style="margin-top:10px" onclick="nueva_opinion_pagina()">Enviar</button>
                                 </div>
                             </div>
@@ -284,10 +284,10 @@ if (isset($_SESSION['email'])) {
                             while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
 
                                 $id_opinion = $data_opinion['id_opinion'];
-                                $id_user = $data_opinion['id_user'];
+                                $id_usuario = $data_opinion['id_user'];
                                 $opinion = $data_opinion['comentario'];
                                 $fecha_opinion = $data_opinion['fecha_comentario'];
-                                $data_user = obtener_datos_usuario($id_user);
+                                $data_user = obtener_datos_usuario($id_usuario);
                                 $foto_perfil = $data_user['userPicture'];
                                 $nombre_user = $data_user['userName'];
                                 $email_user = $data_user['email'];
@@ -362,8 +362,8 @@ if (isset($_SESSION['email'])) {
                                 <?php
                                 if (isset($_SESSION['email'])) {
                                     $userData = obtener_datos_usuario($email);
-                                    $id_user = $userData['IDuser'];
-                                    echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                                    $id_usuario = $userData['IDuser'];
+                                    echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                                 }
                                 ?>
                             </div>

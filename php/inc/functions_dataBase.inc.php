@@ -448,12 +448,13 @@ function new_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente, St
 			$insertData1->execute();
 		}
 		$mensaje_id = identificador_mensaje($id_usuario_destinatario, $id_usuario_remitente);
-		$insertData2 = $conection->prepare("INSERT INTO respuestas_mensajes_usuarios (id_conversacion,id_mensaje,id_usuario_envio,mensaje_usuario,fecha_envio_mensaje) VALUES (?,?,?,?,?)");
+		$insertData2 = $conection->prepare("INSERT INTO respuestas_mensajes_usuarios (id_conversacion,id_mensaje,id_usuario_envio,id_usuario_destino,mensaje_usuario,fecha_envio_mensaje) VALUES (?,?,?,?,?,?)");
 		$insertData2->bindParam(1, $conversacion_id);
 		$insertData2->bindParam(2, $mensaje_id);
 		$insertData2->bindParam(3, $id_usuario_remitente);
-		$insertData2->bindParam(4, $mensaje_usuario);
-		$insertData2->bindParam(5, $fechaCreacion);
+		$insertData2->bindParam(4, $id_usuario_destinatario);
+		$insertData2->bindParam(5, $mensaje_usuario);
+		$insertData2->bindParam(6, $fechaCreacion);
 
 		if ($insertData2->execute()) {
 			$confirmado = true;
@@ -1982,12 +1983,11 @@ function comics_lista($userData, $limit, $offset, $conection)
 function obtener_numero_mensajes_sin_leer($id_usuario){
 	global $conection;
 	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-	$id_conversacion = num_mensajes_usuario($id_usuario);
 	try {
-		$consulta = $conection->prepare("SELECT COUNT(*) from respuestas_mensajes_usuarios where id_conversacion=? AND estado_mensaje='no leido' AND id_usuario_envio != ?");
-		if ($consulta->execute(array($id_conversacion, $id_usuario))) {
-			$numero_mensajes_sin_leer = $consulta->fetchColumn();
-		}
+		$consulta = $conection->prepare("SELECT COUNT(*) from respuestas_mensajes_usuarios where estado_mensaje='no leido' AND id_usuario_destino = ?");
+		$consulta->execute(array($id_usuario));
+		$numero_mensajes_sin_leer = $consulta->fetchColumn();
+
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}

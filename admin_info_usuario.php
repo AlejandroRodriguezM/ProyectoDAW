@@ -85,7 +85,7 @@ guardar_ultima_conexion($email_admin);
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .contenedor {
             width: 50% !important;
@@ -181,7 +181,7 @@ guardar_ultima_conexion($email_admin);
 
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";

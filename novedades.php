@@ -8,8 +8,8 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_user);
+    $id_usuario = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_usuario);
 } else {
     header('Location: index.php');
 }
@@ -61,7 +61,7 @@ if (isset($_SESSION['email'])) {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .custom-table {
             width: 300px;
@@ -113,12 +113,6 @@ if (isset($_SESSION['email'])) {
             top: 50px;
             z-index: 100;
             margin-top: 30px;
-        }
-
-        span,
-        label,
-        a {
-            color: black;
         }
 
         .navigation-buttons button,
@@ -195,7 +189,7 @@ if (isset($_SESSION['email'])) {
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -277,8 +271,8 @@ if (isset($_SESSION['email'])) {
                         <?php
                         if (isset($_SESSION['email'])) {
                             $userData = obtener_datos_usuario($email);
-                            $id_user = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                            $id_usuario = $userData['IDuser'];
+                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                         }
                         ?>
                     </div>

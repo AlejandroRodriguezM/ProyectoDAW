@@ -7,8 +7,8 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_user);
+    $id_usuario = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: index.php');
@@ -62,7 +62,7 @@ if ($userPrivilege == 'admin') {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .contenedor {
             width: 50% !important;
@@ -140,7 +140,7 @@ if ($userPrivilege == 'admin') {
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -297,8 +297,8 @@ if ($userPrivilege == 'admin') {
                                     <?php
                                     if (isset($_SESSION['email'])) {
                                         $userData = obtener_datos_usuario($email);
-                                        $id_user = $userData['IDuser'];
-                                        echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                                        $id_usuario = $userData['IDuser'];
+                                        echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                                     }
                                     ?>
                                 </div>

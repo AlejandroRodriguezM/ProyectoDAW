@@ -9,8 +9,8 @@ if (isset($_SESSION['email'])) {
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
     $nombre_usuario = $userData['userName'];
-    $id_user = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_user);
+    $id_usuario = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_usuario);
 }
 
 $id_comic = $_GET['IDcomic'];
@@ -65,7 +65,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .rating {
             display: flex;
@@ -437,7 +437,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                     <li class="nav-item">
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                            $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                             // Imprimir el enlace con el número de mensajes sin leer
                             echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -525,8 +525,8 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                         <?php
                         if (isset($_SESSION['email'])) {
                             $userData = obtener_datos_usuario($email);
-                            $id_user = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                            $id_usuario = $userData['IDuser'];
+                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                         }
                         ?>
                     </div>
@@ -562,7 +562,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
 
                                     <?php
                                     if (isset($_SESSION['email'])) {
-                                        if (check_guardado($id_user, $id_comic)) {
+                                        if (check_guardado($id_usuario, $id_comic)) {
                                             echo "<button id='myButton' class='active'></button>";
                                         }
                                     }
@@ -702,7 +702,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
 
                                                     echo "</div>";
                                                     echo "<div class='boton-enviar d-flex flex-wrap align-items-center justify-content-end'>";
-                                                    echo "<input type='hidden' id='id_user_opinion' value='" . $id_user . "'>";
+                                                    echo "<input type='hidden' id='id_user_opinion' value='" . $id_usuario . "'>";
                                                     echo "<input type='hidden' id='id_comic' value='" . $id_comic . "'>";
                                                     echo "<button type='submit' class='btn btn-primary boton-enviar' onclick='nueva_opinion()'>Enviar</button>";
                                                     echo "</div>";

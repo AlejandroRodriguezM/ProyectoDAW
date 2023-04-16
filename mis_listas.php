@@ -8,8 +8,8 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_user);
+    $id_usuario = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: index.php');
@@ -60,7 +60,7 @@ if (isset($_SESSION['email'])) {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
         .row {
             display: flex;
@@ -314,7 +314,7 @@ if (isset($_SESSION['email'])) {
 
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -396,7 +396,7 @@ if (isset($_SESSION['email'])) {
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                         }
                         ?>
                     </div>
@@ -424,7 +424,7 @@ if (isset($_SESSION['email'])) {
                         <input type="text" id="nombre_lista" class="form-control">
                         <?php
                         if (isset($_SESSION['email'])) {
-                            echo "<input type='hidden' id='id_user' value='$id_user'>";
+                            echo "<input type='hidden' id='id_user' value='$id_usuario'>";
                         }
                         ?>
                     </div>
@@ -486,13 +486,13 @@ if (isset($_SESSION['email'])) {
                     </li>
 
                     <?php
-                    $listas = get_listas($id_user);
+                    $listas = get_listas($id_usuario);
 
                     $i = -4;
                     foreach ($listas as $lista) {
                         $id_lista = $lista['id_lista'];
                         $nombre_lista = $lista['nombre_lista'];
-                        $num_listas = num_listas_user($id_user);
+                        $num_listas = num_listas_user($id_usuario);
                         $num_comics = get_total_contenido($id_lista);
                         echo "<li class='card-item'>";
                         echo "<a href='contenido_lista.php?id_lista=$id_lista'>";
@@ -500,7 +500,7 @@ if (isset($_SESSION['email'])) {
                         echo "<div class='card-content'>";
                         echo "<span class='card-title'>$nombre_lista</span>";
                         echo "<p class='card-text'>Total: $num_comics Comics</p>";
-                        echo "<button class='delete-button' data-lista-id='$id_lista' id='delete-button-$id_lista' onclick='confirmar_eliminacion($id_lista,$id_user); return false;'>Eliminar</button>";
+                        echo "<button class='delete-button' data-lista-id='$id_lista' id='delete-button-$id_lista' onclick='confirmar_eliminacion($id_lista,$id_usuario); return false;'>Eliminar</button>";
                         echo "</div>";
                         echo "<img src='assets/img/comic2.jpg' />";
                         echo "<a href='#' data-bs-toggle='modal' data-bs-target='#modificar_lista' data-lista-id='$id_lista' data-nombre-lista='$nombre_lista' class='edit-button' onclick='abrir_modal_modificar($id_lista); return false;'>Modificar</a>";

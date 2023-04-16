@@ -386,3 +386,8 @@ se ha creado un modal que pregunta al usuario si quiere continuar con su sesion,
  - Se ha creado un nuevo icono en la barra principal, es un buzon. Si tienes mensajes sin leer, se podran ver cuales son
  - Se ha optimizado en general el funcionamiento de varias funciones de busquedas de mensajes
  - Se ha reado una nueva api para cambiar de estado los mensajes de no leido a leido
+
+16/04/2023 Log 4
+ - Solucionado bug por el cual el num de mensajes se mostraba de forma erronea
+ - Mejorado el estilo de notificacion de mensajes
+ - Se ha creado una nueva columna en respuestas_mensajes_usuarios para controlar el destinatario

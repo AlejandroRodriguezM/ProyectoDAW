@@ -7,8 +7,8 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_user = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_user);
+    $id_usuario = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: index.php');
@@ -48,18 +48,6 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/temporizador.js"></script>
     <title>Tickets de usuario</title>
     <style>
-        .unreads-count {
-            background-color: red;
-            color: white;
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 0.2em 0.4em;
-            border-radius: 50%;
-            margin-right: 5em;
-            position: relative;
-            top: -1.6em;
-            right: 4.5em;
-        }
 
         .contenedor {
             width: 50% !important;
@@ -187,7 +175,7 @@ if (isset($_SESSION['email'])) {
             margin-right: 5em;
             position: relative;
             top: -1.6em;
-            right: 4.5em;
+            /* right: 4.5em; */
         }
     </style>
 </head>
@@ -257,7 +245,7 @@ if (isset($_SESSION['email'])) {
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -342,7 +330,7 @@ if (isset($_SESSION['email'])) {
                             <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                             <?php
                             if (isset($_SESSION['email'])) {
-                                echo "<input type='hidden' id='id_user_ticket' value='$id_user'>";
+                                echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                             }
                             ?>
                         </div>
@@ -396,7 +384,7 @@ if (isset($_SESSION['email'])) {
                                         <li class="activity">
                                             <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
-                                            echo comprobar_ultima_conexion($id_user);
+                                            echo comprobar_ultima_conexion($id_usuario);
                                             ?>
                                         </li>
                                     </ul>
