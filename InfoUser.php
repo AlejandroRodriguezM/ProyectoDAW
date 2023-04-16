@@ -2,8 +2,6 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 
-
-
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
@@ -11,7 +9,6 @@ if (isset($_SESSION['email'])) {
     $userPrivilege = $userData['privilege'];
     $id_mi_usuario = $userData['IDuser'];
     $numero_comics = get_total_guardados($id_mi_usuario);
-
     $nombre_otro_usuario = $_GET['userName'];
     $dataUser = obtener_datos_usuario($nombre_otro_usuario);
     $id_otro_usuario = $dataUser['IDuser'];
@@ -19,13 +16,12 @@ if (isset($_SESSION['email'])) {
 } else {
     header("Location: index.php");
 }
-echo "<input type='hidden' id='num_comics' value=''>";
+//echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 
-if (isset($_POST['edit'])) {
-    $email_user_edit = $_POST['emailUser'];
-    $_SESSION['usuario_temporal'] = $email_user_edit;
-    header("Location: admin_actualizar_usuario.php");
-}
+// if (isset($_POST['edit'])) {
+//     $_SESSION['usuario_temporal'] = $nombre_otro_usuario;
+//     header("Location: admin_actualizar_usuario.php");
+// }
 ?>
 
 <!DOCTYPE html>
@@ -51,11 +47,25 @@ if (isset($_POST['edit'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Perfil de usuario</title>
 
-    <style>
+        <style>
+        .unreads-count {
+            background-color: red;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 0.2em 0.4em;
+            border-radius: 50%;
+            margin-right: 5em;
+            position: relative;
+            top: -1.6em;
+            right: 4.5em;
+        }
         .contenedor {
             width: 50% !important;
             overflow-x: auto;
@@ -260,6 +270,22 @@ if (isset($_POST['edit'])) {
                         }
                         ?>
                     </li>
+                    <li class="nav-item">
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='mensajes_usuario.php'>";
+                            echo "<span class='material-icons'>mark_email_unread</span>";
+                            // echo "Buzón";
+                            if ($unreads_count > 0) {
+                                echo "<span class='unreads-count'>$unreads_count</span>";
+                            }
+                            echo "</a>";
+                        }
+                        ?>
+                    </li>
                 </ul>
             </div>
 
@@ -443,18 +469,8 @@ if (isset($_POST['edit'])) {
                                                     echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_mi_usuario,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
                                                 }
                                             }
-                                            if ($userPrivilege == 'admin') {
-                                        ?>
-                                                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" style='float:right'>
-                                            <?php
-                                                echo "<button class='btn btn-danger solicitud_enviada' name='edit' id='edit' style='float:right;margin-right:10px;'><span>Editar usuario</span></button>";
-                                                echo "<td><input type='hidden' name='IDuser' id='IDuser' value='$id_otro_usuario'></td>";
-                                                echo "<td><input type='hidden' name='nameUser' id='nameUser' value='$userName'></td>";
-                                                echo "<td><input type='hidden' name='emailUser' id='emailUser' value='$nombre_otro_usuario'></td>";
-                                                echo "</form>";
-                                            }
                                         }
-                                            ?>
+                                        ?>
                                     </h3>
 
                                     <div class="form-group avatar">

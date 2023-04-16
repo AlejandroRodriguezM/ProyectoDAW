@@ -434,7 +434,7 @@ function new_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente, St
 	$id_usuario_remitente = htmlspecialchars($id_usuario_remitente, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$mensaje_usuario = htmlspecialchars($mensaje_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$fecha = date('Y-m-d H:i:s');
-	$fechaCreacion = date('Y-m-d', strtotime(str_replace('-', '/', $fecha)));
+	$fechaCreacion = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $fecha)));
 	$conversacion_id = identificador_conversacion($id_usuario_remitente, $id_usuario_destinatario);
 
 
@@ -464,6 +464,30 @@ function new_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente, St
 		die("Code: " . $error_Code . "\nMessage: " . $message);
 	}
 	return $confirmado;
+}
+
+function num_mensajes_usuario(int $id_usuario): int
+{
+	global $conection;
+	$num_mensajes = 0;
+	try {
+		$consulta = $conection->prepare("SELECT id_conversacion as num_mensajes FROM nuevo_mensajes_usuarios WHERE id_usuario_destinatario = ? OR id_usuario_remitente = ?");
+		$consulta->bindParam(1, $id_usuario);
+		$consulta->bindParam(2, $id_usuario);
+		if ($consulta->execute()) {
+			if ($consulta->rowCount() > 0) {
+				$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+				$num_mensajes = $resultado['num_mensajes'];
+			}else{
+				$num_mensajes = 0;
+			}
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $num_mensajes;
 }
 
 function identificador_conversacion(int $id_usuario_remitente, int $id_usuario_destinatario): int
@@ -543,8 +567,6 @@ function existe_conversacion(int $id_remitente, int $id_destinatario): bool
 	return $confirmado;
 }
 
-
-
 function comprobar_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente): bool
 {
 	global $conection;
@@ -569,7 +591,7 @@ function comprobar_mensaje(int $id_usuario_destinatario, int $id_usuario_remiten
 	return $confirmado;
 }
 
-function respond_tickets(int $ticket_id,int $usuario_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
+function respond_tickets(int $ticket_id, int $usuario_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
 {
 	global $conection;
 	$confirmado = false;
@@ -597,12 +619,28 @@ function respond_tickets(int $ticket_id,int $usuario_id, string $mensaje_ticket,
 	return $confirmado;
 }
 
-function datos_tickets(){
+function datos_tickets()
+{
 	global $conection;
 	$consulta = $conection->prepare("SELECT * FROM tickets");
 	$consulta->execute();
 	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
 	return $consulta;
+}
+
+function datos_conversacion_identificador(int $id_conversacion): array
+{
+	global $conection;
+	$id_conversacion = htmlspecialchars($id_conversacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$consulta = $conection->prepare("SELECT * FROM respuestas_mensajes_usuarios WHERE id_respuesta_mensaje = ?");
+	$consulta->bindParam(1, $id_conversacion);
+	$consulta->execute();
+	$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	$datos = array();
+	foreach ($resultados as $resultado) {
+		$datos[] = $resultado;
+	}
+	return $datos;
 }
 
 function cambiar_estado(string $estado, int $id): void
@@ -1869,14 +1907,50 @@ function comprobar_ultima_conexion($id_usuario)
 	global $conection;
 	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		//localiza el ID del usuario
+		// localiza el ID del usuario
 		$consulta = $conection->prepare("SELECT ultima_conexion from aboutuser where IDuser=?");
 		$consulta->execute(array($id_usuario));
 		$ultima_conexion = $consulta->fetchColumn();
+
+		// obtiene la diferencia de tiempo
+		$fecha_conexion = new DateTime($ultima_conexion);
+		$fecha_actual = new DateTime();
+		$intervalo = date_diff($fecha_conexion, $fecha_actual);
+
+		$diferencia = '';
+
+		if ($intervalo->y > 0) {
+			$diferencia .= $intervalo->y . ' años, ';
+		}
+
+		if ($intervalo->m > 0) {
+			$diferencia .= $intervalo->m . ' meses, ';
+		}
+
+		if ($intervalo->d > 0) {
+			$diferencia .= $intervalo->d . ' días, ';
+		}
+
+		if ($intervalo->h > 0) {
+			$diferencia .= $intervalo->h . ' horas';
+			if ($intervalo->i > 0) {
+				$diferencia .= ', ' . $intervalo->i . ' minutos ';
+			}
+			if ($intervalo->s > 0 && $intervalo->h < 1) {
+				$diferencia .= ' y ' . $intervalo->s . ' segundos';
+			}
+		} elseif ($intervalo->i > 0) {
+			$diferencia .= $intervalo->i . ' minutos';
+			if ($intervalo->s > 0) {
+				$diferencia .= ' y ' . $intervalo->s . ' segundos';
+			}
+		} else {
+			$diferencia = 'Recién conectado';
+		}
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
-	return $ultima_conexion;
+	return $diferencia;
 }
 
 function comics_lista($userData, $limit, $offset, $conection)
@@ -1904,3 +1978,45 @@ function comics_lista($userData, $limit, $offset, $conection)
 	}
 	return $comics;
 }
+
+function obtener_numero_mensajes_sin_leer($id_usuario){
+	global $conection;
+	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_conversacion = num_mensajes_usuario($id_usuario);
+	try {
+		$consulta = $conection->prepare("SELECT COUNT(*) from respuestas_mensajes_usuarios where id_conversacion=? AND estado_mensaje='no leido' AND id_usuario_envio != ?");
+		if ($consulta->execute(array($id_conversacion, $id_usuario))) {
+			$numero_mensajes_sin_leer = $consulta->fetchColumn();
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $numero_mensajes_sin_leer;
+}
+
+function cambiar_estado_mensajes(int $id_conversacion, int $id_usuario): void
+{
+    global $conection;
+    $id_conversacion = htmlspecialchars($id_conversacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+    try {
+        // Obtener todos los registros que cumplan la condición
+        $consulta = $conection->prepare("SELECT * FROM respuestas_mensajes_usuarios WHERE id_conversacion = ? AND id_usuario_envio != ?");
+        $consulta->execute([$id_conversacion, $id_usuario]);
+        $resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+        // Cambiar el estado de los registros obtenidos
+        foreach ($resultados as $row) {
+            $id_otro_usuario = $row['id_usuario_envio'];
+			if($id_otro_usuario != $id_usuario){
+				$id_otro_usuario = $row['id_usuario_envio'];
+				$consulta = $conection->prepare("UPDATE respuestas_mensajes_usuarios SET estado_mensaje = 'leido' WHERE id_usuario_envio = ?");
+				$consulta->execute([$id_otro_usuario]);
+			}
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+

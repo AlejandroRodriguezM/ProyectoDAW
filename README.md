@@ -379,3 +379,10 @@ se ha creado un modal que pregunta al usuario si quiere continuar con su sesion,
  - Se han añadido 2 tablas en la base de datos para los mensajes entre usuarios
  - Se ha arreglado un problema con las claves foraneas en respuestas_tickets
  - Ahora si el usuario no hace nada en 60min, se cierra la sesion automaticamente
+ 
+16/04/2023 Log 3
+ - Se ha mejorado la velocidad de carga de todos los ficheros web de la pagina
+ - Ahora funciona correctamente el funcionamiento de tickets y la respuesta de estos desde el panel de administrador
+ - Se ha creado un nuevo icono en la barra principal, es un buzon. Si tienes mensajes sin leer, se podran ver cuales son
+ - Se ha optimizado en general el funcionamiento de varias funciones de busquedas de mensajes
+ - Se ha reado una nueva api para cambiar de estado los mensajes de no leido a leido

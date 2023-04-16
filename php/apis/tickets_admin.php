@@ -15,14 +15,21 @@ if (!empty($tickets)) {
   // Recorrer los resultados y mostrar la información del ticket
   foreach ($tickets as $ticket) {
     $id_user = $ticket['user_id'];
+    $data = obtener_datos_usuario($id_user);
+    $ticket_id =  $ticket['ticket_id'];
+    $nombre_user = $data['userName'];
+    $asunto = $ticket['asunto_ticket'];
+    $mensaje = $ticket['mensaje'];
+    $fecha = $ticket['fecha_ticket'];
+    $status = $ticket['status'];
     echo "<div class='ticket'>";
-    echo "<h2 class='ticket-header' id='ticket-header-" . $ticket['ticket_id'] . "'>Ticket #" . $ticket['ticket_id'] . " <span class='arrow'>&#9654;</span></h2>";
-    echo "<div class='ticket-info' id='ticket-info-" . $ticket['ticket_id'] . "' style='display: none;'>";
-    echo "<p><strong>Usuario:</strong> " . $nombre_user . "</p>";
-    echo "<p><strong>Asunto:</strong> " . $ticket['asunto_ticket'] . "</p>";
-    echo "<p><strong>Descripción:</strong> " . $ticket['mensaje'] . "</p>";
-    echo "<p><strong>Fecha enviado:</strong> " . $ticket['fecha_ticket'] . "</p>";
-    echo "<p><strong>Estado:</strong> " . $ticket['status'] . "</p>";
+    echo "<h2 class='ticket-header' id='ticket-header-$ticket_id'>Ticket #$ticket_id Asunto: $asunto<span class='arrow'>&#9654;</span></h2>";
+    echo "<div class='ticket-info' id='ticket-info-$ticket_id' style='display: none;'>";
+    echo "<p><strong>Ticket abierto por:</strong>$nombre_user</p>";
+    echo "<p><strong>Asunto:</strong>$mensaje</p>";
+    echo "<p><strong>Descripción:</strong>$mensaje</p>";
+    echo "<p><strong>Fecha enviado:</strong>$fecha</p>";
+    echo "<p><strong>Estado:</strong>$status</p>";
     // Aquí incluirías el código para obtener y mostrar la conversación del ticket
 
     $conversations = getTickets($ticket['ticket_id']);

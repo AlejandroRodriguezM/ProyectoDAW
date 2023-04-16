@@ -350,29 +350,48 @@ const actualizar_usuario = async () => {
     }
 }
 
-const modifying_user = async () => {
-    var email = document.querySelector("#email").value;
-    var name = document.querySelector("#name").value;
-    var nameUSer = document.querySelector("#nameUser").value;
-    var lastNameUSer = document.querySelector("#lastnameUser").value;
-    var password = document.querySelector("#password").value;
-    var id = document.querySelector("#IDuser").value;
+const modificar_usuario_administrador = async () => {
+    var email = document.querySelector("#email_usuario").value;
+    var nombre_cuenta = document.querySelector("#nombre_cuenta").value;
+    var nombre_usuario = document.querySelector("#nombre_usuario").value;
+    var apellido_usuario = document.querySelector("#apellido_usuario").value;
+    var id_usuario = document.querySelector("#id_usuario").value;
 
-    if (email.trim() === '' | name.trim() === '') {
+    if (email.trim() === '' | nombre_cuenta.trim() === '') {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
-            text: "You have to fill all the camps",
+            text: "ERROR. Debes de rellenar tanto el nombre de usuario como el mail",
             footer: "Web Comics"
         })
         return;
     }
 
-    if (!validateUserNAme(name)) {
+    if (!validateUserNAme(nombre_cuenta)) {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
-            text: "You have introduce a valid Name",
+            text: "ERROR. Nombre no valido, introduce otro nombre",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    if (!validateUserNAme(nombre_usuario)) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "ERROR. Nombre de usuario no valido, introduce otro nombre",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    if (!validateUserNAme(apellido_usuario)) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "ERROR. Introduce un apellido correcto.",
             footer: "Web Comics"
         })
         return;
@@ -381,11 +400,11 @@ const modifying_user = async () => {
     //insert to data base in case of everything go correct.
     const data = new FormData();
     data.append('email', email);
-    data.append("password", password);
-    data.append("userName", name);
-    data.append("id", id);
-    data.append("nameUser", nameUSer);
-    data.append("lastnameUser", lastNameUSer);
+    data.append("nombre_cuenta", nombre_cuenta);
+    data.append("nombre_usuario", nombre_usuario);
+    data.append("apellido_usuario", apellido_usuario);
+    data.append("id_usuario", id_usuario);
+
     //if image is unvaliable, send 0
     if (image == null) {
         data.append("userPicture", "");
@@ -394,7 +413,7 @@ const modifying_user = async () => {
     }
 
     //pass data to php file
-    var respond = await fetch("php/apis/modify_user.php", {
+    var respond = await fetch("php/apis/modificar_usuario_administrador.php", {
         method: 'POST',
         body: data
     });
@@ -619,6 +638,34 @@ const mandar_mensaje = async () => {
             text: result.message,
             footer: "Web Comics"
         })
+    }
+}
+
+const modificar_estado_mensaje = async (id_conversacion) => {
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('id_conversacion', id_conversacion);
+    console.log(id_conversacion)
+    //pass data to php file
+    var respond = await fetch("php/apis/cambiar_estado_mensajes.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == false) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_lista').reset();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
     }
 }
 

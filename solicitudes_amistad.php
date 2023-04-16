@@ -11,7 +11,7 @@ if (isset($_SESSION['email'])) {
     $tipo_perfil = $userData['tipo_perfil'];
     $picture = $userData['userPicture'];
     $numero_comics = get_total_guardados($id_usuario);
-    echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+    //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: index.php');
 }
@@ -42,13 +42,26 @@ if (isset($_SESSION['email'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Solicitudes de amistad</title>
-    <style>
+        <style>
+        .unreads-count {
+            background-color: red;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 0.2em 0.4em;
+            border-radius: 50%;
+            margin-right: 5em;
+            position: relative;
+            top: -1.6em;
+            right: 4.5em;
+        }
         .contenedor {
             width: 50% !important;
             overflow-x: auto;
@@ -56,6 +69,19 @@ if (isset($_SESSION['email'])) {
             padding-top: 30px;
             padding-bottom: 30px;
             border-radius: 30px;
+        }
+
+        .unreads-count {
+            background-color: red;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 0.2em 0.4em;
+            border-radius: 50%;
+            margin-right: 5em;
+            position: relative;
+            top: -1.6em;
+            right: 4.5em;
         }
     </style>
 </head>
@@ -86,42 +112,44 @@ if (isset($_SESSION['email'])) {
                                 echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                                 echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
                             }
-
                             ?>
                             <li>
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
-
                             <li>
                                 <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Escribe tu opinión</a>
                             </li>
-
-
-
                             <div class="dropdown-divider"></div>
                             <li>
                                 <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
                             </li>
-
                         </ul>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-
                     <li class="nav-item">
-
                         <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-
                     </li>
-
                     <li class="nav-item">
-
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                    </li>
+                    <li class="nav-item">
+                        <?php
+                        // Obtener el número de mensajes sin leer
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
 
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='nav-link' href='mensajes_usuario.php'>";
+                        echo "<span class='material-icons'>mark_email_unread</span>";
+                        echo "Buzón";
+                        if ($unreads_count > 0) {
+                            echo "<span class='unreads-count'>$unreads_count</span>";
+                        }
+                        echo "</a>";
+                        ?>
                     </li>
                 </ul>
             </div>
@@ -239,7 +267,7 @@ if (isset($_SESSION['email'])) {
                                     </ul>
                                 </div>
                                 <nav class="side-menu">
-                                <ul class="nav">
+                                    <ul class="nav">
                                         <li><a href="infoPerfil.php"><span class="fa fa-user"></span>Perfil</a></li>
                                         <li class='active'><a href='solicitudes_amistad.php'><span class='fa fa-user'></span>Solicitudes de amistad</a></li>
                                         <li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>
@@ -247,8 +275,6 @@ if (isset($_SESSION['email'])) {
                                         <?php
                                         if ($userPrivilege == 'user') {
                                             echo "<li ><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
-                                        } else {
-                                            echo "<li ><a href='panel_tickets_admin.php'><span class='fa fa-cog'></span>Tickets administrador</a></li>";
                                         }
                                         ?>
                                         <li><a href="mensajes_usuario.php"><span class="fa fa-cog"></span>Mis mensajes</a></li>

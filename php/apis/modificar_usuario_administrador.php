@@ -8,39 +8,39 @@ $userPrivilege = $userData['privilege'];
 $validate['success'] = array('success' => false, 'message' => "");
 if ($userPrivilege != 'guest') {
     if ($_POST) {
-        $userName = $_POST['userName'];
-        $name = $_POST['nameUser'];
-        $lastname = $_POST['lastnameUser'];
-        $password = $_COOKIE['passwordUserTemp'];
-        $emailOld = $_COOKIE['loginUserTemp'];
-
-        $emailNew = $_POST['email'];
-        // var_dump($emailOld . ' ' . $emailNew);
+        $nuevo_nombre_cuenta = $_POST['nombre_cuenta'];
+        $nuevo_nombre_usuario = $_POST['nombre_usuario'];
+        $nuevo_apellido_usuario = $_POST['userPicture'];
+        $nuevo_mail_usuario = $_POST['email'];
+        $id_usuario = $_POST['id_usuario'];
         $image = $_POST['userPicture'];
-        $row = obtener_datos_usuario($emailOld);
-        
-        $id = $row['IDuser'];
-        $oldUSerName = $row['userName'];
+        $datos_usuario = obtener_datos_usuario($id_usuario);
+        $antiguo_mail = $datos_usuario['email'];
+        $antiguo_nombre_cuenta = $datos_usuario['userName'];
+        $password = obtain_password($antiguo_mail);
+        $informacion_usuario = getInfoAboutUser($id_usuario);
+        $descripcion_usuario = $informacion_usuario['infoUser'];
+
         $reservedWords = reservedWords();
-        if ($userName == $oldUSerName) {
-            $userName = $row['userName'];
+        if ($nuevo_nombre_cuenta == $antiguo_nombre_cuenta) {
+            $userName = $datos_usuario['userName'];
         }
         if (empty($image)) {
-            $image = $row['userPicture'];
+            $image = $datos_usuario['userPicture'];
         }
-        if (check_nombre_user($userName) && $userName != $oldUSerName) {
+        if (check_nombre_user($nuevo_nombre_cuenta) && $nuevo_nombre_cuenta != $antiguo_nombre_cuenta) {
             header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
             $validate['message'] = 'ERROR. That user name already exists';
-        } elseif (in_array(strtolower($userName), $reservedWords)) {
+        } elseif (in_array(strtolower($nuevo_nombre_cuenta), $reservedWords)) {
             header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
             $validate['message'] = 'ERROR. You cannot use system reserved words';
-        } elseif ($emailOld == $emailNew) {
-            if (actualizar_usuario($userName, $emailOld, $password)) {
+        } elseif ($antiguo_mail == $nuevo_mail_usuario) {
+            if (actualizar_usuario($nuevo_nombre_cuenta, $nuevo_mail_usuario, $password)) {
                 header("HTTP/1.1 200 OK");
-                updateSaveImage($emailNew, $image);
-                updateAboutUser($id, "", $name, $lastname);
+                updateSaveImage($nuevo_mail_usuario, $image);
+                updateAboutUser($id_usuario, "", $nuevo_nombre_usuario, $nuevo_apellido_usuario);
                 $validate['success'] = true;
                 $validate['message'] = 'The user saved correctly';
             } else {
@@ -48,22 +48,22 @@ if ($userPrivilege != 'guest') {
                 $validate['success'] = false;
                 $validate['message'] = 'ERROR. The user did not save correctly';
             }
-        } elseif (check_email_user($emailNew)) {
+        } elseif (check_email_user($nuevo_mail_usuario)) {
             header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
             $validate['message'] = 'ERROR. The email is already in use';
         } else {
-            if (actualizar_usuario($userName, $emailOld, $password)) {
-                if ($row['privilege'] == 'admin') {
+            if (actualizar_usuario($nuevo_nombre_cuenta, $antiguo_mail, $password)) {
+                if ($datos_usuario['privilege'] == 'admin') {
                     unset($_SESSION['email']);
-                    $_SESSION['email'] = $emailNew;
+                    $_SESSION['email'] = $nuevo_mail_usuario;
                 }
-                updateAboutUser($id, '', $name, $lastname);
-                actualizar_email($emailNew, $emailOld);
-                createDirectory($emailNew, $id);
-                updateSaveImage($emailNew, $image);
-                insertURL($emailNew, $id);
-                deleteDirectory($emailOld, $id);
+                updateAboutUser($id_usuario, $descripcion_usuario, $nuevo_nombre_usuario, $nuevo_apellido_usuario);
+                actualizar_email($nuevo_mail_usuario, $antiguo_mail);
+                createDirectory($nuevo_mail_usuario, $id_usuario);
+                updateSaveImage($nuevo_mail_usuario, $image);
+                insertURL($nuevo_mail_usuario, $id_usuario);
+                deleteDirectory($antiguo_mail, $id_usuario);
                 $validate['success'] = true;
                 $validate['message'] = 'The user has been updated';
                 header("HTTP/1.1 200 OK");

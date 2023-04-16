@@ -10,7 +10,7 @@ if (isset($_SESSION['email'])) {
     if ($userPrivilege == 'admin') {
         $id_user = $userData['IDuser'];
         $numero_comics = get_total_guardados($id_user);
-        echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+        //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
     } else {
         header('Location: logOut.php');
     }
@@ -43,12 +43,26 @@ if (isset($_SESSION['email'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Panel de administracion</title>
-    <style>
+        <style>
+        .unreads-count {
+            background-color: red;
+            color: white;
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 0.2em 0.4em;
+            border-radius: 50%;
+            margin-right: 5em;
+            position: relative;
+            top: -1.6em;
+            right: 4.5em;
+        }
         .contenedor {
             width: 80% !important;
             overflow-x: auto;
@@ -68,14 +82,14 @@ if (isset($_POST['edit'])) {
 }
 if (isset($_POST['avatarUser'])) {
     $nombre_otro_usuario = $_POST['emailUser'];
-    $_SESSION['usuario_temporal'] = $email_user_edit;
+    $_SESSION['usuario_temporal'] = $nombre_otro_usuario;
     header("Location: admin_info_usuario.php");
 }
 ?>
 
 
 <body onload="checkSesionUpdate();showSelected();">
-<div id="session-expiration">
+    <div id="session-expiration">
         <div id="session-expiration-message">
             <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
             <button id="session-expiration-continue-btn">Continuar</button>
@@ -160,18 +174,22 @@ if (isset($_POST['avatarUser'])) {
                     </li>
 
                     <li class="nav-item">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                        ?>
-                            <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        }
-                        ?>
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                     </li>
+                    <li class="nav-item">
+                        <?php
+                        // Obtener el número de mensajes sin leer
+                        $unreads_count = obtener_numero_mensajes_sin_leer($id_user);
+
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='nav-link' href='mensajes_usuario.php'>";
+                        echo "<span class='material-icons'>mark_email_unread</span>";
+                        // echo "Buzón";
+                        if ($unreads_count > 0) {
+                            echo "<span class='unreads-count'>$unreads_count</span>";
+                        }
+                        echo "</a>";
+                        ?>                    </li>
                 </ul>
             </div>
 

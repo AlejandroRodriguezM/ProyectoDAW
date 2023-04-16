@@ -28,8 +28,12 @@ if (!empty($mensajes)) {
       $id_destinatario = $id_remitente;
     }
 
+    $data = obtener_datos_usuario($id_destinatario);
+    $nombre_destinatario = $data['userName'];
+    $foto_perfil = $data['userPicture'];
+
     echo "<div class='mensaje'>";
-    echo "<h2 class='mensaje-header' id='mensaje-header-" . $mensaje['id_conversacion'] . "'>Mensaje #" . $mensaje['id_conversacion'] . " <span class='arrow'>&#9654;</span></h2>";
+    echo "<h2 class='mensaje-header' id='mensaje-header-" . $mensaje['id_conversacion'] . "'><a href='infoUser.php?userName=$nombre_destinatario'><img src='$foto_perfil' style='width: 80px; height: 80px;'><span class='nombre-destinatario'></a>$nombre_destinatario</span><span class='arrow'>&#9654;</span></h2>";
     echo "<div class='mensaje-info' id='mensaje-info-" . $mensaje['id_conversacion'] . "' style='display: none;'>";
     $conversations = get_conversacion($id_conversacion);
     // Verificar si hay conversación
@@ -48,6 +52,8 @@ if (!empty($mensajes)) {
         echo "<p class='$messageClass'>$messageText<br><small>$messageTime</small></p>";
         echo "</div>";
       }
+      // echo "<input type='hidden' id='". $mensaje['id_respuesta_mensaje'] ."' value='". $mensaje['id_respuesta_mensaje'] ."'>";
+      // cambiar_estado_mensajes($mensaje['id_conversacion'],$id_usuario);
     } else {
       echo "<p>No hay conversación para este ticket</p>";
     }
@@ -60,6 +66,7 @@ if (!empty($mensajes)) {
     echo "<input type='hidden' id='id_conversacion-" . $mensaje['id_conversacion'] . "' value='$id_conversacion'>";
     echo '<textarea id="mensaje_usuario_enviar-' . $mensaje['id_conversacion'] . '" name="mensaje_usuario_enviar" placeholder="Escribe aquí tu mensaje..." data-valor="' . $mensaje['id_conversacion'] . '"></textarea>
     <button type="button" onclick="mandar_mensaje_actualizacion(' . $mensaje['id_conversacion'] . ')">Enviar</button>';
+
 
 
     echo "</form>";
