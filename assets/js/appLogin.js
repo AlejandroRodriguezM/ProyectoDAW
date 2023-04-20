@@ -11,7 +11,7 @@ const checkSesion = () => {
 const checkSesionUpdate = () => {
     if (sesion != null) {
         document.querySelector('#user').innerHTML = sesion;
-    }else{
+    } else {
         document.querySelector('#user').innerHTML = 'Invitado';
     }
 }
@@ -1392,6 +1392,439 @@ const desbloquear_usuario = (id_solicitante, id_destinatario) => {
         });
 }
 
+const mandar_peticion_comic = () => {
+    var nombre_comic = document.getElementById("nombre_comic").value;
+    var nombre_variante = document.getElementById("variante_comic").value;
+    var numero = document.getElementById("numero_comic").value;
+
+    var formato = document.getElementById("formato_comic").value;
+    var editorial = document.getElementById("editorial_comic").value;
+    var fecha = document.getElementById("fecha_comic").value;
+
+    var guionista = document.getElementById("guionista_comic").value;
+    var procedencia = document.getElementById("procedencia_comic").value;
+    var dibujante = document.getElementById("dibujante_comic").value;
+
+    var descripcion = document.getElementById("descripcion_comic").value;
+
+    if (nombre_comic.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el nombre del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("nombre_comic").classList.add("error"); // Agregar clase 'error' al input
+        return;
+    }
+
+    if (nombre_variante.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el nombre de la variante",
+            footer: "Web Comics"
+        })
+        document.getElementById("nombre_variante").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (numero.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el numero del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("numero_comic").classList.add("error"); // Agregar clase 'error' al input
+        return;
+    }
+
+    if (formato.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el formato del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("formato_comic").classList.add("error"); // Agregar clase 'error' al input
+        return;
+    }
+
+    if (editorial.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir la editorial del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("editorial_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (fecha.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir la fecha del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("fecha_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (guionista.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el guionista del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("guionista_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (procedencia.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir la procedencia del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("procedencia_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (dibujante.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el dibujante del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("dibujante_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (descripcion.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir la descripcion del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("descripcion_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    const data = new FormData();
+    data.append("nombre_comic", nombre_comic);
+    data.append("nombre_variante", nombre_variante);
+    data.append("numero", numero);
+    data.append("formato", formato);
+    data.append("editorial", editorial);
+    data.append("fecha", fecha);
+    data.append("guionista", guionista);
+    data.append("procedencia", procedencia);
+    data.append("dibujante", dibujante);
+    data.append("descripcion", descripcion);
+    data.append("portada_comic", image);
+
+
+    fetch("php/apis/enviar_peticion_comic.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+const confirmar_peticion_comic = () => {
+    var nombre_comic = document.getElementById("nombre_comic").value;
+    var nombre_variante = document.getElementById("variante_comic").value;
+    var numero = document.getElementById("numero_comic").value;
+
+    var formato = document.getElementById("formato_comic").value;
+    var editorial = document.getElementById("editorial_comic").value;
+    var fecha = document.getElementById("fecha_comic").value;
+
+    var guionista = document.getElementById("guionista_comic").value;
+    var procedencia = document.getElementById("procedencia_comic").value;
+    var dibujante = document.getElementById("dibujante_comic").value;
+
+    var descripcion = document.getElementById("descripcion_comic").value;
+
+    if (nombre_comic.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el nombre del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("nombre_comic").classList.add("error"); // Agregar clase 'error' al input
+        return;
+    }
+
+    if (nombre_variante.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el nombre de la variante",
+            footer: "Web Comics"
+        })
+        document.getElementById("nombre_variante").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (numero.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el numero del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("numero_comic").classList.add("error"); // Agregar clase 'error' al input
+        return;
+    }
+
+    if (formato.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el formato del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("formato_comic").classList.add("error"); // Agregar clase 'error' al input
+        return;
+    }
+
+    if (editorial.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir la editorial del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("editorial_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (fecha.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir la fecha del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("fecha_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (guionista.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el guionista del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("guionista_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (procedencia.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir la procedencia del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("procedencia_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (dibujante.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir el dibujante del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("dibujante_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    if (descripcion.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir la descripcion del comic",
+            footer: "Web Comics"
+        })
+        document.getElementById("descripcion_comic").classList.add("error"); // Agregar clase 'error' al input
+
+        return;
+    }
+
+    const data = new FormData();
+    data.append("nombre_comic", nombre_comic);
+    data.append("nombre_variante", nombre_variante);
+    data.append("numero", numero);
+    data.append("formato", formato);
+    data.append("editorial", editorial);
+    data.append("fecha", fecha);
+    data.append("guionista", guionista);
+    data.append("procedencia", procedencia);
+    data.append("dibujante", dibujante);
+    data.append("descripcion", descripcion);
+    data.append("portada_comic", image);
+
+
+    fetch("php/apis/confirmar_peticion_comic.php", {
+        method: "POST",
+        body: data,
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+const cancelar_peticion_comic = (id) => {
+
+    const data = new FormData();
+    data.append("id_comic", id);
+    //pass data to php file
+    fetch("php/apis/cancelar_peticion_comic.php", {
+        method: 'POST',
+        body: data
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+const eliminar_peticion_comic = (id) => {
+
+    const data = new FormData();
+    data.append("id_comic", id);
+    //pass data to php file
+    fetch("php/apis/eliminar_peticion_comic.php", {
+        method: 'POST',
+        body: data
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
 
 
 

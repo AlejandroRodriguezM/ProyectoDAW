@@ -46,42 +46,36 @@ if (isset($_SESSION['email'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Escribe tu comentario</title>
-        <style>
-        .unreads-count {
-            background-color: red;
-            color: white;
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 0.2em 0.4em;
-            border-radius: 50%;
-            margin-right: 5em;
-            position: relative;
-            top: -1.6em;
-            /* right: 4.5em; */
-        }
-        .video-container {
+    <style>
+        .row {
             display: flex;
-            justify-content: flex-end;
-            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .video-container iframe:nth-child(1) {
-            margin-right: 20px;
+        #wrapper.home div.comments {
+            padding-right: 20px;
+            line-height: 140%;
         }
 
-        .video-container iframe:nth-child(2) {
-            margin-right: 20px;
+        .link-grey:hover {
+            color: #00913b;
         }
 
-        .video-container iframe:nth-child(3) {
-            margin-left: auto;
+        .last-pubs2 {
+            position: relative;
+            padding: 20px;
+            background-color: #B5B2B2;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-bottom: 70px;
         }
     </style>
 
@@ -155,7 +149,7 @@ if (isset($_SESSION['email'])) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
                     <li class="nav-item">
@@ -179,17 +173,33 @@ if (isset($_SESSION['email'])) {
 
                     </li>
                     <li class="nav-item">
-
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
+                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                        if ($num_solicitudes > 0) {
+                            echo "<span class='material-icons shaking'>notifications</span>";
+                            //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                        } else {
+                            echo "<span class='material-icons '>notifications</span>";
+                        }
+                        echo "</a>";
+                        ?>
+                    </li>
+                    <li class="nav-item">
+                        <?php
+                        // Obtener el número de mensajes sin leer
+                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
-                        echo "<span class='material-icons'>mark_email_unread</span>";
-                        // echo "Buzón";
-                        if ($unreads_count > 0) {
-                            echo "<span class='unreads-count'>$unreads_count</span>";
+                        if ($num_mensajes > 0) {
+                            echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                            //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                        } else {
+                            echo "<span class='material-icons'>mark_email_unread</span>";
                         }
                         echo "</a>";
                         ?>
@@ -247,26 +257,27 @@ if (isset($_SESSION['email'])) {
         <div class="caption">
             <br>
             <div class="container mt-5">
-
-                <div class="card">
-                    <div class="p-3">
-                        <h6>Escribe tu opinión</h6>
-                    </div>
-                    <form action="" method='POST' id='form_opinion' onsubmit="return false;" style="width:auto">
-                        <div class="d-flex flex-column form-color p-3">
-                            <div class="d-flex flex-wrap align-items-center">
-                                <img src='<?php echo $picture ?>' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
-                                <div class="pr-2">
-                                    <h6 class="mb-0" style="margin-left:10px"><?php echo $name ?></h6>
-                                </div>
-                                <textarea id='opinion' class="form-control mt-2" placeholder="Pon tu comentario..." style="width: 100% !important; height: 110px !important; resize: none !important;"></textarea>
-                                <div class="boton-enviar d-flex flex-wrap align-items-center justify-content-end">
-                                    <input type="hidden" id='id_user_opinion' value='<?php echo $id_usuario ?>'>
-                                    <button type="submit" class="btn btn-primary boton-enviar" style="margin-top:10px" onclick="nueva_opinion_pagina()">Enviar</button>
+                <div style="display: flex; justify-content: center;">
+                    <div class="last-pubs2 col-md-8">
+                        <div class="headings ">
+                            <h6>Escribe tu opinión</h6>
+                        </div>
+                        <form action="" method='POST' id='form_opinion' onsubmit="return false;" style="width:auto">
+                            <div class="d-flex flex-column form-color p-3">
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <img src='<?php echo $picture ?>' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>
+                                    <div class="pr-2">
+                                        <h6 class="mb-0" style="margin-left:10px"><?php echo $name ?></h6>
+                                    </div>
+                                    <textarea id='opinion' class="form-control mt-2" placeholder="Pon tu comentario..." style="width: 100% !important; height: 110px !important; resize: none !important;"></textarea>
+                                    <div class="boton-enviar d-flex flex-wrap align-items-center justify-content-end">
+                                        <input type="hidden" id='id_user_opinion' value='<?php echo $id_usuario ?>'>
+                                        <button type="submit" class="btn btn-primary boton-enviar" style="margin-top:10px" onclick="nueva_opinion_pagina()">Enviar</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="container mt-5">
@@ -328,13 +339,18 @@ if (isset($_SESSION['email'])) {
 
 
             <div class="container mt-5">
-                <div class="titulo">
-                    <h2>Videos de interes</h2>
-                </div>
-                <div class="video-container">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div style="display: flex; justify-content: center;">
+                <div class="last-pubs2 col-md-8">
+                        <div class="titulo">
+                            <h2>Videos de interes</h2>
+                        </div>
+                        <hr>
+                        <div class="video-container">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -2,13 +2,17 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 
+if(!isset($_GET['userName'])){
+    header("Location: index.php");
+}
+
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_mi_usuario = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_mi_usuario);
+    $id_usuario = $userData['IDuser'];
+    $numero_comics = get_total_guardados($id_usuario);
     $nombre_otro_usuario = $_GET['userName'];
     $dataUser = obtener_datos_usuario($nombre_otro_usuario);
     $id_otro_usuario = $dataUser['IDuser'];
@@ -47,25 +51,15 @@ if (isset($_SESSION['email'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Perfil de usuario</title>
 
-        <style>
-        .unreads-count {
-            background-color: red;
-            color: white;
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 0.2em 0.4em;
-            border-radius: 50%;
-            margin-right: 5em;
-            position: relative;
-            top: -1.6em;
-            /* right: 4.5em; */
-        }
+    <style>
+
         .contenedor {
             width: 50% !important;
             overflow-x: auto;
@@ -239,7 +233,7 @@ if (isset($_SESSION['email'])) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
                     <li class="nav-item">
@@ -273,14 +267,34 @@ if (isset($_SESSION['email'])) {
                     <li class="nav-item">
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $unreads_count = obtener_numero_mensajes_sin_leer($id_mi_usuario);
+                            // Obtener el número de mensajes sin leer
+                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                            if ($num_solicitudes > 0) {
+                                echo "<span class='material-icons shaking'>notifications</span>";
+                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                            } else {
+                                echo "<span class='material-icons '>notifications</span>";
+                            }
+                            echo "</a>";
+                        }
+                        ?>
+                    </li>
+                    <li class="nav-item">
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            // Obtener el número de mensajes sin leer
+                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
                             // Imprimir el enlace con el número de mensajes sin leer
                             echo "<a class='nav-link' href='mensajes_usuario.php'>";
-                            echo "<span class='material-icons'>mark_email_unread</span>";
-                            // echo "Buzón";
-                            if ($unreads_count > 0) {
-                                echo "<span class='unreads-count'>$unreads_count</span>";
+                            if ($num_mensajes > 0) {
+                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                                ////echo "<span class='num_mensajes'>$num_mensajes</span>";
+                            } else {
+                                echo "<span class='material-icons'>mark_email_unread</span>";
                             }
                             echo "</a>";
                         }
@@ -356,7 +370,7 @@ if (isset($_SESSION['email'])) {
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_mi_usuario'>";
+                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                         }
                         ?>
                     </div>
@@ -384,7 +398,7 @@ if (isset($_SESSION['email'])) {
                         <textarea class="form-control" id="mensaje_usuario_enviar" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            echo "<input type='hidden' id='id_usuario_remitente' value='$id_mi_usuario'>";
+                            echo "<input type='hidden' id='id_usuario_remitente' value='$id_usuario'>";
                             echo "<input type='hidden' id='id_usuario_destinatario' value='$id_otro_usuario'>";
                         }
                         ?>
@@ -443,30 +457,30 @@ if (isset($_SESSION['email'])) {
                                         <?php
                                         if (isset($_SESSION['email'])) {
                                             // Verificar si el usuario actual está bloqueado por el usuario que está viendo el perfil
-                                            if (comprobar_bloqueo($id_mi_usuario, $id_otro_usuario)) {
+                                            if (comprobar_bloqueo($id_usuario, $id_otro_usuario)) {
                                                 echo "<button class='btn btn-danger solicitud_enviada' onclick='' style='float:right;margin-right:10px'>Estás bloqueado</button>";
                                             } else {
                                                 // Código para enviar solicitudes y mostrar el estado de la amistad
-                                                if (comprobar_amistad($id_otro_usuario, $id_mi_usuario)) {
-                                                    echo "<button class='btn btn-success solicitud_enviada amistad' onclick='eliminar_amigo($id_otro_usuario,$id_mi_usuario)' style='float:right'><span>Ya sois amigos</span></button>";
-                                                } elseif (estado_solicitud($id_otro_usuario, $id_mi_usuario) == 'cancelada') {
+                                                if (comprobar_amistad($id_otro_usuario, $id_usuario)) {
+                                                    echo "<button class='btn btn-success solicitud_enviada amistad' onclick='eliminar_amigo($id_otro_usuario,$id_usuario)' style='float:right'><span>Ya sois amigos</span></button>";
+                                                } elseif (estado_solicitud($id_otro_usuario, $id_usuario) == 'cancelada') {
                                                     echo '<button class="btn btn-primary solicitud_enviada" style="float:right">Te ha rechazado</button>';
-                                                } elseif (!comprobar_bloqueo($id_otro_usuario, $id_mi_usuario) && estado_solicitud($id_otro_usuario, $id_mi_usuario) == 'en espera') {
-                                                    echo "<button class='btn btn-secondary solicitud_enviada cancelar' onclick='cancelar_solicitud($id_otro_usuario,$id_mi_usuario)' style='float:right'><span>Solicitud enviada</span></button>";
+                                                } elseif (!comprobar_bloqueo($id_otro_usuario, $id_usuario) && estado_solicitud($id_otro_usuario, $id_usuario) == 'en espera') {
+                                                    echo "<button class='btn btn-secondary solicitud_enviada cancelar' onclick='cancelar_solicitud($id_otro_usuario,$id_usuario)' style='float:right'><span>Solicitud enviada</span></button>";
                                                 } else {
-                                                    if (estado_solicitud($id_mi_usuario, $id_otro_usuario) == 'en espera') {
-                                                        echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_otro_usuario,$id_mi_usuario)' style='float:right'><span>Rechazar solicitud</span></button>";
-                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_otro_usuario,$id_mi_usuario)' style='float:right;margin-right:10px'><span>Aceptar solicitud</span></button>";
-                                                    } else if (!comprobar_bloqueo($id_otro_usuario, $id_mi_usuario)) {
-                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_otro_usuario,$id_mi_usuario)' style='float:right;margin-right:10px'>Enviar solicitud</button>";
+                                                    if (estado_solicitud($id_usuario, $id_otro_usuario) == 'en espera') {
+                                                        echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_otro_usuario,$id_usuario)' style='float:right'><span>Rechazar solicitud</span></button>";
+                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_otro_usuario,$id_usuario)' style='float:right;margin-right:10px'><span>Aceptar solicitud</span></button>";
+                                                    } else if (!comprobar_bloqueo($id_otro_usuario, $id_usuario)) {
+                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_otro_usuario,$id_usuario)' style='float:right;margin-right:10px'>Enviar solicitud</button>";
                                                     }
                                                 }
 
                                                 // Código para bloquear o desbloquear al usuario
-                                                if (!comprobar_bloqueo($id_otro_usuario, $id_mi_usuario)) {
-                                                    echo "<button class='btn btn-danger solicitud_enviada' onclick='bloquear_usuario($id_mi_usuario,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Bloquear usuario</span></button>";
+                                                if (!comprobar_bloqueo($id_otro_usuario, $id_usuario)) {
+                                                    echo "<button class='btn btn-danger solicitud_enviada' onclick='bloquear_usuario($id_usuario,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Bloquear usuario</span></button>";
                                                 } else {
-                                                    echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_mi_usuario,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
+                                                    echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_usuario,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
                                                 }
                                             }
                                         }
@@ -485,11 +499,11 @@ if (isset($_SESSION['email'])) {
                                     </div>
                                     <?php
                                     // comprobar si el usuario actual está bloqueado por el usuario a mostrar
-                                    if (comprobar_bloqueo($id_otro_usuario, $id_mi_usuario)) {
+                                    if (comprobar_bloqueo($id_otro_usuario, $id_usuario)) {
                                         echo "<p>Este usuario te ha bloqueado</p>";
                                     }
                                     // comprobar si la cuenta del usuario a mostrar es privada y si el usuario actual no es amigo
-                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_mi_usuario)) {
+                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_usuario)) {
                                         echo "<p>Este usuario tiene la cuenta privada</p>";
                                     }
                                     // si no está bloqueado y la cuenta no es privada o si es amigo, mostrar la información
@@ -520,16 +534,16 @@ if (isset($_SESSION['email'])) {
                                 <div class="comics-lists">
                                     <?php
                                     // comprobar si el usuario actual está bloqueado por el usuario a mostrar
-                                    if (comprobar_bloqueo($id_otro_usuario, $id_mi_usuario)) {
+                                    if (comprobar_bloqueo($id_otro_usuario, $id_usuario)) {
                                         echo "<p>Este usuario te ha bloqueado</p>";
                                     }
                                     // comprobar si la cuenta del usuario a mostrar es privada y si el usuario actual no es amigo
-                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_mi_usuario)) {
+                                    elseif (tipo_privacidad($id_otro_usuario) == 'privado' && !comprobar_amistad($id_otro_usuario, $id_usuario)) {
                                         echo "<p>Este usuario tiene la cuenta privada</p>";
                                     }
                                     // si no está bloqueado y la cuenta no es privada o si es amigo, mostrar la información
                                     else {
-                                        if (comprobar_mensaje($id_otro_usuario, $id_mi_usuario)) {
+                                        if (comprobar_mensaje($id_otro_usuario, $id_usuario)) {
                                             echo '<button class="btn btn-primary" onclick="location.href=\'./mensajes_usuario.php\'">Ver mensaje privado</button>';
                                         } else {
                                             // echo '<button class="btn btn-primary"></button>';

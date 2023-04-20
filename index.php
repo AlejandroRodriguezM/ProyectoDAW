@@ -40,6 +40,7 @@ if (isset($_SESSION['email'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
@@ -49,19 +50,6 @@ if (isset($_SESSION['email'])) {
 
     <title>Inicio</title>
     <style>
-        .unreads-count {
-            background-color: red;
-            color: white;
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 0.2em 0.4em;
-            border-radius: 50%;
-            margin-right: 5em;
-            position: relative;
-            top: -1.6em;
-            /* right: 4.5em; */
-        }
-
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -78,10 +66,11 @@ if (isset($_SESSION['email'])) {
 
         .last-pubs2 {
             position: relative;
-            padding: 20px;
+            padding: 18px;
             /* background-color: #fff; */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
+            margin-bottom: 20px;
         }
 
         .ver-mas-btn {
@@ -156,6 +145,19 @@ if (isset($_SESSION['email'])) {
             background-repeat: no-repeat !important;
             background-position: center !important;
             background-size: 20px !important;
+        }
+
+        .tweet-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 0 auto;
+        }
+
+        .tweet-embed {
+            margin-bottom: 20px;
+
+
         }
     </style>
 </head>
@@ -259,18 +261,39 @@ if (isset($_SESSION['email'])) {
 
                     <li class="nav-item">
                         <?php
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
+                        if (isset($_SESSION['email'])) {
+                            // Obtener el número de mensajes sin leer
+                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
 
-                        // Imprimir el enlace con el número de mensajes sin leer
-                        echo "<a class='nav-link' href='mensajes_usuario.php'>";
-                        echo "<span class='material-icons'>mark_email_unread</span>";
-                        // echo "Buzón";
-                        if ($unreads_count > 0) {
-                            echo "<span class='unreads-count'>$unreads_count</span>";
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                            if ($num_solicitudes > 0) {
+                                echo "<span class='material-icons shaking'>notifications</span>";
+                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                            } else {
+                                echo "<span class='material-icons '>notifications</span>";
+                            }
+                            echo "</a>";
                         }
-                        echo "</a>";
                         ?>
                     </li>
+                    <li class="nav-item">
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            // Obtener el número de mensajes sin leer
+                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
+
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='mensajes_usuario.php'>";
+                            if ($num_mensajes > 0) {
+                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                                //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                            } else {
+                                echo "<span class='material-icons'>mark_email_unread</span>";
+                            }
+                            echo "</a>";
+                        }
+                        ?>
                     </li>
                 </ul>
             </div>
@@ -411,7 +434,7 @@ if (isset($_SESSION['email'])) {
             </div>
             <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
-                    <div class="last-pubs2">
+                    <div class="last-pubs2 col-md-8">
                         <div class="titulo">
                             <h2>Videos de interes</h2>
                         </div>
@@ -424,6 +447,52 @@ if (isset($_SESSION['email'])) {
                     </div>
                 </div>
             </div>
+
+            <div class="container mt-5">
+                <div style="display: flex; justify-content: center;">
+                    <div class="last-pubs2 col-md-8">
+                        <div class="tweet-container" style="margin: 0 auto;">
+                            <div class="tweet-embed">
+                                <blockquote class="twitter-tweet">
+                                    <a href="https://twitter.com/SilverAlox/status/1640415371571150851"></a>
+                                </blockquote>
+                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </div>
+                            <div class="tweet-embed">
+                                <blockquote class="twitter-tweet">
+                                    <a href="https://twitter.com/TheTopComics/status/1646216360358473730"></a>
+                                </blockquote>
+                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </div>
+                            <div class="tweet-embed">
+                                <blockquote class="twitter-tweet">
+                                    <a href="https://twitter.com/SalaDePeligro/status/1647219574419382275"></a>
+                                </blockquote>
+                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </div>
+                            <div class="tweet-embed">
+                                <blockquote class="twitter-tweet">
+                                    <a href="https://twitter.com/radar_comics/status/1647876071205773314"></a>
+                                </blockquote>
+                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </div>
+                            <div class="tweet-embed">
+                                <blockquote class="twitter-tweet">
+                                    <a href="https://twitter.com/TheTopComics/status/1646962007546146816"></a>
+                                </blockquote>
+                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </div>
+                            <div class="tweet-embed">
+                                <blockquote class="twitter-tweet">
+                                    <a href="https://twitter.com/TheTopComics/status/1525181216055611393?lang=es"></a>
+                                </blockquote>
+                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
                     <div class="last-pubs2 col-md-8">

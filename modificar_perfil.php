@@ -11,7 +11,11 @@ if (isset($_SESSION['email'])) {
     $tipo_perfil = $userData['tipo_perfil'];
     $picture = $userData['userPicture'];
     $numero_comics = get_total_guardados($id_usuario);
-    //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+
+    $infoUser = getInfoAboutUser($id_usuario);
+    $nameUser = $infoUser['nombreUser'];
+    $lastName = $infoUser['apellidoUser'];
+    $sobreUser = $infoUser['infoUser'];
 } else {
     header('Location: index.php');
 }
@@ -32,37 +36,25 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
-    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
-    <link rel="stylesheet" href="./assets/style/media_videos.css">
     <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Ajustes de usuario</title>
-        <style>
-        .unreads-count {
-            background-color: red;
-            color: white;
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 0.2em 0.4em;
-            border-radius: 50%;
-            margin-right: 5em;
-            position: relative;
-            top: -1.6em;
-            /* right: 4.5em; */
-        }
+    <style>
         .contenedor {
             width: 50% !important;
             overflow-x: auto;
@@ -124,7 +116,7 @@ if (isset($_SESSION['email'])) {
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
@@ -135,17 +127,35 @@ if (isset($_SESSION['email'])) {
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
+                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                        if ($num_solicitudes > 0) {
+                            echo "<span class='material-icons shaking'>notifications</span>";
+                            //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                        } else {
+                            echo "<span class='material-icons '>notifications</span>";
+                        }
+                        echo "</a>";
+                        ?>
+                    </li>
+                    <li class="nav-item">
+                        <?php
+                        // Obtener el número de mensajes sin leer
+                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
-                        echo "<span class='material-icons'>mark_email_unread</span>";
-                        // echo "Buzón";
-                        if ($unreads_count > 0) {
-                            echo "<span class='unreads-count'>$unreads_count</span>";
+                        if ($num_mensajes > 0) {
+                            echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                            //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                        } else {
+                            echo "<span class='material-icons'>mark_email_unread</span>";
                         }
                         echo "</a>";
-                        ?>                    </li>
+                        ?>
+                    </li>
                 </ul>
             </div>
 
@@ -181,7 +191,40 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
     </nav>
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <img class="modal-content_img" id="img01">
+    </div>
 
+    <!-- FORMULARIO INSERTAR -->
+    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <form method="post" id="form_ticket" onsubmit="return false;"></form>
+                    <h4 class="modal-title">Crear un ticket para administradores</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input type="text" id="asunto_usuario" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+
+                        <input type='hidden' id='id_user_ticket' value='$id_usuario'>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
@@ -198,18 +241,20 @@ if (isset($_SESSION['email'])) {
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$picture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
                                     <ul class="meta list list-unstyled">
-                                        <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
+                                        <li class="name">
+                                            <label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-
                                             echo $userName;
                                             ?>
                                         </li>
-                                        <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
+                                        <li class="email">
+                                            <label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                             ?>
                                         </li>
-                                        <li class="activity"><label for="" style="font-size: 0.8em;">Ultima conexion: </label>
+                                        <li class="activity">
+                                            <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
                                             echo comprobar_ultima_conexion($id_usuario);
                                             ?>
@@ -237,14 +282,10 @@ if (isset($_SESSION['email'])) {
                                         <h3 class="fieldset-title">Información</h3>
                                         <div class="form-group avatar" style="width: 420px;">
                                             <figure>
-                                                <?php
-                                                $dataUser = obtener_datos_usuario($email);
-                                                $profilePicture = $dataUser['userPicture'];
-                                                ?>
                                                 <div class="image-upload">
                                                     <label for="file-input"></label>
                                                     <?php
-                                                    echo "<img class='chosenUserProfile mb-2' id='output' src='$profilePicture' style='cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important '/>";
+                                                    echo "<img class='chosenUserProfile mb-2' id='output' src='$picture' style='cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important '/>";
                                                     ?>
                                             </figure>
                                             <div class="form-inline col-md-10 col-sm-9 col-xs-12">
@@ -252,10 +293,7 @@ if (isset($_SESSION['email'])) {
                                             </div>
                                         </div>
                                         <?php
-                                        $IDuser = $dataUser['IDuser'];
-                                        $infoUser = getInfoAboutUser($IDuser);
-                                        $nameUser = $infoUser['nombreUser'];
-                                        $lastName = $infoUser['apellidoUser'];
+
                                         ?>
 
                                         <div class="form-group" style="margin-top: 5px;">
@@ -294,9 +332,6 @@ if (isset($_SESSION['email'])) {
                                             <label class="col-md-3 col-sm-3 col-xs-12 control-label">Sobre mi</label>
                                             <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px">
                                                 <?php
-                                                $IDuser = $dataUser['IDuser'];
-                                                $infoUser = getInfoAboutUser($IDuser);
-                                                $sobreUser = $infoUser['infoUser'];
                                                 ?>
                                                 <textarea maxlength="450" class="form-control" id="field" onkeyup="countChar()" name="text" rows="3" style="resize:none; background-color:smoke;height:200px"><?php echo $sobreUser ?></textarea>
                                                 <div id="the-count">
@@ -358,44 +393,7 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
 
-            <!-- The Modal -->
-            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <img class="modal-content_img" id="img01">
-            </div>
 
-            <!-- FORMULARIO INSERTAR -->
-            <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <form method="post" id="form_ticket" onsubmit="return false;">
-                                <h4 class="modal-title">Crear un ticket para administradores</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Asunto</label>
-                                <input type="text" id="asunto_usuario" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Mensaje</label>
-                                <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                                <?php
-                                if (isset($_SESSION['email'])) {
-                                    $userData = obtener_datos_usuario($email);
-                                    $id_usuario = $userData['IDuser'];
-                                    echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                            <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                        </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
             <div id="footer-lite">
                 <div class="content">
                     <p class="helpcenter">

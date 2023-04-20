@@ -20,8 +20,7 @@ if ($userPrivilege != 'guest') {
             $validate['message'] = 'ERROR. No se ha podido enviar la solicitud';
         }
     }
-} elseif ($userPrivilege == 'user') {
-} else {
+}else {
     header("HTTP/1.1 401 Unauthorized");
     $validate['success'] = false;
     $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';

@@ -298,6 +298,30 @@ function cambiar_privacidad(boolean) {
     }
 }
 
+function confirmar_envio_peticion_comic() {
+    if (confirm("¿Aceptar la petición?")) {
+        confirmar_peticion_comic();
+    }
+}
+
+function peticion_comic_formulario() {
+    if (confirm("¿Estás seguro que quieres mandar la petición?")) {
+        mandar_peticion_comic();
+    }
+}
+
+function cancelar_peticion_usuario(id) {
+    if (confirm("¿Estás seguro de que deseas eliminar la petición?")) {
+        cancelar_peticion_comic(id);
+    }
+}
+
+function eliminar_peticion_usuario(id) {
+    if (confirm("¿Estás seguro de que deseas eliminar la petición?")) {
+        eliminar_peticion_comic(id);
+    }
+}
+
 function abrir_modal_modificar(id_lista) {
     // Obtener el nombre de la lista a partir del atributo data-nombre-lista del botón
     var nombre_lista = $("#edit-button-" + id_lista).data("nombre-lista");
@@ -356,13 +380,13 @@ function checkboxChanged() {
         loadComics(checkboxChecked);
         if (document.getElementById('contenido')) {
             addComic(checkboxChecked);
-            }
+        }
     } else {
         $('.new-comic-list').html('');
         $('.comic-list').html('');
         loadComics(checkboxChecked);
         if (document.getElementById('contenido')) {
-        addComic(checkboxChecked);
+            addComic(checkboxChecked);
         }
     }
 }

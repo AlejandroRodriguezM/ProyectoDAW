@@ -175,6 +175,24 @@ function updateSaveImage($email, $image)
 	fclose($file);
 }
 
+function portadas_peticiones($image,$id_comic_peticion)
+{
+	$file_path = '../../assets/covers_img_peticiones';
+	$blob = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
+	$file = fopen($file_path . "/".$id_comic_peticion.".jpg", "w");
+	fwrite($file, $blob);
+	fclose($file);
+}
+
+function portadas_confirmadas($image,$id_comic_peticion)
+{
+	$file_path = '../../assets/covers_img';
+	$blob = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
+	$file = fopen($file_path . "/".$id_comic_peticion.".jpg", "w");
+	fwrite($file, $blob);
+	fclose($file);
+}
+
 function createDirectory($email, $idUser)
 {
 	$email = explode("@", $email);
@@ -197,6 +215,15 @@ function deleteDirectory($email, $idUser)
 				unlink($file);
 		}
 		rmdir($file_path);
+	}
+}
+
+function eliminar_portada($id_comic)
+{
+
+	$file_path = '../../assets/covers_img_peticiones/' . $id_comic . ".jpg";
+	if (file_exists($file_path)) {
+		unlink($file_path);
 	}
 }
 

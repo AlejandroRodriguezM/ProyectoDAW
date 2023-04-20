@@ -49,24 +49,13 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Informacion del comic</title>
-        <style>
-        .unreads-count {
-            background-color: red;
-            color: white;
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 0.2em 0.4em;
-            border-radius: 50%;
-            margin-right: 5em;
-            position: relative;
-            top: -1.6em;
-            /* right: 4.5em; */
-        }
+    <style>
         .rating {
             display: flex;
             flex-direction: row-reverse;
@@ -195,12 +184,6 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
             top: 50px;
             z-index: 100;
             margin-top: auto;
-        }
-
-        span,
-        label,
-        a {
-            color: black;
         }
 
         #myButton {
@@ -332,6 +315,54 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
         .comic_portada {
             margin-top: 20px;
         }
+
+        .form-group {
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            resize: none;
+            width: 100%;
+        }
+
+        .comic-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: grey;
+        }
+
+        .comic-detail {
+            flex-basis: 30%;
+            margin-bottom: 20px;
+        }
+
+        .comic-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .comic-value {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            background-color: white;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .comic-value:focus {
+            outline: none;
+            box-shadow: 0px 0px 5px #3f3f3f;
+        }
     </style>
 </head>
 
@@ -402,7 +433,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
 
                     <li class="nav-item">
@@ -437,14 +468,34 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                     <li class="nav-item">
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $unreads_count = obtener_numero_mensajes_sin_leer($id_usuario);
+                            // Obtener el número de mensajes sin leer
+                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                            if ($num_solicitudes > 0) {
+                                echo "<span class='material-icons shaking'>notifications</span>";
+                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                            } else {
+                                echo "<span class='material-icons '>notifications</span>";
+                            }
+                            echo "</a>";
+                        }
+                        ?>
+                    </li>
+                    <li class="nav-item">
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            // Obtener el número de mensajes sin leer
+                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
                             // Imprimir el enlace con el número de mensajes sin leer
                             echo "<a class='nav-link' href='mensajes_usuario.php'>";
-                            echo "<span class='material-icons'>mark_email_unread</span>";
-                            // echo "Buzón";
-                            if ($unreads_count > 0) {
-                                echo "<span class='unreads-count'>$unreads_count</span>";
+                            if ($num_mensajes > 0) {
+                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                                ////echo "<span class='num_mensajes'>$num_mensajes</span>";
+                            } else {
+                                echo "<span class='material-icons'>mark_email_unread</span>";
                             }
                             echo "</a>";
                         }
@@ -564,11 +615,10 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                     if (isset($_SESSION['email'])) {
                                         if (check_guardado($id_usuario, $id_comic)) {
                                             echo "<button id='myButton' class='active'></button>";
+                                        } else {
+                                            echo "<button id='myButton'></button>";
                                         }
                                     }
-                                    // else {
-                                    //     echo "<button id='myButton'></button>";
-                                    // }
                                     ?>
 
                                 </div>
@@ -696,10 +746,6 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                                     echo "<input type='radio' name='rating' value='2' id='2'>";
                                                     echo "<label for='1'>★</label>";
                                                     echo "<input type='radio' name='rating' value='1' id='1'>";
-
-
-
-
                                                     echo "</div>";
                                                     echo "<div class='boton-enviar d-flex flex-wrap align-items-center justify-content-end'>";
                                                     echo "<input type='hidden' id='id_user_opinion' value='" . $id_usuario . "'>";

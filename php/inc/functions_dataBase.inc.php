@@ -262,6 +262,48 @@ function insertURL(string $email, int $idUser): bool
 	}
 }
 
+function direccion_imagen_comic(int $id_comic): bool
+{
+	global $conection;
+	$modificado = false;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$file_path = 'assets/covers_img_peticiones/' . $id_comic . ".jpg";
+		$insertData = $conection->prepare("UPDATE peticiones_nuevos_comics SET Cover = ? WHERE IDcomic = ?");
+		$insertData->bindParam(1, $file_path);
+		$insertData->bindParam(2, $id_comic);
+		if ($insertData->execute()) {
+			$modificado = true;
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $modificado;
+}
+
+function direccion_imagen_comic_confirmado(int $id_comic): bool
+{
+	global $conection;
+	$modificado = false;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$file_path = 'assets/covers_img/' . $id_comic . ".jpg";
+		$insertData = $conection->prepare("UPDATE comics SET Cover = ? WHERE IDcomic = ?");
+		$insertData->bindParam(1, $file_path);
+		$insertData->bindParam(2, $id_comic);
+		if ($insertData->execute()) {
+			$modificado = true;
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $modificado;
+}
+
 function checkStatus(string $email): bool
 {
 	global $conection;
@@ -479,7 +521,7 @@ function num_mensajes_usuario(int $id_usuario): int
 			if ($consulta->rowCount() > 0) {
 				$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
 				$num_mensajes = $resultado['num_mensajes'];
-			}else{
+			} else {
 				$num_mensajes = 0;
 			}
 		}
@@ -958,6 +1000,48 @@ function getDataComic(int $id): ?array
 		if ($consulta->execute(array($id))) {
 			$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
 		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $consulta;
+}
+
+function peticiones_comics_espera(): PDOStatement
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT * from peticiones_comics
+			JOIN peticiones_nuevos_comics ON peticiones_comics.id_comic_peticion = peticiones_nuevos_comics.IDComic
+			WHERE estado='en espera'");
+		$consulta->execute();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $consulta;
+}
+
+function peticiones_comics_cancelados(): PDOStatement
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT * from peticiones_comics
+			JOIN peticiones_nuevos_comics ON peticiones_comics.id_comic_peticion = peticiones_nuevos_comics.IDComic
+			WHERE estado='cancelado'");
+		$consulta->execute();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $consulta;
+}
+
+function peticiones_comics_aceptados(): PDOStatement
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT * from peticiones_comics
+			JOIN peticiones_nuevos_comics ON peticiones_comics.id_comic_peticion = peticiones_nuevos_comics.IDComic
+			WHERE estado='aceptado'");
+		$consulta->execute();
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
@@ -1980,14 +2064,28 @@ function comics_lista($userData, $limit, $offset, $conection)
 	return $comics;
 }
 
-function obtener_numero_mensajes_sin_leer($id_usuario){
+function obtener_numero_mensajes_sin_leer($id_usuario)
+{
 	global $conection;
 	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		$consulta = $conection->prepare("SELECT COUNT(*) from respuestas_mensajes_usuarios where estado_mensaje='no leido' AND id_usuario_destino = ?");
 		$consulta->execute(array($id_usuario));
 		$numero_mensajes_sin_leer = $consulta->fetchColumn();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $numero_mensajes_sin_leer;
+}
 
+function obtener_numero_notificaciones_amistad_sin_leer($id_usuario)
+{
+	global $conection;
+	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT COUNT(*) from solicitudes_amistad where estado_solicitud='en espera' AND id_usuario_destinatario = ?");
+		$consulta->execute(array($id_usuario));
+		$numero_mensajes_sin_leer = $consulta->fetchColumn();
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
@@ -1996,27 +2094,247 @@ function obtener_numero_mensajes_sin_leer($id_usuario){
 
 function cambiar_estado_mensajes(int $id_conversacion, int $id_usuario): void
 {
-    global $conection;
-    $id_conversacion = htmlspecialchars($id_conversacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	global $conection;
+	$id_conversacion = htmlspecialchars($id_conversacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
-    try {
-        // Obtener todos los registros que cumplan la condición
-        $consulta = $conection->prepare("SELECT * FROM respuestas_mensajes_usuarios WHERE id_conversacion = ? AND id_usuario_envio != ?");
-        $consulta->execute([$id_conversacion, $id_usuario]);
-        $resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	try {
+		// Obtener todos los registros que cumplan la condición
+		$consulta = $conection->prepare("SELECT * FROM respuestas_mensajes_usuarios WHERE id_conversacion = ? AND id_usuario_envio != ?");
+		$consulta->execute([$id_conversacion, $id_usuario]);
+		$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
 
-        // Cambiar el estado de los registros obtenidos
-        foreach ($resultados as $row) {
-            $id_otro_usuario = $row['id_usuario_envio'];
-			if($id_otro_usuario != $id_usuario){
+		// Cambiar el estado de los registros obtenidos
+		foreach ($resultados as $row) {
+			$id_otro_usuario = $row['id_usuario_envio'];
+			if ($id_otro_usuario != $id_usuario) {
 				$id_otro_usuario = $row['id_usuario_envio'];
 				$consulta = $conection->prepare("UPDATE respuestas_mensajes_usuarios SET estado_mensaje = 'leido' WHERE id_usuario_envio = ?");
 				$consulta->execute([$id_otro_usuario]);
 			}
-        }
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
 }
 
+function enviar_solicitud_comic($id_comic, $id_usuario, $id_descripcion)
+{
+	global $conection;
+	$estado = false;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_descripcion = htmlspecialchars($id_descripcion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("INSERT INTO peticiones_comics (id_comic_peticion,id_usuario_peticion,id_comic_descripcion) VALUES (?,?,?)");
+		if ($consulta->execute(array($id_comic, $id_usuario, $id_descripcion))) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
 
+function enviar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $descipcion_comic, $dibujante, $portada_comic, $id_usuario)
+{
+	global $conection;
+	$estado = false;
+	$nombre_comic = htmlspecialchars($nombre_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$nombre_variante = htmlspecialchars($nombre_variante, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$numero = htmlspecialchars($numero, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$formato = htmlspecialchars($formato, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$editorial = htmlspecialchars($editorial, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$fecha = htmlspecialchars($fecha, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$guionista = htmlspecialchars($guionista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$procedencia = htmlspecialchars($procedencia, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$descipcion_comic = htmlspecialchars($descipcion_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$dibujante = htmlspecialchars($dibujante, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$portada_comic = htmlspecialchars($portada_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("INSERT INTO peticiones_nuevos_comics (nomComic,nomVariante,numComic,Formato,nomEditorial,date_published,nomGuionista,Procedencia,nomDibujante,cover) VALUES (?,?,?,?,?,?,?,?,?,?)");
+		if ($consulta->execute(array($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $dibujante, $portada_comic))) {
+			$id_comic = $conection->lastInsertId();
+			if (enviar_solicitud_descripcion_comic($id_comic, $descipcion_comic, $id_usuario)) {
+				$estado = true;
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function confirmar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $descipcion_comic, $dibujante, $portada_comic)
+{
+	global $conection;
+	$estado = false;
+	$nombre_comic = htmlspecialchars($nombre_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$nombre_variante = htmlspecialchars($nombre_variante, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$numero = htmlspecialchars($numero, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$formato = htmlspecialchars($formato, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$editorial = htmlspecialchars($editorial, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$fecha = htmlspecialchars($fecha, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$guionista = htmlspecialchars($guionista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$procedencia = htmlspecialchars($procedencia, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$descipcion_comic = htmlspecialchars($descipcion_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$dibujante = htmlspecialchars($dibujante, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$portada_comic = htmlspecialchars($portada_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta1 = $conection->prepare("INSERT INTO comics (nomComic,nomVariante,numComic,Formato,nomEditorial,date_published,nomGuionista,Procedencia,nomDibujante,cover) VALUES (?,?,?,?,?,?,?,?,?,?)");
+		$id_comic = $conection->lastInsertId();
+		$consulta2 = $conection->prepare("INSERT INTO descripcion_comics (id_comic,descripcion_comics) VALUES (?,?)");
+		if ($consulta1->execute(array($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $dibujante, $portada_comic))) {
+			if ($consulta2->execute(array($id_comic, $descipcion_comic))) {
+				if(cambiar_estado_peticion($id_comic)){
+					$estado = true;
+				}
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function cambiar_estado_peticion(int $id_comic_peticion): bool
+{
+	global $conection;
+	$estado = false;
+	$id_comic_peticion = htmlspecialchars($id_comic_peticion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("UPDATE peticiones_comics SET estado = 'cancelado' WHERE id_comic_peticion = ?");
+		if ($consulta->execute([$id_comic_peticion])) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function info_peticiones_comics(int $id_comic): array
+{
+	global $conection;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT * FROM peticiones_comics WHERE id_comic_peticion = ?");
+		$consulta->execute([$id_comic]);
+		$resultados = $consulta->fetch(PDO::FETCH_ASSOC);
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $resultados;
+}
+
+function info_comic_formulario(int $id_comic): array
+{
+	global $conection;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT * FROM peticiones_nuevos_comics WHERE IDcomic = ?");
+		$consulta->execute([$id_comic]);
+		$resultados = $consulta->fetch(PDO::FETCH_ASSOC);
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $resultados;
+}
+
+function info_comic_descripcion_formulario(int $id_comic): array
+{
+	global $conection;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT * FROM peticiones_descripcion_comics WHERE id_comic = ?");
+		$consulta->execute([$id_comic]);
+		$resultados = $consulta->fetch(PDO::FETCH_ASSOC);
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $resultados;
+}
+
+function enviar_solicitud_descripcion_comic($id_comic, $descipcion_comic, $id_usuario)
+{
+	global $conection;
+	$estado = false;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$descipcion_comic = htmlspecialchars($descipcion_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("INSERT INTO peticiones_descripcion_comics (id_comic,descripcion_comic) VALUES (?,?)");
+		if ($consulta->execute(array($id_comic, $descipcion_comic))) {
+			$id_descripcion = $conection->lastInsertId();
+			if (enviar_solicitud_comic($id_comic, $id_usuario, $id_descripcion)) {
+				$estado = true;
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function obtener_peticiones_nuevos_comics()
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT * FROM peticiones_nuevos_comics");
+		$consulta->execute();
+		$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $resultados;
+}
+
+function obtener_numero_peticiones_nuevos_comics()
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT COUNT(*) FROM peticiones_nuevos_comics");
+		$consulta->execute();
+		$numero_peticiones = $consulta->fetchColumn();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $numero_peticiones;
+}
+
+function ultimo_id_comic(String $nombre_tabla): int
+{
+	global $conection;
+	$ultimo_id = 0;
+	try {
+		$consulta = $conection->prepare("SELECT MAX(IDcomic) FROM $nombre_tabla");
+		$consulta->execute();
+		$ultimo_id = $consulta->fetchColumn();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $ultimo_id;
+}
+
+function eliminar_peticion_comic(int $id_peticion): bool
+{
+	global $conection;
+	$estado = false;
+	$id_peticion = htmlspecialchars($id_peticion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$datos_comic = info_peticiones_comics($id_peticion);
+	$id_comic = $datos_comic['id_comic_peticion'];
+	$id_descripcion = $datos_comic['id_comic_descripcion'];
+	try {
+		$consulta1 = $conection->prepare("DELETE FROM peticiones_comics WHERE id_comic_peticion = ?");
+		$consulta2 = $conection->prepare("DELETE FROM peticiones_nuevos_comics WHERE IDcomic = ?");
+		$consulta3 = $conection->prepare("DELETE FROM peticiones_descripcion_comics WHERE id_comic = ?");
+		if ($consulta1->execute([$id_peticion])) {
+			if ($consulta2->execute([$id_comic])) {
+				if ($consulta3->execute([$id_descripcion])) {
+					eliminar_portada($id_comic);
+					$estado = true;
+				}
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}

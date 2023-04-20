@@ -10,7 +10,6 @@ if (isset($_SESSION['email'])) {
     if ($userPrivilege == 'admin') {
         $id_usuario = $userData['IDuser'];
         $numero_comics = get_total_guardados($id_usuario);
-        $picture = $userData['userPicture'];
         //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
     } else {
         header('Location: logOut.php');
@@ -51,7 +50,7 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
-    <title>Panel de administracion</title>
+    <title>Peticiones de comics</title>
     <style>
         .contenedor {
             width: 80% !important;
@@ -65,16 +64,11 @@ if (isset($_SESSION['email'])) {
 </head>
 
 <?php
-// if (isset($_POST['edit'])) {
-//     $email_user_edit = $_POST['emailUser'];
-//     $_SESSION['usuario_temporal'] = $email_user_edit;
-//     header("Location: admin_actualizar_usuario.php");
-// }
-// if (isset($_POST['avatarUser'])) {
-//     $nombre_otro_usuario = $_POST['emailUser'];
-//     $_SESSION['usuario_temporal'] = $nombre_otro_usuario;
-//     header("Location: admin_info_usuario.php");
-// }
+if (isset($_POST['edit'])) {
+    $email_user_edit = $_POST['emailUser'];
+    $_SESSION['usuario_temporal'] = $email_user_edit;
+    header("Location: admin_actualizar_usuario.php");
+}
 ?>
 
 
@@ -290,10 +284,10 @@ if (isset($_SESSION['email'])) {
                                 </div>
                                 <nav class="side-menu">
                                     <ul class="nav">
-                                        <li class="active"><a href="admin_panel_usuario.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
+                                        <li><a href="admin_panel_usuario.php"><span class="fa fa-user"></span>Lista de usuarios</a></li>
                                         <li><a href="admin_panel_peticiones_comic.php"><span class="fa fa-cog"></span>Peticiones de comics</a></li>
                                         <li><a href="admin_panel_peticiones_comic_aceptadas.php"><span class="fa fa-cog"></span>Comics aceptados</a></li>
-                                        <li><a href="admin_panel_peticiones_comic_canceladas.php"><span class="fa fa-cog"></span>Comics cancelados</a></li>
+                                        <li class="active"><a href="admin_panel_peticiones_comic_canceladas.php"><span class="fa fa-cog"></span>Comics cancelados</a></li>
                                         <li><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
                                         <li><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
                                     </ul>
@@ -306,92 +300,43 @@ if (isset($_SESSION['email'])) {
                                             <thead class="table-dark">
                                                 <tr>
                                                     <td>ID</td>
-                                                    <td>Imagen de perfil</td>
-                                                    <td>Nombre</td>
-                                                    <td>Correo</td>
-                                                    <td>Privilegio</td>
-                                                    <td>Estado</td>
+                                                    <td>Portada</td>
+                                                    <td>Nombre del comic</td>
+                                                    <td>Usuario petición</td>
+                                                    <td>Estado solicitud</td>
+                                                    <td>Acciones</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                                        <?php
-                                                        $registros = showUsers();
-                                                        $user = $registros->fetch();
-                                                        while ($user != null) {
-                                                        ?>
-                                                <tr>
-                                                    <td name='IDuser'><?php echo $user['IDuser'] ?></td>
-
-                                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                                        <td>
-                                                            <a href="admin_info_usuario.php?id_usuario=<?php echo $user['IDuser']; ?>" onclick="location.href=this.href; return false;">
-                                                                <input type="hidden" name="avatarUser">
-                                                                <input type="image" src="<?php echo $user['userPicture'] ?>" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
-                                                            </a>
-                                                        </td>
-
-                                                        <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
-                                                        <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
-                                                        <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
-                                                    </form>
-                                                    <td id='nameUser' name='nameUser'><?php echo $user['userName'] ?></td>
-                                                    <td id='emailUser' name='emailUser'><?php echo $user['email'] ?></td>
-                                                    <td><?php echo $user['privilege'] ?></td>
-                                                    <td><?php echo $user['accountStatus'] ?></td>
-                                                    <?php
-                                                            if ($user['privilege'] == 'admin') {
-                                                    ?>
-                                                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'>
-                                                                <button class="btn btn-success" onclick="window.location.href='admin_actualizar_usuario.php?id_usuario=<?php echo $user['IDuser']; ?>'; return false;">
-                                                                    <i class="bi bi-pencil-square p-1"></i>Editar
-                                                                </button>
-
-                                                            </td>
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Bloquear</button></td>
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%; cursor: not-allowed'><button class='btn btn-danger' disabled> <i class='bi bi-trash p-1'></i>Eliminar</button></td>
-
-                                                            <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
-                                                            <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
-                                                            <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
-                                                        </form>
-                                                    <?php
-                                                            } else {
-                                                    ?>
-                                                        <form id="form_lista" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                                            <input type='hidden' name='IDuser' id='IDuser' value='<?php echo $user['IDuser'] ?>'>
-                                                            <input type='hidden' name='nameUser' id='nameUser' value='<?php echo $user['userName'] ?>'>
-                                                            <input type='hidden' name='emailUser' id='emailUser' value='<?php echo $user['email'] ?>'>
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'>
-                                                                <button class="btn btn-success" onclick="window.location.href='admin_actualizar_usuario.php?id_usuario=<?php echo $user['IDuser']; ?>'; return false;">
-                                                                    <i class="bi bi-pencil-square p-1"></i>Editar
-                                                                </button>
-                                                            </td>
-                                                            <?php
-                                                                if ($user['accountStatus'] == 'block') {
-                                                                    echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='cambiar_autorizacion(false, \"{$user['email']}\");return false;'> <i class='bi bi-trash p-1'></i>Desbloquear</button>
-                                                                    </td>";
-                                                                } else {
-                                                                    echo "<td style='margin-left: auto; margin-right: auto; width: 10%'><button class='btn btn-danger' name='status' onclick='cambiar_autorizacion(true, \"{$user['email']}\");return false;'> <i class='bi bi-trash p-1'></i>Bloquear</button>
-                                                                    </td>";
-                                                                }
-                                                            ?>
-                                                            <td style='margin-left: auto; margin-right: auto; width: 10%'>
-                                                                <button class="btn btn-danger" name="del" onclick="confirmar_eliminacion_usuario(<?php echo $user['IDuser']; ?>, '<?php echo $user['email']; ?>'); return false;">
-                                                                    <i class="bi bi-trash p-1"></i>Eliminar
-                                                                </button>
-                                                            </td>
-                                                        </form>
                                                 <?php
-                                                            }
-                                                            echo "</tr>";
-                                                            $user = $registros->fetch();
-                                                        }
+                                                $data = peticiones_comics_cancelados();
+                                                foreach ($data as $row) {
+                                                    $id_comic = $row['IDcomic'];
+                                                    $id_usuario = $row['id_usuario_peticion'];
+                                                    $comicName = $row['nomComic'];
+                                                    $comicCover = $row['Cover'];
+                                                    $comicStatus = $row['estado'];
+                                                    $userData = obtener_datos_usuario($id_usuario);
+                                                    $userName = $userData['userName'];
+                                                    echo "<tr>";
+                                                    echo "<td>$id_comic</td>";
+                                                    echo "<td><img src='$comicCover' alt='Portada' style='width: 100px; height: 150px;'></td>";
+                                                    echo "<td>$comicName</td>";
+                                                    echo "<td onclick=\"window.location.href='admin_info_usuario.php?id_usuario=" . $id_usuario . "'; return false;\"><a href='#'>" . $userName . "</a></td>";
+                                                    echo "<td>$comicStatus</td>";
+                                                    echo "<td>
+                                                    <button class='btn btn-success' onclick=\"window.location.href='info_comic_peticion.php?IDcomic=" . $id_comic . "'; return false;\">
+                                                      <i class='bi bi-pencil-square p-1'></i>Editar
+                                                    </button>
+                                                    
+                                                    <button class='btn btn-success' onclick=\"eliminar_peticion_usuario($id_comic); return false;\">
+                                                      <i class='bi bi-pencil-square p-1'></i>Eliminar peticion
+                                                    </button>
+                                                    
+                                                    </td>";
+                                                    echo "</tr>";
+                                                }
                                                 ?>
-                                                </form>
-                                                </tr>
                                             </tbody>
                                         </table>
                                         <h5 class="card-title"></h5>
