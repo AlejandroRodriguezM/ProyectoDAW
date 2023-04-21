@@ -622,6 +622,11 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                             echo "<button id='myButton'></button>";
                                         }
                                     }
+                                    if ($userPrivilege == 'admin') {
+                                        echo '<div class="ml-auto">
+                                        <button type="button" class="btn btn-danger btn-sm mt-2" style="display: block;" onclick="eliminar_comic(' . $id_comic . ')">Eliminar comic</button>
+                                        </div>';
+                                    }
                                     ?>
 
                                 </div>

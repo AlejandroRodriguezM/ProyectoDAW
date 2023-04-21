@@ -480,3 +480,8 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 
 21/04/2023 Log 2
  - Ahora se pueden borrar comentarios de comics y de paginas, en caso de que no gusten, debes de ser admin para eso.
+ 
+22/04/2023 Log 1
+
+ - Ahora se peuden borrar comics
+ - La pagina ya es usable a nivel usuario y administrador

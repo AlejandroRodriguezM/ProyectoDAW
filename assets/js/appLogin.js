@@ -2016,6 +2016,43 @@ function eliminar_comentario_comic(id_comentario) {
         });
 }
 
+function eliminar_comic(id_comic) {
+    const data = new FormData();
+    data.append("id_comic", id_comic);
+
+    //pass data to php file
+    fetch("php/apis/eliminar_comic.php", {
+        method: 'POST',
+        body: data
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.href = 'index.php';
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
 
 
 

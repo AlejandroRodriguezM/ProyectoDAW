@@ -2468,3 +2468,20 @@ function eliminar_comentario_comic($id_comentario){
 	}
 	return $estado;
 }
+
+function eliminar_comic($id_comic){
+	global $conection;
+	$estado = false;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("DELETE FROM comics WHERE IDcomic = ?");
+		if ($consulta->execute([$id_comic])) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+
