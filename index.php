@@ -508,7 +508,6 @@ if (isset($_SESSION['email'])) {
                         $opiniones = mostrar_opiniones_pagina();
                         if (numero_opiniones_pagina() > 0) {
                             while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
-
                                 $id_opinion = $data_opinion['id_opinion'];
                                 $id_usuario = $data_opinion['id_user'];
                                 $opinion = $data_opinion['comentario'];
@@ -519,34 +518,44 @@ if (isset($_SESSION['email'])) {
                                 $email_user = $data_user['email'];
 
                                 echo '<div class="card p-4 mt-1">
-                                        <div class="d-flex justify-content-between align-items-center">';
-                        ?>
-                                <a href="infoUser.php?userName=<?php echo $email_user ?>">
-                            <?php
-                                echo '<img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="infoUser.php?userName=' . $email_user . '">
+                                            <img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
                                         </a>
                                         <div class="w-100">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="d-flex flex-row align-items-center">
-                                                    <span class="mr-2" style="font-weight:bold;;margin-left:10px">Nombre de usuario: ' . $nombre_user . '</span>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <span class="mr-2" style="font-weight:bold;margin-left:10px;">Nombre de usuario: ' . $nombre_user . '</span>
                                                 </div>
                                                 <small>' . $fecha_opinion . '</small>
                                             </div>
-                                            <p class="text-justify comment-text mb-0" style="margin-top:5px;margin-left:10px">' . $opinion . '</p>
-                                            <div class="d-flex flex-row align-items-center mr-2" id="rating">
-                                                <div class="rating-lectura" style="margin-left:5px">
+                                            <div class="d-flex flex-row align-items-center">
+                                                <p class="text-justify comment-text mb-0" style="margin-top:5px;margin-left:10px;">' . $opinion . '</p>
+                                            </div>
+                                        </div>';
+                                if ($userPrivilege == 'admin') {
+                                    echo '<div class="ml-auto">
+                                            <button type="button" class="btn btn-danger btn-sm mt-2" style="display: block;" onclick="eliminarComentario(' . $id_opinion . ')">Eliminar</button>
+                                            </div>';
+                                }
+                                echo '</div>
+                                        </div>';
+                            }
+                        } else {
+                            echo '<div class="mt-2">
+                                <div class="d-flex flex-row p-3">
+                                    <div class="w-100">
+                                        <div class="d-flex justify-content-between align-items-center" style="margin-left: 10px;">
+                                            <div class="d-flex flex-row align-items-center">
+                                                <span class="mr-2">No hay opiniones</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>';
-                            }
-                        } else {
-                            echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';
-                            echo '<div class="user d-flex flex-row align-items-center"><span class="font-weight-bold text-primary">No hay opiniones</span></div>';
-                            echo '</div></div>';
                         }
-                            ?>
+
+                        ?>
                     </div>
                 </div>
             </div>

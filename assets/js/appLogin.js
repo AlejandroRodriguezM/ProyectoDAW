@@ -1941,6 +1941,82 @@ const eliminar_peticion_comic = (id) => {
         });
 }
 
+function eliminarComentario(id_comentario) {
+    const data = new FormData();
+    data.append("id_comentario", id_comentario);
+
+    //pass data to php file
+    fetch("php/apis/eliminar_comentario_pag.php", {
+        method: 'POST',
+        body: data
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+function eliminar_comentario_comic(id_comentario) {
+    const data = new FormData();
+    data.append("id_comentario", id_comentario);
+
+    //pass data to php file
+    fetch("php/apis/eliminar_comentario_comic.php", {
+        method: 'POST',
+        body: data
+    })
+        .then((response) => response.json())
+        .then((result) => {
+            if (result.success == true) {
+                Swal.fire({
+                    icon: "success",
+                    title: "GREAT",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: result.message,
+                    footer: "Web Comics"
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+
 
 
 // const eliminar_usuario = async () => {

@@ -465,3 +465,18 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 - Se ha mejorado el funcionamiento de la web al igual que su optimizacion
 - Se han añadido 2 nuevos iconos, uno de mensajes y otros de peticiones de amistad, que a la hora de tener o no mensaje, estos cambian para notar
   la notificacion.
+
+21/04/2023 Log 1
+
+ - Version final 1.0
+ - Tiene muhas nuevas funcionalidad. Ahora los tickets se ven de forma ams comoda sin necesidad de usar un form, el chat se refresca a tiempo real
+ - Ahora se puede denunciar a un usuario desde su perfil
+ - Ahora es posible ver las listas y los comics y de los usuarios publicos o que sean amigos tuyos
+ - El administrador ahora puede ver las conversaciones que tienen los usuarios de su pagina, para poder denunciar la cuenta o no
+ - Se han añadido al rededor de 8 apis nuevas, para controlar todas las funcionalidad comentadas anteriormente
+ - La base de datos ahora tiene 3 tablas mas, que servirtan para el uso de las denuncias de los usuarios y las conversaciones con el administrador
+ - Ahora ya no es necesario tener una base de datos con los comics pre instalados, se puede hacer una base de datos de comics desde 0 de forma funcional
+ - Se han añadido una variedad nueva de pestañas tanto de usuario como de administrador para poder ver las nuevas funcionalidades.
+
+21/04/2023 Log 2
+ - Ahora se pueden borrar comentarios de comics y de paginas, en caso de que no gusten, debes de ser admin para eso.

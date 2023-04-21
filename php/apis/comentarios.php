@@ -17,7 +17,8 @@ if (num_opiniones($id_pag) > 0) {
         $data_user = obtener_datos_usuario($id_user);
         $foto_perfil = $data_user['userPicture'];
         $nombre_user = $data_user['userName'];
-    
+        $privilegio = $data_user['privilege'];
+
         echo '<li class="comment" style="width: 50vw; margin-bottom: 10px;">';
         echo '<div class="d-flex flex-row p-3" style="margin-left:-20px">
             <img src="' . $foto_perfil . '" style="width:40px;height:40px;" class="rounded-circle mr-3">
@@ -39,11 +40,16 @@ if (num_opiniones($id_pag) > 0) {
             <p class="text-justify comment-text mb-0">' . $opinion . '</p>
             <div class="d-flex flex-row align-items-center mr-2"  id="rating">
                 <div class="rating-lectura" style="margin-right:10px"></div>
-            </div>';
-        echo '</li>';
+                <div class="ml-auto">';
+        if ($privilegio == 'admin') {
+            echo '<button type="button" class="btn btn-danger btn-sm mt-2" style="display: block;" onclick="eliminar_comentario_comic(' . $id_opinion . ')">Eliminar</button>';
+        }
+        echo '</div>
+            </div>
+            
+        </li>';
     }
     echo '</ul>';
-   
 } else {
     echo '<div class="mt-2"><div class="d-flex flex-row p-3">';
     echo '<div class="w-100"><div class="d-flex justify-content-between align-items-center" style="margin-left: 10px;">';

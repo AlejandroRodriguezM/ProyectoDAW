@@ -2438,3 +2438,33 @@ function obtener_numero_denuncias_usuarios(){
 	}
 	return $numero_denuncias;
 }
+
+function eliminar_comentario_pagina($id_comentario){
+	global $conection;
+	$estado = false;
+	$id_comentario = htmlspecialchars($id_comentario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("DELETE FROM opiniones_pagina WHERE id_opinion = ?");
+		if ($consulta->execute([$id_comentario])) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function eliminar_comentario_comic($id_comentario){
+	global $conection;
+	$estado = false;
+	$id_comentario = htmlspecialchars($id_comentario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("DELETE FROM opiniones_comics WHERE id_opinion = ?");
+		if ($consulta->execute([$id_comentario])) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}

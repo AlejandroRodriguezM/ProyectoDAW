@@ -28,6 +28,7 @@ if (numero_opiniones_pagina() > 0) {
                     <div class="rating-lectura" style="margin-left:5px">';
         echo '</div>
         </div>
+
     </div>
     </div>
     </div>';
