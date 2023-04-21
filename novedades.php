@@ -10,6 +10,9 @@ if (isset($_SESSION['email'])) {
     $userPrivilege = $userData['privilege'];
     $id_usuario = $userData['IDuser'];
     $numero_comics = get_total_guardados($id_usuario);
+    if (checkStatus($email)) {
+        header("Location: usuario_bloqueado.php");
+    }
 } else {
     header('Location: index.php');
 }

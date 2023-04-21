@@ -16,6 +16,9 @@ if (isset($_SESSION['email'])) {
     $nameUser = $infoUser['nombreUser'];
     $lastName = $infoUser['apellidoUser'];
     $sobreUser = $infoUser['infoUser'];
+    if (checkStatus($email)) {
+        header("Location: usuario_bloqueado.php");
+    }
 } else {
     header('Location: index.php');
 }

@@ -1,8 +1,6 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-
-
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
@@ -10,22 +8,12 @@ if (isset($_SESSION['email'])) {
     $userPrivilege = $userData['privilege'];
     $id_usuario = $userData['IDuser'];
     $numero_comics = get_total_guardados($id_usuario);
-    //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
-    if (checkStatus($email)) {
-        header("Location: usuario_bloqueado.php");
+    if (!checkStatus($email)) {
+        header("Location: index.php");
     }
-} else {
-    header('Location: index.php');
 }
-$userData = obtener_datos_usuario($email);
-$id_usuario = $userData['IDuser'];
-$id_lista = $_GET['id_lista'];
-$data_lista =  get_nombre_lista($id_lista);
-$nombre_lista = $data_lista['nombre_lista'];
+// //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 
-if (!check_lista_user($id_usuario, $id_lista)) {
-    header("Location: mis_listas.php");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,6 +30,9 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -49,65 +40,79 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
-    <title>Lista <?php echo $nombre_lista ?></title>
+
+
+    <title>Usuario bloqueado</title>
     <style>
-
-        .custom-table {
-            width: 300px;
-            margin: 20px auto;
-            border-collapse: collapse;
+        .row {
+            display: flex;
+            flex-wrap: wrap;
         }
 
-        .custom-table th,
-        .custom-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+        #wrapper.home div.comments {
+            padding-right: 20px;
+            line-height: 140%;
         }
 
-        .custom-table th {
-            background-color: #ddd;
+        .link-grey:hover {
+            color: #00913b;
         }
 
-        .expand-row {
-            height: 0;
-            overflow: hidden;
-            transition: all 0.5s ease;
-        }
-
-        .custom-table tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        input[name='buscador_navegacion'] {
-            width: 300px;
-            height: 35px;
-            padding: 5px;
-            font-size: 16px;
+        .last-pubs2 {
+            position: relative;
+            padding: 18px;
+            /* background-color: #fff; */
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
             border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-top: 20px;
-            margin-left: 10px;
+            margin-bottom: 20px;
         }
 
-        .side-bar {
-            position: fixed;
-            margin-top: -30px;
-            color: black;
+        .ver-mas-btn {
+            position: absolute;
+            bottom: 260px;
+            left: 10px;
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-align: center;
         }
 
-        .view-account {
-            position: fixed !important;
-            top: 50px;
-            z-index: 100;
-            margin-top: 30px;
+        .ver-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
+        }
+
+        .recargar-mas-btn {
+            position: absolute;
+            bottom: 260px;
+            left: 70px;
+            background-color: #3498DB;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .recargar-mas-btn:hover {
+            background-color: #2980B9;
+            cursor: pointer;
         }
 
         .desactivate {
@@ -144,49 +149,23 @@ if (!check_lista_user($id_usuario, $id_lista)) {
             background-size: 20px !important;
         }
 
-        .ver-mas-btn {
-            background-color: #3498DB;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            margin-left: 1026px !important;
-            text-align: right;
-            margin-top: 20px;
+        .tweet-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 0 auto;
+        }
+
+        .tweet-embed {
             margin-bottom: 20px;
-        }
-
-        .ver-mas-btn:hover {
-            background-color: #2980B9;
-            cursor: pointer;
-        }
 
 
-
-        .navigation-buttons button,
-        .navigation-buttons_agregar button {
-            background-color: #4CAF50;
-            /* Fondo verde */
-            color: white;
-            /* Letras blancas */
-            border: none;
-            /* Sin borde */
-            padding: 10px 16px;
-            /* Espacio alrededor del texto */
-            font-size: 16px;
-            /* Tamaño de fuente */
-            cursor: pointer;
-            /* Cambia el cursor al pasar sobre el botón */
-            margin-right: 10px;
-            /* Margen entre botones */
         }
     </style>
 </head>
 
-<body onload="checkSesionUpdate();showSelected()">
+<body onload="checkSesionUpdate();showSelected();">
+
     <div id="session-expiration">
         <div id="session-expiration-message">
             <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
@@ -205,8 +184,6 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                         <ul class="dropdown-menu">
                             <?php
                             if (isset($_SESSION['email'])) {
-                                $userData = obtener_datos_usuario($email);
-                                $userPrivilege = $userData['privilege'];
                                 if ($userPrivilege == 'admin') {
                                     echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                     echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
@@ -272,39 +249,53 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                        ?>
+                            <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <?php
+                        } else {
+                        ?>
+                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        <?php
+                        }
+                        ?>
+
                     <li class="nav-item">
                         <?php
-                        // Obtener el número de mensajes sin leer
-                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                        if (isset($_SESSION['email'])) {
+                            // Obtener el número de mensajes sin leer
+                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
 
-                        // Imprimir el enlace con el número de mensajes sin leer
-                        echo "<a class='nav-link' href='solicitudes_amistad.php'>";
-                        if ($num_solicitudes > 0) {
-                            echo "<span class='material-icons shaking'>notifications</span>";
-                            //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
-                        } else {
-                            echo "<span class='material-icons '>notifications</span>";
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                            if ($num_solicitudes > 0) {
+                                echo "<span class='material-icons shaking'>notifications</span>";
+                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                            } else {
+                                echo "<span class='material-icons '>notifications</span>";
+                            }
+                            echo "</a>";
                         }
-                        echo "</a>";
                         ?>
                     </li>
                     <li class="nav-item">
                         <?php
-                        // Obtener el número de mensajes sin leer
-                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
+                        if (isset($_SESSION['email'])) {
+                            // Obtener el número de mensajes sin leer
+                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
-                        // Imprimir el enlace con el número de mensajes sin leer
-                        echo "<a class='nav-link' href='mensajes_usuario.php'>";
-                        if ($num_mensajes > 0) {
-                            echo "<span class='material-icons shaking'>mark_email_unread</span>";
-                            //echo "<span class='num_mensajes'>$num_mensajes</span>";
-                        } else {
-                            echo "<span class='material-icons'>mark_email_unread</span>";
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='mensajes_usuario.php'>";
+                            if ($num_mensajes > 0) {
+                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                                //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                            } else {
+                                echo "<span class='material-icons'>mark_email_unread</span>";
+                            }
+                            echo "</a>";
                         }
-                        echo "</a>";
                         ?>
-                    </li>
                     </li>
                 </ul>
             </div>
@@ -359,7 +350,13 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     </div>
 
     <!-- FORMULARIO INSERTAR -->
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+
+    <div class="card-footer text-muted">
+        Design by Alejandro Rodriguez 2022
+    </div>
+
+    <div id="crear_ticket" class="modal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -376,82 +373,77 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
                         if (isset($_SESSION['email'])) {
-                            $userData = obtener_datos_usuario($email);
-                            $id_usuario = $userData['IDuser'];
                             echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
                         }
                         ?>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal" onclick="window.location.href = 'logOut.php'">Cerrar</button>
+                    <input type="button" name='ticket_bloq' id='ticket_bloq' class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket_bloqueo();return false">
                 </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <div class="card-footer text-muted">
-        Design by Alejandro Rodriguez 2022
-    </div>
-
     <div class="bgimg-1">
         <div class="caption">
-            <div class="view-account">
-                <section class="module">
-                    <div class="module-inner">
-                        <div class="side-bar">
-                            <div class='filtrado_comics'>
-
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
+            <br>
             <div style="display: flex; justify-content: center;">
-                <div class="container mt-5">
-                    <div class="last-pubs-1">
-                        <br>
-                        <div class="titulo" style="border-radius:10px">
-                            <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
-                            <h2 style='text-align: center'>Lista <?php echo $nombre_lista  ?></h2>
+                <!-- Carousel -->
+                <div id="carousel-publi" class="carousel slide" data-bs-ride="carousel">
+                    <!-- Indicators/dots -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                    </div>
+                    <!-- The slideshow/carousel -->
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
+                                <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block" style="width: 945px; height: 300px;">
+                            </a>
                         </div>
-                        <br>
+                        <div class="carousel-item">
+                            <a href='https://www.radarcomics.com/es/' target="_blank">
+                                <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block" style="width: 945px; height: 300px;">
+                            </a>
+                        </div>
+                        <div class="carousel-item">
+                            <a href='https://www.whakoom.com/' target="_blank">
+                                <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block" style="width: 945px; height: 300px;">
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Left and right controls/icons -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+            <div class='recomendaciones' id="index">
+
+            </div>
+            <div class="container mt-5">
+                <div style="display: flex; justify-content: center;">
+                    <div class="last-pubs2 col-md-8">
+                        <div class="titulo">
+                            <h2>Videos de interes</h2>
+                        </div>
+                        <hr>
+                        <div class="video-container">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-
-            <?php
-
-            if (get_total_guardados($id_usuario) > 0) {
-            ?>
-                <div style="display: flex; justify-content: center;">
-                    <div class="container mt-5">
-                        <div class="last-pubs-2">
-                            <br>
-                            <div class="titulo" style="border-radius:10px">
-                                <h2 style='text-align: center'>Mis comics</h2>
-                                <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                </div>
-
-            <?php
-            } else {
-            ?>
-                <div class='recomendaciones'>
-
-                </div>
-            <?php
-            }
-            ?>
-
             <div id="footer-lite">
                 <div class="content">
                     <p class="helpcenter">
@@ -477,98 +469,13 @@ if (!check_lista_user($id_usuario, $id_lista)) {
             </div>
         </div>
     </div>
-
     <script>
-        var limit_agregar = 16;
-        var offset_agregar = 0;
-
-        var limit_lista = 16;
-        var offset_lista = 0;
-
-        var totalComics;
-        var checkboxChecked = null;
-        actualizar_filtrado()
-        $('input[type=checkbox]').on('change', function() {
-            if ($(this).prop('checked') != true) {
-                checkboxChecked = null;
-            }
+        document.addEventListener("DOMContentLoaded", function() {
+            var miModal = new bootstrap.Modal(document.getElementById("crear_ticket"));
+            miModal.show();
         });
-
-        $(document).ready(function() {
-            loadComics();
-            addComic();
-            comics_recomendados()
-        });
-        var id_lista = document.querySelector('#id_lista').value;
-
-
-        function loadComics(offset_lista = 0) {
-
-            var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                return encodeURIComponent(this.value);
-            }).get();
-
-            var data = {
-                limit: limit_lista,
-                offset: offset_lista,
-                id_lista: id_lista
-            };
-
-            if (selectedCheckboxes.length > 0) {
-                data.checkboxChecked = selectedCheckboxes.join(",");
-            }
-            $.ajax({
-
-                url: "php/apis/comics_lista.php",
-                data: data,
-                success: function(data) {
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    if (offset_lista == 0) {
-                        // $('.new-comic-list').html('');
-                        $('.comic-list').html('');
-                        addComic()
-                    }
-                    $('<div class="comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-1');
-                }
-            });
-        }
-
-        function addComic(offset_agregar = 0) {
-            // offset = offset;
-
-            var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                return encodeURIComponent(this.value);
-            }).get();
-
-            var data = {
-                limit: limit_agregar,
-                offset: offset_agregar,
-                id_lista: id_lista
-            };
-
-            if (selectedCheckboxes.length > 0) {
-                data.checkboxChecked = selectedCheckboxes.join(",");
-            }
-
-            $.ajax({
-                url: "php/apis/comics_user_agregar.php",
-                data: data,
-                success: function(data) {
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    if (offset_agregar == 0) {
-                        $('.new-comic-list').html('');
-
-                        // loadComics()
-                    }
-                    $('<div class="new-comic-list" id="contenido"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-2');
-                }
-            });
-        }
-
+    </script>
+    <script>
         var resizeTimer;
 
         function comics_recomendados() {
@@ -595,73 +502,14 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                 }
             });
         }
+
+        comics_recomendados();
         // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
         $(window).on('resize', function() {
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(comics_recomendados, 100);
         });
     </script>
-    <script>
-        function toggleDropdown(element) {
-            var dropdownContent1 = document.getElementById("dropdownContent1");
-            var dropdownContent2 = document.getElementById("dropdownContent2");
-            var dropdownContent3 = document.getElementById("dropdownContent3");
-            var dropdownContent4 = document.getElementById("dropdownContent4");
-
-            if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-            } else {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-                element.querySelector(".dropdown-content").style.display = "block";
-            }
-        }
-
-        function closeDropdown(dropdownContent) {
-            dropdownContent.style.display = "none";
-        }
-
-        document.addEventListener("click", function(event) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var dropdown = dropdowns[i];
-                if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
-                    dropdown.style.display = "none";
-                }
-            }
-        });
-    </script>
-
-    <script>
-        function searchData(id) {
-            console.log(id)
-            let input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput" + id);
-            filter = input.value.toUpperCase();
-            table = document.getElementById("dropdownContent" + id);
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
-
-
-
-
 </body>
 
 </html>

@@ -1,14 +1,17 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
+
+
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_usuario = $userData['IDuser'];
+    $mi_id = $userData['IDuser'];
+    $id_usuario = $_GET['id_usuario'];
     $numero_comics = get_total_guardados($id_usuario);
-    // //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+    //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
@@ -42,15 +45,17 @@ if (isset($_SESSION['email'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
-    <title>Mi colección</title>
+    <title>Mis listas de comics</title>
+
     <style>
+
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -128,8 +133,8 @@ if (isset($_SESSION['email'])) {
         }
 
         /*******************************
-        *** CARDS INSETAR Y GESTIONAR***
-        *******************************/
+*** CARDS INSETAR Y GESTIONAR***
+*******************************/
         .card-category-3 ul li.card-item:hover {
             cursor: pointer;
             box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
@@ -209,9 +214,33 @@ if (isset($_SESSION['email'])) {
             background-color: rgb(255, 225, 170);
         }
 
-        .navbar {
-            background-color: #343a40 !important;
+        .card-item {
+            position: relative;
+        }
 
+        .delete-button {
+            position: absolute;
+            top: 220px;
+            left: 190px;
+            padding: 5px 10px;
+            border: none;
+            background-color: #f44336;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .edit-button {
+            position: absolute;
+            top: 245px;
+            right: 205px;
+            padding: 5px 10px;
+            border: none;
+            background-color: #f44336;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -234,6 +263,7 @@ if (isset($_SESSION['email'])) {
                     <li>
                         <ul class="dropdown-menu">
                             <?php
+
                             if ($userPrivilege == 'admin') {
                                 echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
                                 echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
@@ -253,6 +283,7 @@ if (isset($_SESSION['email'])) {
                                 <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Escribe tu opinión</a>
                             </li>
+
                             <div class="dropdown-divider"></div>
                             <li>
                                 <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
@@ -267,19 +298,16 @@ if (isset($_SESSION['email'])) {
 
                     <li class="nav-item">
 
-                        <a class="nav-link active" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
                     </li>
-
                     <li class="nav-item">
-
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-
                     </li>
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($mi_id);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='solicitudes_amistad.php'>";
@@ -295,7 +323,7 @@ if (isset($_SESSION['email'])) {
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
+                        $num_mensajes = obtener_numero_mensajes_sin_leer($mi_id);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -355,103 +383,53 @@ if (isset($_SESSION['email'])) {
         </div>
     </nav>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
 
-    <!-- FORMULARIO INSERTAR -->
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_ticket" onsubmit="return false;">
-                        <h4 class="modal-title">Crear un ticket para administradores</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Asunto</label>
-                        <input type="text" id="asunto_usuario" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            $userData = obtener_datos_usuario($email);
-                            $id_usuario = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                        }
-                        ?>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
+    <!-- AQUI VA EL CONTENIDO DE LA PAGINA -->
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
-
-    <!-- AQUI VA EL CONTENIDO DE LA PAGINA -->
     <div class="bgimg-1">
         <div class="caption">
 
             <div class="card-category-3">
                 <ul>
-                    <li class="card-item">
-                        <a href="mis_comics.php">
-                            <div class="ioverlay-card io-card-2">
-                                <div class="card-content">
-                                    <span class="card-title">Mis comics</span>
-                                    <p class="card-text">
-                                        Tu coleccion de comics
-                                    </p>
-                                </div>
-                                <img src="assets/img/comic1.jpg" />
-                            </div>
-                        </a>
-                    </li>
+                    <?php
+                    $listas = get_listas($id_usuario);
 
+                    $i = -4;
+                    foreach ($listas as $lista) {
+                        $id_lista = $lista['id_lista'];
+                        $nombre_lista = $lista['nombre_lista'];
+                        $num_listas = num_listas_user($id_usuario);
+                        $num_comics = get_total_contenido($id_lista);
+                        echo "<li class='card-item'>";
+                        echo "<a href='contenido_lista_amigo.php?id_lista=$id_lista'>";
+                        echo "<div class='ioverlay-card io-card-2'>";
+                        echo "<div class='card-content'>";
+                        echo "<span class='card-title'>$nombre_lista</span>";
+                        echo "<p class='card-text'>Total: $num_comics Comics</p>";
+                        echo "</div>";
+                        echo "<img src='assets/img/comic2.jpg' />";
+                        echo "</div>";
+                        echo "</a>";
+                        echo "</li>";
 
-                    <li class="card-item">
-                        <a href="mis_listas.php">
-                            <div class="ioverlay-card io-card-2">
-                                <div class="card-content">
-                                    <span class="card-title">Mis listas</span>
-                                    <p class="card-text">
-                                        Tus listas de comics
-                                    </p>
-                                </div>
-                                <img src="assets/img/comic2.jpg" />
-                            </div>
-                        </a>
-                    </li>
+                        $i++;
+                        if ($i % 5 == 0) {
+                            echo "<div class='clearfix'></div>";
+                        }
+                    }
 
-                    <li class="card-item">
-                        <a href="peticion_comic.php">
-                            <div class="ioverlay-card io-card-2">
-                                <div class="card-content">
-                                    <span class="card-title">¿Tienes una peticion?</span>
-                                    <p class="card-text">
-                                        Envia tu solicitud ahora!
-                                    </p>
-                                </div>
-                                <img src="assets/img/comic3.jpg" />
-                            </div>
-                        </a>
-                    </li>
+                    // Asegurarse de que se añade clearfix si el número total de listas es divisible por 3
+                    if ($i % 3 != 0) {
+                        echo "<div class='clearfix'></div>";
+                    }
+                    ?>
+
                 </ul>
             </div>
 
-            <div class='recomendaciones' id="index">
-
-            </div>
             <div id="footer-lite">
                 <div class="content">
                     <p class="helpcenter">
@@ -478,40 +456,6 @@ if (isset($_SESSION['email'])) {
         </div>
     </div>
 
-    <script>
-        var resizeTimer;
-
-        function comics_recomendados() {
-            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-            var width = $(window).width();
-            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
-
-            var data = {
-                num_comics: num_comics
-            };
-            $.ajax({
-                url: "php/apis/recomendaciones_comics.php",
-                data: data,
-                success: function(data) {
-                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
-                    $('.container.mt-5').css('width', container_width + 'px');
-
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    $('.recomendaciones').html('');
-                    $(data).appendTo('.recomendaciones');
-                }
-            });
-        }
-        comics_recomendados();
-        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-        $(window).on('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(comics_recomendados, 100);
-        });
-    </script>
 </body>
 
 </html>

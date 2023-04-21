@@ -19,9 +19,7 @@ if ($_POST) {
                 $row = obtener_datos_usuario($acceso);
                 $email = $row['email'];
                 reactivar_cuenta($email);
-                $_SESSION['hour'] = date("H:i", time());
                 $_SESSION['email'] = $row['email'];
-                $_SESSION['userName'] = $row['userName'];
                 // cookiesUser($email, $pass_encrypted);
                 header("HTTP/1.1 200 OK");
 

@@ -8,24 +8,20 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
-    $id_usuario = $userData['IDuser'];
+    $mi_id = $userData['IDuser'];
+    $id_usuario = $_GET['id_usuario'];
+    $datos_usuario = obtener_datos_usuario($id_usuario);
+    $nombre_usuario = $datos_usuario['userName'];
+
     $numero_comics = get_total_guardados($id_usuario);
-    //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+    // 
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
 } else {
     header('Location: index.php');
 }
-$userData = obtener_datos_usuario($email);
-$id_usuario = $userData['IDuser'];
-$id_lista = $_GET['id_lista'];
-$data_lista =  get_nombre_lista($id_lista);
-$nombre_lista = $data_lista['nombre_lista'];
 
-if (!check_lista_user($id_usuario, $id_lista)) {
-    header("Location: mis_listas.php");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,28 +33,31 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
-    <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
+    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./assets/style/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
-    <title>Lista <?php echo $nombre_lista ?></title>
+    <title>Comics de <?php echo $nombre_usuario ?></title>
     <style>
-
         .custom-table {
             width: 300px;
             margin: 20px auto;
@@ -110,41 +109,17 @@ if (!check_lista_user($id_usuario, $id_lista)) {
             margin-top: 30px;
         }
 
-        .desactivate {
-            background-color: white !important;
-            color: #00c9b7;
-            border: none;
-            padding: 0;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 5px;
-            width: 150px;
-            height: 50px;
-        }
-
-        .activate {
-            color: white;
-            background-color: #00c9b7 !important;
-            display: block;
+        .last-pubs2 {
             position: relative;
-            margin-top: 6px;
-            width: 100%;
-            height: 34px;
-            background-color: transparent;
-            border: solid 1px #00c9b7;
-            border-radius: 4px;
-        }
-
-        .activate>.sp-icon {
-            background-image: url('assets/img/tick_white.png') !important;
-            background-repeat: no-repeat !important;
-            background-position: center !important;
-            background-size: 20px !important;
+            padding: 10px;
+            /* background-color: #fff; */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
         }
 
         .ver-mas-btn {
+            position: absolute;
+            bottom: 60%;
             background-color: #3498DB;
             border: none;
             color: #fff;
@@ -153,35 +128,11 @@ if (!check_lista_user($id_usuario, $id_lista)) {
             text-decoration: none;
             font-size: 18px;
             transition: all 0.3s ease;
-            margin-left: 1026px !important;
-            text-align: right;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            text-align: center;
         }
 
-        .ver-mas-btn:hover {
-            background-color: #2980B9;
-            cursor: pointer;
-        }
-
-
-
-        .navigation-buttons button,
-        .navigation-buttons_agregar button {
-            background-color: #4CAF50;
-            /* Fondo verde */
-            color: white;
-            /* Letras blancas */
-            border: none;
-            /* Sin borde */
-            padding: 10px 16px;
-            /* Espacio alrededor del texto */
-            font-size: 16px;
-            /* Tamaño de fuente */
-            cursor: pointer;
-            /* Cambia el cursor al pasar sobre el botón */
-            margin-right: 10px;
-            /* Margen entre botones */
+        .container {
+            padding: 30px;
         }
     </style>
 </head>
@@ -204,79 +155,45 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                     <li>
                         <ul class="dropdown-menu">
                             <?php
-                            if (isset($_SESSION['email'])) {
-                                $userData = obtener_datos_usuario($email);
-                                $userPrivilege = $userData['privilege'];
-                                if ($userPrivilege == 'admin') {
-                                    echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
-                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                    echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
-                                } else {
-                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                    echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
-                                }
+                            if ($userPrivilege == 'admin') {
+                                echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                                echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                                echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                            } else {
+                                echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                                echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
                             }
+
                             ?>
                             <li>
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                            ?>
-                                <li>
-                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
-                                        Escribe tu opinión</a>
-                                </li>
-                            <?php
-                            }
-                            ?>
 
+                            <li>
+                                <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                    Escribe tu opinión</a>
+                            </li>
 
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                            ?>
-                                <div class="dropdown-divider"></div>
-                                <li>
-                                    <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
-                                </li>
-                            <?php
-                            } else {
-                            ?>
-                                <li>
-                                    <button class="dropdown-item" onclick="iniciar_sesion()" name="loginSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Iniciar sesion</a>
-                                </li>
-                            <?php
-                            }
-                            ?>
+                            <div class="dropdown-divider"></div>
+                            <li>
+                                <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
+                            </li>
                         </ul>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-
                     <li class="nav-item">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                        ?>
-                            <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                        <?php
-                        }
-                        ?>
+                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                     </li>
-
                     <li class="nav-item">
                         <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                    </li>
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($mi_id);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='solicitudes_amistad.php'>";
@@ -292,7 +209,7 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                     <li class="nav-item">
                         <?php
                         // Obtener el número de mensajes sin leer
-                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
+                        $num_mensajes = obtener_numero_mensajes_sin_leer($mi_id);
 
                         // Imprimir el enlace con el número de mensajes sin leer
                         echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -304,7 +221,6 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                         }
                         echo "</a>";
                         ?>
-                    </li>
                     </li>
                 </ul>
             </div>
@@ -336,11 +252,9 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                         if ($userPrivilege == 'admin') {
                             echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                        } elseif ($userPrivilege == 'user') {
+                        } else {
                             echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
                             echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
-                        } else {
-                            echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
                         }
                         echo "<div class='dropdown-divider'></div>";
                         echo "<li> <button class='dropdown-item' onclick='closeSesion()' name='closeSesion' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button> </i>";
@@ -375,11 +289,7 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                         <label>Mensaje</label>
                         <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
                         <?php
-                        if (isset($_SESSION['email'])) {
-                            $userData = obtener_datos_usuario($email);
-                            $id_usuario = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                        }
+
                         ?>
                     </div>
                 </div>
@@ -409,49 +319,35 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                     </div>
                 </section>
             </div>
-
+            <input type='hidden' id='num_comics' value='<?php echo $numero_comics ?>'>
             <div style="display: flex; justify-content: center;">
                 <div class="container mt-5">
-                    <div class="last-pubs-1">
+                    <div class="last-pubs1">
                         <br>
                         <div class="titulo" style="border-radius:10px">
-                            <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
-                            <h2 style='text-align: center'>Lista <?php echo $nombre_lista  ?></h2>
+                            <h2 style='text-align: center'>Mis comics</h2>
                         </div>
                         <br>
                     </div>
                 </div>
             </div>
 
+            <div class='recomendaciones' id="index">
 
+            </div>
 
-            <?php
-
-            if (get_total_guardados($id_usuario) > 0) {
-            ?>
-                <div style="display: flex; justify-content: center;">
-                    <div class="container mt-5">
-                        <div class="last-pubs-2">
-                            <br>
-                            <div class="titulo" style="border-radius:10px">
-                                <h2 style='text-align: center'>Mis comics</h2>
-                                <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
-                            </div>
-                            <br>
-                        </div>
-                    </div>
+            <div class="container mt-5">
+                <div class="titulo">
+                    <h2>Videos de interes</h2>
                 </div>
-
-            <?php
-            } else {
-            ?>
-                <div class='recomendaciones'>
-
+                <hr>
+                <div class="video-container">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
-            <?php
-            }
-            ?>
-
+            </div>
+            <!-- <div class="bgimg-2"> -->
             <div id="footer-lite">
                 <div class="content">
                     <p class="helpcenter">
@@ -479,73 +375,30 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     </div>
 
     <script>
-        var limit_agregar = 16;
-        var offset_agregar = 0;
-
-        var limit_lista = 16;
-        var offset_lista = 0;
-
-        var totalComics;
+        var limit = 8;
+        var offset = 0;
+        var totalComics = 0;
         var checkboxChecked = null;
-        actualizar_filtrado()
+        const num_comics = document.querySelector("#num_comics").value;
+
         $('input[type=checkbox]').on('change', function() {
             if ($(this).prop('checked') != true) {
                 checkboxChecked = null;
+
             }
         });
-
-        $(document).ready(function() {
-            loadComics();
-            addComic();
-            comics_recomendados()
-        });
-        var id_lista = document.querySelector('#id_lista').value;
+        loadComics(offset);
 
 
-        function loadComics(offset_lista = 0) {
-
+        function loadComics(offset = 0) {
             var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
+
                 return encodeURIComponent(this.value);
             }).get();
 
             var data = {
-                limit: limit_lista,
-                offset: offset_lista,
-                id_lista: id_lista
-            };
-
-            if (selectedCheckboxes.length > 0) {
-                data.checkboxChecked = selectedCheckboxes.join(",");
-            }
-            $.ajax({
-
-                url: "php/apis/comics_lista.php",
-                data: data,
-                success: function(data) {
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    if (offset_lista == 0) {
-                        // $('.new-comic-list').html('');
-                        $('.comic-list').html('');
-                        addComic()
-                    }
-                    $('<div class="comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-1');
-                }
-            });
-        }
-
-        function addComic(offset_agregar = 0) {
-            // offset = offset;
-
-            var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                return encodeURIComponent(this.value);
-            }).get();
-
-            var data = {
-                limit: limit_agregar,
-                offset: offset_agregar,
-                id_lista: id_lista
+                limit: limit,
+                offset: offset
             };
 
             if (selectedCheckboxes.length > 0) {
@@ -553,114 +406,18 @@ if (!check_lista_user($id_usuario, $id_lista)) {
             }
 
             $.ajax({
-                url: "php/apis/comics_user_agregar.php",
+                url: "php/apis/comics_otro_usuario.php",
                 data: data,
                 success: function(data) {
                     totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    if (offset_agregar == 0) {
+                    if (offset == 0) {
                         $('.new-comic-list').html('');
-
-                        // loadComics()
                     }
-                    $('<div class="new-comic-list" id="contenido"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-2');
+                    $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs1');
                 }
             });
         }
-
-        var resizeTimer;
-
-        function comics_recomendados() {
-            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-            var width = $(window).width();
-            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
-
-            var data = {
-                num_comics: num_comics
-            };
-            $.ajax({
-                url: "php/apis/recomendaciones_comics.php",
-                data: data,
-                success: function(data) {
-                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
-                    $('.container.mt-5').css('width', container_width + 'px');
-
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    $('.recomendaciones').html('');
-                    $(data).appendTo('.recomendaciones');
-                }
-            });
-        }
-        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-        $(window).on('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(comics_recomendados, 100);
-        });
     </script>
-    <script>
-        function toggleDropdown(element) {
-            var dropdownContent1 = document.getElementById("dropdownContent1");
-            var dropdownContent2 = document.getElementById("dropdownContent2");
-            var dropdownContent3 = document.getElementById("dropdownContent3");
-            var dropdownContent4 = document.getElementById("dropdownContent4");
-
-            if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-            } else {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-                element.querySelector(".dropdown-content").style.display = "block";
-            }
-        }
-
-        function closeDropdown(dropdownContent) {
-            dropdownContent.style.display = "none";
-        }
-
-        document.addEventListener("click", function(event) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var dropdown = dropdowns[i];
-                if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
-                    dropdown.style.display = "none";
-                }
-            }
-        });
-    </script>
-
-    <script>
-        function searchData(id) {
-            console.log(id)
-            let input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput" + id);
-            filter = input.value.toUpperCase();
-            table = document.getElementById("dropdownContent" + id);
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-    </script>
-
-
-
 
 </body>
 

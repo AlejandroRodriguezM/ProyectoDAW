@@ -10,6 +10,9 @@ if (isset($_SESSION['email'])) {
     $id_usuario = $userData['IDuser'];
     $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+    if (checkStatus($email)) {
+        header("Location: usuario_bloqueado.php");
+    }
 } else {
     header('Location: index.php');
 }
@@ -47,7 +50,7 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
-    <title>Tickets de usuario</title>
+    <title>Mensajes de usuarios</title>
     <style>
         .contenedor {
             width: 50% !important;
@@ -163,6 +166,16 @@ if (isset($_SESSION['email'])) {
         .mensaje-header img:hover {
             opacity: 0.8;
             border-color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
         }
     </style>
 </head>
@@ -448,8 +461,8 @@ if (isset($_SESSION['email'])) {
             var arrow = header.querySelector('.arrow');
             modificar_estado_mensaje(id);
             $(document).ready(function() {
-            $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
-        });
+                $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
+            });
             if (mensaje_abierto_id && mensaje_abierto_id !== id) {
                 var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
                 var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);

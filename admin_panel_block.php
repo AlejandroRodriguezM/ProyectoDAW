@@ -15,6 +15,8 @@ if (isset($_SESSION['email'])) {
     } else {
         header('Location: logOut.php');
     }
+}else{
+    header('Location: logOut.php');
 }
 
 ?>
@@ -258,20 +260,6 @@ if (isset($_SESSION['email'])) {
                                             echo "$userName";
                                             ?>
                                         </li>
-                                        <li class="email">
-                                            <label for="" style="font-size: 0.8em;">Mail: </label>
-                                            <?php
-                                            $dataUser = obtener_datos_usuario($email);
-                                            $email = $dataUser['email'];
-                                            echo " " . "<span style='font-size: 0.7em'>$email</span>";
-                                            ?>
-                                        </li>
-                                        <li class="activity">
-                                            <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
-                                            <?php
-                                            echo comprobar_ultima_conexion($id_usuario);
-                                            ?>
-                                        </li>
                                     </ul>
                                 </div>
                                 <nav class="side-menu">
@@ -280,9 +268,9 @@ if (isset($_SESSION['email'])) {
                                         <li><a href="admin_panel_peticiones_comic.php"><span class="fa fa-cog"></span>Peticiones de comics</a></li>
                                         <li><a href="admin_panel_peticiones_comic_aceptadas.php"><span class="fa fa-cog"></span>Comics aceptados</a></li>
                                         <li><a href="admin_panel_peticiones_comic_canceladas.php"><span class="fa fa-cog"></span>Comics cancelados</a></li>
-                                        <li class="active"><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Bloqueados</a></li>
+                                        <li class="active"><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Usuarios bloqueados</a></li>
                                         <li><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
-                                    </ul>
+                                        <li><a href="admin_mensajes_denuncias.php"><span class="fa fa-cog"></span>Denuncias de usuarios</a></li>                                    </ul>
                                 </nav>
                             </div>
                             <div class="content-panel">

@@ -32,6 +32,7 @@ if ($userPrivilege == 'user') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
@@ -57,7 +58,7 @@ if ($userPrivilege == 'user') {
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
-    <title>Panel de tickets administrador</title>
+    <title>Denuncias de usuarios</title>
     <style>
         .contenedor {
             width: 80% !important;
@@ -332,13 +333,13 @@ if ($userPrivilege == 'user') {
                                         <li><a href="admin_panel_peticiones_comic_aceptadas.php"><span class="fa fa-cog"></span>Comics aceptados</a></li>
                                         <li><a href="admin_panel_peticiones_comic_canceladas.php"><span class="fa fa-cog"></span>Comics cancelados</a></li>
                                         <li><a href="admin_panel_block.php"><span class="fa fa-cog"></span>Usuarios bloqueados</a></li>
-                                        <li class="active"><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
-                                        <li><a href="admin_mensajes_denuncias.php"><span class="fa fa-cog"></span>Denuncias de usuarios</a></li>
+                                        <li><a href="panel_tickets_admin.php"><span class="fa fa-cog"></span>Panel de mensajes</a></li>
+                                        <li class="active"><a href="admin_mensajes_denuncias.php"><span class="fa fa-cog"></span>Denuncias de usuarios</a></li>
                                     </ul>
                                 </nav>
                             </div>
                             <div class="content-panel">
-                                <form class="form-horizontal" onsubmit="return false;" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <fieldset class="fieldset">
                                         <h3 class="fieldset-title">Tickets de usuarios</h3>
                                         <div id="mensajes-container"></div>
@@ -350,7 +351,10 @@ if ($userPrivilege == 'user') {
                 </div>
             </div>
 
-
+            <!-- The Modal -->
+            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <img class="modal-content_img" id="img01">
+            </div>
             <div id="footer-lite">
                 <div class="content">
                     <p class="helpcenter">
@@ -438,7 +442,7 @@ if ($userPrivilege == 'user') {
     <script>
         function actualizarMensajes(ticket_id, id_usuario) {
             $.ajax({
-                url: "php/apis/tickets_admin.php",
+                url: "php/apis/tickets_denuncias.php",
                 method: 'POST',
                 data: {
                     id_usuario_destinatario: ticket_id,
@@ -456,12 +460,10 @@ if ($userPrivilege == 'user') {
         });
         // Enviar mensaje mediante AJAX
         const mandar_mensaje_actualizacion = async (ticket_id) => {
-            var id_ticket = document.querySelector("#ticket_id_" + ticket_id).value;
-            var id_usuario = document.querySelector("#user_id_" + ticket_id).value;
-            var estado = document.querySelector("#estado_" + ticket_id).value;
+            var id_denuncia = document.querySelector("#id_denuncia_" + ticket_id).value;
+            var id_admin = document.querySelector("#id_admin_" + ticket_id).value;
+            var id_usuario = document.querySelector("#id_usuario_" + ticket_id).value;
             var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
-
-
 
             if (respuesta.trim() === '') {
                 Swal.fire({
@@ -475,13 +477,13 @@ if ($userPrivilege == 'user') {
 
             //insert to data base in case of everything go correct.
             const data = new FormData();
-            data.append('ticket_id', id_ticket);
-            data.append("user_id", id_usuario);
-            data.append("estado", estado);
+            data.append('id_denuncia', id_denuncia);
+            data.append('id_admin', id_admin);
+            data.append('id_usuario', id_usuario);
             data.append("mensaje", respuesta);
 
             //pass data to php file
-            var respond = await fetch("php/apis/respon_ticket.php", {
+            var respond = await fetch("php/apis/respuesta_denuncia.php", {
                 method: 'POST',
                 body: data
             });

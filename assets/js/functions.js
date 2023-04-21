@@ -348,6 +348,20 @@ function actualizar_filtrado() {
     });
 }
 
+function actualizar_filtrado_usuario(id_lista) {
+    $.ajax({
+        url: 'php/apis/filtrador_comics_usuario.php',
+        type: 'POST',
+        data: {
+            id_lista: id_lista
+        },
+        success: function (response) {
+            $('.filtrado_comics').html(response);
+        }
+    });
+}
+
+
 function actualizar_filtrado_completo() {
     $(document).ready(function () {
         $.ajax({

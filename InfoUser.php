@@ -2,7 +2,7 @@
 session_start();
 include_once 'php/inc/header.inc.php';
 
-if(!isset($_GET['userName'])){
+if (!isset($_GET['userName'])) {
     header("Location: index.php");
 }
 
@@ -17,15 +17,14 @@ if (isset($_SESSION['email'])) {
     $dataUser = obtener_datos_usuario($nombre_otro_usuario);
     $id_otro_usuario = $dataUser['IDuser'];
     $profilePicture = $dataUser['userPicture'];
+    if (checkStatus($email)) {
+        header("Location: usuario_bloqueado.php");
+    }
 } else {
     header("Location: index.php");
 }
 //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 
-// if (isset($_POST['edit'])) {
-//     $_SESSION['usuario_temporal'] = $nombre_otro_usuario;
-//     header("Location: admin_actualizar_usuario.php");
-// }
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +50,7 @@ if (isset($_SESSION['email'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
@@ -59,7 +58,6 @@ if (isset($_SESSION['email'])) {
     <title>Perfil de usuario</title>
 
     <style>
-
         .contenedor {
             width: 50% !important;
             overflow-x: auto;
@@ -412,6 +410,44 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
     </div>
+    <div id="denunciar_usuario" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <form method="post" id="form_ticket" onsubmit="return false;">
+
+                        <h4 class="modal-title">Denunciar usuario</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Motivo de la denuncia</label>
+                        <select class="form-control" id="motivo_denuncia">
+                            <option value="">Selecciona un motivo</option>
+                            <option value="acoso">Acoso</option>
+                            <option value="spam">Spam</option>
+                            <option value="contenido inapropiado">Contenido inapropiado</option>
+                            <option value="insultos">Insultos</option>
+                            <option value="otro">Otro motivo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Añade mas contexto</label>
+                        <textarea class="form-control" id="contexto_denuncia_usuario" style="resize:none;"></textarea>
+
+                        <?php
+                        echo "<input type='hidden' id='id_usuario_denunciante' value='$id_usuario'>";
+                        echo "<input type='hidden' id='id_usuario_denunciado' value='$id_otro_usuario'>";
+                        ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_denuncia()">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
     </div>
@@ -483,6 +519,7 @@ if (isset($_SESSION['email'])) {
                                                     echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_usuario,$id_otro_usuario)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
                                                 }
                                             }
+                                            echo "<button type='button' class='btn btn-warning solicitud_enviada' data-bs-toggle='modal' data-bs-target='#denunciar_usuario' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;float:right;margin-right:10px'><span>Denunciar usuario</span></button>";
                                         }
                                         ?>
                                     </h3>
@@ -552,8 +589,12 @@ if (isset($_SESSION['email'])) {
                                     ?>
                                         <!-- boton para mandar mensaje privado  -->
                                         <p>Numero de amigos: <?php echo num_amistades($id_otro_usuario) ?></p>
-                                        <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo get_total_guardados($id_otro_usuario); ?> comics guardados</p>
-                                        <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_otro_usuario); ?> listas</p>
+                                        <a href='#' onclick="window.location.href='comics_usuario.php?id_usuario=<?php echo $id_otro_usuario ?>'; return false;">
+                                            <p><img class="icon" src="./assets/img/comic_usuario.png"><?php echo num_listas_user($id_otro_usuario); ?> comics guardados</p>
+                                        </a>
+                                        <a href='#' onclick="window.location.href='listas_usuarios.php?id_usuario=<?php echo $id_otro_usuario ?>'; return false;">
+                                            <p><img class="icon" src="./assets/img/libreria.png"><?php echo num_listas_user($id_otro_usuario); ?> listas</p>
+                                        </a>
                                     <?php
                                     }
                                     ?>

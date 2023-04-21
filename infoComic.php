@@ -11,6 +11,9 @@ if (isset($_SESSION['email'])) {
     $nombre_usuario = $userData['userName'];
     $id_usuario = $userData['IDuser'];
     $numero_comics = get_total_guardados($id_usuario);
+    if (checkStatus($email)) {
+        header("Location: usuario_bloqueado.php");
+    }
 }
 
 $id_comic = $_GET['IDcomic'];

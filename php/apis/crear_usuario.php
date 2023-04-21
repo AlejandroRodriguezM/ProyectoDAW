@@ -21,7 +21,7 @@ if ($_POST) {
             header("HTTP/1.1 409 Conflict");
             $validate['success'] = false;
             $validate['message'] = 'The email is already in use';
-        } else if (check_nombre_user($userName)) {
+        } else if (checkUser($userName, '')) {
             header("HTTP/1.1 409 Conflict");
             $validate['success'] = false;
             $validate['message'] = 'That username already exists';

@@ -5,7 +5,7 @@ function checkUser(string $acceso, string $password): bool
 	global $conection;
 	$existe = false;
 	try {
-		$consulta = $conection->prepare("SELECT * from users WHERE email = ? OR userName = ? and password = ?");
+		$consulta = $conection->prepare("SELECT IDuser from users WHERE email = ? OR userName = ? and password = ?");
 		if ($consulta->execute(array($acceso, $acceso, $password))) {
 			$existe = true;
 		}
@@ -15,22 +15,22 @@ function checkUser(string $acceso, string $password): bool
 	return $existe;
 }
 
-function check_nombre_user(string $nombre): bool
-{
-	global $conection;
-	$existe = false;
-	try {
-		$consulta = $conection->prepare("SELECT * from users WHERE userName = ?");
-		if ($consulta->execute(array($nombre))) {
-			if ($consulta->fetchColumn() > 0) {
-				$existe = true;
-			}
-		}
-	} catch (PDOException $e) {
-		die("Code: " . $e->getCode() . "\nMessage: " . $e->getMessage());
-	}
-	return $existe;
-}
+// function check_nombre_user(string $nombre): bool
+// {
+// 	global $conection;
+// 	$existe = false;
+// 	try {
+// 		$consulta = $conection->prepare("SELECT IDcomic from users WHERE userName = ?");
+// 		if ($consulta->execute(array($nombre))) {
+// 			if ($consulta->fetchColumn() > 0) {
+// 				$existe = true;
+// 			}
+// 		}
+// 	} catch (PDOException $e) {
+// 		die("Code: " . $e->getCode() . "\nMessage: " . $e->getMessage());
+// 	}
+// 	return $existe;
+// }
 
 function check_email_user(string $email): bool
 {
@@ -262,35 +262,14 @@ function insertURL(string $email, int $idUser): bool
 	}
 }
 
-function direccion_imagen_comic(int $id_comic): bool
+function direccion_imagen_comic(int $id_comic, String $tabla): bool
 {
 	global $conection;
 	$modificado = false;
 	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		$file_path = 'assets/covers_img_peticiones/' . $id_comic . ".jpg";
-		$insertData = $conection->prepare("UPDATE peticiones_nuevos_comics SET Cover = ? WHERE IDcomic = ?");
-		$insertData->bindParam(1, $file_path);
-		$insertData->bindParam(2, $id_comic);
-		if ($insertData->execute()) {
-			$modificado = true;
-		}
-	} catch (PDOException $e) {
-		$error_Code = $e->getCode();
-		$message = $e->getMessage();
-		die("Code: " . $error_Code . "\nMessage: " . $message);
-	}
-	return $modificado;
-}
-
-function direccion_imagen_comic_confirmado(int $id_comic): bool
-{
-	global $conection;
-	$modificado = false;
-	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-	try {
-		$file_path = 'assets/covers_img/' . $id_comic . ".jpg";
-		$insertData = $conection->prepare("UPDATE comics SET Cover = ? WHERE IDcomic = ?");
+		$insertData = $conection->prepare("UPDATE $tabla SET Cover = ? WHERE IDcomic = ?");
 		$insertData->bindParam(1, $file_path);
 		$insertData->bindParam(2, $id_comic);
 		if ($insertData->execute()) {
@@ -634,7 +613,7 @@ function comprobar_mensaje(int $id_usuario_destinatario, int $id_usuario_remiten
 	return $confirmado;
 }
 
-function respond_tickets(int $ticket_id, int $usuario_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
+function respond_tickets(int $ticket_id, int $usuario_id_admin,int $usuario_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
 {
 	global $conection;
 	$confirmado = false;
@@ -644,13 +623,14 @@ function respond_tickets(int $ticket_id, int $usuario_id, string $mensaje_ticket
 	$nombre_admin = htmlspecialchars($nombre_admin, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$privilegio_user = htmlspecialchars($privilegio_user, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$insertData = $conection->prepare("INSERT INTO tickets_respuestas (ticket_id,user_id,respuesta_ticket, fecha_respuesta, nombre_admin,privilegio_user) VALUES (?,?,?,?,?,?)");
+		$insertData = $conection->prepare("INSERT INTO tickets_respuestas (ticket_id,user_id_admin,user_id,respuesta_ticket, fecha_respuesta, nombre_admin,privilegio_user) VALUES (?,?,?,?,?,?,?)");
 		$insertData->bindParam(1, $ticket_id);
-		$insertData->bindParam(2, $usuario_id);
-		$insertData->bindParam(3, $mensaje_ticket);
-		$insertData->bindParam(4, $fecha);
-		$insertData->bindParam(5, $nombre_admin);
-		$insertData->bindParam(6, $privilegio_user);
+		$insertData->bindParam(2, $usuario_id_admin);
+		$insertData->bindParam(3, $usuario_id);
+		$insertData->bindParam(4, $mensaje_ticket);
+		$insertData->bindParam(5, $fecha);
+		$insertData->bindParam(6, $nombre_admin);
+		$insertData->bindParam(7, $privilegio_user);
 		if ($insertData->execute()) {
 			$confirmado = true;
 		}
@@ -666,6 +646,15 @@ function datos_tickets()
 {
 	global $conection;
 	$consulta = $conection->prepare("SELECT * FROM tickets");
+	$consulta->execute();
+	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	return $consulta;
+}
+
+function datos_tickets_denuncias()
+{
+	global $conection;
+	$consulta = $conection->prepare("SELECT * FROM denuncias_usuarios");
 	$consulta->execute();
 	$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
 	return $consulta;
@@ -711,6 +700,40 @@ function getTickets(int $id): array
 		$consulta = $conection->prepare("SELECT * from tickets_respuestas where ticket_id=?");
 		if ($consulta->execute(array($id))) {
 			$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $consulta;
+}
+
+function respuestas_denuncias(int $id_denuncia): array
+{
+	global $conection;
+	$id_denuncia = htmlspecialchars($id_denuncia, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT * from denuncias_usuarios_respuestas where id_denuncia_motivo=?");
+		if ($consulta->execute(array($id_denuncia))) {
+			$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
+		}
+	} catch (PDOException $e) {
+		$error_Code = $e->getCode();
+		$message = $e->getMessage();
+		die("Code: " . $error_Code . "\nMessage: " . $message);
+	}
+	return $consulta;
+}
+
+function num_tickets_denuncias(int $id): int
+{
+	global $conection;
+	$id = htmlspecialchars($id, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT count(*) from denuncias_usuarios where id_usuario_denunciado=?");
+		if ($consulta->execute(array($id))) {
+			$consulta = $consulta->fetchColumn();
 		}
 	} catch (PDOException $e) {
 		$error_Code = $e->getCode();
@@ -1600,7 +1623,7 @@ function reactivar_cuenta(string $email): void
 	global $conection;
 	$email = htmlspecialchars($email, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$consulta = $conection->prepare("UPDATE users SET accountStatus = 'active' WHERE email = ?");
+		$consulta = $conection->prepare("UPDATE users SET accountStatus = 'active' WHERE email = ? and accountStatus = 'inactive'");
 		$consulta->execute(array($email));
 	} catch (PDOException $e) {
 		throw new Exception('Error en la base de datos: ' . $e->getMessage());
@@ -2163,7 +2186,7 @@ function enviar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numero, 
 	return $estado;
 }
 
-function confirmar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $descipcion_comic, $dibujante, $portada_comic)
+function confirmar_solicitud_datos_comic($id_comic_peticion, $nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $descipcion_comic, $dibujante, $portada_comic)
 {
 	global $conection;
 	$estado = false;
@@ -2180,13 +2203,13 @@ function confirmar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numer
 	$portada_comic = htmlspecialchars($portada_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		$consulta1 = $conection->prepare("INSERT INTO comics (nomComic,nomVariante,numComic,Formato,nomEditorial,date_published,nomGuionista,Procedencia,nomDibujante,cover) VALUES (?,?,?,?,?,?,?,?,?,?)");
-		$id_comic = $conection->lastInsertId();
-		$consulta2 = $conection->prepare("INSERT INTO descripcion_comics (id_comic,descripcion_comics) VALUES (?,?)");
+
 		if ($consulta1->execute(array($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $dibujante, $portada_comic))) {
+			$id_comic = $conection->lastInsertId();
+			$consulta2 = $conection->prepare("INSERT INTO descripcion_comics (id_comic,descripcion_comics) VALUES (?,?)");
 			if ($consulta2->execute(array($id_comic, $descipcion_comic))) {
-				if(cambiar_estado_peticion($id_comic)){
-					$estado = true;
-				}
+				copiar_imagen($id_comic_peticion, $id_comic);
+				$estado = true;
 			}
 		}
 	} catch (PDOException $e) {
@@ -2195,7 +2218,7 @@ function confirmar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numer
 	return $estado;
 }
 
-function cambiar_estado_peticion(int $id_comic_peticion): bool
+function cambiar_estado_peticion_cancelar(int $id_comic_peticion): bool
 {
 	global $conection;
 	$estado = false;
@@ -2209,6 +2232,18 @@ function cambiar_estado_peticion(int $id_comic_peticion): bool
 		echo "Error: " . $e->getMessage();
 	}
 	return $estado;
+}
+
+function cambiar_estado_peticion_confirmado(int $id_comic_peticion): void
+{
+	global $conection;
+	$id_comic_peticion = htmlspecialchars($id_comic_peticion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("UPDATE peticiones_comics SET estado = 'aceptado' WHERE id_peticion = ?");
+		$consulta->execute([$id_comic_peticion]);
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
 }
 
 function info_peticiones_comics(int $id_comic): array
@@ -2337,4 +2372,69 @@ function eliminar_peticion_comic(int $id_peticion): bool
 		echo "Error: " . $e->getMessage();
 	}
 	return $estado;
+}
+
+function nueva_denuncia($id_usuario_denunciado, $id_user_denunciante, $mensaje_usuario, $motivo_denuncia){
+	global $conection;
+	$estado = false;
+	$id_usuario_denunciado = htmlspecialchars($id_usuario_denunciado, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_user_denunciante = htmlspecialchars($id_user_denunciante, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$mensaje_usuario = htmlspecialchars($mensaje_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$contexto_denuncia = htmlspecialchars($motivo_denuncia, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$fecha = date('Y-m-d H:i:s');
+	$fecha_respuesta = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $fecha)));
+	try {
+		$consulta = $conection->prepare("INSERT INTO denuncias_usuarios (id_usuario_denunciante,id_usuario_denunciado,motivo_denuncia,contexto_denuncia,fecha_denuncia) VALUES (?,?,?,?,?)");
+		if ($consulta->execute(array($id_user_denunciante,$id_usuario_denunciado,$mensaje_usuario,$contexto_denuncia,$fecha_respuesta))) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function respuesta_denuncia(int $id_denuncia,int $id_admin,int $id_usuario,String $respuesta_mensaje): bool
+{
+	global $conection;
+	$estado = false;
+	$id_denuncia = htmlspecialchars($id_denuncia, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_admin = htmlspecialchars($id_admin, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$respuesta_mensaje = htmlspecialchars($respuesta_mensaje, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$fecha = date('Y-m-d H:i:s');
+	$fecha_respuesta = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $fecha)));
+	try {
+		$consulta = $conection->prepare("INSERT INTO denuncias_usuarios_respuestas(id_denuncia_motivo,id_admin,id_usuario,respuesta_denuncia,fecha_respuesta) VALUES (?,?,?,?,?)");
+		if ($consulta->execute(array($id_denuncia,$id_admin,$id_usuario,$respuesta_mensaje,$fecha_respuesta))) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function obtener_denuncias_usuarios(int $id_denuncia){
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT * FROM denuncias_usuarios WHERE id_denuncia = ?");
+		$consulta->execute(array($id_denuncia));
+		$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $resultados;
+}
+
+function obtener_numero_denuncias_usuarios(){
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT COUNT(*) FROM denuncias_usuarios");
+		$consulta->execute();
+		$numero_denuncias = $consulta->fetchColumn();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $numero_denuncias;
 }

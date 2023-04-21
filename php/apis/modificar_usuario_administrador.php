@@ -10,7 +10,7 @@ if ($userPrivilege != 'guest') {
     if ($_POST) {
         $nuevo_nombre_cuenta = $_POST['nombre_cuenta'];
         $nuevo_nombre_usuario = $_POST['nombre_usuario'];
-        $nuevo_apellido_usuario = $_POST['userPicture'];
+        $nuevo_apellido_usuario = $_POST['apellido_usuario'];
         $nuevo_mail_usuario = $_POST['email'];
         $id_usuario = $_POST['id_usuario'];
         $image = $_POST['userPicture'];
@@ -28,7 +28,7 @@ if ($userPrivilege != 'guest') {
         if (empty($image)) {
             $image = $datos_usuario['userPicture'];
         }
-        if (check_nombre_user($nuevo_nombre_cuenta) && $nuevo_nombre_cuenta != $antiguo_nombre_cuenta) {
+        if (checkUser($nuevo_nombre_cuenta,'') && $nuevo_nombre_cuenta != $antiguo_nombre_cuenta) {
             header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
             $validate['message'] = 'ERROR. That user name already exists';

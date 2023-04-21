@@ -4,13 +4,21 @@ include_once 'php/inc/header.inc.php';
 
 
 if (isset($_SESSION['email'])) {
-    $email = $_SESSION['email'];
-    guardar_ultima_conexion($email);
-    $userData = obtener_datos_usuario($email);
-    $userPrivilege = $userData['privilege'];
-    $nombre_usuario = $userData['userName'];
-    $id_usuario = $userData['IDuser'];
-    $numero_comics = get_total_guardados($id_usuario);
+    if ($userPrivilege == 'admin') {
+        $email = $_SESSION['email'];
+        guardar_ultima_conexion($email);
+        $id_usuario = $userData['IDuser'];
+        $userPrivilege = $userData['privilege'];
+        $nombre_usuario = $userData['userName'];
+        $userData = obtener_datos_usuario($email);
+        if (checkStatus($email) == 'block') {
+            header("Location: usuario_bloqueado.php");
+        }
+    } else {
+        header('Location: logOut.php');
+    }
+} else {
+    header('Location: logOut.php');
 }
 
 if (isset($_GET['IDcomic'])) {
@@ -31,6 +39,8 @@ if (isset($_GET['IDcomic'])) {
 
     $datos_peticion = info_peticiones_comics($id_comic);
     $estado_comic = $datos_peticion['estado'];
+} else {
+    header("Location: admin_panel_peticiones_comic.php");
 }
 
 ?>
@@ -402,20 +412,14 @@ if (isset($_GET['IDcomic'])) {
                                 <div class="side-bar ">
                                     <div class="user-info">
                                         <img class='img-profile img-circle img-responsive center-block comic_portada' id='output' alt='Avatar' src='<?php echo $cover ?>' onclick='pictureProfileUser()' ; style='width:120%; height: 120%;margin-left:-15px;margin-top:10px' />
-                                        <label for="portada_comic" class="btn btn-primary">
-                                            <span>Seleccionar archivo</span>
-                                        </label>
-                                        <?php
-                                        if ($estado_comic == 'aceptado') {
-                                        ?>
-                                            <input class="d-none" type="button" name="portada_comic" id="portada_comic" style="cursor: url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png), pointer !important; font-size: 16px; height: 40px;color: transparent;margin-left:-10px">
 
                                         <?php
-                                        } else {
+                                        if ($estado_comic != 'aceptado') {
                                         ?>
+                                            <label for="portada_comic" class="btn btn-primary">
+                                                <span>Seleccionar archivo</span>
+                                            </label>
                                             <input class="d-none" type="file" name="portada_comic" id="portada_comic" accept=".jpg, .png" onchange="loadFile(event)" style="cursor: url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png), pointer !important; font-size: 16px; height: 40px;color: transparent;margin-left:-10px">
-
-
                                         <?php
                                         }
                                         ?>
@@ -445,6 +449,7 @@ if (isset($_GET['IDcomic'])) {
                                         <h3 class="fieldset-title">Comic Info</h3>
                                         <div class="form-group avatar" style="background-color: grey">
                                             <div class='comic-details'>
+                                                <input type='hidden' id='id_comic_peticion' name='id_comic_peticion' value='<?php echo $id_comic ?>'>
                                                 <?php
                                                 if ($estado_comic == 'aceptado') {
                                                 ?>
@@ -550,16 +555,10 @@ if (isset($_GET['IDcomic'])) {
                                                 </div>
                                             </div>
                                             <?php
-                                            if ($estado_comic == 'aceptado') {
+                                            if ($estado_comic != 'aceptado') {
                                             ?>
-                                                <button class='btn btn-primary' type='button' style='margin-top:20px'>Aceptar peticion</button>
-                                                <button class='btn btn-primary' type='button' style='margin-top:20px'>Eliminar peticion</button>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                <button class='btn btn-primary' type='button' style='margin-top:20px' onclick='confirmar_envio_peticion_comic()'>Aceptar peticion</button>
-                                                <button class='btn btn-primary' type='button' style='margin-top:20px' onclick='eliminar_peticion_usuario(<?php echo $id_comic ?>)'>Eliminar peticion</button>
-
+                                                <button class='btn btn-primary' id='boton_confirmar' type='button' style='margin-top:20px' onclick='confirmar_envio_peticion_comic()'>Aceptar peticion</button>
+                                                <button class='btn btn-danger' type='button' style='margin-top:20px' onclick='eliminar_peticion_usuario(<?php echo $id_comic ?>)'>Eliminar peticion</button>
                                             <?php
                                             }
                                             ?>
@@ -571,9 +570,6 @@ if (isset($_GET['IDcomic'])) {
                     </section>
                 </div>
             </div>
-
-
-
             <div id="footer-lite">
                 <div class="content">
                     <p class="helpcenter">
@@ -599,7 +595,6 @@ if (isset($_GET['IDcomic'])) {
             </div>
         </div>
     </div>
-
 </body>
 
 </html>

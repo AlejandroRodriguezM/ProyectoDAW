@@ -272,6 +272,7 @@ guardar_ultima_conexion($email_admin);
                                     <ul class="nav">
                                         <li class='active' onclick="window.location.href='admin_info_usuario.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-user"></span>Perfil</a></li>
                                         <li onclick="window.location.href='admin_actualizar_usuario.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-cog"></span>Editar</a></li>
+                                        <li onclick="window.location.href='admin_mensajes_usuarios.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-envelope"></span>Mensajes</a></li>
                                     </ul>
                                 </nav>
                             </div>

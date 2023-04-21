@@ -16,6 +16,8 @@ if (isset($_SESSION['email'])) {
     } else {
         header('Location: logOut.php');
     }
+} else {
+    header('Location: logOut.php');
 }
 ?>
 <!DOCTYPE html>
@@ -87,7 +89,7 @@ if (isset($_GET['id_usuario'])) {
 } else {
     $emailUser = $_POST['email'];
     $nameUser = $_POST['name'];
-    $IDuser = $_POST['IDuser'];
+    $id_usuario = $_POST['IDuser'];
     $password = $_POST['password'];
 }
 
@@ -251,6 +253,7 @@ if (isset($_POST['adminPanel'])) {
                                     <ul class="nav">
                                         <li onclick="window.location.href='admin_info_usuario.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-user"></span>Perfil</a></li>
                                         <li class='active' onclick="window.location.href='admin_actualizar_usuario.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-cog"></span>Editar</a></li>
+                                        <li onclick="window.location.href='admin_mensajes_usuarios.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-envelope"></span>Mensajes</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -300,14 +303,14 @@ if (isset($_POST['adminPanel'])) {
                                             <label class="col-md-2 col-sm-3 col-xs-12 control-label">Email</label>
                                             <div class="col-md-10 col-sm-9 col-xs-12" style="width: 350px;">
                                                 <input type="text" class="form-control" name="email" id="email_usuario" value="<?php echo $emailUser ?>" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                                <input type='hidden' name='id_usuario' id='id_usuario' value='<?php echo $IDuser ?>' ; </div>
+                                                <input type='hidden' name='id_usuario' id='id_usuario' value='<?php echo $id_usuario ?>' ; </div>
                                             </div>
                                     </fieldset>
                                     <hr>
                                     <div class="mb-3">
                                         <div class="col-md-5 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0 botones">
-                                            <input class="btn btn-primary" type="button" onclick="modificar_usuario_administrador();" value="Actualizar perfil" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important;margin-right:10px;">
                                             <input type='hidden' name='email_usuario' id='email_usuario' value='<?php echo $email ?>'>
+                                            <input class="btn btn-primary" type="button" onclick="modificar_usuario_administrador();" value="Actualizar perfil" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important;margin-right:10px;">
 
                                             <script>
                                                 function handleFileSelect(evt) {

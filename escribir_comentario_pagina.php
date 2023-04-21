@@ -13,6 +13,9 @@ if (isset($_SESSION['email'])) {
 
     $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+    if (checkStatus($email)) {
+        header("Location: usuario_bloqueado.php");
+    }
 } else {
     header('Location: index.php');
 }
@@ -340,7 +343,7 @@ if (isset($_SESSION['email'])) {
 
             <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
-                <div class="last-pubs2 col-md-8">
+                    <div class="last-pubs2 col-md-8">
                         <div class="titulo">
                             <h2>Videos de interes</h2>
                         </div>

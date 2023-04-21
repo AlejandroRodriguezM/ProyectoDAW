@@ -14,8 +14,6 @@ if (isset($_SESSION['email'])) {
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
-} else {
-    header('Location: index.php');
 }
 $userData = obtener_datos_usuario($email);
 $id_usuario = $userData['IDuser'];
@@ -23,9 +21,9 @@ $id_lista = $_GET['id_lista'];
 $data_lista =  get_nombre_lista($id_lista);
 $nombre_lista = $data_lista['nombre_lista'];
 
-if (!check_lista_user($id_usuario, $id_lista)) {
-    header("Location: mis_listas.php");
-}
+// if (!check_lista_user($id_usuario, $id_lista)) {
+//     header("Location: mis_listas.php");
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,13 +41,15 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
+    <link rel="stylesheet" href="./assets/style/media_videos.css">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
@@ -58,7 +58,6 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     <script src="./assets/js/temporizador.js"></script>
     <title>Lista <?php echo $nombre_lista ?></title>
     <style>
-
         .custom-table {
             width: 300px;
             margin: 20px auto;
@@ -422,35 +421,21 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                     </div>
                 </div>
             </div>
-
-
-
-            <?php
-
-            if (get_total_guardados($id_usuario) > 0) {
-            ?>
+            <!-- <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
-                    <div class="container mt-5">
-                        <div class="last-pubs-2">
-                            <br>
-                            <div class="titulo" style="border-radius:10px">
-                                <h2 style='text-align: center'>Mis comics</h2>
-                                <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
-                            </div>
-                            <br>
+                    <div class="last-pubs2 col-md-8">
+                        <div class="titulo">
+                            <h2>Videos de interes</h2>
+                        </div>
+                        <hr>
+                        <div class="video-container">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                 </div>
-
-            <?php
-            } else {
-            ?>
-                <div class='recomendaciones'>
-
-                </div>
-            <?php
-            }
-            ?>
+            </div> -->
 
             <div id="footer-lite">
                 <div class="content">
@@ -479,6 +464,8 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     </div>
 
     <script>
+        var id_lista = document.querySelector('#id_lista').value;
+
         var limit_agregar = 16;
         var offset_agregar = 0;
 
@@ -487,7 +474,7 @@ if (!check_lista_user($id_usuario, $id_lista)) {
 
         var totalComics;
         var checkboxChecked = null;
-        actualizar_filtrado()
+        actualizar_filtrado_usuario(id_lista)
         $('input[type=checkbox]').on('change', function() {
             if ($(this).prop('checked') != true) {
                 checkboxChecked = null;
@@ -495,11 +482,9 @@ if (!check_lista_user($id_usuario, $id_lista)) {
         });
 
         $(document).ready(function() {
-            loadComics();
-            addComic();
-            comics_recomendados()
+            loadComics(0);
         });
-        var id_lista = document.querySelector('#id_lista').value;
+
 
 
         function loadComics(offset_lista = 0) {
@@ -524,82 +509,13 @@ if (!check_lista_user($id_usuario, $id_lista)) {
                 success: function(data) {
                     totalComics = $(data).filter("#total-comics").val();
 
-                    // Elimina la lista anterior antes de agregar la nueva
                     if (offset_lista == 0) {
-                        // $('.new-comic-list').html('');
                         $('.comic-list').html('');
-                        addComic()
                     }
                     $('<div class="comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-1');
                 }
             });
         }
-
-        function addComic(offset_agregar = 0) {
-            // offset = offset;
-
-            var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                return encodeURIComponent(this.value);
-            }).get();
-
-            var data = {
-                limit: limit_agregar,
-                offset: offset_agregar,
-                id_lista: id_lista
-            };
-
-            if (selectedCheckboxes.length > 0) {
-                data.checkboxChecked = selectedCheckboxes.join(",");
-            }
-
-            $.ajax({
-                url: "php/apis/comics_user_agregar.php",
-                data: data,
-                success: function(data) {
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    if (offset_agregar == 0) {
-                        $('.new-comic-list').html('');
-
-                        // loadComics()
-                    }
-                    $('<div class="new-comic-list" id="contenido"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-2');
-                }
-            });
-        }
-
-        var resizeTimer;
-
-        function comics_recomendados() {
-            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-            var width = $(window).width();
-            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
-
-            var data = {
-                num_comics: num_comics
-            };
-            $.ajax({
-                url: "php/apis/recomendaciones_comics.php",
-                data: data,
-                success: function(data) {
-                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
-                    $('.container.mt-5').css('width', container_width + 'px');
-
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    $('.recomendaciones').html('');
-                    $(data).appendTo('.recomendaciones');
-                }
-            });
-        }
-        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-        $(window).on('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(comics_recomendados, 100);
-        });
     </script>
     <script>
         function toggleDropdown(element) {
@@ -639,7 +555,6 @@ if (!check_lista_user($id_usuario, $id_lista)) {
 
     <script>
         function searchData(id) {
-            console.log(id)
             let input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("searchInput" + id);
             filter = input.value.toUpperCase();
@@ -658,10 +573,6 @@ if (!check_lista_user($id_usuario, $id_lista)) {
             }
         }
     </script>
-
-
-
-
 </body>
 
 </html>

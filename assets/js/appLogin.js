@@ -356,7 +356,6 @@ const modificar_usuario_administrador = async () => {
     var nombre_usuario = document.querySelector("#nombre_usuario").value;
     var apellido_usuario = document.querySelector("#apellido_usuario").value;
     var id_usuario = document.querySelector("#id_usuario").value;
-
     if (email.trim() === '' | nombre_cuenta.trim() === '') {
         Swal.fire({
             icon: "error",
@@ -595,12 +594,61 @@ const mandar_ticket = async () => {
     }
 }
 
+const mandar_ticket_bloqueo = async () => {
+    var id = document.querySelector("#id_user_ticket").value;
+    var asunto = document.querySelector("#asunto_usuario").value;
+    var mensaje = document.querySelector("#mensaje_usuario").value;
+
+
+    if (asunto.trim() === '' | mensaje.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to fill all the camps",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('idUser', id);
+    data.append("asunto_ticket", asunto);
+    data.append("mensaje", mensaje);
+
+    //pass data to php file
+    var respond = await fetch("php/apis/new_ticket.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_ticket').reset();
+        setTimeout(() => {
+            window.location.href = 'logOut.php';
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
 const mandar_mensaje = async () => {
     var id_usuario_destinatario = document.querySelector("#id_usuario_destinatario").value;
     var id_usuario_remitente = document.querySelector("#id_usuario_remitente").value;
     var mensaje = document.querySelector("#mensaje_usuario_enviar").value;
-
-
 
     if (mensaje.trim() === '') {
         Swal.fire({
@@ -641,6 +689,69 @@ const mandar_mensaje = async () => {
     }
 }
 
+const mandar_denuncia = async () => {
+    var id_usuario_denunciante = document.querySelector("#id_usuario_denunciante").value;
+    var id_usuario_denunciado = document.querySelector("#id_usuario_denunciado").value;
+    var mensaje = document.querySelector("#contexto_denuncia_usuario").value;
+    var motivoDenuncia = document.querySelector("#motivo_denuncia").value;
+
+    if (mensaje.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Tienes que darle contexto",
+            footer: "Web Comics"
+        })
+        return;
+    }
+    if (motivoDenuncia.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Tienes que añadir un motivo",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('id_usuario_denunciante', id_usuario_denunciante);
+    data.append("id_usuario_denunciado", id_usuario_denunciado);
+    data.append("mensaje", mensaje);
+    data.append("motivo_denuncia", motivoDenuncia);
+
+    //pass data to php file
+    var respond = await fetch("php/apis/crear_denuncia.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    }
+}
+
 const modificar_estado_mensaje = async (id_conversacion) => {
 
     //insert to data base in case of everything go correct.
@@ -674,6 +785,8 @@ const responder_ticket = async (ticket_id) => {
     var id_usuario = document.querySelector("#user_id_" + ticket_id).value;
     var estado = document.querySelector("#estado_" + ticket_id).value;
     var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
+
+
 
     if (respuesta.trim() === '') {
         Swal.fire({
@@ -1572,6 +1685,7 @@ const mandar_peticion_comic = () => {
 }
 
 const confirmar_peticion_comic = () => {
+    var id_comic = document.getElementById("id_comic_peticion").value;
     var nombre_comic = document.getElementById("nombre_comic").value;
     var nombre_variante = document.getElementById("variante_comic").value;
     var numero = document.getElementById("numero_comic").value;
@@ -1704,6 +1818,7 @@ const confirmar_peticion_comic = () => {
     }
 
     const data = new FormData();
+    data.append("id_comic_peticion", id_comic);
     data.append("nombre_comic", nombre_comic);
     data.append("nombre_variante", nombre_variante);
     data.append("numero", numero);

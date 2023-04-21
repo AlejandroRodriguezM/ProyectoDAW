@@ -10,6 +10,13 @@ if (isset($_SESSION['email'])) {
     $id_usuario = $userData['IDuser'];
     $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+    $profilePicture = $userData['userPicture'];
+    $userName = $userData['userName'];
+
+
+    if (checkStatus($email)) {
+        header("Location: usuario_bloqueado.php");
+    }
 } else {
     header('Location: index.php');
 }
@@ -29,7 +36,8 @@ if ($userPrivilege == 'admin') {
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
-    <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
+    <!-- <link rel="stylesheet" href="./assets/style/bandeja_comics.css"> -->
+    <link rel="stylesheet" href="./assets/style/mensajes_style.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/parallax.css">
@@ -43,9 +51,9 @@ if ($userPrivilege == 'admin') {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
+
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
@@ -59,6 +67,123 @@ if ($userPrivilege == 'admin') {
             padding-top: 30px;
             padding-bottom: 30px;
             border-radius: 30px;
+        }
+
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .message-container p {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            max-width: 70%;
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+
+        .user-message {
+            background-color: #3498db;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .other-message {
+            background-color: #ecf0f1;
+            color: #000;
+            align-self: flex-start;
+        }
+
+        /* Estilo para los mensajes del usuario actual */
+        .current-user .user-message {
+            background-color: #F0F8FF;
+        }
+
+        /* Estilo para los mensajes del otro usuario */
+        .current-other .other-message {
+            background-color: #E0FFFF;
+        }
+
+        .comment-box {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .comment-box form[id^="form_mensaje-"] {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .comment-box textarea[id^="mensaje_usuario_enviar-"] {
+            flex: 1;
+            height: 60px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            resize: none;
+            font-size: 16px;
+            line-height: 1.5;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .comment-box button {
+            display: inline-block;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .comment-box button:hover {
+            background-color: #3e8e41;
+        }
+
+        .nombre-destinatario {
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .arrow {
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 20%;
+            font-size: 18px;
+        }
+
+        .mensaje-header img {
+            border-radius: 50%;
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+        }
+
+        .mensaje-header img:hover {
+            opacity: 0.8;
+            border-color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
         }
     </style>
 </head>
@@ -203,6 +328,41 @@ if ($userPrivilege == 'admin') {
             </div>
         </div>
     </nav>
+    <!-- The Modal -->
+    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <img class="modal-content_img" id="img01">
+    </div>
+
+    <!-- FORMULARIO INSERTAR -->
+
+    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <form method="post" id="form_ticket" onsubmit="return false;">
+                        <h4 class="modal-title">Crear un ticket para administradores</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Asunto</label>
+                        <input type="text" id="asunto_usuario" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje</label>
+                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                        <?php
+                        echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
+                        ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div class="card-footer text-muted">
         Design by Alejandro Rodriguez 2022
@@ -218,55 +378,52 @@ if ($userPrivilege == 'admin') {
                             <div class="side-bar">
                                 <div class="user-info">
                                     <?php
-                                    $dataUser = obtener_datos_usuario($email);
-                                    $profilePicture = $dataUser['userPicture'];
+
                                     echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
                                     ?>
                                     <ul class="meta list list-unstyled">
                                         <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                             <?php
-                                            $dataUser = obtener_datos_usuario($email);
-                                            $userName = $dataUser['userName'];
+
                                             echo "$userName";
                                             ?>
                                         </li>
                                         <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
                                             <?php
-                                            $dataUser = obtener_datos_usuario($email);
-                                            $email = $dataUser['email'];
+
                                             // echo with style font size 
                                             echo " " . "<span style='font-size: 0.7em'>$email</span>";
                                             ?>
                                         </li>
-                                        <li class="activity"><label for="" style="font-size: 0.8em;">Logged in: </label>
+                                        <li class="activity">
+                                            <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
                                             <?php
-                                            $hora = $_SESSION['hour'];
-                                            echo "$hora";
+                                            echo comprobar_ultima_conexion($id_usuario);
                                             ?>
                                         </li>
                                     </ul>
                                 </div>
                                 <nav class="side-menu">
                                     <ul class="nav">
-                                        <li><a href="infoPerfil.php"><span class="fa fa-user"></span> Profile</a></li>
+                                        <li><a href="infoPerfil.php"><span class="fa fa-user"></span>Perfil</a></li>
                                         <li><a href='solicitudes_amistad.php'><span class='fa fa-user'></span>Solicitudes de amistad</a></li>
+                                        <li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>
                                         <li><a href="modificar_perfil.php"><span class="fa fa-cog"></span> Opciones</a></li>
                                         <?php
                                         if ($userPrivilege == 'user') {
                                             echo "<li class='active'><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
                                         }
                                         ?>
-
+                                        <li><a href="mensajes_usuario.php"><span class="fa fa-cog"></span>Mis mensajes</a></li>
                                     </ul>
                                 </nav>
                             </div>
                             <div class="content-panel">
                                 <!-- AQUI VA EL CONTENIDO DE LOS TICKETS -->
-                                <form class="form-horizontal" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                <form class="form-horizontal" onsubmit="return false;" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <fieldset class="fieldset">
                                         <h3 class="fieldset-title">Mensajes</h3>
-                                        <?php include 'php/apis/tickets_user.php'; ?>
-
+                                        <div id="mensajes-container"></div>
                                     </fieldset>
                                 </form>
                             </div>
@@ -276,50 +433,7 @@ if ($userPrivilege == 'admin') {
             </div>
 
 
-            <!-- The Modal -->
-            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <img class="modal-content_img" id="img01">
-            </div>
 
-            <!-- FORMULARIO INSERTAR -->
-            <?php
-            if (isset($_SESSION['email'])) {
-            ?>
-                <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <form method="post" id="form_ticket" onsubmit="return false;">
-                                    <h4 class="modal-title">Crear un ticket para administradores</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label>Asunto</label>
-                                    <input type="text" id="asunto_usuario" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Mensaje</label>
-                                    <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                                    <?php
-                                    if (isset($_SESSION['email'])) {
-                                        $userData = obtener_datos_usuario($email);
-                                        $id_usuario = $userData['IDuser'];
-                                        echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                                <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                            </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            <?php
-            }
-            ?>
             <div id="footer-lite">
                 <div class="content">
                     <p class="helpcenter">
@@ -346,26 +460,127 @@ if ($userPrivilege == 'admin') {
         </div>
     </div>
     <script>
-        // Función para mostrar y ocultar la conversación al hacer clic en el ticket
+        $(document).ready(function() {
+            $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
+        });
+
+        var procesando_mensaje = false;
+        var mensaje_abierto_id = null;
+
         function toggleTicketInfo(id) {
-            var header = document.getElementById('ticket-header-' + id);
-            var info = document.getElementById('ticket-info-' + id);
+            var header = document.getElementById('mensaje-header-' + id);
+            var info = document.getElementById('mensaje-info-' + id);
             var arrow = header.querySelector('.arrow');
+            modificar_estado_mensaje(id);
+            $(document).ready(function() {
+                $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
+            });
+            if (mensaje_abierto_id && mensaje_abierto_id !== id) {
+                var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
+                var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
+                var arrowAnterior = headerAnterior.querySelector('.arrow');
+
+                infoAnterior.style.display = 'none';
+                arrowAnterior.innerHTML = '&#9654;';
+            }
+
             if (info.style.display === 'block') {
+                // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
+                if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
+                    arrow.innerHTML = '&#9660;';
+                    return;
+                }
+                // Si no hay mensaje enviado, ocultar el elemento
                 info.style.display = 'none';
                 arrow.innerHTML = '&#9654;';
+                mensaje_abierto_id = null;
+
             } else {
+                // Si el elemento está cerrado, mostrarlo
                 info.style.display = 'block';
                 arrow.innerHTML = '&#9660;';
+                mensaje_abierto_id = id;
             }
         }
 
         // Asignar la función a los eventos de clic de los headers de los tickets
-        var headers = document.querySelectorAll('.ticket-header');
-        for (var i = 0; i < headers.length; i++) {
-            headers[i].addEventListener('click', function() {
-                toggleTicketInfo(this.id.replace('ticket-header-', ''));
+        if (document.getElementById('mensajes-container')) {
+            document.getElementById('mensajes-container').addEventListener('click', function(event) {
+                if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
+                var arrow = event.target.closest('.arrow');
+                if (arrow) {
+                    var header = arrow.closest('.mensaje-header');
+                    var id = header.id.replace('mensaje-header-', '');
+                    toggleTicketInfo(id);
+
+                }
             });
+        }
+    </script>
+    <script>
+        function actualizarMensajes(ticket_id, id_usuario) {
+            $.ajax({
+                url: "php/apis/tickets_user.php",
+                method: 'POST',
+                data: {
+                    id_usuario_destinatario: ticket_id,
+                    mensaje: ''
+                },
+                success: function(data) {
+                    $('#mensaje-info-' + ticket_id).html(data);
+                    $("#mensajes-container").html(data);
+                    $('#mensaje-info-' + ticket_id).css('display', 'block');
+                }
+            });
+        }
+        $(document).ready(function() {
+            actualizarMensajes(0);
+        });
+        // Enviar mensaje mediante AJAX
+        const mandar_mensaje_actualizacion = async (ticket_id) => {
+            var id_ticket = document.querySelector("#ticket_id_" + ticket_id).value;
+            var id_usuario = document.querySelector("#user_id_" + ticket_id).value;
+            var estado = document.querySelector("#estado_" + ticket_id).value;
+            var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
+
+            if (respuesta.trim() === '') {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: "You have to fill all the camps",
+                    footer: "Web Comics"
+                })
+                return;
+            }
+
+            //insert to data base in case of everything go correct.
+            const data = new FormData();
+            data.append('ticket_id', id_ticket);
+            data.append("user_id", id_usuario);
+            data.append("estado", estado);
+            data.append("mensaje", respuesta);
+
+            //pass data to php file
+            var respond = await fetch("php/apis/respon_ticket.php", {
+                method: 'POST',
+                body: data
+            });
+
+            var result = await respond.json();
+
+            if (result.success == false) {
+                document.querySelector('#form_mensaje').reset();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                // Actualizar la lista de mensajes
+                $('#mensaje_usuario_enviar').val('');
+                $('#mensaje-info-' + ticket_id).html(result.data);
+                // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
+                // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
+                actualizarMensajes(ticket_id, id_usuario);
+            }
         }
     </script>
     <script>

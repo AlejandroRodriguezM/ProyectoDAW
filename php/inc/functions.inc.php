@@ -175,20 +175,27 @@ function updateSaveImage($email, $image)
 	fclose($file);
 }
 
-function portadas_peticiones($image,$id_comic_peticion)
+function portadas_peticiones($image, $id_comic_peticion)
 {
 	$file_path = '../../assets/covers_img_peticiones';
 	$blob = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
-	$file = fopen($file_path . "/".$id_comic_peticion.".jpg", "w");
+	$file = fopen($file_path . "/" . $id_comic_peticion . ".jpg", "w");
 	fwrite($file, $blob);
 	fclose($file);
 }
 
-function portadas_confirmadas($image,$id_comic_peticion)
+function portadas_confirmadas($image, $id_comic_peticion, $id_comic)
 {
+	$nueva_imagen = $_POST['portada_comic'];
+	if (empty($nueva_imagen)) {
+		$pathDefault = '../../assets/covers_img_peticiones/ ' . $id_comic_peticion . 'jpg';
+		$type = pathinfo($pathDefault, PATHINFO_EXTENSION);
+		$data = file_get_contents($pathDefault);
+		$image = 'data:image/' . $type . ';base64,' . base64_encode($data);
+	}
 	$file_path = '../../assets/covers_img';
 	$blob = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $image));
-	$file = fopen($file_path . "/".$id_comic_peticion.".jpg", "w");
+	$file = fopen($file_path . "/" . $id_comic . ".jpg", "w");
 	fwrite($file, $blob);
 	fclose($file);
 }
@@ -486,6 +493,19 @@ function getPortadas_lista($id_lista)
 		}
 	}
 	return $portadas;
+}
+
+function copiar_imagen($id_comic, $id_comic_confirmado)
+{
+	$ruta_origen = '../../assets/covers_img_peticiones/' . $id_comic . '.jpg';
+	$ruta_destino = '../../assets/covers_img/' . $id_comic_confirmado . '.jpg';
+	$existe = false;
+	if (file_exists($ruta_origen)) { // Verifica si la imagen existe en la ruta de origen
+		if (copy($ruta_origen, $ruta_destino)) { // Copia la imagen a la ruta de destino
+			$existe = true;
+		}
+	}
+	return $existe;
 }
 
 function mostrar_datos($datos): void

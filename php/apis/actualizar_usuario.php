@@ -27,7 +27,7 @@ if ($_POST) {
     }
     $reservedWords = reservedWords();
 
-    if (check_nombre_user($userName) && $userName != $oldUserName) {
+    if (checkUser($userName,'') && $userName != $oldUserName) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. That user name alredy exist';
         header('HTTP/1.1 409 Conflict');

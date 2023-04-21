@@ -1,7 +1,6 @@
 <?php
-include_once './php/inc/header.inc.php';
-// Conexión a la base de datos (asumiendo que ya está establecida)
-global $conection;
+session_start();
+include_once '../inc/header.inc.php';
 $email_user = $_SESSION['email'];
 $data = obtener_datos_usuario($email_user);
 $id_user = $data['IDuser'];
@@ -22,14 +21,16 @@ if (!empty($tickets)) {
     $mensaje = $ticket['mensaje'];
     $fecha = $ticket['fecha_ticket'];
     $status = $ticket['status'];
-    echo "<div class='ticket'>";
-    echo "<h2 class='ticket-header' id='ticket-header-$ticket_id'>Ticket #$ticket_id Asunto: $asunto<span class='arrow'>&#9654;</span></h2>";
-    echo "<div class='ticket-info' id='ticket-info-$ticket_id' style='display: none;'>";
-    echo "<p><strong>Ticket abierto por:</strong>$nombre_user</p>";
-    echo "<p><strong>Asunto:</strong>$mensaje</p>";
-    echo "<p><strong>Descripción:</strong>$mensaje</p>";
-    echo "<p><strong>Fecha enviado:</strong>$fecha</p>";
-    echo "<p><strong>Estado:</strong>$status</p>";
+    $foto_perfil = './assets/img/admin_ticket.jpg';
+    echo "<div class='mensaje'>";
+    echo "<h2 class='mensaje-header' id='mensaje-header-" . $ticket['ticket_id'] . "'><img src='$foto_perfil' style='width: 80px; height: 80px;'><span class='nombre-destinatario'><span class='nombre-destinatario'></a>Ticket numero #$ticket_id</span><span class='arrow'>&#9654;</span></h2>";
+    echo "<div class='mensaje-info' id='mensaje-info-" . $ticket['ticket_id'] . "' style='display: none;'>";
+    echo "<p style='font-size:25px'><strong>Ticket abierto por: </strong><a href='admin_info_usuario.php?id_usuario=$id_user'>" . $nombre_user . "</a></p>";
+    echo "<p><strong>Asunto: </strong>" . $asunto . "</p>";
+    echo "<p><strong>Mensaje: </strong>" . $mensaje . "</p>";
+    echo "<p><strong>Fecha: </strong>" . $fecha . "</p>";
+    echo "<p><strong>Status: </strong>" . $status . "</p>";
+
     // Aquí incluirías el código para obtener y mostrar la conversación del ticket
 
     $conversations = getTickets($ticket['ticket_id']);
@@ -37,44 +38,38 @@ if (!empty($tickets)) {
     if (!empty($conversations)) {
       // Recorrer los resultados y mostrar la conversación
       foreach ($conversations as $conversation) {
-        if ($conversation['privilegio_user'] == 'admin') {
-          echo "<p style='color: blue'><strong>Tu mensaje: </strong>" . $conversation['respuesta_ticket'] . "<br> - Hora de mensaje: " . $conversation['fecha_respuesta'] . "</p>";
+        if ($conversation['user_id_admin'] == $id_user) {
+          $messageClass = 'user-message';
         } else {
-          echo "<p style='color: red'><strong>Mensaje del usuario: </strong>" . $conversation['respuesta_ticket'] . "<br> - Hora de mensaje: " . $conversation['fecha_respuesta'] . "</p>";
+          $messageClass = 'other-message';
         }
+        $messageText = htmlspecialchars($conversation['respuesta_ticket'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $messageTime = htmlspecialchars($conversation['fecha_respuesta'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+        echo "<div class='message-container'>";
+        echo "<p class='$messageClass'>$messageText<br><small>$messageTime</small></p>";
+        echo "</div>";
       }
     } else {
       echo "<p>No hay conversación para este ticket</p>";
     }
-    if ($ticket['status'] == 'cerrado') {
-      echo "<p>Este ticket está cerrado</p>";
+    echo "<input type='hidden' id='ticket_id_" . $ticket['ticket_id'] . "' value='" . $ticket['ticket_id'] . "'>";
+    echo "<input type='hidden' id='user_id_" . $ticket['ticket_id'] . "' value='" . $ticket['user_id'] . "'>";
+    //echo select, abierto o cerrado
+    echo "<select id='estado_" . $ticket['ticket_id'] . "' onchange='cambiar_status(" . $ticket['ticket_id'] . "); return false;'>";
+    if ($ticket['status'] == 'abierto') {
+      echo "<option value='abierto' selected>Abierto</option>";
+      echo "<option value='cerrado'>Cerrado</option>";
     } else {
-      echo "<button id='open-modal' type='button' class='btn-open-modal' data-toggle='modal' data-target='#modal-form-" . $ticket['ticket_id'] . "'>Abrir formulario</button>";
+      echo "<option value='abierto'>Abierto</option>";
+      echo "<option value='cerrado' selected>Cerrado</option>";
     }
-    echo "<div class='modal modal-form' id='modal-form-" . $ticket['ticket_id'] . "'>
-        <div class='modal-content'>
-          <div class='modal-header-" . $ticket['ticket_id'] . "'>
-            <h2>Responder ticket</h2>
+    echo '<div class="comment-box">';
+    echo '<textarea id="respuesta_' . $ticket['ticket_id'] . '" name="mensaje_usuario_enviar" placeholder="Escribe aquí tu mensaje..." data-valor="' . $ticket['ticket_id'] . '"></textarea>
+          <button style="margin-top:10px" type="button" onclick="mandar_mensaje_actualizacion(' . $ticket['ticket_id'] . '); return false;">Enviar</button>';
+    echo "</div>
           </div>
-          <form action='#' id='form_ticket_respond' method='post'>
-            <input type='hidden' id='ticket_id_" . $ticket['ticket_id'] . "' name='ticket_id' value='" . $ticket['ticket_id'] . "'>
-            <input type='hidden' id='user_id_" . $ticket['ticket_id'] . "' name='user_id' value='" . $ticket['user_id'] . "'>
-            <label for='estado'>Estado:</label>
-            <select name='estado' id='estado_" . $ticket['ticket_id'] . "'>
-              <option value='abierto' " . ($ticket['status'] == 'abierto' ? 'selected' : '') . ">Abierto</option>
-              <option value='cerrado' " . ($ticket['status'] == 'cerrado' ? 'selected' : '') . ">Cerrado</option>
-            </select>
-            <label for='respuesta'>Respuesta:</label>
-            <textarea name='respuesta' id='respuesta_" . $ticket['ticket_id'] . "'></textarea>
-            <div class='modal-footer'>
-              <input type='button' name='responder' value='Enviar respuesta' onclick='responder_ticket(" . $ticket['ticket_id'] . "); return false;'>
-            </div>
-          </form>
-            </div>
-        </div>
-        </div>
-</div>";
+          </div>
+          </div>";
   }
-} else {
-  echo "<p>No hay tickets disponibles</p>";
 }
