@@ -485,3 +485,7 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 
  - Ahora se peuden borrar comics
  - La pagina ya es usable a nivel usuario y administrador
+
+03/05/2023 Log 1
+ - Primeros pasos en verificacion de usuario mediante correo de activacion.
+ - Se han mejorado varios bugs y mejoras en acceso de usuario en modo espectador
