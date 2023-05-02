@@ -12,6 +12,7 @@ if ($_POST) {
     $reservedWords = reservedWords();
     $fecha = date('Y-m-d');
     $fechaCreacion = date('Y-m-d', strtotime(str_replace('-', '/', $fecha)));
+    $id_activacion = uniqid();
     if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords) || in_array(strtolower($email), $reservedWords)) {
         header("HTTP/1.1 400 Bad Request");
         $validate['success'] = false;
@@ -26,16 +27,17 @@ if ($_POST) {
             $validate['success'] = false;
             $validate['message'] = 'That username already exists';
         } else {
-            if (crear_usuario($userName, $email, $password)) {
+            if (crear_usuario($userName, $email, $password, $id_activacion)) {
                 $row = obtener_datos_usuario($email);
                 $id = $row['IDuser'];
-                insertAbourUser($id, "No information about the user $email", $fechaCreacion);
+                // enviar_correo_activacion($email,$id_activacion);
+                insertAbourUser($id, "No hay informacion del usuario $userName", $fechaCreacion);
                 createDirectory($email, $id);
                 saveImage($email, $id);
                 insertURL($email, $id);
                 header("HTTP/1.1 201 Created");
                 $validate['success'] = true;
-                $validate['message'] = 'The user has been created successfully';
+                $validate['message'] = 'Revisa tu correo y activa tu cuenta';
             } else {
                 header("HTTP/1.1 500 Internal Server Error");
                 $validate['success'] = false;

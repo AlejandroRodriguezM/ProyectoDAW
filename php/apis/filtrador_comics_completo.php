@@ -1,9 +1,6 @@
 <?php
 session_start();
 include_once '../inc/header.inc.php';
-$email = $_SESSION['email'];
-$userData = obtener_datos_usuario($email);
-$id_user = $userData['IDuser'];
 ?>
 <br>
 <div class="container mt-5" style="background-color: white;margin-left:10px">

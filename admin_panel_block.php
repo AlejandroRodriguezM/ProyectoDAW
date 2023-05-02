@@ -7,6 +7,7 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
+    $userName = $userData['userName'];
     if ($userPrivilege == 'admin') {
         $id_usuario = $userData['IDuser'];
         $numero_comics = get_total_guardados($id_usuario);
@@ -14,6 +15,9 @@ if (isset($_SESSION['email'])) {
         //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
     } else {
         header('Location: logOut.php');
+    }
+    if(!comprobar_activacion($userName)){
+        header("Location: usuario_no_activado.php");
     }
 }else{
     header('Location: logOut.php');

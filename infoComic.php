@@ -14,6 +14,9 @@ if (isset($_SESSION['email'])) {
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
+    if (!comprobar_activacion($nombre_usuario)) {
+        header("Location: usuario_no_activado.php");
+    }
 }
 
 $id_comic = $_GET['IDcomic'];
@@ -455,17 +458,8 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                     </li>
 
                     <li class="nav-item">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                        ?>
-                            <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        }
-                        ?>
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                    </li>
                     </li>
 
                     <li class="nav-item">
@@ -621,11 +615,12 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                         } else {
                                             echo "<button id='myButton'></button>";
                                         }
-                                    }
-                                    if ($userPrivilege == 'admin') {
-                                        echo '<div class="ml-auto">
+
+                                        if ($userPrivilege == 'admin') {
+                                            echo '<div class="ml-auto">
                                         <button type="button" class="btn btn-danger btn-sm mt-2" style="display: block;" onclick="eliminar_comic(' . $id_comic . ')">Eliminar comic</button>
                                         </div>';
+                                        }
                                     }
                                     ?>
 

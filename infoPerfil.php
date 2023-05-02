@@ -20,6 +20,9 @@ if (isset($_SESSION['email'])) {
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
+    if(!comprobar_activacion($userName)){
+        header("Location: usuario_no_activado.php");
+    }
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 } else {
     header('Location: index.php');

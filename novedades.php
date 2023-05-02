@@ -9,12 +9,14 @@ if (isset($_SESSION['email'])) {
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
     $id_usuario = $userData['IDuser'];
+    $userName = $userData['userName'];
     $numero_comics = get_total_guardados($id_usuario);
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
-} else {
-    header('Location: index.php');
+    if(!comprobar_activacion($userName)){
+        header("Location: usuario_no_activado.php");
+    }
 }
 //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 
@@ -146,69 +148,109 @@ if (isset($_SESSION['email'])) {
                     <li>
                         <ul class="dropdown-menu">
                             <?php
-                            if ($userPrivilege == 'admin') {
-                                echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
-                                echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
-                            } else {
-                                echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                            if (isset($_SESSION['email'])) {
+                                if ($userPrivilege == 'admin') {
+                                    echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                                    echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                                } else {
+                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                                    echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                                }
                             }
-
                             ?>
                             <li>
                                 <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
                                     Sobre WebComics</a>
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
-                                    Escribe tu opinión</a>
-                            </li>
-                            <div class="dropdown-divider"></div>
-                            <li>
-                                <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
-                            </li>
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                            ?>
+                                <li>
+                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                        Escribe tu opinión</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
+
+
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                            ?>
+                                <div class="dropdown-divider"></div>
+                                <li>
+                                    <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
+                                </li>
+                            <?php
+                            } else {
+                            ?>
+                                <li>
+                                    <button class="dropdown-item" onclick="iniciar_sesion()" name="loginSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Iniciar sesion</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
                         </ul>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                        <a class="nav-link active" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                    </li>
+
                     <li class="nav-item">
                         <?php
-                        // Obtener el número de mensajes sin leer
-                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                        if (isset($_SESSION['email'])) {
+                        ?>
+                            <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
 
-                        // Imprimir el enlace con el número de mensajes sin leer
-                        echo "<a class='nav-link' href='solicitudes_amistad.php'>";
-                        if ($num_solicitudes > 0) {
-                            echo "<span class='material-icons shaking'>notifications</span>";
-                            //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                        <?php
                         } else {
-                            echo "<span class='material-icons '>notifications</span>";
+                        ?>
+                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                        <?php
                         }
-                        echo "</a>";
+                        ?>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            // Obtener el número de mensajes sin leer
+                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                            if ($num_solicitudes > 0) {
+                                echo "<span class='material-icons shaking'>notifications</span>";
+                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                            } else {
+                                echo "<span class='material-icons '>notifications</span>";
+                            }
+                            echo "</a>";
+                        }
                         ?>
                     </li>
                     <li class="nav-item">
                         <?php
-                        // Obtener el número de mensajes sin leer
-                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
+                        if (isset($_SESSION['email'])) {
+                            // Obtener el número de mensajes sin leer
+                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
-                        // Imprimir el enlace con el número de mensajes sin leer
-                        echo "<a class='nav-link' href='mensajes_usuario.php'>";
-                        if ($num_mensajes > 0) {
-                            echo "<span class='material-icons shaking'>mark_email_unread</span>";
-                            //echo "<span class='num_mensajes'>$num_mensajes</span>";
-                        } else {
-                            echo "<span class='material-icons'>mark_email_unread</span>";
+                            // Imprimir el enlace con el número de mensajes sin leer
+                            echo "<a class='nav-link' href='mensajes_usuario.php'>";
+                            if ($num_mensajes > 0) {
+                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                                //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                            } else {
+                                echo "<span class='material-icons'>mark_email_unread</span>";
+                            }
+                            echo "</a>";
                         }
-                        echo "</a>";
                         ?>
                     </li>
                 </ul>

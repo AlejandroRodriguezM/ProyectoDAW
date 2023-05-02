@@ -2,11 +2,13 @@
 session_start();
 include_once '../inc/header.inc.php';
 global $conection;
-$email = $_SESSION['email'];
-$userData = obtener_datos_usuario($email);
-$userPrivilege = $userData['privilege'];
-
-$id_user = $userData['IDuser'];
+if (isset($_SESSION['email'])) {
+    $email = $_SESSION['email'];
+    $userData = obtener_datos_usuario($email);
+    $userPrivilege = $userData['privilege'];
+    $id_user = $userData['IDuser'];
+    echo "<input type='hidden' id='id_user' value='$id_user'>";
+}
 $limit = intval($_GET['limit']);
 $offset = intval($_GET['offset']);
 
@@ -39,7 +41,7 @@ if (isset($_GET['checkboxChecked'])) {
 $contador = 0;
 $contador2 = 24; // contador para mostrar los botones de navegación
 $total_comics = numComics();
-echo "<input type='hidden' id='id_user' value='$id_user'>";
+
 echo "<input type='hidden' id='total_comics' value='$total_comics'>";
 while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
     $id_comic = $data_comic['IDcomic'];
@@ -60,15 +62,16 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
             </a>
             <input type='hidden' name='id_grapa' id='id_grapa' value='$id_comic'>";
 
-
-    if (check_guardado($id_user, $id_comic)) {
-        echo "<button data-item-id='yXwd2' class='rem' >
+    if (isset($_SESSION['email'])) {
+        if (check_guardado($id_user, $id_comic)) {
+            echo "<button data-item-id='yXwd2' class='rem' >
                             <span class='sp-icon'>Lo tengo</span>
                         </button>";
-    } else {
-        echo "<button data-item-id='yXwd2' class='add' >
+        } else {
+            echo "<button data-item-id='yXwd2' class='add' >
                             <span class='sp-icon'>Lo tengo</span>
                             </button>";
+        }
     }
 
 

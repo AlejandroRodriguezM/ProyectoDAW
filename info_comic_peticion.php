@@ -11,11 +11,14 @@ if (isset($_SESSION['email'])) {
         $userPrivilege = $userData['privilege'];
         $nombre_usuario = $userData['userName'];
         $userData = obtener_datos_usuario($email);
-        if (checkStatus($email) == 'block') {
-            header("Location: usuario_bloqueado.php");
-        }
     } else {
         header('Location: logOut.php');
+    }
+    if (checkStatus($email) == 'block') {
+        header("Location: usuario_bloqueado.php");
+    }
+    if (!comprobar_activacion($nombre_usuario)) {
+        header("Location: usuario_no_activado.php");
     }
 } else {
     header('Location: logOut.php');
@@ -265,17 +268,8 @@ if (isset($_GET['IDcomic'])) {
                     </li>
 
                     <li class="nav-item">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                        ?>
-                            <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        }
-                        ?>
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                    </li>
                     </li>
 
                     <li class="nav-item">

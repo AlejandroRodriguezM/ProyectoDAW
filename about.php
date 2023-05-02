@@ -6,12 +6,16 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
+    $userName = $userData['userName'];
     $id_usuario = $userData['IDuser'];
     $picture = $userData['userPicture'];
     $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
+    }
+    if(!comprobar_activacion($userName)){
+        header("Location: usuario_no_activado.php");
     }
 }
 //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
@@ -162,17 +166,8 @@ if (isset($_SESSION['email'])) {
                     </li>
 
                     <li class="nav-item">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                        ?>
-                            <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
-                        <?php
-                        }
-                        ?>
+                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                    </li>
                     </li>
                     <li class="nav-item">
                         <?php

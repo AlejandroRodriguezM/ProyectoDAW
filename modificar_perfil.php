@@ -19,6 +19,9 @@ if (isset($_SESSION['email'])) {
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
+    if(!comprobar_activacion($userName)){
+        header("Location: usuario_no_activado.php");
+    }
 } else {
     header('Location: index.php');
 }

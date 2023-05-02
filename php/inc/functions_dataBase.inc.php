@@ -7,7 +7,9 @@ function checkUser(string $acceso, string $password): bool
 	try {
 		$consulta = $conection->prepare("SELECT IDuser from users WHERE email = ? OR userName = ? and password = ?");
 		if ($consulta->execute(array($acceso, $acceso, $password))) {
-			$existe = true;
+			if ($consulta->fetchColumn() > 0) {
+				$existe = true;
+			}
 		}
 	} catch (PDOException $e) {
 		die("Code: " . $e->getCode() . "\nMessage: " . $e->getMessage());
@@ -119,20 +121,20 @@ function obtener_privilegio(String $email): String
 	return $privilegio;
 }
 
-
-function crear_usuario(string $userName, string $email, string $password): bool
+function crear_usuario(string $userName, string $email, string $password, $id_activacion): bool
 {
 	global $conection;
 	$create = false;
 	$userName = htmlspecialchars($userName, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$email = htmlspecialchars($email, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$password = htmlspecialchars($password, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-
+	$id_activacion = htmlspecialchars($id_activacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$insertData = $conection->prepare("INSERT INTO users (userName,password,email) VALUES(?,?,?)");
+		$insertData = $conection->prepare("INSERT INTO users (userName,password,email,id_activacion) VALUES(?,?,?,?)");
 		$insertData->bindParam(1, $userName);
 		$insertData->bindParam(2, $password);
 		$insertData->bindParam(3, $email);
+		$insertData->bindParam(4, $id_activacion);
 
 		if ($insertData->execute()) {
 			$create = true;
@@ -141,6 +143,22 @@ function crear_usuario(string $userName, string $email, string $password): bool
 	} catch (PDOException $e) {
 		die("Code: " . $e->getCode() . "\nMessage: " . $e->getMessage());
 	}
+}
+
+function comprobar_activacion($userName){
+	global $conection;
+	$activado = false;
+	try {
+		$consulta = $conection->prepare("SELECT cuenta_activada from users WHERE userName = ?");
+		if ($consulta->execute(array($userName))) {
+			if ($consulta->fetchColumn() == 1) {
+				$activado = true;
+			}
+		}
+	} catch (PDOException $e) {
+		die("Code: " . $e->getCode() . "\nMessage: " . $e->getMessage());
+	}
+	return $activado;
 }
 
 function actualizar_usuario(string $userName, string $email, string $password): bool

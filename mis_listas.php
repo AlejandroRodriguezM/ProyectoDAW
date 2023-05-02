@@ -10,9 +10,13 @@ if (isset($_SESSION['email'])) {
     $userPrivilege = $userData['privilege'];
     $id_usuario = $userData['IDuser'];
     $numero_comics = get_total_guardados($id_usuario);
+    $userName = $userData['userName'];
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
+    }
+    if(!comprobar_activacion($userName)){
+        header("Location: usuario_no_activado.php");
     }
 } else {
     header('Location: index.php');

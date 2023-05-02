@@ -129,7 +129,7 @@ function reservedWords()
 		"xp_filelist", "xp_cmdshell", "xp_regread", "xp_regwrite", "xp_fileexist", "xp_dirtree", "xp_filelist", "xp_cmdshell",
 		"xp_regread", "xp_regwrite", "xp_fileexist", "xp_dirtree", "xp_filelist", "xp_cmdshell", "xp_regread", "xp_regwrite",
 		"xp_fileexist", "xp_dirtree", "xp_filelist", "xp_cmdshell", "xp_regread", "xp_regwrite", "xp_fileexist", "xp_dirtree",
-		"xp_filelist", "xp_cmdshell", "xp_regread", "xp_regwrite", "xp_fileexist", "xp_dirtree", "xp_filelist"
+		"xp_filelist", "xp_cmdshell", "xp_regread", "xp_regwrite", "xp_fileexist", "xp_dirtree", "xp_filelist", 'null'
 	);
 	return $palabras;
 }
@@ -533,6 +533,16 @@ function mostrar_datos($datos): void
 	echo "</tbody>
 		</table>";
 }
+
+function enviar_correo_activacion($email_registro,$id_unico)
+{
+	
+	$subject = "Activación de cuenta"; // Asunto del correo
+	$message = "Haga clic en el siguiente enlace para activar su cuenta: http://tusitio.com/activar.php?id=" . $id_unico; // Mensaje del correo con el enlace de activación (reemplaza la URL por la de tu sitio y el ID por uno generado de manera única)
+	$headers = "From: webcomicsdaw@gmail.com"; // Dirección de correo electrónico del remitente
+	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
+}
+  
 
 // function mostrar_datos($datos)
 // {

@@ -8,12 +8,16 @@ if (isset($_SESSION['email'])) {
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
+    $userName = $userData['userName'];
     $mi_id = $userData['IDuser'];
     $id_usuario = $_GET['id_usuario'];
     $numero_comics = get_total_guardados($id_usuario);
     //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
+    }
+    if(!comprobar_activacion($userName)){
+        header("Location: usuario_no_activado.php");
     }
 } else {
     header('Location: index.php');

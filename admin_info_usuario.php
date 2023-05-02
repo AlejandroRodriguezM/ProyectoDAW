@@ -6,8 +6,7 @@ if (isset($_SESSION['email'])) {
     $email_admin = $_SESSION['email'];
     $data_admin = obtener_datos_usuario($email_admin);
     $privilege_admin = $data_admin['privilege'];
-
-
+    $userName = $data_admin['userName'];
     if ($privilege_admin == 'admin') {
         check_session_admin($email_admin);
         $name_admin = $data_admin['userName'];
@@ -17,6 +16,9 @@ if (isset($_SESSION['email'])) {
         $privacidad_admin = $data_admin['tipo_perfil'];
     } else {
         header('Location: logOut.php');
+    }
+    if(!comprobar_activacion($userName)){
+        header("Location: usuario_no_activado.php");
     }
 } else {
     header('Location: index.php');
