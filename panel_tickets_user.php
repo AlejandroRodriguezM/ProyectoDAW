@@ -360,18 +360,15 @@ if ($userPrivilege == 'admin') {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                                echo '<li>
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
                                 echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
                                 echo "<div class='fw-bold'>$userName</div>";
-
-                                echo '<div>
-                                        <div class="fw-bold">Nombre de usuario</div>
-                                        <a href="infoPerfil.php" class="text-muted">Mi perfil</a>
-                                        </div>
+                                echo '
                                     </div>
                                     </li>';
-                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
+                                echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
+                                echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -707,45 +704,10 @@ if ($userPrivilege == 'admin') {
                 <!-- </div> -->
             </div>
         </div>
-        <!-- The Modal -->
-        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <img class="modal-content_img" id="img01">
-        </div>
-
-        <!-- FORMULARIO INSERTAR -->
-
-        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <form method="post" id="form_ticket" onsubmit="return false;">
-                            <h4 class="modal-title">Crear un ticket para administradores</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Asunto</label>
-                            <input type="text" id="asunto_usuario" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Mensaje</label>
-                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                            <?php
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                            ?>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
-            <div class="container mt-5">
+            <div class="container" style="background-color: #00000000">
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-10">
                         <div class="card">

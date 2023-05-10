@@ -341,18 +341,15 @@ if (isset($_SESSION['email'])) {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                                echo '<li>
+                            echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                                echo "<div class='fw-bold'>$userName</div>";
-
-                                echo '<div>
-                                        <div class="fw-bold">Nombre de usuario</div>
-                                        <a href="infoPerfil.php" class="text-muted">Mi perfil</a>
-                                        </div>
+                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo "<div class='fw-bold'>$userName</div>";
+                            echo '
                                     </div>
                                     </li>';
-                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -461,14 +458,13 @@ if (isset($_SESSION['email'])) {
                             echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="panel_tickets_admin.php">Panel tickets</a></li>';
                         } elseif ($userPrivilege == 'user') {
                             echo '<li class="list-group-item list-group-item-action">
-                                    <div class="d-flex align-items-center">
-                                        <img src="ruta-a-imagen.jpg" alt="Avatar del usuario" class="me-2" style="width: 30px; height: 30px;">
-                                        <div>
-                                        <div class="fw-bold">Nombre de usuario</div>
-                                        <a href="infoPerfil.php" class="text-muted list-group-item-action active">Mi perfil</a>
-                                        </div>
+                                            <div class="d-flex align-items-center">';
+                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo "<div class='fw-bold'>$userName</div>";
+                            echo '
                                     </div>
                                     </li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
                             echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
                         } else {
                             echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="closeSesion()">Iniciar sesión</button></li>';
