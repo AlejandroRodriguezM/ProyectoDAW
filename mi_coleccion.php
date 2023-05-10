@@ -218,19 +218,19 @@ if (isset($_SESSION['email'])) {
             background-color: #343a40 !important;
 
         }
+
         body {
             margin: 0 !important;
             padding: 0 !important;
             height: 100% !important;
-            overflow-y: scroll !important; /* Habilita el scroll vertical */
+            overflow-y: scroll !important;
+            /* Habilita el scroll vertical */
 
         }
 
         main {
             min-height: 100vh !important;
         }
-
-
     </style>
 </head>
 
@@ -542,7 +542,7 @@ if (isset($_SESSION['email'])) {
 
 
         </div>
-                <!--Canvas menu-->
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -642,7 +642,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -787,7 +787,7 @@ if (isset($_SESSION['email'])) {
                 </ul>
             </div>
 
-                        <div class="container mt-5">
+            <div class="container mt-5">
                 <div class="d-flex justify-content-center">
                     <div class="last-pubs2 comics">
                     </div>

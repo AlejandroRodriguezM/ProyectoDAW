@@ -690,18 +690,18 @@ if (isset($_GET['IDcomic'])) {
                             echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                             echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                         } elseif ($userPrivilege == 'user') {
-                                echo '<li>
+                            echo '<li>
                                             <div class="d-flex align-items-center">';
-                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                                echo "<div class='fw-bold'>$nombre_usuario</div>";
+                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo "<div class='fw-bold'>$nombre_usuario</div>";
 
-                                echo '<div>
+                            echo '<div>
                                         <div class="fw-bold">Nombre de usuario</div>
                                         <a href="infoPerfil.php" class="text-muted">Mi perfil</a>
                                         </div>
                                     </div>
                                     </li>';
-                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
+                            echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                         } else {
                             echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                         }
@@ -826,7 +826,7 @@ if (isset($_GET['IDcomic'])) {
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 

@@ -787,7 +787,7 @@ if (isset($_GET['IDcomic'])) {
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -1160,7 +1160,7 @@ if (isset($_GET['IDcomic'])) {
                                 }
                                 ?>
 
-                        </div>
+                            </div>
                     </form>
                 </div>
                 <div class="comentarios"></div>

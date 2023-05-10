@@ -17,7 +17,7 @@ if (isset($_SESSION['email'])) {
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
-    if(!comprobar_activacion($nombre_usuario)){
+    if (!comprobar_activacion($nombre_usuario)) {
         header("Location: usuario_no_activado.php");
     }
 } else {
@@ -84,6 +84,7 @@ if (isset($_SESSION['email'])) {
             border-radius: 5px;
             margin-bottom: 70px;
         }
+
         button.nav-link.dropdown-toggle {
             border: none;
             background-color: transparent;
@@ -400,29 +401,28 @@ if (isset($_SESSION['email'])) {
                         } else {
                             echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                         }
+                    } else {
 
-                        } else {
-
-                            echo '<li>
+                        echo '<li>
                                 <div class="d-flex align-items-center">';
-                            echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo '
+                        echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                        echo '
                             <div>
                             <div class="fw-bold">Invitado</div>
                             </div>
                         </div>
                         </li>';
-                            echo "<hr class='dropdown-divider'>";
-                            echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                            echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
-                        }
-                        ?>
-                    </ul>
-                </div>
-
-
+                        echo "<hr class='dropdown-divider'>";
+                        echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
+                        echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                    }
+                    ?>
+                </ul>
             </div>
-                <!--Canvas menu-->
+
+
+        </div>
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -522,7 +522,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -616,7 +616,7 @@ if (isset($_SESSION['email'])) {
                 <!-- </div> -->
             </div>
         </div>
-    <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
             <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
@@ -778,8 +778,8 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
         </div>
-    </div>
-    <!-- <script>
+        </div>
+        <!-- <script>
         $(document).ready(function() {
             var id_comic = $("#id_comic").val(); // get the id_comic value here
             loadComentarios(id_comic);

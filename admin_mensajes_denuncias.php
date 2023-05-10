@@ -759,12 +759,12 @@ if ($userPrivilege == 'user') {
                                                             Usuarios bloqueados</a>
                                                     </li>
                                                     <li>
-                                                        <a href="panel_tickets_admin.php" class="nav-link active">
+                                                        <a href="panel_tickets_admin.php" class="nav-link link-dark">
                                                             <span class="fa fa-cog"></span>
                                                             Panel de mensajes</a>
                                                     </li>
                                                     <li>
-                                                        <a href="admin_mensajes_denuncias.php" class="nav-link link-dark">
+                                                        <a href="admin_mensajes_denuncias.php" class="nav-link active">
                                                             <span class="fa fa-cog"></span>
                                                             Denuncias de usuarios</a>
                                                     </li>

@@ -47,10 +47,10 @@ $id_lista = $_POST['id_lista'];
                             $tabla_artistas = getArtists_lista($id_lista);
                             foreach ($tabla_artistas as $key => $value) {
                                 echo "<li class='list-group-item'>
-                      $key
-                      <input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
-                      <input type='hidden' name='comic_value' value='$key'>
-                    </li>";
+                                $key
+                                <input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
+                                <input type='hidden' name='comic_value' value='$key'>
+                                </li>";
                             }
                             ?>
                         </ul>

@@ -6,13 +6,15 @@ if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     $userData = obtener_datos_usuario($email);
     $id_user = $userData['IDuser'];
-    echo "<input type='hidden' id='id_user' value='$id_user'>";
 }
 
+if(isset($_GET['num_comics'])){
+    $num_comics = intval($_GET['num_comics']);
+    $numero_comics = get_total_comics();
+}else{
+    header("Location: ../../index.php");
+}
 
-$num_comics = intval($_GET['num_comics']);
-$numero_comics = get_total_comics();
-echo "<input type='hidden' class='num_comics' id='num_comics' value='$numero_comics'>";
 
 
 ?>
@@ -21,7 +23,8 @@ echo "<input type='hidden' class='num_comics' id='num_comics' value='$numero_com
 <br>
 <div class="my-4"></div>
 <a href="#" class="mt-3">
-    <button id="ver-mas-btn" class="btn btn-primary ver-mas-btn" onclick="comics_recomendados()">Recargar comics</button>
+    <button id="ver-mas-btn" class="btn btn-primary ver-mas-btn" onclick="comics_recomendados()">Recargar
+        comics</button>
 </a>
 
 <div class="scrollable-h comic-full">

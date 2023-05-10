@@ -16,7 +16,7 @@ if (isset($_SESSION['email'])) {
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
-    if(!comprobar_activacion($userName)){
+    if (!comprobar_activacion($userName)) {
         header("Location: usuario_no_activado.php");
     }
 }
@@ -187,19 +187,19 @@ $nombre_lista = $data_lista['nombre_lista'];
             margin-right: 10px;
             /* Margen entre botones */
         }
+
         body {
             margin: 0 !important;
             padding: 0 !important;
             height: 100% !important;
-            overflow-y: scroll !important; /* Habilita el scroll vertical */
+            overflow-y: scroll !important;
+            /* Habilita el scroll vertical */
 
         }
 
         main {
             min-height: 100vh !important;
         }
-
-
     </style>
 </head>
 
@@ -490,29 +490,28 @@ $nombre_lista = $data_lista['nombre_lista'];
                         } else {
                             echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                         }
+                    } else {
 
-                        } else {
-
-                            echo '<li>
+                        echo '<li>
                                 <div class="d-flex align-items-center">';
-                            echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo '
+                        echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                        echo '
                             <div>
                             <div class="fw-bold">Invitado</div>
                             </div>
                         </div>
                         </li>';
-                            echo "<hr class='dropdown-divider'>";
-                            echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                            echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
-                        }
-                        ?>
-                    </ul>
-                </div>
-
-
+                        echo "<hr class='dropdown-divider'>";
+                        echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
+                        echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                    }
+                    ?>
+                </ul>
             </div>
-                <!--Canvas menu-->
+
+
+        </div>
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -612,7 +611,7 @@ $nombre_lista = $data_lista['nombre_lista'];
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -707,12 +706,12 @@ $nombre_lista = $data_lista['nombre_lista'];
             </div>
         </div>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
+        <!-- The Modal -->
+        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <img class="modal-content_img" id="img01">
+        </div>
 
-<div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <div class="caption">
                 <div class='filtrado_comics sticky-top '>
                     <!-- Aquí irían los acordeones -->
@@ -771,118 +770,118 @@ $nombre_lista = $data_lista['nombre_lista'];
                 </div>
             </div>
         </div>
-    </div>
+        </div>
 
-    <script>
-        var id_lista = document.querySelector('#id_lista').value;
+        <script>
+            var id_lista = document.querySelector('#id_lista').value;
 
-        var limit_agregar = 16;
-        var offset_agregar = 0;
+            var limit_agregar = 16;
+            var offset_agregar = 0;
 
-        var limit_lista = 16;
-        var offset_lista = 0;
+            var limit_lista = 16;
+            var offset_lista = 0;
 
-        var totalComics;
-        var checkboxChecked = null;
-        actualizar_filtrado_usuario(id_lista)
-        $('input[type=checkbox]').on('change', function() {
-            if ($(this).prop('checked') != true) {
-                checkboxChecked = null;
-            }
-        });
-
-        $(document).ready(function() {
-            loadComics(0);
-        });
-
-
-
-        function loadComics(offset_lista = 0) {
-
-            var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                return encodeURIComponent(this.value);
-            }).get();
-
-            var data = {
-                limit: limit_lista,
-                offset: offset_lista,
-                id_lista: id_lista
-            };
-
-            if (selectedCheckboxes.length > 0) {
-                data.checkboxChecked = selectedCheckboxes.join(",");
-            }
-            $.ajax({
-
-                url: "php/apis/comics_lista.php",
-                data: data,
-                success: function(data) {
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    if (offset_lista == 0) {
-                        $('.comic-list').html('');
-                    }
-                    $('<div class="comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-1');
+            var totalComics;
+            var checkboxChecked = null;
+            actualizar_filtrado_usuario(id_lista)
+            $('input[type=checkbox]').on('change', function() {
+                if ($(this).prop('checked') != true) {
+                    checkboxChecked = null;
                 }
             });
-        }
-    </script>
-    <script>
-        function toggleDropdown(element) {
-            var dropdownContent1 = document.getElementById("dropdownContent1");
-            var dropdownContent2 = document.getElementById("dropdownContent2");
-            var dropdownContent3 = document.getElementById("dropdownContent3");
-            var dropdownContent4 = document.getElementById("dropdownContent4");
 
-            if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-            } else {
-                dropdownContent1.style.display = "none";
-                dropdownContent2.style.display = "none";
-                dropdownContent3.style.display = "none";
-                dropdownContent4.style.display = "none";
-                element.querySelector(".dropdown-content").style.display = "block";
+            $(document).ready(function() {
+                loadComics(0);
+            });
+
+
+
+            function loadComics(offset_lista = 0) {
+
+                var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
+                    return encodeURIComponent(this.value);
+                }).get();
+
+                var data = {
+                    limit: limit_lista,
+                    offset: offset_lista,
+                    id_lista: id_lista
+                };
+
+                if (selectedCheckboxes.length > 0) {
+                    data.checkboxChecked = selectedCheckboxes.join(",");
+                }
+                $.ajax({
+
+                    url: "php/apis/comics_lista.php",
+                    data: data,
+                    success: function(data) {
+                        totalComics = $(data).filter("#total-comics").val();
+
+                        if (offset_lista == 0) {
+                            $('.comic-list').html('');
+                        }
+                        $('<div class="comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-1');
+                    }
+                });
             }
-        }
+        </script>
+        <script>
+            function toggleDropdown(element) {
+                var dropdownContent1 = document.getElementById("dropdownContent1");
+                var dropdownContent2 = document.getElementById("dropdownContent2");
+                var dropdownContent3 = document.getElementById("dropdownContent3");
+                var dropdownContent4 = document.getElementById("dropdownContent4");
 
-        function closeDropdown(dropdownContent) {
-            dropdownContent.style.display = "none";
-        }
-
-        document.addEventListener("click", function(event) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var dropdown = dropdowns[i];
-                if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
-                    dropdown.style.display = "none";
+                if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
+                    dropdownContent1.style.display = "none";
+                    dropdownContent2.style.display = "none";
+                    dropdownContent3.style.display = "none";
+                    dropdownContent4.style.display = "none";
+                } else {
+                    dropdownContent1.style.display = "none";
+                    dropdownContent2.style.display = "none";
+                    dropdownContent3.style.display = "none";
+                    dropdownContent4.style.display = "none";
+                    element.querySelector(".dropdown-content").style.display = "block";
                 }
             }
-        });
-    </script>
 
-    <script>
-        function searchData(id) {
-            let input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput" + id);
-            filter = input.value.toUpperCase();
-            table = document.getElementById("dropdownContent" + id);
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
+            function closeDropdown(dropdownContent) {
+                dropdownContent.style.display = "none";
+            }
+
+            document.addEventListener("click", function(event) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var dropdown = dropdowns[i];
+                    if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
+                        dropdown.style.display = "none";
+                    }
+                }
+            });
+        </script>
+
+        <script>
+            function searchData(id) {
+                let input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchInput" + id);
+                filter = input.value.toUpperCase();
+                table = document.getElementById("dropdownContent" + id);
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
                     }
                 }
             }
-        }
-    </script>
+        </script>
     </main>
 </body>
 

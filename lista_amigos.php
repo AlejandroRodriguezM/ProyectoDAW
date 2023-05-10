@@ -630,8 +630,7 @@ if (isset($_SESSION['email'])) {
 
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
-            <div class="container mt-4">
-                <div class="row justify-content-center">
+<div class="container" style="background-color: #00000000">                <div class="row justify-content-center">
                     <div class="col-lg-8 col-md-10">
                         <div class="card">
                             <div class="card-body">

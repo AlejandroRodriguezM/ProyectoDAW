@@ -48,10 +48,10 @@ $id_user = $userData['IDuser'];
                             $tabla_artistas = getArtists_user($id_user);
                             foreach ($tabla_artistas as $key => $value) {
                                 echo "<li class='list-group-item'>
-                      $key
-                      <input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
-                      <input type='hidden' name='comic_value' value='$key'>
-                    </li>";
+                                $key
+                                <input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
+                                <input type='hidden' name='comic_value' value='$key'>
+                                </li>";
                             }
                             ?>
                         </ul>
