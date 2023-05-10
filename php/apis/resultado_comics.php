@@ -23,80 +23,81 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
     $id_comic = $data_comic['IDcomic'];
 
 ?>
-    <tr style="background-color:rgb(77,81,84)">
-        <td>
+    <tr style="background-color:rgb(77,81,84); color:white;">
+        <td class=="py-0" style="padding: 2;">
             <a href="infoComic.php?IDcomic=<?php echo $id_comic; ?>">
-                <img src="<?php echo $cover ?>" alt="profile picture" class="avatarPicture" name="avatarComic" id="avatar" alt="Avatar" style="width: 140px; height: 210px; border-radius: 0;">
+                <img src="<?php echo $cover ?>" alt="profile picture" class="img-fluid" style="border-radius: 0; max-width: 100px;">
             </a>
         </td>
-        <td>
-            <div>
-                <?php
-                $titulo = str_replace(' ', ' ', $titulo);
-                echo "<span class='comic-value'>
-                <a href='infoComic.php?IDcomic=" . urlencode(trim($id_comic)) . "'>$titulo</a>
-                </span>";
-                ?>
+
+
+        <td class="text-wrap">
+            <div class="comic-value">
+                <a href="infoComic.php?IDcomic=<?php echo urlencode(trim($id_comic)); ?>" style="color:white;">
+                    <div class="d-inline-block text-truncate" style="max-width: 200px;"><?php echo $titulo; ?></div>
+                </a>
             </div>
         </td>
-        <td><?php echo $numero ?></td>
-        <td>
+
+        <td class="text-nowrap" style="color:white;" align="center"><?php echo $numero ?></td>
+
+        <td class="d-none d-md-table-cell">
             <div>
                 <?php
                 $variantes = explode('-', $variante);
                 foreach ($variantes as $variante) {
-                    echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($variante)) . "'>" . $variante . "</a></span>";
+                    echo "<li><span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($variante)) . "' style='color:white;'>" . $variante . "</a></span></li>";
                 }
                 ?>
             </div>
         </td>
-        <td>
+        <td class="d-none d-md-table-cell" align="center">
             <div>
                 <?php
                 $nomEditorial = str_replace(' ', '-', $editorial);
-                echo "<span class='comic-value'><a href='search_data.php?search=$nomEditorial'>$nomEditorial</a></span>";
+                echo "<span class='comic-value'><a href='search_data.php?search=$nomEditorial' style='color:white;'>$nomEditorial</a></span>";
                 ?>
             </div>
         </td>
-        <td>
+        <td class="d-none d-md-table-cell" align="center">
             <div>
                 <?php
                 $formato = str_replace(' ', '-', $formato);
-                echo "<span class='comic-value'><a href='search_data.php?search=$formato'>$formato</a></span>";
+                echo "<span class='comic-value'><a href='search_data.php?search=$formato' style='color:white;'>$formato</a></span>";
                 ?>
             </div>
         </td>
-        <td>
+        <td class="d-none d-md-table-cell" align="center">
             <div>
                 <?php
                 $procedencia = str_replace(' ', '-', $procedencia);
-                echo "<span class='comic-value'><a href='search_data.php?search=$procedencia'>$procedencia</a></span>";
+                echo "<span class='comic-value'><a href='search_data.php?search=$procedencia' style='color:white;'>$procedencia</a></span>";
                 ?>
             </div>
         </td>
-        <td>
+        <td class="d-none d-md-table-cell" align="center">
             <div>
                 <?php
-                echo "<span class='comic-value'><a href='search_data.php?search=$fecha'>$fecha</a></span>";
+                echo "<span class='comic-value'><a href='search_data.php?search=$fecha' style='color:white;'>$fecha</a></span>";
                 ?>
             </div>
         </td>
-        <td>
+        <td class="d-none d-md-table-cell">
             <div>
                 <?php
                 $guionistas = explode('-', $guionista);
                 foreach ($guionistas as $guionista) {
-                    echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($guionista)) . "'>" . $guionista . "</a></span>";
+                    echo "<li><span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($guionista)) . "' style='color:white;'>" . $guionista . "</a></span></li>";
                 }
                 ?>
             </div>
         </td>
-        <td>
+        <td class="d-none d-md-table-cell">
             <div>
                 <?php
                 $dibujantes = explode('-', $dibujante);
                 foreach ($dibujantes as $dibujante) {
-                    echo "<span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($dibujante)) . "'>" . $dibujante . "</a></span>";
+                    echo "<li><span class='comic-value'><a href='search_data.php?search=" . urlencode(trim($dibujante)) . "' style='color:white;'>" . $dibujante . "</a></span></li>";
                 }
                 ?>
             </div>

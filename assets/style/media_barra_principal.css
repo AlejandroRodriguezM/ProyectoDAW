@@ -1,9 +1,4 @@
-.navbar {
-    position: fixed;
-    top: 0 ;
-    width: 100%;
-    z-index: 1000;
-}
+
 
 @media screen and (max-width: 767px) {
     .navbar-dark {
@@ -59,7 +54,7 @@
     }
 }
 
-@media screen and (min-width: 1200px) and (max-width: 1439px) {
+/* @media screen and (min-width: 1200px) and (max-width: 1439px) {
     .navbar-dark {
         background-color: #343a40 !important;
         cursor: url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png), default !important;
@@ -74,12 +69,12 @@
         font-size: 1.3rem;
         padding: 0.5rem 1rem;
     }
-}
+} */
 
 /* Media Queries */
 
 /* Para dispositivos con una resolución menor a 1000px */
-@media (max-width: 1000px) {
+/* @media (max-width: 1000px) {
     .navbar {
         flex-direction: column !important;
         align-items: stretch !important;
@@ -115,7 +110,7 @@
     .navbar-nav .nav-item {
         margin-bottom: 1rem !important;
     }
-}
+} */
 
 /* Para tabletas en orientación vertical */
 @media (max-width: 768px) {
@@ -129,6 +124,34 @@
 
     .nav-link {
         font-size: 1rem !important;
+    }
+
+    .search-click {
+        width: 70%;
+        max-width: 300px;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .search-click input {
+        width: 100%;
+    }
+
+    .navbar-toggler {
+        margin-left: auto !important;
+        margin-right: 0 !important;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .navbar-nav .nav-item:last-child {
+        margin-bottom: 0 !important;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        padding: 0.5rem 0 !important;
     }
 }
 
@@ -145,6 +168,8 @@
     .nav-link {
         font-size: 1.1rem !important;
     }
+
+    
 }
 
 /* Para dispositivos con una resolución menor a 500px */
@@ -176,66 +201,123 @@
 /* Para dispositivos con una resolución menor a 1000px */
 @media (max-width: 1000px) {
     .search-click {
-      width: 70%;
-      max-width: 300px;
-      margin-right: 1rem;
-      margin-bottom: 1rem;
+        width: 70%;
+        max-width: 300px;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
     }
-    
+
     .search-click input {
-      width: 100%;
+        width: 100%;
     }
-  }
-  
-  /* Para tabletas y dispositivos móviles en orientación vertical */
-  @media (max-width: 768px) {
+}
+
+/* Para tabletas y dispositivos móviles en orientación vertical */
+@media (max-width: 768px) {
     .search-click {
-      width: 60%;
-      max-width: 250px;
-      margin-right: 0.5rem;
-      margin-bottom: 0.5rem;
-      height: 40px;
-      background-size: 18px;
-      background-position: 10px;
-      border-radius: 15px;
-      padding-left: 40px;
+        width: 60%;
+        max-width: 250px;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+        height: 40px;
+        background-size: 18px;
+        background-position: 10px;
+        border-radius: 15px;
+        padding-left: 40px;
     }
-    
+
     .search-click input {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  }
-  
-  /* Para dispositivos móviles en orientación horizontal y tabletas en orientación vertical */
-  @media (min-width: 769px) and (max-width: 1024px) {
+}
+
+/* Para dispositivos móviles en orientación horizontal y tabletas en orientación vertical */
+@media (min-width: 769px) and (max-width: 1024px) {
     .search-click {
-      width: 70%;
-      max-width: 300px;
-      margin-right: 1rem;
-      margin-bottom: 1rem;
+        width: 70%;
+        max-width: 300px;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .search-click input {
+        font-size: 0.9rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem !important;
+        margin-right: 0.5rem !important;
+    }
+
+    .nav-item {
+        margin-left: 0.5rem !important;
+    }
+
+    .nav-link {
+        font-size: 1.1rem !important;
+    }
+
+    .navbar-toggler {
+        margin-left: auto !important;
+        margin-right: 0 !important;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .navbar-nav .nav-item:last-child {
+        margin-bottom: 0 !important;
     }
     
-    .search-click input {
-      font-size: 0.9rem;
-    }
-  }
-  
-  /* Para dispositivos con una resolución menor a 500px */
-  @media (max-width: 500px) {
+}
+
+/* Para dispositivos con una resolución menor a 500px */
+@media (max-width: 500px) {
     .search-click {
-      width: 60%;
-      max-width: 200px;
-      margin-right: 0.2rem;
-      margin-bottom: 0.2rem;
-      height: 30px;
-      background-size: 16px;
-      background-position: 8px;
-      border-radius: 10px;
-      padding-left: 30px;
+        width: 60%;
+        max-width: 200px;
+        margin-right: 0.2rem;
+        margin-bottom: 0.2rem;
+        height: 30px;
+        background-size: 16px;
+        background-position: 8px;
+        border-radius: 10px;
+        padding-left: 30px;
     }
-    
+
     .search-click input {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  }
-  
+
+    .navbar-brand {
+        font-size: 1rem !important;
+        margin-right: 0.2rem !important;
+    }
+
+    .nav-item {
+        margin-left: 0.2rem !important;
+    }
+
+    .nav-link {
+        font-size: 0.7rem !important;
+        margin-right: 0.2rem !important;
+    }
+
+    .navbar-toggler {
+        margin-left: auto !important;
+        margin-right: 0 !important;
+    }
+
+    .navbar-nav .nav-item .nav-link {
+        padding: 0.3rem 0 !important;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 0.2rem !important;
+    }
+
+    .navbar-nav .nav-item:last-child {
+        margin-bottom: 0 !important;
+    }
+}

@@ -30,7 +30,7 @@ if ($_POST) {
             if (crear_usuario($userName, $email, $password, $id_activacion)) {
                 $row = obtener_datos_usuario($email);
                 $id = $row['IDuser'];
-                // enviar_correo_activacion($email,$id_activacion);
+                enviar_correo_activacion($email,$id_activacion);
                 insertAbourUser($id, "No hay informacion del usuario $userName", $fechaCreacion);
                 createDirectory($email, $id);
                 saveImage($email, $id);

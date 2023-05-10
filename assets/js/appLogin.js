@@ -9,11 +9,11 @@ const checkSesion = () => {
 }
 
 const checkSesionUpdate = () => {
-    if (sesion != null) {
-        document.querySelector('#user').innerHTML = sesion;
-    } else {
-        document.querySelector('#user').innerHTML = 'Invitado';
-    }
+    // if (sesion != null) {
+    //     document.querySelector('#user').innerHTML = sesion;
+    // } else {
+    //     document.querySelector('#user').innerHTML = 'Invitado';
+    // }
 }
 
 const closeSesion = () => {
@@ -838,7 +838,18 @@ const nueva_opinion = async () => {
     var id_user = document.querySelector("#id_user_opinion").value;
     var id_comic = document.querySelector("#id_comic").value;
     var opinion = document.querySelector("#opinion").value;
-    const puntuacion = document.querySelector('input[name="rating"]:checked').value;
+    const puntuacionInput = document.querySelector('input[name="rating"]:checked');
+
+    if (puntuacionInput === null) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de poner la puntuación.",
+            footer: "Web Comics"
+        })
+        return;
+    }
+    const puntuacion = puntuacionInput.value;
 
     if (opinion.trim() === '' | puntuacion.trim() === '') {
         Swal.fire({
@@ -1922,7 +1933,7 @@ const eliminar_peticion_comic = (id) => {
                     footer: "Web Comics"
                 })
                 setTimeout(() => {
-                    window.location.reload();
+                    window.location.href = 'admin_panel_peticiones_comic.php';
                 }, 2000);
             } else {
                 Swal.fire({

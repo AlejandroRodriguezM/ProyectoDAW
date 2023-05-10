@@ -3,52 +3,110 @@ session_start();
 include_once '../inc/header.inc.php';
 ?>
 <br>
-<div class="container mt-5" style="background-color: white;margin-left:10px">
-    <nav class="side-menu">
-        <ul class="nav">
-            <li class="dropdown" onclick="toggleDropdown(this)">
-                <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Escritores</a>
-                <div id="dropdownContent1" class="dropdown-content" onclick="closeDropdown(this)">
-                    <input type="text" name="buscador_navegacion" id="searchInput1" onkeyup="searchData(1)">
-                    <?php
-                    $tabla_escritores = getScreenwriters();
-                    mostrar_datos($tabla_escritores);
-                    ?>
+<div class="container mt-5" style="background-color: white; margin-left: 10px;">
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Escritores
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="overflow-auto" style="max-height: 200px; overflow-x: auto;">
+                        <ul class="list-group">
+                            <?php
+                            $tabla_escritores = getScreenwriters();
+                            foreach ($tabla_escritores as $key => $value) {
+                                echo "<li class='list-group-item'>
+                      $key
+                      <input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
+                      <input type='hidden' name='comic_value' value='$key'>
+                    </li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
-            </li>
+            </div>
+        </div>
 
-            <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
-                <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Artistas</a>
-                <div id="dropdownContent2" class="dropdown-content" onclick="closeDropdown(this)">
-                    <input type="text" name="buscador_navegacion" id="searchInput2" onkeyup="searchData(2)">
-                    <?php
-                    $tabla_escritores = getArtists();
-                    mostrar_datos($tabla_escritores);
-                    ?>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Artistas
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="overflow-auto" style="max-height: 200px; overflow-x: auto;">
+                        <ul class="list-group">
+                            <?php
+                            $tabla_artistas = getArtists();
+                            foreach ($tabla_artistas as $key => $value) {
+                                echo "<li class='list-group-item'>
+                      $key
+                      <input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
+                      <input type='hidden' name='comic_value' value='$key'>
+                    </li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
-            </li>
+            </div>
+        </div>
 
-            <li class="dropdown" onclick="toggleDropdown(this)">
-                <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Portadas</a>
-                <div id="dropdownContent3" class="dropdown-content" onclick="closeDropdown(this)">
-                    <input type="text" name="buscador_navegacion" id="searchInput3" onkeyup="searchData(3)">
-                    <?php
-                    $tabla_escritores = getPortadas();
-                    mostrar_datos($tabla_escritores);
-                    ?>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Portadas
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="overflow-auto" style="max-height: 200px; overflow-x: auto;">
+                        <ul class="list-group">
+                            <?php
+                            $tabla_portadas = getPortadas();
+                            foreach ($tabla_portadas as $key => $value) {
+                                echo "<li class='list-group-item'>
+                      $key
+                      <input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
+                      <input type='hidden' name='comic_value' value='$key'>
+                    </li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
-            </li>
+            </div>
+        </div>
 
-            <li class="dropdown dropdown-sibling" onclick="toggleDropdown(this)">
-                <a href="#" style='color:black;font-size:25px'><span class="fa fa-cog"></span>Editorial</a>
-                <div id="dropdownContent4" class="dropdown-content" onclick="closeDropdown(this)">
-                    <input type="text" id="searchInput4" onkeyup="searchData(4)">
-                    <?php
-                    $tabla_editorial = getEditorial();
-                    mostrar_datos($tabla_editorial);
-                    ?>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                    Editorial
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <div class="overflow-auto" style="max-height: 200px; overflow-x: auto;">
+                        <ul class="list-group">
+                            <?php
+                            $tabla_portadas = getEditorial();
+                            foreach ($tabla_portadas as $key => $value) {
+                                echo "<li class='list-group-item'>
+                      $key
+                      <input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
+                      <input type='hidden' name='comic_value' value='$key'>
+                    </li>";
+                            }
+                            ?>
+                        </ul>
+                    </div>
                 </div>
-            </li>
-        </ul>
-    </nav>
-</div>
+            </div>
+        </div>
+
+    </div>

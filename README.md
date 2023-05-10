@@ -468,24 +468,35 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 
 21/04/2023 Log 1
 
- - Version final 1.0
- - Tiene muhas nuevas funcionalidad. Ahora los tickets se ven de forma ams comoda sin necesidad de usar un form, el chat se refresca a tiempo real
- - Ahora se puede denunciar a un usuario desde su perfil
- - Ahora es posible ver las listas y los comics y de los usuarios publicos o que sean amigos tuyos
- - El administrador ahora puede ver las conversaciones que tienen los usuarios de su pagina, para poder denunciar la cuenta o no
- - Se han añadido al rededor de 8 apis nuevas, para controlar todas las funcionalidad comentadas anteriormente
- - La base de datos ahora tiene 3 tablas mas, que servirtan para el uso de las denuncias de los usuarios y las conversaciones con el administrador
- - Ahora ya no es necesario tener una base de datos con los comics pre instalados, se puede hacer una base de datos de comics desde 0 de forma funcional
- - Se han añadido una variedad nueva de pestañas tanto de usuario como de administrador para poder ver las nuevas funcionalidades.
+- Version final 1.0
+- Tiene muhas nuevas funcionalidad. Ahora los tickets se ven de forma ams comoda sin necesidad de usar un form, el chat se refresca a tiempo real
+- Ahora se puede denunciar a un usuario desde su perfil
+- Ahora es posible ver las listas y los comics y de los usuarios publicos o que sean amigos tuyos
+- El administrador ahora puede ver las conversaciones que tienen los usuarios de su pagina, para poder denunciar la cuenta o no
+- Se han añadido al rededor de 8 apis nuevas, para controlar todas las funcionalidad comentadas anteriormente
+- La base de datos ahora tiene 3 tablas mas, que servirtan para el uso de las denuncias de los usuarios y las conversaciones con el administrador
+- Ahora ya no es necesario tener una base de datos con los comics pre instalados, se puede hacer una base de datos de comics desde 0 de forma funcional
+- Se han añadido una variedad nueva de pestañas tanto de usuario como de administrador para poder ver las nuevas funcionalidades.
 
 21/04/2023 Log 2
- - Ahora se pueden borrar comentarios de comics y de paginas, en caso de que no gusten, debes de ser admin para eso.
- 
+
+- Ahora se pueden borrar comentarios de comics y de paginas, en caso de que no gusten, debes de ser admin para eso.
+
 22/04/2023 Log 1
 
- - Ahora se peuden borrar comics
- - La pagina ya es usable a nivel usuario y administrador
+- Ahora se peuden borrar comics
+- La pagina ya es usable a nivel usuario y administrador
 
 03/05/2023 Log 1
- - Primeros pasos en verificacion de usuario mediante correo de activacion.
- - Se han mejorado varios bugs y mejoras en acceso de usuario en modo espectador
+
+- Primeros pasos en verificacion de usuario mediante correo de activacion.
+- Se han mejorado varios bugs y mejoras en acceso de usuario en modo espectador
+
+10/05/2023 Log 1
+
+- Se ha agregado la funcionalidad para el envio de mails de verificacion
+- Se ha agregado la opcion de creacion de usuario mediante confirmacion
+- Se ha arreglado mas de 50bugs y funciones
+- Ahora la web es en su gran mayoria responsive para su uso en diferentes dispositivos
+- Se ha añadido nueva pestaña para la verificacion de usuarios
+- La pagina web se encuentra subida a un hosting https://comicweb.es/

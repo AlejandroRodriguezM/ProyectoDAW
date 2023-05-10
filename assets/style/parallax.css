@@ -1,37 +1,4 @@
-.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
-    position: relative;
-    opacity: 0.8;
-    background-attachment: fixed;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    overflow: hidden;
-}
 
-
-.mt-5 {
-    background-color: #ffffff88;
-}
-
-.bgimg-1 {
-    background-image: url("../img/img_parallax.jpg");
-    min-height: 100%;
-}
-
-.bgimg-2 {
-    background-image: url("../img/img_parallax2.jpg");
-    min-height: 100%;
-}
-
-.bgimg-3 {
-    background-image: url("../img/img_parallax3.jpg");
-    min-height: 400px;
-}
-
-.bgimg-4 {
-    background-image: url("../img/img_parallax4.jpg");
-    min-height: 400px;
-}
 
 
 

@@ -236,6 +236,12 @@ function showSelected() {
             window.location.href = "search_data.php?search=" + encodeURIComponent(searchData);
         }
     });
+
+    // document.getElementById("search-data").addEventListener("submit", function (event) {
+    //     event.preventDefault();
+    //     const searchData = document.getElementById("search-data").value;
+    //     window.location.href = "search_data.php?search=" + encodeURIComponent(searchData);
+    // });
 }
 
 // Misma funcion pero asincrona

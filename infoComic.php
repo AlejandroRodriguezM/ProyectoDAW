@@ -5,6 +5,7 @@ include_once 'php/inc/header.inc.php';
 
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
+    $picture = pictureProfile($email);
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
@@ -19,11 +20,14 @@ if (isset($_SESSION['email'])) {
     }
 }
 
-$id_comic = $_GET['IDcomic'];
-$data_comic = getDataComic($id_comic);
-$profilePicture = $data_comic['Cover'];
-$descripcion = get_descripcion($id_comic)['descripcion_comics'];
-//echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+if (isset($_GET['IDcomic'])) {
+    $id_comic = $_GET['IDcomic'];
+    $data_comic = getDataComic($id_comic);
+    $cover_imagen = $data_comic['Cover'];
+    $descripcion = get_descripcion($id_comic)['descripcion_comics'];
+} else {
+    header("Location: index.php");
+}
 
 ?>
 <!DOCTYPE html>
@@ -40,9 +44,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <link rel="stylesheet" href="./assets/style/footer_style.css">
     <link rel="stylesheet" href="./assets/style/novedades.css">
-    <link rel="stylesheet" href="./assets/style/parallax.css">
-    <link rel="stylesheet" href="./assets/style/media_recomendaciones.css">
-    <link rel="stylesheet" href="./assets/style/media_videos.css">
+
     <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -160,6 +162,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
             color: blue;
         }
 
+        /*
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -190,7 +193,7 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
             top: 50px;
             z-index: 100;
             margin-top: auto;
-        }
+        } */
 
         #myButton {
             background-color: white;
@@ -221,22 +224,6 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
 
         #myButton.active:before {
             content: "Lo tengo";
-        }
-
-        .bgimg-1::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('<?php echo $profilePicture ?>');
-            filter: blur(5px);
-            z-index: -1;
-            background-attachment: fixed;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;
         }
 
         .last-pubs2 {
@@ -309,18 +296,19 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
             clear: both;
         }
 
+        /*
         .comment-info {
             max-width: 500px;
-            /* o el ancho que desees */
-        }
+            /* o el ancho que desees 
+        }*/
 
         .comment:not(:last-child) {
             border-bottom: none;
         }
 
-        .comic_portada {
+        /* .comic_portada {
             margin-top: 20px;
-        }
+        } */
 
         .form-group {
             flex-wrap: wrap;
@@ -369,107 +357,485 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
             outline: none;
             box-shadow: 0px 0px 5px #3f3f3f;
         }
+
+        button.nav-link.dropdown-toggle {
+            border: none;
+            background-color: transparent;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        button.nav-link.dropdown-toggle:hover {
+            color: #ccc;
+        }
+
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100% !important;
+            overflow-y: scroll !important;
+            /* Habilita el scroll vertical */
+
+        }
+
+        main {
+            min-height: 100vh !important;
+        }
     </style>
 </head>
 
-<body onload="checkSesionUpdate();showSelected();">
-    <div id="session-expiration">
-        <div id="session-expiration-message">
-            <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
-            <button id="session-expiration-continue-btn">Continuar</button>
-            <button id="session-expiration-logout-btn">Cerrar sesión</button>
+<body class="d-flex flex-column min-vh-100" onload="showSelected();">
+    <main class="flex-shrink-0">
+        <div id="session-expiration">
+            <div id="session-expiration-message">
+                <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
+                <button id="session-expiration-continue-btn">Continuar</button>
+                <button id="session-expiration-logout-btn">Cerrar sesión</button>
+            </div>
         </div>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-        <div class="container-fluid" style="background-color: #343a40;">
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-bars"></i>
-                    </a>
-                    <li>
-                        <ul class="dropdown-menu">
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                                $userData = obtener_datos_usuario($email);
-                                $userPrivilege = $userData['privilege'];
-                                if ($userPrivilege == 'admin') {
-                                    echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
-                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                    echo "<li><a class='dropdown-item' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
-                                } else {
-                                    echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                                    echo "<li><button type='button' class='dropdown-item' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
-                                }
-                            }
-                            ?>
-                            <li>
-                                <a class="dropdown-item" href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
-                                    Sobre WebComics</a>
-                            </li>
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                            ?>
-                                <li>
-                                    <a class="dropdown-item" href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
-                                        Escribe tu opinión</a>
-                                </li>
-                            <?php
-                            }
-                            ?>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
+            <div class="container-fluid" style="background-color: #343a40;">
 
+                <button class="navbar-toggler navbar-toggler-sm ms-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
+                        <li class="nav-item">
+                            <!-- Offcanvas boton para menu para dispositivos con pantalla grande  -->
+                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-menu" aria-controls="offcanvas-menu" aria-expanded="false" aria-label="Toggle navigation">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php" class="nav-link logo-web">
+                                <strong>
+                                    <span>Comic Web</span>
+                                </strong>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <?php
                             if (isset($_SESSION['email'])) {
                             ?>
-                                <div class="dropdown-divider"></div>
-                                <li>
-                                    <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
-                                </li>
+                                <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+
                             <?php
                             } else {
                             ?>
-                                <li>
-                                    <button class="dropdown-item" onclick="iniciar_sesion()" name="loginSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Iniciar sesion</a>
-                                </li>
+                                <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
                             <?php
                             }
                             ?>
-                        </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                        </li>
+                        <li class="nav-item">
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                // Obtener el número de mensajes sin leer
+                                $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                                // Imprimir el enlace con el número de mensajes sin leer
+                                echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                                if ($num_solicitudes > 0) {
+                                    echo "<span class='material-icons shaking'>notifications</span>";
+                                    //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                                } else {
+                                    echo "<span class='material-icons '>notifications</span>";
+                                }
+                                echo "</a>";
+                            }
+                            ?>
+                        </li>
+                        <li class="nav-item">
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                // Obtener el número de mensajes sin leer
+                                $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
+
+                                // Imprimir el enlace con el número de mensajes sin leer
+                                echo "<a class='nav-link' href='mensajes_usuario.php'>";
+                                if ($num_mensajes > 0) {
+                                    echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                                    //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                                } else {
+                                    echo "<span class='material-icons'>mark_email_unread</span>";
+                                }
+                                echo "</a>";
+                            }
+                            ?>
+                        </li>
+                    </ul>
+
+
+                    <div class="d-flex" role="search">
+                        <form class="form-inline me-2" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
+                            <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador..." id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                        </form>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        echo "
+                            <a id='user-avatar' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false' style='background-color: transparent;'>
+                                <img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>
+                            </a>";
+                    } else {
+                        echo "
+                            <a id='user-avatar' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false' style='background-color: transparent;position-absolute'>
+                                <img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar'  style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>
+                            </a>";
+                    }
+                    ?>
+
+                    <script>
+                        $(document).ready(function() {
+                            var viewportWidth = $(window).width();
+                            if (viewportWidth < 992) {
+                                $('#user-avatar').attr('data-bs-toggle', 'offcanvas');
+                                $('#user-avatar').attr('data-bs-target', '#offcanvasNavbarDark');
+                            } else {
+                                $('#user-avatar').attr('data-bs-toggle', 'dropdown');
+                                $('#user-avatar').removeAttr('data-bs-target');
+                            }
+                        });
+
+                        $(window).resize(function() {
+                            var viewportWidth = $(window).width();
+                            if (viewportWidth < 992) {
+                                $('#user-avatar').attr('data-bs-toggle', 'offcanvas');
+                                $('#user-avatar').attr('data-bs-target', '#offcanvasNavbarDark');
+                            } else {
+                                $('#user-avatar').attr('data-bs-toggle', 'dropdown');
+                                $('#user-avatar').removeAttr('data-bs-target');
+                            }
+                        });
+                    </script>
+
+
+                    <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenuButton">
+                        <?php
+                        if (isset($_SESSION['email'])) {
+                            if ($userPrivilege == 'admin') {
+                                echo '<li>
+                                            <div class="d-flex align-items-center">';
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$nombre_usuario</div>";
+                                echo '
+                                    </div>
+                                    </li>';
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
+                            } elseif ($userPrivilege == 'user') {
+                                echo '<li>
+                                            <div class="d-flex align-items-center">';
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$nombre_usuario</div>";
+
+                                echo '<div>
+                                        <div class="fw-bold">Nombre de usuario</div>
+                                        <a href="infoPerfil.php" class="text-muted">Mi perfil</a>
+                                        </div>
+                                    </div>
+                                    </li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
+                            } else {
+                                echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
+                            }
+
+                            echo '<li><a class="dropdown-item" href="escribir_comentario_pagina.php">Escribe tu opinión</a></li>';
+                            echo '<li><a class="dropdown-item" href="about.php">Sobre WebComics</a></li>';
+                            echo '<hr class="dropdown-divider">';
+                            echo '<li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion">Cerrar sesión</button></li>';
+                        } else {
+
+                            echo '<li>
+                                <div class="d-flex align-items-center">';
+                            echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo '
+                            <div>
+                            <div class="fw-bold">Invitado</div>
+                            </div>
+                        </div>
+                        </li>';
+                            echo "<hr class='dropdown-divider'>";
+                            echo '<li><a class="dropdown-item" href="about.php">Sobre WebComics</a></li>';
+                            echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                        }
+                        ?>
+                    </ul>
+                </div>
+
+
+            </div>
+        </nav>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <img class="modal-content_img" id="img01">
+        </div>
+
+        <!-- FORMULARIO INSERTAR -->
+        <?php
+        if (isset($_SESSION['email'])) {
+        ?>
+            <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <form method="post" id="form_ticket" onsubmit="return false;">
+                                <h4 class="modal-title">Crear un ticket para administradores</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Asunto</label>
+                                <input type="text" id="asunto_usuario" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Mensaje</label>
+                                <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                                <?php
+                                if (isset($_SESSION['email'])) {
+                                    echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                            <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php
+        }
+        ?>
+
+        <div class="card-footer text-muted">
+            Design by Alejandro Rodriguez 2022
+        </div>
+
+        <!--Canvas imagen de perfil-->
+        <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
+            <div class="offcanvas-header">
+                <?php
+                if (isset($_SESSION['email'])) {
+                ?>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarDarkLabel offcanvasScrollingLabel"><?php echo $userPrivilege ?></h5>
+                <?php
+                } else {
+                    echo '<h5 class="offcanvas-title" id="offcanvasNavbarDarkLabel offcanvasScrollingLabel" >Invitado</h5>';
+                }
+                ?>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        if ($userPrivilege == 'admin') {
+                            echo '<li>
+                                            <div class="d-flex align-items-center">';
+                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo "<div class='fw-bold'>$nombre_usuario</div>";
+                            echo '
+                                    </div>
+                                    </li>';
+                            echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                            echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
+                        } elseif ($userPrivilege == 'user') {
+                            echo '<li>
+                                    <div class="d-flex align-items-center">
+                                        <img src="ruta-a-imagen.jpg" alt="Avatar del usuario" class="me-2" style="width: 30px; height: 30px;">
+                                        <div>
+                                        <div class="fw-bold">Nombre de usuario</div>
+                                        <a href="infoPerfil.php" class="text-muted">Mi perfil</a>
+                                        </div>
+                                    </div>
+                                    </li>';
+                            echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
+                        } else {
+                            echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
+                        }
+                    } else {
+
+                        echo '<li>
+                                <div class="d-flex align-items-center">';
+                        echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                        echo '
+                            <div>
+                            <div class="fw-bold">Invitado</div>
+                            </div>
+                        </div>
+                        </li>';
+                        echo "<hr class='dropdown-divider'>";
+                        echo '<li><a class="dropdown-item" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+
+
+        </div>
+        <!--Canvas menu-->
+        <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
+            <div class="offcanvas-header">
+                <?php
+                if (isset($_SESSION['email'])) {
+                ?>
+                    <h5 class="offcanvas-title" id="offcanvas-menu-Label offcanvasScrollingLabel"><?php echo $userPrivilege ?></h5>
+                <?php
+                } else {
+                    echo '<h5 class="offcanvas-title" id="offcanvas-menu-Label offcanvasScrollingLabel" >Invitado</h5>';
+                }
+                ?>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="dropdown-item" href="index.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="fa fa-home fa-fw"></i>Inicio
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="index.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Inicio</a>
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        echo '<li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>';
+                        if ($userPrivilege == 'admin') {
+                            echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                            echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                        } else {
+                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                            echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                        }
+                    }
+                    ?>
+                    <li>
+                        <a class='list-group-item-action active' href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="fa fa-book fa-fw"></i>
+                            Novedades</a>
                     </li>
+                    <li>
+                        <a class='list-group-item-action active' href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="fa fa-pencil fa-fw"></i>
+                            Sobre WebComics</a>
+                    </li>
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                    ?>
+                        <li>
+                            <a class='list-group-item-action active' href="escribir_comentario_pagina.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-newspaper p-1"></i>
+                                Escribe tu opinión</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
 
-                    <li class="nav-item">
+
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                    ?>
+                        <div style="border-bottom: 1px solid #e6e6e6;"></div>
+                        <li>
+                            <button class="dropdown-item" onclick="closeSesion()" name="closeSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Cerrar sesion</a>
+                        </li>
+                    <?php
+                    } else {
+                    ?>
+                        <div style="border-bottom: 1px solid #e6e6e6;"></div>
+
+                        <li>
+                            <button class="dropdown-item" onclick="iniciar_sesion()" name="loginSesion" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="bi bi-box-arrow-right p-1"></i>Iniciar sesion</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
+                </ul>
+            </div>
+            <div class="offcanvas-footer">
+                <div id="footer-lite">
+                    <div class="content">
+                        <p class="helpcenter">
+                            <a href="http://www.example.com/help">Ayuda</a>
+                        </p>
+                        <p class="legal">
+                            <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                            <span>·</span>
+                            <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                            <span>·</span>
+                            <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                            <span>·</span>
+                            <a href="about.php" style="color:black">Quiénes somos</a>
+                        </p>
+                        <!-- add social media with icons -->
+                        <p class="social">
+                            <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                            <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                        </p>
+                        <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <!--Canvas menu movil-->
+        <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Menú</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="list-group-item list-group-item-action">
+                        <a class="list-group-item-action active" aria-current="page" href="index.php">Inicio</a>
+                    </li>
+                    <li class="list-group-item list-group-item-action">
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
-                            <a class="nav-link" href="mi_coleccion.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
-
+                            <a class="list-group-item-action active" href="mi_coleccion.php">Mi colección</a>
                         <?php
                         } else {
                         ?>
-                            <a class="nav-link" href="#" onclick="no_logueado()" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mi colección</a>
+                            <a class="list-group-item-action active" href="#" onclick="no_logueado()">Mi colección</a>
                         <?php
                         }
                         ?>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        echo '<li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>';
+                        if ($userPrivilege == 'admin') {
+                            echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                            echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                        } else {
+                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                            echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                        }
+                    }
+                    ?>
+                    <li class="list-group-item list-group-item-action">
+                        <a class="list-group-item-action active" href="novedades.php">Novedades</a>
                     </li>
-                    </li>
-
-                    <li class="nav-item">
+                    <li class="list-group-item list-group-item-action">
                         <?php
                         if (isset($_SESSION['email'])) {
                             // Obtener el número de mensajes sin leer
                             $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
 
                             // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='nav-link' href='solicitudes_amistad.php'>";
+                            echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
                             if ($num_solicitudes > 0) {
                                 echo "<span class='material-icons shaking'>notifications</span>";
                                 //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
@@ -480,17 +846,17 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                         }
                         ?>
                     </li>
-                    <li class="nav-item">
+                    <li class="list-group-item list-group-item-action">
                         <?php
                         if (isset($_SESSION['email'])) {
                             // Obtener el número de mensajes sin leer
                             $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
                             // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='nav-link' href='mensajes_usuario.php'>";
+                            echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
                             if ($num_mensajes > 0) {
                                 echo "<span class='material-icons shaking'>mark_email_unread</span>";
-                                ////echo "<span class='num_mensajes'>$num_mensajes</span>";
+                                //echo "<span class='num_mensajes'>$num_mensajes</span>";
                             } else {
                                 echo "<span class='material-icons'>mark_email_unread</span>";
                             }
@@ -499,137 +865,113 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                         ?>
                     </li>
                 </ul>
-            </div>
 
-            <div class="d-flex" role="search" style="margin-right: 15px;">
-                <form class="form-inline my-2 my-lg-0" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return false;">
-                    <!-- <label class="search-click-label" style="display: flex !important;justify-content: center !important;align-items: center !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"> -->
-                    <input type="text" class="search-click mr-sm-3" name="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <!-- </label> -->
+                <!-- <div class="d-flex" role="search"> -->
+                <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
+                    <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                    <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
                 </form>
-            </div>
 
-            <div class="dropdown" id="navbar-user" style="left: 2px !important;">
-                <?php
-                if (isset($_SESSION['email'])) {
-                    $avatar = pictureProfile($email);
-
-                    echo "<img src='$avatar' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
-                } else {
-                    echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
-                }
-                ?>
-
-                <!-- imagen de perfil  -->
-                <button class="btn btn-dark dropdown-toggle" id="user" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="margin-right: 20px;" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'> </button>
-                </button>
-                <ul class="dropdown-menu">
-                    <?php
-                    if (isset($_SESSION['email'])) {
-                        if ($userPrivilege == 'admin') {
-                            echo "<li><a class='dropdown-item' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></i>";
-                            echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                        } elseif ($userPrivilege == 'user') {
-                            echo "<li><a class='dropdown-item' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></i>";
-                            echo "<li><a class='dropdown-item' href='#' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Enviar un ticket</a></i>";
-                        } else {
-                            echo "<li><button class='dropdown-item' onclick='closeSesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
-                        }
-                        echo "<div class='dropdown-divider'></div>";
-                        echo "<li> <button class='dropdown-item' onclick='closeSesion()' name='closeSesion' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'> <i class='bi bi-box-arrow-right p-1'></i>Cerrar sesion</button> </i>";
-                    } else {
-                        echo "<li><button class='dropdown-item' onclick='iniciar_sesion()'> <i class='bi bi-person-circle p-1'></i>Iniciar sesion</button></li>";
+                <script>
+                    function searchData() {
+                        const searchData = document.getElementById("search").value;
+                        window.location.href = "search_data.php?search=" + encodeURIComponent(searchData);
                     }
-                    ?>
-                </ul>
+                </script>
+                <!-- </div> -->
             </div>
         </div>
-    </nav>
 
 
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
+        <!-- The Modal -->
+        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <img class="modal-content_img" id="img01">
+        </div>
 
-
-    <!-- FORMULARIO INSERTAR -->
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_ticket" onsubmit="return false;">
-                        <h4 class="modal-title">Crear un ticket para administradores</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Asunto</label>
-                        <input type="text" id="asunto_usuario" class="form-control">
+        <!-- FORMULARIO INSERTAR -->
+        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form method="post" id="form_ticket" onsubmit="return false;">
+                            <h4 class="modal-title">Crear un ticket para administradores</h4>
                     </div>
-                    <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            $userData = obtener_datos_usuario($email);
-                            $id_usuario = $userData['IDuser'];
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                        }
-                        ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Asunto</label>
+                            <input type="text" id="asunto_usuario" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Mensaje</label>
+                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
+                            }
+                            ?>
+                        </div>
                     </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                    </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                </div>
-                </form>
             </div>
         </div>
-    </div>
 
-    <div class="card-footer text-muted">
-        Design by Alejandro Rodriguez 2022
-    </div>
-
-    <div class="bgimg-1" style="background-image: url(<?php echo $profilePicture ?>);background-size: cover !important;">
-        <br>
-        <div class="caption">
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+            <br>
             <div class="container mt-5" style="margin-top:auto !important;background-color:#ffffff88">
-                <div class="view-account" style="background-color:#ffffff88">
-                    <section class="module">
-                        <div class="module-inner">
-                            <div class="side-bar ">
+                <div class="row">
+                    <div class="col-md-3 side-bar">
 
-                                <div class="user-info">
-                                    <?php
+                        <div class="user-info">
+                            <img class='img-profile img-circle img-fluid w-100 h-auto comic_portada' id='output' alt='Avatar' src='<?php echo $cover_imagen ?>' onclick='pictureProfileUser()' />
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                if (check_guardado($id_usuario, $id_comic)) {
+                                    echo "<button id='myButton' class='active'></button>";
+                                } else {
+                                    echo "<button id='myButton'></button>";
+                                }
 
-                                    echo "<input type='hidden' id='id_comic' value='$id_comic'>";
-                                    echo "<img class='img-profile img-circle img-responsive center-block comic_portada' id='avatarUser' alt='Avatar' src='$profilePicture' onclick='pictureProfileUser()'; style='width:120%; height: 120%;margin-left:-15px;' />";
-                                    ?>
 
-                                    <?php
-                                    if (isset($_SESSION['email'])) {
-                                        if (check_guardado($id_usuario, $id_comic)) {
-                                            echo "<button id='myButton' class='active'></button>";
-                                        } else {
-                                            echo "<button id='myButton'></button>";
-                                        }
-
-                                        if ($userPrivilege == 'admin') {
-                                            echo '<div class="ml-auto">
+                                if ($userPrivilege == 'admin') {
+                                    echo '<div class="ml-auto">
                                         <button type="button" class="btn btn-danger btn-sm mt-2" style="display: block;" onclick="eliminar_comic(' . $id_comic . ')">Eliminar comic</button>
                                         </div>';
-                                        }
+                                }
+                                echo "<script>
+                                function handleButtonClick() {
+                                    const button = document.querySelector('#myButton');
+                    
+                                    if (button.classList.contains('active')) {
+                                        button.classList.remove('active');
+                                        quitar_comic($id_comic);
+                                    } else {
+                                        button.classList.add('active');
+                                        guardar_comic($id_comic);
                                     }
-                                    ?>
+                                }
+                    
+                                const button = document.querySelector('#myButton');
+                                if (button) {
+                                    button.addEventListener('click', handleButtonClick);
+                                }
+                              </script>";
+                            }
+                            ?>
+                        </div>
 
-                                </div>
-                            </div>
-                            <div class="content-panel ">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row justify-content-center">
+                            <div class="view-account bg-light" style="border-radius:20px">
                                 <fieldset class="fieldset">
                                     <h3 class="fieldset-title">Comic Info</h3>
-                                    <div class="form-group avatar" style="background-color: grey">
+                                    <div class="form-group avatar">
                                         <?php
                                         $fechaCreacion = $data_comic['date_published'];
                                         $nombre = $data_comic['nomComic'];
@@ -641,277 +983,310 @@ $descripcion = get_descripcion($id_comic)['descripcion_comics'];
                                         $numero = $data_comic['numComic'];
                                         $formato = $data_comic['Formato'];
                                         $valoracion_media = valoracion_media($id_comic);
-                                        echo "<div class='comic-details'>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Nombre del comic: </label>";
-                                        echo "    <span class='comic-value'><a href='search_data.php?search=" . $nombre . "'>$nombre</a></span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Numero: </label>";
-                                        echo "    <span class='comic-value'>$numero</span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Variante: </label>";
-                                        echo "    <span class='comic-value'>";
-                                        $variantes = explode("-", $variante);
-                                        foreach ($variantes as $variante) {
-                                            echo "<a href='search_data.php?search=" . $variante . "'>$variante</a>";
-                                        }
-                                        echo "</span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Formato: </label>";
-                                        echo "    <span class='comic-value'><a href='search_data.php?search=" . $formato . "'>$formato</a></span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Fecha de creacion: </label>";
-                                        echo "    <span class='comic-value'><a href='search_data.php?search=" . $fechaCreacion . "'>$fechaCreacion</a></span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Editorial: </label>";
-                                        echo "    <span class='comic-value'><a href='search_data.php?search=" . $editorial . "'>$editorial</a></span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Autor: </label>";
-                                        echo "<span class='comic-value'>";
-                                        $autores = explode("-", $autor);
-                                        foreach ($autores as $autor) {
-                                            echo "<a href='search_data.php?search=" . $autor . "'>$autor</a>";
-                                        }
-                                        echo "</span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Dibujante: </label>";
-                                        echo "<span class='comic-value'>";
-                                        $dibujantes = explode("-", $dibujante);
-                                        foreach ($dibujantes as $dibujante) {
-                                            echo "<a href='search_data.php?search=" . $dibujante . "'>$dibujante</a>";
-                                        }
-                                        echo "</span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Procedencia: </label>";
-                                        echo "    <span class='comic-value'><a href='search_data.php?search=" . $procedencia . "'>$procedencia</a></span>";
-                                        echo "  </div>";
-                                        echo "  <div class='comic-detail'>";
-                                        echo "    <label class='comic-label'>Valoracion media: </label>";
-                                        $full_stars = floor($valoracion_media);
-                                        $half_star = $valoracion_media - $full_stars >= 0.5 ? 1 : 0;
-                                        $empty_stars = 5 - $full_stars - $half_star;
-                                        for ($i = 0; $i < $full_stars; $i++) {
-                                            echo '<i class="fas fa-star"></i>';
-                                        }
-                                        if ($half_star) {
-                                            echo '<i class="fas fa-star-half-alt"></i>';
-                                        }
-                                        for ($i = 0; $i < $empty_stars; $i++) {
-                                            echo '<i class="far fa-star"></i>';
-                                        }
-                                        echo "  </div>";
-                                        echo "</div>";
-
                                         ?>
+                                        <table class='table'>
+                                            <tbody>
+                                                <tr>
+                                                    <td><label class='comic-label'>Nombre del comic:</label></td>
+                                                    <td><span class='comic-value'><a href='search_data.php?search=$nombre'><?php echo $nombre ?></a></span></td>
+                                                    <input type='hidden' id='id_comic' value='<?php echo $id_comic ?>'>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Numero:</label></td>
+                                                    <td><span class='comic-value'><?php echo $numero ?></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Variante:</label></td>
+                                                    <td>
+                                                        <span class='comic-value'>
+                                                            <?php
+                                                            $variantes = explode("-", $variante);
+                                                            foreach ($variantes as $variante) {
+                                                                echo "<li><a href='search_data.php?search=$variante'>$variante</a></li>";
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Formato:</label></td>
+                                                    <td><span class='comic-value'><a href='search_data.php?search=$formato'><?php echo $formato ?></a></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Fecha de creacion:</label></td>
+                                                    <td><span class='comic-value'><a href='search_data.php?search=$fechaCreacion'><?php echo $fechaCreacion ?></a></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Editorial:</label></td>
+                                                    <td><span class='comic-value'><a href='search_data.php?search=$editorial'><?php echo $editorial ?></a></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Autor:</label></td>
+                                                    <td>
+                                                        <span class='comic-value'>
+                                                            <?php
+                                                            $autores = explode("-", $autor);
+                                                            foreach ($autores as $autor) {
+                                                                echo "<li><a href='search_data.php?search=$autor'>$autor</a></li>";
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Dibujante:</label></td>
+                                                    <td>
+                                                        <span class='comic-value'>
+                                                            <?php
+                                                            $dibujantes = explode("-", $dibujante);
+                                                            foreach ($dibujantes as $dibujante) {
+                                                                echo "<li><a href='search_data.php?search=$dibujante'>$dibujante</a></li>";
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Procedencia:</label></td>
+                                                    <td><span class='comic-value'><a href='search_data.php?search=$procedencia'><?php echo $procedencia ?></a></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label class='comic-label'>Valoracion media:</label></td>
+                                                    <td>
+                                                        <div class='valoracion-media'>
+                                                            <?php
+                                                            $full_stars = floor($valoracion_media);
+                                                            $half_star = $valoracion_media - $full_stars >= 0.5 ? 1 : 0;
+                                                            $empty_stars = 5 - $full_stars - $half_star;
+                                                            echo "<div class='row'>";
+                                                            echo "  <div class='col-md-6'>";
+                                                            echo "    <span class='comic-value'><a href='search_data.php?search=" . $procedencia . "'>$procedencia</a></span>";
+                                                            echo "  </div>";
+                                                            echo "  <div class='col-md-6'>";
+                                                            echo "<tr>";
+                                                            echo "<td>";
+                                                            echo "    <label class='comic-label'>Valoracion media: </label>";
+                                                            echo "    <div class='valoracion-media'>";
+                                                            for ($i = 0; $i < $full_stars; $i++) {
+                                                                echo '<i class="fas fa-star"></i>';
+                                                            }
+                                                            if ($half_star) {
+                                                                echo '<i class="fas fa-star-half-alt"></i>';
+                                                            }
+                                                            for ($i = 0; $i < $empty_stars; $i++) {
+                                                                echo '<i class="far fa-star"></i>';
+                                                            }
+                                                            echo "    </div>";
+                                                            echo "</tr>";
+                                                            echo "</td>";
+                                                            echo "  </div>";
+                                                            echo "</div>"; // end of row div
+                                                            ?>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </fieldset>
 
+                                <label class='comic-label' for='procedencia_comic'>Descripción del comic:<span class='required'>*</span></label>
                                 <fieldset class="fieldset">
-                                    <legend class="fieldset-title" style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px;">Descripción del cómic</legend>
-                                    <div class="form-group avatar" style="background-color: #ECECEC; border-radius: 10px; padding: 20px;">
-                                        <div class="d-flex flex-column align-items-center">
-                                            <p style="color: #4A4A4A; font-family: Comic Sans MS, cursive, sans-serif; font-size: 1.5em; line-height: 1.5em; text-align: justify;"><?php echo $descripcion ?></p>
-                                        </div>
+                                    <legend class="fieldset-title mb-3">Descripción del cómic</legend>
+                                    <div class="form-group bg-light p-3 rounded">
+                                        <p><?php echo $descripcion ?></p>
                                     </div>
                                 </fieldset>
-
-                                <div class="card">
-                                    <div class="p-3">
-                                        <h6>Opiniones</h6>
-                                    </div>
-                                    <form action="" method='POST' id='form_opinion' onsubmit="return false;" style="width:auto">
-                                        <div class="d-flex flex-column form-color p-3">
-                                            <div class="d-flex flex-wrap align-items-center">
-                                                <?php
-                                                if (isset($_SESSION['email'])) {
-                                                    echo "<img src='" . $avatar . "' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
-                                                    echo "<div class='pr-2'>";
-                                                    echo "<h6 class='mb-0' style='margin-left:10px'>" . $nombre_usuario . "</h6>";
-                                                    echo "</div>";
-                                                    echo "<textarea id='opinion' class='form-control mt-2' placeholder='Pon tu comentario...' style='width: 100% !important; height: 110px !important; resize: none !important;'></textarea>";
-                                                    echo "<div class='d-flex flex-row align-items-center mr-2' id='rating'>";
-                                                    echo "<label for='rating' class='mr-2'>Valoracion:</label>";
-                                                    echo "<div class='rating' style='margin-left:5px'>";
-                                                    echo "<label for='5'>★</label>";
-                                                    echo "<input type='radio' name='rating' value='5' id='5'>";
-                                                    echo "<label for='4'>★</label>";
-                                                    echo "<input type='radio' name='rating' value='4' id='4'>";
-                                                    echo "<label for='3'>★</label>";
-                                                    echo "<input type='radio' name='rating' value='3' id='3'>";
-                                                    echo "<label for='2'>★</label>";
-                                                    echo "<input type='radio' name='rating' value='2' id='2'>";
-                                                    echo "<label for='1'>★</label>";
-                                                    echo "<input type='radio' name='rating' value='1' id='1'>";
-                                                    echo "</div>";
-                                                    echo "<div class='boton-enviar d-flex flex-wrap align-items-center justify-content-end'>";
-                                                    echo "<input type='hidden' id='id_user_opinion' value='" . $id_usuario . "'>";
-                                                    echo "<input type='hidden' id='id_comic' value='" . $id_comic . "'>";
-                                                    echo "<button type='submit' class='btn btn-primary boton-enviar' onclick='nueva_opinion()'>Enviar</button>";
-                                                    echo "</div>";
-                                                }
-                                                ?>
-
-                                            </div>
-                                        </div>
-                                    </form>
-                                    <div class="comentarios"></div>
-
-                                </div>
-
                             </div>
-
                         </div>
-
-                    </section>
-
+                    </div>
                 </div>
-
             </div>
 
-            <div class='recomendaciones' id="index"></div>
+            <br>
 
+            <div class="container mt-5" style="margin-top:auto !important;background-color:white">
+                <div class="row">
+                    <form action="" method='POST' id='form_opinion' onsubmit="return false;">
+                        <div class="d-flex flex-column form-color p-3">
+                            <div class="d-flex flex-wrap align-items-center">
+                                <?php
+                                if (isset($_SESSION['email'])) {
+                                    echo "<img src='" . $picture . "' id='avatar' alt='Avatar' class='avatarPicture' onclick='pictureProfileAvatar()' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>";
+                                    echo "<div class='pr-2'>";
+                                    echo "<h6 class='mb-0' style='margin-left:10px'>" . $nombre_usuario . "</h6>";
+                                    echo "</div>";
+                                    echo "<textarea id='opinion' class='form-control mt-2' placeholder='Pon tu comentario...' style='width: 100% !important; height: 110px !important; resize: none !important;'></textarea>";
+                                    echo "<div class='d-flex flex-row align-items-center mr-2' id='rating'>";
+                                    echo "<label for='rating' class='mr-2'>Valoracion:</label>";
+                                    echo "<div class='rating' style='margin-left:5px'>";
+                                    echo "<label for='5'>★</label>";
+                                    echo "<input type='radio' name='rating' value='5' id='5'>";
+                                    echo "<label for='4'>★</label>";
+                                    echo "<input type='radio' name='rating' value='4' id='4'>";
+                                    echo "<label for='3'>★</label>";
+                                    echo "<input type='radio' name='rating' value='3' id='3'>";
+                                    echo "<label for='2'>★</label>";
+                                    echo "<input type='radio' name='rating' value='2' id='2'>";
+                                    echo "<label for='1'>★</label>";
+                                    echo "<input type='radio' name='rating' value='1' id='1'>";
+                                    echo "</div>";
+                                    echo "<div class='boton-enviar d-flex flex-wrap align-items-center justify-content-end'>";
+                                    echo "<input type='hidden' id='id_user_opinion' value='" . $id_usuario . "'>";
+                                    echo "<input type='hidden' id='id_comic' value='" . $id_comic . "'>";
+                                    echo "<button type='submit' class='btn btn-primary boton-enviar' onclick='nueva_opinion()'>Enviar</button>";
+                                    echo "</div></div>";
 
-            <div id="footer-lite">
-                <div class="content">
-                    <p class="helpcenter">
-                        <a href="http://www.example.com/help">Ayuda</a>
-                    </p>
-                    <p class="legal">
-                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                        <span>·</span>
-                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                        <span>·</span>
-                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                        <span>·</span>
-                        <a href="about.php" style="color:black">Quiénes somos</a>
-                    </p>
-                    <!-- add social media with icons -->
-                    <p class="social">
-                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+                                ?>
+                                    <script>
+                                        const rating = document.querySelector('.rating');
+                                        const ratingLabels = rating.querySelectorAll('label');
 
-                    </p>
-                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                                        ratingLabels.forEach((label) => {
+                                            label.addEventListener('click', () => {
+                                                // Añadir clase active al label seleccionado
+                                                label.classList.add('active');
+
+                                                // Eliminar clase active de los demás labels
+                                                ratingLabels.forEach((otherLabel) => {
+                                                    if (otherLabel !== label) {
+                                                        otherLabel.classList.remove('active');
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    </script>
+                                <?php
+                                }
+                                ?>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="comentarios"></div>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="d-flex justify-content-center">
+                <div class="last-pubs2 comics">
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <div id="footer-lite">
+            <div class="content">
+                <p class="helpcenter">
+                    <a href="http://www.example.com/help">Ayuda</a>
+                </p>
+                <p class="legal">
+                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                    <span>·</span>
+                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                    <span>·</span>
+                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                    <span>·</span>
+                    <a href="about.php" style="color:black">Quiénes somos</a>
+                </p>
+                <!-- add social media with icons -->
+                <p class="social">
+                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-    <script>
-        var resizeTimer;
+                </p>
+                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+            </div>
+        </div>
 
-        function comics_recomendados() {
-            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-            var width = $(window).width();
-            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
+        <script>
+            var resizeTimer;
 
-            var data = {
-                num_comics: num_comics
-            };
-            $.ajax({
-                url: "php/apis/recomendaciones_comics.php",
-                data: data,
-                success: function(data) {
-                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
-                    $('.container.mt-5').css('width', container_width + 'px');
+            function comics_recomendados() {
+                // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+                var width = $(window).width();
+                var num_comics = Math.max(3, Math.min(8, Math.floor(width / 150))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
 
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    $('.recomendaciones').html('');
-                    $(data).appendTo('.recomendaciones');
-                }
-            });
-        }
-        comics_recomendados();
-        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-        $(window).on('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(comics_recomendados, 100);
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('input[type="radio"]').click(function() {
-                var index = $(this).val();
-                $('input[type="radio"]').each(function(i) {
-                    if (i < index) {
-                        $(this).next().addClass('checked');
-                    } else {
-                        $(this).next().removeClass('checked');
+                var data = {
+                    num_comics: num_comics
+                };
+                $.ajax({
+                    url: "php/apis/recomendaciones_comics.php",
+                    data: data,
+                    success: function(data) {
+                        totalComics = $(data).filter("#total-comics").val();
+                        $('.comics').html('');
+                        $(data).appendTo('.comics');
                     }
                 });
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var id_comic = $("#id_comic").val(); // get the id_comic value here
-            loadComentarios(id_comic);
-        });
-
-        function loadComentarios(id_comic) {
-            var data = {
-                id_comic: id_comic,
-            };
-
-            $.ajax({
-                url: "php/apis/comentarios.php",
-                data: data,
-                success: function(data) {
-                    $('<div class="mt-2"> <div class = "d-flex flex-row p-3" > ' + data + ' </div> </div> </div> </div>').appendTo('.comentarios');
-                }
-            });
-        }
-    </script>
-    <script>
-        const button = document.querySelector("#myButton");
-
-        button.addEventListener("click", function() {
-            const id_comic = document.querySelector("#id_comic").value;
-            console.log(id_comic);
-
-            if (button.classList.contains("active")) {
-                // El botón está activo
-                button.classList.remove("active");
-                quitar_comic(id_comic);
-            } else {
-                // El botón está inactivo
-                button.classList.add("active");
-                guardar_comic(id_comic);
             }
-        });
-    </script>
 
-    <script>
-        const rating = document.querySelector('.rating');
-        const ratingLabels = rating.querySelectorAll('label');
+            comics_recomendados();
+            // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+            $(window).on('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(comics_recomendados, 100);
+            });
 
-        ratingLabels.forEach((label) => {
-            label.addEventListener('click', () => {
-                // Añadir clase active al label seleccionado
-                label.classList.add('active');
+            var myOffcanvas1 = document.getElementById('offcanvasExample')
+            var myOffcanvas1 = new bootstrap.Offcanvas(myOffcanvas1)
 
-                // Eliminar clase active de los demás labels
-                ratingLabels.forEach((otherLabel) => {
-                    if (otherLabel !== label) {
-                        otherLabel.classList.remove('active');
-                    }
+            var myOffcanvas2 = document.getElementById('offcanvasNavbarDark')
+            var myOffcanvas2 = new bootstrap.Offcanvas(myOffcanvas2)
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('input[type="radio"]').click(function() {
+                    var index = $(this).val();
+                    $('input[type="radio"]').each(function(i) {
+                        if (i < index) {
+                            $(this).next().addClass('checked');
+                        } else {
+                            $(this).next().removeClass('checked');
+                        }
+                    });
                 });
             });
-        });
-    </script>
+        </script>
+        <script>
+            $(document).ready(function() {
+                var id_comic = $("#id_comic").val(); // get the id_comic value here
+                loadComentarios(id_comic);
+            });
 
+            function loadComentarios(id_comic) {
+                var data = {
+                    id_comic: id_comic,
+                };
+
+                $.ajax({
+                    url: "php/apis/comentarios.php",
+                    data: data,
+                    success: function(data) {
+                        $('<div class="mt-2"> <div class = "d-flex flex-row p-3" > ' + data + ' </div> </div> </div> </div>').appendTo('.comentarios');
+                    }
+                });
+            }
+        </script>
+        <script>
+            // const button = document.querySelector("#myButton");
+
+            // button.addEventListener("click", function() {
+            //     const id_comic = document.querySelector("#id_comic").value;
+
+            //     if (button.classList.contains("active")) {
+            //         // El botón está activo
+            //         button.classList.remove("active");
+            //         quitar_comic(id_comic);
+            //     } else {
+            //         // El botón está inactivo
+            //         button.classList.add("active");
+            //         guardar_comic(id_comic);
+            //     }
+            // });
+        </script>
+
+
+    </main>
 </body>
 
 </html>

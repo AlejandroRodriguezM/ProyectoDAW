@@ -145,7 +145,8 @@ function crear_usuario(string $userName, string $email, string $password, $id_ac
 	}
 }
 
-function comprobar_activacion($userName){
+function comprobar_activacion($userName)
+{
 	global $conection;
 	$activado = false;
 	try {
@@ -631,7 +632,7 @@ function comprobar_mensaje(int $id_usuario_destinatario, int $id_usuario_remiten
 	return $confirmado;
 }
 
-function respond_tickets(int $ticket_id, int $usuario_id_admin,int $usuario_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
+function respond_tickets(int $ticket_id, int $usuario_id_admin, int $usuario_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
 {
 	global $conection;
 	$confirmado = false;
@@ -1157,8 +1158,8 @@ function agregar_opinion(int $id_user, int $id_comic, string $opinion, int $punt
 	$puntuacion = htmlspecialchars($puntuacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
 	try {
-		$consulta = $conection->prepare("INSERT INTO opiniones_comics(id_comic,id_usuario,opinion,puntuacion) VALUES (?,?,?,?)");
-		if ($consulta->execute(array($id_comic, $id_user, $opinion, $puntuacion))) {
+		$consulta = $conection->prepare("INSERT INTO opiniones_comics(id_comic,id_usuario,opinion,puntuacion,fecha_comentario) VALUES (?,?,?,?,?)");
+		if ($consulta->execute(array($id_comic, $id_user, $opinion, $puntuacion, date("Y-m-d")))) {
 			$agregado = true;
 		}
 	} catch (PDOException $e) {
@@ -1260,6 +1261,19 @@ function valoracion_media(int $id_comic): float
 	try {
 		$consulta = $conection->prepare("SELECT AVG(puntuacion) from opiniones_comics where id_comic=?");
 		$consulta->execute(array($id_comic));
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	$consulta = $consulta->fetchColumn();
+	return (float) $consulta;
+}
+
+function valoracion_usuario(int $id_user, int $id_comic): float
+{
+	global $conection;
+	try {
+		$consulta = $conection->prepare("SELECT puntuacion from opiniones_comics where id_usuario=? and id_comic=?");
+		$consulta->execute(array($id_user, $id_comic));
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
@@ -2392,7 +2406,8 @@ function eliminar_peticion_comic(int $id_peticion): bool
 	return $estado;
 }
 
-function nueva_denuncia($id_usuario_denunciado, $id_user_denunciante, $mensaje_usuario, $motivo_denuncia){
+function nueva_denuncia($id_usuario_denunciado, $id_user_denunciante, $mensaje_usuario, $motivo_denuncia)
+{
 	global $conection;
 	$estado = false;
 	$id_usuario_denunciado = htmlspecialchars($id_usuario_denunciado, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -2403,7 +2418,7 @@ function nueva_denuncia($id_usuario_denunciado, $id_user_denunciante, $mensaje_u
 	$fecha_respuesta = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $fecha)));
 	try {
 		$consulta = $conection->prepare("INSERT INTO denuncias_usuarios (id_usuario_denunciante,id_usuario_denunciado,motivo_denuncia,contexto_denuncia,fecha_denuncia) VALUES (?,?,?,?,?)");
-		if ($consulta->execute(array($id_user_denunciante,$id_usuario_denunciado,$mensaje_usuario,$contexto_denuncia,$fecha_respuesta))) {
+		if ($consulta->execute(array($id_user_denunciante, $id_usuario_denunciado, $mensaje_usuario, $contexto_denuncia, $fecha_respuesta))) {
 			$estado = true;
 		}
 	} catch (PDOException $e) {
@@ -2412,7 +2427,7 @@ function nueva_denuncia($id_usuario_denunciado, $id_user_denunciante, $mensaje_u
 	return $estado;
 }
 
-function respuesta_denuncia(int $id_denuncia,int $id_admin,int $id_usuario,String $respuesta_mensaje): bool
+function respuesta_denuncia(int $id_denuncia, int $id_admin, int $id_usuario, String $respuesta_mensaje): bool
 {
 	global $conection;
 	$estado = false;
@@ -2424,7 +2439,7 @@ function respuesta_denuncia(int $id_denuncia,int $id_admin,int $id_usuario,Strin
 	$fecha_respuesta = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $fecha)));
 	try {
 		$consulta = $conection->prepare("INSERT INTO denuncias_usuarios_respuestas(id_denuncia_motivo,id_admin,id_usuario,respuesta_denuncia,fecha_respuesta) VALUES (?,?,?,?,?)");
-		if ($consulta->execute(array($id_denuncia,$id_admin,$id_usuario,$respuesta_mensaje,$fecha_respuesta))) {
+		if ($consulta->execute(array($id_denuncia, $id_admin, $id_usuario, $respuesta_mensaje, $fecha_respuesta))) {
 			$estado = true;
 		}
 	} catch (PDOException $e) {
@@ -2433,7 +2448,8 @@ function respuesta_denuncia(int $id_denuncia,int $id_admin,int $id_usuario,Strin
 	return $estado;
 }
 
-function obtener_denuncias_usuarios(int $id_denuncia){
+function obtener_denuncias_usuarios(int $id_denuncia)
+{
 	global $conection;
 	try {
 		$consulta = $conection->prepare("SELECT * FROM denuncias_usuarios WHERE id_denuncia = ?");
@@ -2445,7 +2461,8 @@ function obtener_denuncias_usuarios(int $id_denuncia){
 	return $resultados;
 }
 
-function obtener_numero_denuncias_usuarios(){
+function obtener_numero_denuncias_usuarios()
+{
 	global $conection;
 	try {
 		$consulta = $conection->prepare("SELECT COUNT(*) FROM denuncias_usuarios");
@@ -2457,7 +2474,8 @@ function obtener_numero_denuncias_usuarios(){
 	return $numero_denuncias;
 }
 
-function eliminar_comentario_pagina($id_comentario){
+function eliminar_comentario_pagina($id_comentario)
+{
 	global $conection;
 	$estado = false;
 	$id_comentario = htmlspecialchars($id_comentario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -2472,7 +2490,8 @@ function eliminar_comentario_pagina($id_comentario){
 	return $estado;
 }
 
-function eliminar_comentario_comic($id_comentario){
+function eliminar_comentario_comic($id_comentario)
+{
 	global $conection;
 	$estado = false;
 	$id_comentario = htmlspecialchars($id_comentario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -2487,7 +2506,8 @@ function eliminar_comentario_comic($id_comentario){
 	return $estado;
 }
 
-function eliminar_comic($id_comic){
+function eliminar_comic($id_comic)
+{
 	global $conection;
 	$estado = false;
 	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -2502,4 +2522,64 @@ function eliminar_comic($id_comic){
 	return $estado;
 }
 
+function comprobar_codigo_alta(String $codigo)
+{
+	global $conection;
+	$estado = false;
+	$codigo = htmlspecialchars($codigo, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT userName FROM users WHERE id_activacion = ?");
+		if ($consulta->execute([$codigo])) {
+			$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+			if (count($resultados) > 0) {
+				$estado = true;
+				activar_usuario($codigo);
+				eliminar_codigo($codigo);
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
 
+function activar_usuario(String $codigo)
+{
+	global $conection;
+	$estado = false;
+	$codigo = htmlspecialchars($codigo, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("UPDATE users SET cuenta_activada = 1 WHERE id_activacion = ?");
+		if ($consulta->execute([$codigo])) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function eliminar_codigo(String $codigo)
+{
+	global $conection;
+	$estado = false;
+	$codigo = htmlspecialchars($codigo, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("UPDATE users SET id_activacion = NULL WHERE id_activacion = ?");
+		if ($consulta->execute([$codigo])) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function enviar_correo_activacion($email_registro, $id_unico)
+{
+	$subject = "Nuevo usuario. Activacion de cuenta"; // Asunto del correo
+	$message = "Haga clic en el siguiente enlace para activar su cuenta: https://comicweb.es/activacion_usuario.php?codigo_v=" . $id_unico;
+	$message .= "<br><br><hr><p>Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!</p>";
+	$headers = "From: informacion@comicweb.es"; // Dirección de correo electrónico del remitente
+	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
+}
