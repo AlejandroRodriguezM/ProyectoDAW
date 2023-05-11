@@ -30,7 +30,7 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
-    
+
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -218,7 +218,6 @@ if (isset($_SESSION['email'])) {
             font-size: 14px;
             margin-top: 10px;
         }
-
     </style>
 </head>
 
@@ -931,6 +930,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
     </main>
+
 </body>
 
 </html>

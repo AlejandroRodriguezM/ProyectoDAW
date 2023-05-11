@@ -6,12 +6,14 @@ if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
     $userData = obtener_datos_usuario($email);
     $id_user = $userData['IDuser'];
+    echo "<input type='hidden' id='id_user' value='$id_user'>";
+
 }
 
-if(isset($_GET['num_comics'])){
+if (isset($_GET['num_comics'])) {
     $num_comics = intval($_GET['num_comics']);
     $numero_comics = get_total_comics();
-}else{
+} else {
     header("Location: ../../index.php");
 }
 

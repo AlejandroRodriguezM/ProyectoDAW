@@ -1,13 +1,10 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
-// 
-
 if (isset($_SESSION['email'])) {
     header('Location: index.php');
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,19 +24,33 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <title>Aceso de usuario</title>
+    <title>Registro</title>
+
     <style>
+        .chosenUserProfile {
+            width: 106px;
+            height: 106px;
+            background-color: #999999;
+            border: 4px solid #CCCCCC;
+            color: #FFFFFF;
+            border-radius: 50%;
+            margin: 0px auto;
+            overflow: hidden;
+            transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+        }
+
+        html,
         body {
             margin: 0 !important;
             /* padding: 0 !important; */
             height: 100% !important;
-            background-color: rgba(0, 0, 0, 0);
 
         }
 
         main {
 
-            height: 100% !important;
+            min-height: 100vh !important;
         }
 
         /* Estilos generales para el footer */
@@ -73,55 +84,45 @@ if (isset($_SESSION['email'])) {
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/background.jpg');background-size: cover;
-background-repeat: no-repeat;opacity: 0.9;">
+    <main class="flex-shrink-0">
 
-        <main class="flex-shrink-0">
-            <div class="container mt-5" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-                <br>
-                <div class="col-12 col-md-6 offset-md-3 mx-auto max-w-md text-center">
-                    <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;">
-                        <div class="row justify-content-center col-lg-7 mx-auto">
-                            <!-- <div class="col-lg-7 "> -->
-                            <img src="./assets/img/logoWeb.png" class="mt-2" width="250px" alt="logo web">
-                            <!-- <h3 class="mt-2">LOGIN SISTEMA</h3> -->
-                            <form method="post" id="formIniciar" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form-control-sm">
-                                <div class="mb-3">
-                                    <label for="acceso" class="form-label">Nombre de usuario/Email</label>
-                                    <input type="text" class="form-control w-100" id="acceso" placeholder="Introduce tu nombre de usuario o email" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/background.jpg');opacity: 0.8;">
+            <br>
+            <div class="col-12 col-md-6 offset-md-3 mx-auto max-w-md text-center">
+                <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;">
+                    <div class="row justify-content-center col-lg-7 mx-auto">
+                        <!-- <div class="col-lg-7 "> -->
+                        <img src="./assets/img/logoWeb.png" class="mt-2" width="250px" alt="logo web">
+                        <form method="post" id="formIniciar" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form-control-sm">
+                            <div class="mb-3">
+                                <label for="acceso" class="form-label">Nombre de usuario/Email</label>
+                                <input type="text" class="form-control w-100" id="acceso" placeholder="Introduce tu nombre de usuario o email" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control w-100" id="password_user" placeholder="Introduce tu contraseña" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    <button id="toggle-password" type="button" class="d-none"></button>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Contraseña</label>
-                                    <div class="input-group">
-                                        <input type="password" class="form-control w-100" id="password_user" placeholder="Introduce tu contraseña" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                        <button id="toggle-password" type="button" class="d-none"></button>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="button" name="guest_user" class="btn btn-secondary btn-block mb-2 w-100" onclick="guest_User();" value="Ingresar como invitado" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="button" name="enter_sesion" class="btn btn-danger btn-block mb-2 w-100" onclick="login_user();" value="Iniciar sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                </div>
-                                <div class="mb-3">
-                                    <a href="registro.php" type="button" class="btn btn-primary btn-block mb-2 w-100" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Crear cuenta</a>
-                                </div>
-                            </form>
-                            <!-- </div> -->
-                        </div>
+                            </div>
+                            <div class="mb-3">
+                                <input type="button" name="guest_user" class="btn btn-secondary btn-block mb-2 w-100" onclick="guest_User();" value="Ingresar como invitado" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                            </div>
+                            <div class="mb-3">
+                                <input type="button" name="enter_sesion" class="btn btn-danger btn-block mb-2 w-100" onclick="login_user();" value="Iniciar sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                            </div>
+                            <div class="mb-3">
+                                <a href="registro.php" type="button" class="btn btn-primary btn-block mb-2 w-100" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Crear cuenta</a>
+                            </div>
 
+                            <div class="mb-3">
+                                <a href="about.php" type="button" class="btn btn-info btn-block mb-2 w-100" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Saber mas</a>
+                            </div>
+
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="alert text-center cookiealert" role="alert">
-                <b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn more</a>
-
-                <button type="button" class="btn btn-primary btn-sm acceptcookies">
-                    I agree
-                </button>
-            </div>
-
-
             <script>
                 var ShowPasswordToggle = document.querySelector("[type='password']");
                 ShowPasswordToggle.onclick = function() {
@@ -142,33 +143,32 @@ background-repeat: no-repeat;opacity: 0.9;">
                     }
                 };
             </script>
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="footer-title">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-
-        </main>
-        <div id="footer-lite" class="mt-5">
-            <div class="container">
-                <p class="helpcenter">
-                    <a href="http://www.example.com/help">Ayuda</a>
-                </p>
-                <p class="footer-title">
-                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                    <span>·</span>
-                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                    <span>·</span>
-                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                    <span>·</span>
-                    <a href="about.php" style="color:black">Quiénes somos</a>
-                </p>
-                <!-- add social media with icons -->
-                <p class="social">
-                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-
-                </p>
-                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
+
 </body>
 
 </html>

@@ -500,3 +500,11 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 - Ahora la web es en su gran mayoria responsive para su uso en diferentes dispositivos
 - Se ha añadido nueva pestaña para la verificacion de usuarios
 - La pagina web se encuentra subida a un hosting https://comicweb.es/
+
+
+11/05/2023 Log 2
+
+ - Mejorado el responsive porque bugs visuales en resoluciones de pantalla mas bajas
+ - Se ha mejorado el estilo de casi todo el proyecto
+ - Se han arreglado bugs que no dejaban hacer ciertas opciones
+ - Se ha arreglado bug donde cualquier usuario podia acceder a listas de lectura de forma no autorizada

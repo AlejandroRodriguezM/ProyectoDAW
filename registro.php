@@ -26,7 +26,6 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <title>Registro</title>
 
-</head>
 <style>
     .chosenUserProfile {
         width: 106px;
@@ -44,7 +43,7 @@ if (isset($_SESSION['email'])) {
     html,
     body {
         margin: 0 !important;
-        padding: 0 !important;
+        /* padding: 0 !important; */
         height: 100% !important;
 
     }
@@ -82,201 +81,198 @@ if (isset($_SESSION['email'])) {
         margin-top: 10px;
     }
 </style>
-
+</head>
 <body class="d-flex flex-column min-vh-100">
-    <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/background.jpg');background-size: cover;
-background-repeat: no-repeat;opacity: 0.9;">
+    <main class="flex-shrink-0">
 
-        <main class="flex-shrink-0">
-            <div class="container mt-5" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
-
-                <div class="container mt-5" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/background.jpg');opacity: 0.8;">
             <br>
-                    <div class="col-12 col-md-6 offset-md-3 mx-auto max-w-md text-center">
-                        <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;">
-                            <div class="row justify-content-center col-lg-7 mx-auto">
-                                <!-- <div class="col-lg-7 "> -->
-                                <img src="./assets/img/logoWeb.png" class="mt-2" width="250px" alt="logo web">
-                                <form id="formInsert" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                    <div class="mb-3 text-center">
-                                        <label for="name" class="form-label w-100">Nombre de usuario</label>
-                                        <input type="text" class="form-control w-100" id="name" placeholder="Enter your name">
-                                    </div>
-                                    <div class="mb-3 text-center">
-                                        <label for="correo" class="form-label w-100">Correo electronico</label>
-                                        <input type="email" class="form-control w-100" id="correo" placeholder="name@test.com">
-                                    </div>
-                                    <div class="mb-3 text-center">
-                                        <label for="password" class="form-label w-100">Contraseña</label>
-                                        <input type="password" class="form-control w-100" id="password" placeholder="***********">
-                                    </div>
-                                    <div class="mb-3 text-center">
-                                        <label for="repassword" class="form-label w-100">Repita contraseña</label>
-                                        <input type="password" class="form-control w-100" id="repassword" placeholder="***********">
-                                    </div>
-                                    <div class="mb-3 text-center">
-                                        <img class="chosenUserProfile mb-2" id="output" src="./assets/img/chosePicture.png" />
-                                        <input class="form-control w-100" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)">
-                                    </div>
-                                    <div class="mb-3 text-center">
-                                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                            Leer condiciones y servicios
-                                        </button>
-                                    </div>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-xl">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Condiciones de uso</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h1>Términos y condiciones</h1>
-
-                                                    <p>
-                                                        Bienvenido a nuestro sitio web. Si continúa navegando y utilizando este sitio web, usted acepta cumplir y estar sujeto a los siguientes términos y condiciones de uso, que junto con nuestra política de privacidad rigen la relación entre usted y nuestra empresa en relación con este sitio web. Si no está de acuerdo con alguno de estos términos, por favor no utilice nuestro sitio web.
-                                                    </p>
-
-                                                    <h2>Uso del contenido</h2>
-
-                                                    <p>
-                                                        El contenido de las páginas de este sitio web es para su información y uso general. Se prohíbe su uso para fines comerciales sin la autorización expresa por escrito de nuestra empresa.
-
-                                                    <h2>Limitación de responsabilidades</h2>
-
-                                                    <p>
-                                                        Este sitio web se proporciona "tal cual". No garantizamos que el sitio web esté disponible en todo momento o que el contenido sea completamente preciso o actualizado. No nos hacemos responsables de ningún tipo de daños o pérdidas en relación con el uso de este sitio web.
-
-                                                    <h2>Enlaces de terceros</h2>
-
-                                                    <p>
-                                                        Este sitio web puede contener enlaces a sitios web de terceros. Estos enlaces se proporcionan sólo como conveniencia y no implican que estemos de acuerdo con el contenido de dichos sitios web. No tenemos control sobre el contenido de los sitios web de terceros y no nos hacemos responsables de ellos.
-
-                                                    <h2>Derechos de autor</h2>
-
-                                                    <p>
-                                                        Todos los contenidos de este sitio web, incluyendo texto, imágenes y diseños, están protegidos por derechos de autor. El uso no autorizado de cualquier contenido puede violar los derechos de autor, marcas registradas y otras leyes.
-
-                                                    <h2>Política de privacidad</h2>
-
-                                                    <p>
-                                                        Su privacidad es importante para nosotros. Lea nuestra política de privacidad para obtener más información sobre cómo recopilamos y usamos la información personal de nuestros usuarios.
-
-                                                    <h2>Control de cambios</h2>
-
-                                                    <p>
-                                                        Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Si hacemos cambios significativos, los notificaremos en esta página.
-
-                                                    <h2>Contáctenos</h2>
-
-                                                    <p>
-                                                        Si tiene alguna pregunta sobre estos términos y condiciones, puede contactarnos en <a href="mailto: infoCliente@Comic web.com">Correo atencion al cliente</a>
-                                                    </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="close">
-                                                    <input type="button" id="test" name="test" data-bs-dismiss="modal" class="btn btn-primary" onclick="changeCheckboxState()" value="Understood">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3 text-center">
-
-                                        <label>Acepto y he leido las condiciones y servicios</label>
-                                        <?php
-                                        if (isset($_POST['test'])) {
-                                            echo "<input type='checkbox' name='checkbox' id='checkbox' value='checkbox' checked readonly disabled>";
-                                        } else {
-                                            echo "<input type='checkbox' name='checkbox' id='checkbox' value='checkbox' readonly disabled>";
-                                        }
-                                        ?>
-
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <input type="button" class="btn btn-danger form-control" onclick="crear_usuario();" value="Registrar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                        <script>
-                                            function handleFileSelect(evt) {
-                                                var f = evt.target.files[0]; // FileList object
-                                                var reader = new FileReader();
-                                                // Closure to capture the file information.
-                                                reader.onload = (function(theFile) {
-                                                    return function(e) {
-                                                        var binaryData = e.target.result;
-                                                        //Converting Binary Data to base 64
-                                                        var base64String = window.btoa(binaryData);
-                                                        //save into var globally string
-                                                        image = base64String;
-                                                    };
-                                                })(f);
-                                                // Read in the image file as a data URL
-                                                reader.readAsBinaryString(f);
-                                            }
-                                            document.getElementById('files').addEventListener('change', handleFileSelect, false);
-                                        </script>
-
-                                    </div>
-                                    <div class="mb-3">
-                                        <a href="login.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Iniciar sesion</a>
-                                    </div>
-                                </form>
+            <div class="col-12 col-md-6 offset-md-3 mx-auto max-w-md text-center">
+                <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;">
+                    <div class="row justify-content-center col-lg-7 mx-auto">
+                        <!-- <div class="col-lg-7 "> -->
+                        <img src="./assets/img/logoWeb.png" class="mt-2" width="250px" alt="logo web">
+                        <form id="formInsert" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <div class="mb-3 text-center">
+                                <label for="name" class="form-label w-100">Nombre de usuario</label>
+                                <input type="text" class="form-control w-100" id="name" placeholder="Enter your name">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <label for="correo" class="form-label w-100">Correo electronico</label>
+                                <input type="email" class="form-control w-100" id="correo" placeholder="name@test.com">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <label for="password" class="form-label w-100">Contraseña</label>
+                                <input type="password" class="form-control w-100" id="password" placeholder="***********">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <label for="repassword" class="form-label w-100">Repita contraseña</label>
+                                <input type="password" class="form-control w-100" id="repassword" placeholder="***********">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <img class="chosenUserProfile mb-2" id="output" src="./assets/img/chosePicture.png" />
+                                <input class="form-control w-100" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Leer condiciones y servicios
+                                </button>
                             </div>
 
-                        </div>
-                        <script>
-                            function changeCheckboxState() {
-                                var checkbox = document.getElementById("checkbox");
-                                checkbox.checked = !checkbox.checked;
-                            }
-                        </script>
-                        <script>
-                            var ShowPasswordToggle = document.querySelector("[type='password']");
-                            ShowPasswordToggle.onclick = function() {
-                                document.querySelector("[type='password']").classList.add("input-password");
-                                document.getElementById("toggle-password").classList.remove("d-none");
-                                const passwordInput = document.querySelector("[type='password']");
-                                const togglePasswordButton = document.getElementById("toggle-password");
-                                togglePasswordButton.addEventListener("click", togglePassword);
+                            <!-- Modal -->
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Condiciones de uso</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h1>Términos y condiciones</h1>
 
-                                function togglePassword() {
-                                    if (passwordInput.type === "password") {
-                                        passwordInput.type = "text";
-                                        togglePasswordButton.setAttribute("aria-label", "Hide password.")
-                                    } else {
-                                        passwordInput.type = "password";
-                                        togglePasswordButton.setAttribute("aria-label", "Show password as plain text. " + "Warning: this will display your password on the screen.")
-                                    }
+                                            <p>
+                                                Bienvenido a nuestro sitio web. Si continúa navegando y utilizando este sitio web, usted acepta cumplir y estar sujeto a los siguientes términos y condiciones de uso, que junto con nuestra política de privacidad rigen la relación entre usted y nuestra empresa en relación con este sitio web. Si no está de acuerdo con alguno de estos términos, por favor no utilice nuestro sitio web.
+                                            </p>
+
+                                            <h2>Uso del contenido</h2>
+
+                                            <p>
+                                                El contenido de las páginas de este sitio web es para su información y uso general. Se prohíbe su uso para fines comerciales sin la autorización expresa por escrito de nuestra empresa.
+
+                                            <h2>Limitación de responsabilidades</h2>
+
+                                            <p>
+                                                Este sitio web se proporciona "tal cual". No garantizamos que el sitio web esté disponible en todo momento o que el contenido sea completamente preciso o actualizado. No nos hacemos responsables de ningún tipo de daños o pérdidas en relación con el uso de este sitio web.
+
+                                            <h2>Enlaces de terceros</h2>
+
+                                            <p>
+                                                Este sitio web puede contener enlaces a sitios web de terceros. Estos enlaces se proporcionan sólo como conveniencia y no implican que estemos de acuerdo con el contenido de dichos sitios web. No tenemos control sobre el contenido de los sitios web de terceros y no nos hacemos responsables de ellos.
+
+                                            <h2>Derechos de autor</h2>
+
+                                            <p>
+                                                Todos los contenidos de este sitio web, incluyendo texto, imágenes y diseños, están protegidos por derechos de autor. El uso no autorizado de cualquier contenido puede violar los derechos de autor, marcas registradas y otras leyes.
+
+                                            <h2>Política de privacidad</h2>
+
+                                            <p>
+                                                Su privacidad es importante para nosotros. Lea nuestra política de privacidad para obtener más información sobre cómo recopilamos y usamos la información personal de nuestros usuarios.
+
+                                            <h2>Control de cambios</h2>
+
+                                            <p>
+                                                Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Si hacemos cambios significativos, los notificaremos en esta página.
+
+                                            <h2>Contáctenos</h2>
+
+                                            <p>
+                                                Si tiene alguna pregunta sobre estos términos y condiciones, puede contactarnos en <a href="mailto: infoCliente@Comic web.com">Correo atencion al cliente</a>
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="close">
+                                            <input type="button" id="test" name="test" data-bs-dismiss="modal" class="btn btn-primary" onclick="changeCheckboxState()" value="Understood">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 text-center">
+
+                                <label>Acepto y he leido las condiciones y servicios</label>
+                                <?php
+                                if (isset($_POST['test'])) {
+                                    echo "<input type='checkbox' name='checkbox' id='checkbox' value='checkbox' checked readonly disabled>";
+                                } else {
+                                    echo "<input type='checkbox' name='checkbox' id='checkbox' value='checkbox' readonly disabled>";
                                 }
-                            };
-                        </script>
-        </main>
-        <div id="footer-lite" class="mt-5">
-            <div class="container">
-                <p class="helpcenter">
-                    <a href="http://www.example.com/help">Ayuda</a>
-                </p>
-                <p class="footer-title">
-                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                    <span>·</span>
-                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                    <span>·</span>
-                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                    <span>·</span>
-                    <a href="about.php" style="color:black">Quiénes somos</a>
-                </p>
-                <!-- add social media with icons -->
-                <p class="social">
-                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+                                ?>
 
-                </p>
-                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <input type="button" class="btn btn-danger form-control" onclick="crear_usuario();" value="Registrar" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                <script>
+                                    function handleFileSelect(evt) {
+                                        var f = evt.target.files[0]; // FileList object
+                                        var reader = new FileReader();
+                                        // Closure to capture the file information.
+                                        reader.onload = (function(theFile) {
+                                            return function(e) {
+                                                var binaryData = e.target.result;
+                                                //Converting Binary Data to base 64
+                                                var base64String = window.btoa(binaryData);
+                                                //save into var globally string
+                                                image = base64String;
+                                            };
+                                        })(f);
+                                        // Read in the image file as a data URL
+                                        reader.readAsBinaryString(f);
+                                    }
+                                    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                                </script>
+
+                            </div>
+                            <div class="mb-3">
+                                <a href="login.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Iniciar sesion</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function changeCheckboxState() {
+                    var checkbox = document.getElementById("checkbox");
+                    checkbox.checked = !checkbox.checked;
+                }
+            </script>
+            <script>
+                var ShowPasswordToggle = document.querySelector("[type='password']");
+                ShowPasswordToggle.onclick = function() {
+                    document.querySelector("[type='password']").classList.add("input-password");
+                    document.getElementById("toggle-password").classList.remove("d-none");
+                    const passwordInput = document.querySelector("[type='password']");
+                    const togglePasswordButton = document.getElementById("toggle-password");
+                    togglePasswordButton.addEventListener("click", togglePassword);
+
+                    function togglePassword() {
+                        if (passwordInput.type === "password") {
+                            passwordInput.type = "text";
+                            togglePasswordButton.setAttribute("aria-label", "Hide password.")
+                        } else {
+                            passwordInput.type = "password";
+                            togglePasswordButton.setAttribute("aria-label", "Show password as plain text. " + "Warning: this will display your password on the screen.")
+                        }
+                    }
+                };
+            </script>
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="footer-title">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
+
 </body>
 
 </html>
