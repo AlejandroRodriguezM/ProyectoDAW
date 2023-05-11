@@ -1198,7 +1198,7 @@ div.aj-load {
     background: url(../img/loader-l.svg) no-repeat center center transparent
 }
 
-p {
+/* p {
     font-size: 1.4em;
     margin-bottom: 20px;
     line-height: 18px
@@ -1210,7 +1210,7 @@ p.sbtt {
     margin-top: -10px;
     margin-bottom: 30px;
     color: #888e94
-}
+} */
 
 small {
     font-size: 13px;

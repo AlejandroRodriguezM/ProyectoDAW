@@ -34,12 +34,12 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
-    <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <!-- <link rel="stylesheet" href="./assets/style/parallax.css"> -->
     <!-- <link rel="stylesheet" href="./assets/style/media_recomendaciones.css"> -->
     <link rel="stylesheet" href="./assets/style/media_videos.css">
-    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
+    <!-- <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> --> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -105,15 +105,43 @@ if (isset($_SESSION['email'])) {
 
         body {
             margin: 0 !important;
-            padding: 0 !important;
+            /* padding: 0 !important; */
             height: 100% !important;
-            overflow-y: scroll !important;
-            /* Habilita el scroll vertical */
+            background-color: rgba(0, 0, 0, 0);
 
         }
 
         main {
-            min-height: 100vh !important;
+
+            height: 100% !important;
+        }
+
+        /* Estilos generales para el footer */
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
+
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
+
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 
@@ -282,15 +310,15 @@ if (isset($_SESSION['email'])) {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -365,7 +393,7 @@ if (isset($_SESSION['email'])) {
         }
         ?>
 
-        <div class="card-footer text-muted">
+        <div class="card-footer text-muted" style="background-color:white">
             Design by Alejandro Rodriguez 2022
         </div>
 
@@ -532,7 +560,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -626,6 +654,7 @@ if (isset($_SESSION['email'])) {
                 <!-- </div> -->
             </div>
         </div>
+
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
             <div class="card text-center container mt-5 bg-dark">
@@ -683,51 +712,14 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
 
-            <!-- The Modal -->
-            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <img class="modal-content_img" id="img01">
-            </div>
-
-            <!-- FORMULARIO INSERTAR -->
-            <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <form method="post" id="form_ticket" onsubmit="return false;">
-                                <h4 class="modal-title">Crear un ticket para administradores</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Asunto</label>
-                                <input type="text" id="asunto_usuario" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>Mensaje</label>
-                                <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                                <?php
-                                if (isset($_SESSION['email'])) {
-
-                                    echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                            <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                        </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
 
             <!-- <div class="bgimg-2"> -->
-            <div id="footer-lite">
-                <div class="content">
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
                     <p class="helpcenter">
                         <a href="http://www.example.com/help">Ayuda</a>
                     </p>
-                    <p class="legal">
+                    <p class="footer-title">
                         <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
                         <span>·</span>
                         <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
@@ -745,7 +737,6 @@ if (isset($_SESSION['email'])) {
                     <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
-        </div>
         </div>
     </main>
 </body>

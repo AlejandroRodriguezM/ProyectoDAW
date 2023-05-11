@@ -42,12 +42,12 @@ if ($userPrivilege == 'user') {
     <link rel="stylesheet" href="./assets/style/style.css">
     <!-- <link rel="stylesheet" href="./assets/style/bandeja_comics.css"> -->
     <link rel="stylesheet" href="./assets/style/mensajes_style.css">
-    <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <!-- <link rel="stylesheet" href="./assets/style/parallax.css"> -->
     <!-- <link rel="stylesheet" href="./assets/style/media_recomendaciones.css"> -->
     <link rel="stylesheet" href="./assets/style/media_videos.css">
-    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
+    <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -192,15 +192,43 @@ if ($userPrivilege == 'user') {
 
         body {
             margin: 0 !important;
-            padding: 0 !important;
+            /* padding: 0 !important; */
             height: 100% !important;
-            overflow-y: scroll !important;
-            /* Habilita el scroll vertical */
+            background-color: rgba(0, 0, 0, 0);
 
         }
 
         main {
-            min-height: 100vh !important;
+
+            height: 100% !important;
+        }
+
+        /* Estilos generales para el footer */
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
+
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
+
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -360,15 +388,15 @@ if ($userPrivilege == 'user') {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -443,7 +471,7 @@ if ($userPrivilege == 'user') {
         }
         ?>
 
-        <div class="card-footer text-muted">
+        <div class="card-footer text-muted" style="background-color:white">
             Design by Alejandro Rodriguez 2022
         </div>
 
@@ -704,283 +732,281 @@ if ($userPrivilege == 'user') {
                 <!-- </div> -->
             </div>
         </div>
-
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
             <div class="container mt-5">
 
-            <div class="row justify-content-center">
-                <div class="col-md-12 ">
-                    <div class="card">
-                        <div class="card-body ">
-                            <div class="row ">
-                                <div class="col-md-3">
-                                    <img class='img-profile img-circle img-responsive center-block w-90 h-auto' id='avatarUser' alt='Avatar' src='<?php echo $picture ?>' onclick='pictureProfileUser()' ; style='width:70%; height: 70%;' />
-                                    <ul class="meta list list-unstyled">
-                                        <li class="name">
-                                            <label for="" style="font-size: 0.8em;">Nombre:</label>
-                                            <?php
-                                            echo $userName;
-                                            ?>
-                                        </li>
-                                    </ul>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-                                                <ul class="nav nav-pills flex-column mb-auto">
-                                                    <li class="nav-item">
-                                                        <a href="admin_panel_usuario.php" class="nav-link link-dark" aria-current="page">
-                                                            <span class="fa fa-user"></span>
-                                                            Lista de usuarios
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="admin_panel_peticiones_comic.php" class="nav-link link-dark">
-                                                            <span class="fa fa-cog"></span>
-                                                            Peticiones de comics
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="admin_panel_peticiones_comic_aceptadas.php" class="nav-link link-dark">
-                                                            <span class="fa fa-cog"></span>
-                                                            Comics aceptados</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="admin_panel_peticiones_comic_canceladas.php" class="nav-link link-dark">
-                                                            <span class="fa fa-cog"></span>
-                                                            Comics cancelados</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="admin_panel_block.php" class="nav-link link-dark">
-                                                            <span class="fa fa-cog"></span>
-                                                            Usuarios bloqueados</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="panel_tickets_admin.php" class="nav-link link-dark">
-                                                            <span class="fa fa-cog"></span>
-                                                            Panel de mensajes</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="admin_mensajes_denuncias.php" class="nav-link active">
-                                                            <span class="fa fa-cog"></span>
-                                                            Denuncias de usuarios</a>
-                                                    </li>
-                                                </ul>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 ">
+                        <div class="card">
+                            <div class="card-body ">
+                                <div class="row ">
+                                    <div class="col-md-3">
+                                        <img class='img-profile img-circle img-responsive center-block w-90 h-auto' id='avatarUser' alt='Avatar' src='<?php echo $picture ?>' onclick='pictureProfileUser()' ; style='width:70%; height: 70%;' />
+                                        <ul class="meta list list-unstyled">
+                                            <li class="name">
+                                                <label for="" style="font-size: 0.8em;">Nombre:</label>
+                                                <?php
+                                                echo $userName;
+                                                ?>
+                                            </li>
+                                        </ul>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+                                                    <ul class="nav nav-pills flex-column mb-auto">
+                                                        <li class="nav-item">
+                                                            <a href="admin_panel_usuario.php" class="nav-link link-dark" aria-current="page">
+                                                                <span class="fa fa-user"></span>
+                                                                Lista de usuarios
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="admin_panel_peticiones_comic.php" class="nav-link link-dark">
+                                                                <span class="fa fa-cog"></span>
+                                                                Peticiones de comics
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="admin_panel_peticiones_comic_aceptadas.php" class="nav-link link-dark">
+                                                                <span class="fa fa-cog"></span>
+                                                                Comics aceptados</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="admin_panel_peticiones_comic_canceladas.php" class="nav-link link-dark">
+                                                                <span class="fa fa-cog"></span>
+                                                                Comics cancelados</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="admin_panel_block.php" class="nav-link link-dark">
+                                                                <span class="fa fa-cog"></span>
+                                                                Usuarios bloqueados</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="panel_tickets_admin.php" class="nav-link link-dark">
+                                                                <span class="fa fa-cog"></span>
+                                                                Panel de mensajes</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="admin_mensajes_denuncias.php" class="nav-link active">
+                                                                <span class="fa fa-cog"></span>
+                                                                Denuncias de usuarios</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-9">
-                                    <fieldset class="fieldset">
-                                        <form class="form-horizontal" onsubmit="return false;" id="form-mensajes" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                            <h3 class="fieldset-title">Tickets de usuarios</h3>
-                                            <div id="mensajes-container"></div>
-                                        </form>
-                                    </fieldset>
+                                    <div class="col-9">
+                                        <fieldset class="fieldset">
+                                            <form class="form-horizontal" onsubmit="return false;" id="form-mensajes" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                                <h3 class="fieldset-title">Tickets de usuarios</h3>
+                                                <div id="mensajes-container"></div>
+                                            </form>
+                                        </fieldset>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- The Modal -->
-        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <img class="modal-content_img" id="img01">
-        </div>
-        <div id="footer-lite">
-            <div class="content">
-                <p class="helpcenter">
-                    <a href="http://www.example.com/help">Ayuda</a>
-                </p>
-                <p class="legal">
-                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                    <span>·</span>
-                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                    <span>·</span>
-                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                    <span>·</span>
-                    <a href="about.php" style="color:black">Quiénes somos</a>
-                </p>
-                <!-- add social media with icons -->
-                <p class="social">
-                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-
-                </p>
-                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+            <!-- The Modal -->
+            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <img class="modal-content_img" id="img01">
             </div>
-        </div>
-        </div>
-        </div>
 
-        <script>
-            $(document).ready(function() {
-                $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
-            });
-
-            var procesando_mensaje = false;
-            var mensaje_abierto_id = null;
-
-            function toggleTicketInfo(id) {
-                var header = document.getElementById('mensaje-header-' + id);
-                var info = document.getElementById('mensaje-info-' + id);
-                var arrow = header.querySelector('.arrow');
-                modificar_estado_mensaje(id);
+            <script>
                 $(document).ready(function() {
                     $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
                 });
-                if (mensaje_abierto_id && mensaje_abierto_id !== id) {
-                    var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
-                    var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
-                    var arrowAnterior = headerAnterior.querySelector('.arrow');
 
-                    infoAnterior.style.display = 'none';
-                    arrowAnterior.innerHTML = '&#9654;';
+                var procesando_mensaje = false;
+                var mensaje_abierto_id = null;
+
+                function toggleTicketInfo(id) {
+                    var header = document.getElementById('mensaje-header-' + id);
+                    var info = document.getElementById('mensaje-info-' + id);
+                    var arrow = header.querySelector('.arrow');
+                    modificar_estado_mensaje(id);
+                    $(document).ready(function() {
+                        $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
+                    });
+                    if (mensaje_abierto_id && mensaje_abierto_id !== id) {
+                        var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
+                        var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
+                        var arrowAnterior = headerAnterior.querySelector('.arrow');
+
+                        infoAnterior.style.display = 'none';
+                        arrowAnterior.innerHTML = '&#9654;';
+                    }
+
+                    if (info.style.display === 'block') {
+                        // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
+                        if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
+                            arrow.innerHTML = '&#9660;';
+                            return;
+                        }
+                        // Si no hay mensaje enviado, ocultar el elemento
+                        info.style.display = 'none';
+                        arrow.innerHTML = '&#9654;';
+                        mensaje_abierto_id = null;
+
+                    } else {
+                        // Si el elemento está cerrado, mostrarlo
+                        info.style.display = 'block';
+                        arrow.innerHTML = '&#9660;';
+                        mensaje_abierto_id = id;
+                    }
                 }
 
-                if (info.style.display === 'block') {
-                    // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
-                    if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
-                        arrow.innerHTML = '&#9660;';
+                // Asignar la función a los eventos de clic de los headers de los tickets
+                if (document.getElementById('mensajes-container')) {
+                    document.getElementById('mensajes-container').addEventListener('click', function(event) {
+                        if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
+                        var arrow = event.target.closest('.arrow');
+                        if (arrow) {
+                            var header = arrow.closest('.mensaje-header');
+                            var id = header.id.replace('mensaje-header-', '');
+                            toggleTicketInfo(id);
+
+                        }
+                    });
+                }
+            </script>
+            <script>
+                function actualizarMensajes(ticket_id, id_usuario) {
+                    $.ajax({
+                        url: "php/apis/tickets_denuncias.php",
+                        method: 'POST',
+                        data: {
+                            id_usuario_destinatario: ticket_id,
+                            mensaje: ''
+                        },
+                        success: function(data) {
+                            $('#mensaje-info-' + ticket_id).html(data);
+                            $("#mensajes-container").html(data);
+                            $('#mensaje-info-' + ticket_id).css('display', 'block');
+                        }
+                    });
+                }
+                $(document).ready(function() {
+                    actualizarMensajes(0);
+                });
+                // Enviar mensaje mediante AJAX
+                const mandar_mensaje_actualizacion = async (ticket_id) => {
+                    var id_denuncia = document.querySelector("#id_denuncia_" + ticket_id).value;
+                    var id_admin = document.querySelector("#id_admin_" + ticket_id).value;
+                    var id_usuario = document.querySelector("#id_usuario_" + ticket_id).value;
+                    var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
+
+                    if (respuesta.trim() === '') {
+                        Swal.fire({
+                            icon: "error",
+                            title: "ERROR.",
+                            text: "No puedes enviar un mensaje vacío.",
+                            footer: "Web Comics"
+                        })
                         return;
                     }
-                    // Si no hay mensaje enviado, ocultar el elemento
-                    info.style.display = 'none';
-                    arrow.innerHTML = '&#9654;';
-                    mensaje_abierto_id = null;
 
-                } else {
-                    // Si el elemento está cerrado, mostrarlo
-                    info.style.display = 'block';
-                    arrow.innerHTML = '&#9660;';
-                    mensaje_abierto_id = id;
+                    //insert to data base in case of everything go correct.
+                    const data = new FormData();
+                    data.append('id_denuncia', id_denuncia);
+                    data.append('id_admin', id_admin);
+                    data.append('id_usuario', id_usuario);
+                    data.append("mensaje", respuesta);
+
+                    //pass data to php file
+                    var respond = await fetch("php/apis/respuesta_denuncia.php", {
+                        method: 'POST',
+                        body: data
+                    });
+
+                    var result = await respond.json();
+
+                    if (result.success == false) {
+                        document.querySelector('#form_mensaje').reset();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        // Actualizar la lista de mensajes
+                        $('#mensaje_usuario_enviar').val('');
+                        $('#mensaje-info-' + ticket_id).html(result.data);
+                        // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
+                        // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
+                        actualizarMensajes(ticket_id, id_usuario);
+                    }
                 }
-            }
-
-            // Asignar la función a los eventos de clic de los headers de los tickets
-            if (document.getElementById('mensajes-container')) {
-                document.getElementById('mensajes-container').addEventListener('click', function(event) {
-                    if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
-                    var arrow = event.target.closest('.arrow');
-                    if (arrow) {
-                        var header = arrow.closest('.mensaje-header');
-                        var id = header.id.replace('mensaje-header-', '');
-                        toggleTicketInfo(id);
-
-                    }
-                });
-            }
-        </script>
-        <script>
-            function actualizarMensajes(ticket_id, id_usuario) {
-                $.ajax({
-                    url: "php/apis/tickets_denuncias.php",
-                    method: 'POST',
-                    data: {
-                        id_usuario_destinatario: ticket_id,
-                        mensaje: ''
-                    },
-                    success: function(data) {
-                        $('#mensaje-info-' + ticket_id).html(data);
-                        $("#mensajes-container").html(data);
-                        $('#mensaje-info-' + ticket_id).css('display', 'block');
-                    }
-                });
-            }
-            $(document).ready(function() {
-                actualizarMensajes(0);
-            });
-            // Enviar mensaje mediante AJAX
-            const mandar_mensaje_actualizacion = async (ticket_id) => {
-                var id_denuncia = document.querySelector("#id_denuncia_" + ticket_id).value;
-                var id_admin = document.querySelector("#id_admin_" + ticket_id).value;
-                var id_usuario = document.querySelector("#id_usuario_" + ticket_id).value;
-                var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
-
-                if (respuesta.trim() === '') {
-                    Swal.fire({
-                        icon: "error",
-                        title: "ERROR.",
-                        text: "No puedes enviar un mensaje vacío.",
-                        footer: "Web Comics"
-                    })
-                    return;
+            </script>
+            <script>
+                // Función para abrir el modal
+                function openModal(modalId) {
+                    var modal = document.querySelector('.modal-form' + modalId);
+                    modal.style.display = "block";
                 }
 
-                //insert to data base in case of everything go correct.
-                const data = new FormData();
-                data.append('id_denuncia', id_denuncia);
-                data.append('id_admin', id_admin);
-                data.append('id_usuario', id_usuario);
-                data.append("mensaje", respuesta);
-
-                //pass data to php file
-                var respond = await fetch("php/apis/respuesta_denuncia.php", {
-                    method: 'POST',
-                    body: data
-                });
-
-                var result = await respond.json();
-
-                if (result.success == false) {
-                    document.querySelector('#form_mensaje').reset();
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    // Actualizar la lista de mensajes
-                    $('#mensaje_usuario_enviar').val('');
-                    $('#mensaje-info-' + ticket_id).html(result.data);
-                    // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
-                    // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
-                    actualizarMensajes(ticket_id, id_usuario);
+                // Función para cerrar el modal
+                function closeModal(modalId) {
+                    var modal = document.getElementById(modalId);
+                    modal.style.display = "none";
                 }
-            }
-        </script>
-        <script>
-            // Función para abrir el modal
-            function openModal(modalId) {
-                var modal = document.querySelector('.modal-form' + modalId);
-                modal.style.display = "block";
-            }
 
-            // Función para cerrar el modal
-            function closeModal(modalId) {
-                var modal = document.getElementById(modalId);
-                modal.style.display = "none";
-            }
-
-            // Botón para abrir el modal
-            var btns = document.querySelectorAll(".btn-open-modal");
-            btns.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    var modalId = btn.dataset.target;
-                    openModal(modalId);
+                // Botón para abrir el modal
+                var btns = document.querySelectorAll(".btn-open-modal");
+                btns.forEach(function(btn) {
+                    btn.addEventListener("click", function() {
+                        var modalId = btn.dataset.target;
+                        openModal(modalId);
+                    });
                 });
-            });
 
-            // Botón para cerrar el modal
-            var closeBtns = document.querySelectorAll(".close-modal");
-            closeBtns.forEach(function(closeBtn) {
-                closeBtn.addEventListener("click", function() {
-                    var modalId = closeBtn.dataset.target;
-                    closeModal(modalId);
+                // Botón para cerrar el modal
+                var closeBtns = document.querySelectorAll(".close-modal");
+                closeBtns.forEach(function(closeBtn) {
+                    closeBtn.addEventListener("click", function() {
+                        var modalId = closeBtn.dataset.target;
+                        closeModal(modalId);
+                    });
                 });
-            });
 
-            // Cerrar el modal al hacer clic en cualquier parte de la pantalla
-            var modals = document.querySelectorAll(".modal");
-            modals.forEach(function(modal) {
-                window.addEventListener("click", function(event) {
-                    if (event.target === modal) {
-                        modal.style.display = "none";
-                    }
+                // Cerrar el modal al hacer clic en cualquier parte de la pantalla
+                var modals = document.querySelectorAll(".modal");
+                modals.forEach(function(modal) {
+                    window.addEventListener("click", function(event) {
+                        if (event.target === modal) {
+                            modal.style.display = "none";
+                        }
+                    });
                 });
-            });
-        </script>
+            </script>
 
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="footer-title">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 

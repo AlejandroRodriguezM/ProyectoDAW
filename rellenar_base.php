@@ -44,7 +44,7 @@ function insertar_opiniones_aleatorias($comentarios_comics) {
     $stmt = $conection->prepare("INSERT INTO opiniones_comics (id_comic,id_usuario, opinion, puntuacion, fecha_comentario) VALUES (? ,?, ?, ?, ?)");
 
     // Recorremos todos los cómics en la tabla "comic" y les asignamos una opinión aleatoria
-    for ($id_comic = 7377; $id_comic <= $total_comics; $id_comic++) {
+    for ($id_comic = 1; $id_comic <= $total_comics; $id_comic++) {
         // Escogemos una opinión aleatoria de la lista de frases de comentarios de cómics
         $opinion = $comentarios_comics[array_rand($comentarios_comics)];
 
@@ -55,7 +55,7 @@ function insertar_opiniones_aleatorias($comentarios_comics) {
         $fecha_comentario = date('Y-m-d', strtotime('-'.rand(0, 1825).' days'));
 
         // Ejecutamos la consulta con los valores aleatorios generados y el ID del cómic actual
-        $stmt->execute([$id_comic,16, $opinion, $puntuacion, $fecha_comentario]);
+        $stmt->execute([$id_comic,26, $opinion, $puntuacion, $fecha_comentario]);
     }
 }
 insertar_opiniones_aleatorias($comentarios_comics);

@@ -34,6 +34,7 @@ const no_logueado = async () => {
         title: "ERROR.",
         text: "You have to log in to access this page",
         footer: "Web Comics"
+        
     })
     setTimeout(() => {
         window.location.reload();

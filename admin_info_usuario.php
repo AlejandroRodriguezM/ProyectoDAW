@@ -57,12 +57,12 @@ guardar_ultima_conexion($email_admin);
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
-    <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <!-- <link rel="stylesheet" href="./assets/style/parallax.css"> -->
     <!-- <link rel="stylesheet" href="./assets/style/media_recomendaciones.css"> -->
     <link rel="stylesheet" href="./assets/style/media_videos.css">
-    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
+    <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -81,26 +81,85 @@ guardar_ultima_conexion($email_admin);
     <title>Perfil de usuario</title>
 
     <style>
-        .contenedor {
-            width: 50% !important;
-            overflow-x: auto;
-            margin: 0 auto;
-            padding-top: 30px;
-            padding-bottom: 30px;
-            border-radius: 30px;
-        }        body {
+        .comics-lists {
+            /* display: flex; */
+            align-items: center;
+        }
+
+        .comics-lists p {
+            display: block;
+            margin: 0 10px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            line-height: 1.5em;
+        }
+
+        .comics-lists p:first-child {
+            padding-left: 0;
+        }
+
+        .comics-lists p i {
+            font-size: 1.5em;
+            margin-right: 5px;
+        }
+
+        .icon {
+            width: 70px;
+            height: 70px;
+        }
+
+        button.nav-link.dropdown-toggle {
+            border: none;
+            background-color: transparent;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        button.nav-link.dropdown-toggle:hover {
+            color: #ccc;
+        }
+
+        body {
             margin: 0 !important;
-            padding: 0 !important;
+            /* padding: 0 !important; */
             height: 100% !important;
-            overflow-y: scroll !important; /* Habilita el scroll vertical */
+            background-color: rgba(0, 0, 0, 0);
 
         }
 
         main {
-            min-height: 100vh !important;
+
+            height: 100% !important;
         }
 
+        /* Estilos generales para el footer */
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            text-align: center;
+        }
 
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
+
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
+
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
+        }
     </style>
 
 </head>
@@ -260,15 +319,15 @@ guardar_ultima_conexion($email_admin);
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -343,7 +402,7 @@ guardar_ultima_conexion($email_admin);
         }
         ?>
 
-        <div class="card-footer text-muted">
+        <div class="card-footer text-muted" style="background-color:white">
             Design by Alejandro Rodriguez 2022
         </div>
 
@@ -410,7 +469,7 @@ guardar_ultima_conexion($email_admin);
 
 
         </div>
-                <!--Canvas menu-->
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -510,7 +569,7 @@ guardar_ultima_conexion($email_admin);
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -604,102 +663,114 @@ guardar_ultima_conexion($email_admin);
                 <!-- </div> -->
             </div>
         </div>
-
-
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
-            <div class="contenedor mt-5">
-                <div class="view-account" style="width:90%;justify-content: center;margin: 0 auto;">
-                    <section class="module">
-                        <div class="module-inner">
-                            <div class="side-bar">
-                                <div class="user-info">
-                                    <?php
-                                    echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$imagen_perfil_usuario' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
-                                    ?>
-
-                                    <ul class="meta list list-unstyled">
-                                        <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
+            <div class="container" style="background-color: #00000000">
+                <div class="row justify-content-center no-gutters row-cols-1">
+                    <div class="col-lg-8 col-md-10">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="user-info">
                                             <?php
-                                            echo $nombre_usuario;
+                                            echo "<img class='img-profile img-circle img-responsive center-block w-100 h-auto' id='avatarUser' alt='Avatar' src='$imagen_perfil_usuario' onclick='pictureProfileUser()'; />";
                                             ?>
-                                        </li>
-                                        <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
-                                            <?php
-                                            echo " " . "<span style='font-size: 0.7em'>$email_usuario</span>";
-                                            ?>
-                                        </li>
-                                        <li class="activity"><label for="" style="font-size: 0.8em;">Ultima conexion: </label>
-                                            <?php
-                                            echo comprobar_ultima_conexion($id_usuario);
-                                            ?>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <nav class="side-menu">
-                                    <ul class="nav">
-                                        <li class='active' onclick="window.location.href='admin_info_usuario.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-user"></span>Perfil</a></li>
-                                        <li onclick="window.location.href='admin_actualizar_usuario.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-cog"></span>Editar</a></li>
-                                        <li onclick="window.location.href='admin_mensajes_usuarios.php?id_usuario=<?php echo $id_usuario ?>'; return false;"><a href="#"><span class="fa fa-envelope"></span>Mensajes</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div class="content-panel">
-                                <fieldset class="fieldset">
-                                    <h3 class="fieldset-title">Información</h3>
-                                    <div class="form-group avatar">
+                                            <ul class="meta list list-unstyled">
+                                                <li class="name">
+                                                    <label for="" style="font-size: 0.8em;">Nombre:</label>
+                                                    <?php
+                                                    echo $nombre_usuario;
+                                                    ?>
+                                                </li>
+                                                <li class="email">
+                                                    <label for="" style="font-size: 0.8em;">Mail: </label>
+                                                    <?php
+                                                    echo " " . "<span style='font-size: 0.7em'>$email_usuario</span>";
+                                                    ?>
+                                                </li>
+                                                <li class="activity">
+                                                    <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
+                                                    <?php
+                                                    echo comprobar_ultima_conexion($id_usuario);
+                                                    ?>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+                                                    <ul class="nav nav-pills flex-column mb-auto">
+                                                        <li>
+                                                            <a href="admin_info_usuario.php?id_usuario=<?php echo $id_usuario ?>" class="nav-link active">
+                                                                <span class='fa fa-user'></span>&nbsp;Perfil</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="admin_actualizar_usuario.php?id_usuario=<?php echo $id_usuario ?>" class="nav-link link-dark">
+                                                                <span class='fa fa-user'></span>&nbsp;Editar</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="admin_mensajes_usuarios.php?id_usuario=<?php echo $id_usuario ?>" class="nav-link link-dark ">
+                                                                <span class="fa fa-cog"></span>&nbsp;Mensajes</a>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <div class="col-md-8">
+                                        <fieldset class="fieldset">
+                                            <h3 class="fieldset-title">Información</h3>
 
-                                    <div class="form-group">
-                                        <?php
-                                        echo "<label>Nombre de usuario: </label>";
-                                        echo " " . "<span>$nombre_usuario</span>";
-                                        ?>
+                                            <div class="form-group">
+                                                <?php
+                                                echo "<label>Nombre de usuario: </label>";
+                                                echo " " . "<span>$nombre_usuario</span>";
+                                                ?>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <?php
+                                                echo " " . "<span>$nombre</span>";
+                                                ?>
+                                            </div>
+                                            <div class="form-group">
+                                                <?php
+                                                echo "<label>Correo electronico: </label>";
+                                                echo " " . "<span>$email_usuario</span>";
+                                                ?>
+                                            </div>
+                                            <div class="form-group">
+                                                <?php
+                                                echo "<label>Fecha de creacion: </label>";
+                                                echo " " . "<span>$fechaCreacion</span>";
+                                                echo "<br>";
+                                                echo "<label>Sobre mi:</label><br>";
+                                                echo "<div class='col-xs-12'>";
+                                                echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
+                                                echo "</div>";
+                                                ?>
+                                            </div>
+                                        </fieldset>
+                                        <hr>
+                                        <div class="comics-lists">
+                                            <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo  get_total_guardados($id_usuario); ?> comics guardados</p>
+                                            <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_usuario); ?> listas</p>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <?php
-                                        echo "<label>Correo electronico: </label>";
-                                        echo " " . "<span>$email_usuario</span>";
-                                        ?>
-                                    </div>
-                                    <?php
-
-
-                                    echo "<label>Nombre: </label>";
-                                    echo " " . "<span>$nombre</span>";
-                                    echo "<br>";
-                                    echo "<label>Apellidos: </label>";
-                                    echo " " . "<span>$apellidos</span>";
-                                    echo "<br>";
-                                    echo "<label>Fecha de creacion: </label>";
-                                    echo " " . "<span>$fechaCreacion</span>";
-                                    echo "<br>";
-                                    echo "<label>Sobre mi:</label><br>";
-                                    echo "<div class='col-xs-12'>";
-                                    echo "<textarea class='form-control' rows='4' style='resize:none; width:50%' readonly>$sobreUser</textarea>";
-                                    echo "</div>";
-
-                                    ?>
-                                </fieldset>
-                                <hr>
-                                <div class="mb-3">
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </div>
             </div>
-
-            <!-- The Modal -->
-            <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <img class="modal-content_img" id="img01">
-            </div>
-            <div id="footer-lite">
-                <div class="content">
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
                     <p class="helpcenter">
                         <a href="http://www.example.com/help">Ayuda</a>
                     </p>
-                    <p class="legal">
+                    <p class="footer-title">
                         <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
                         <span>·</span>
                         <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
@@ -717,9 +788,7 @@ guardar_ultima_conexion($email_admin);
                     <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
                 </div>
             </div>
-
         </div>
-
     </main>
 </body>
 

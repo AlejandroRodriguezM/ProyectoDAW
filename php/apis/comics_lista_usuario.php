@@ -63,6 +63,24 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
   }
 }
 
+if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
+  echo "<div class='navigation-buttons'>";
+  if ($contador2 % $total_comics != 1) {
+    echo '<button id="cargar-mas" name="cargar-mas" onclick="cargarMasComics(); ocultarBotones()">Cargar más</button>';
+  }
+
+  if ($contador2 >= 8) { // Solo muestra el botón 'Atrás' si se han cargado al menos 2 páginas completas
+    echo '<button id="cargar-menos" onclick="cargarComicsAnteriores(); ocultarBotones()">Atras</button>';
+  }
+
+  echo "</div>";
+  echo "<div id='paginas'></div>";
+} elseif ($contador2 >= 1 && $contador2 < 8 && $total_comics > $contador2 && ceil($total_comics / 8) > 1) {
+  echo "<div class='navigation-buttons'>";
+  echo '<button id="cargar-mas" onclick="cargarMasComics(); ocultarBotones()">Cargar más</button>';
+  echo "</div>";
+}
+
 ?>
 
 

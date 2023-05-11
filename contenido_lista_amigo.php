@@ -42,7 +42,7 @@ $nombre_lista = $data_lista['nombre_lista'];
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
-    <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/novedades.css">
     <!-- <link rel="stylesheet" href="./assets/style/parallax.css"> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
@@ -190,15 +190,43 @@ $nombre_lista = $data_lista['nombre_lista'];
 
         body {
             margin: 0 !important;
-            padding: 0 !important;
+            /* padding: 0 !important; */
             height: 100% !important;
-            overflow-y: scroll !important;
-            /* Habilita el scroll vertical */
+            background-color: rgba(0, 0, 0, 0);
 
         }
 
         main {
-            min-height: 100vh !important;
+
+            height: 100% !important;
+        }
+
+        /* Estilos generales para el footer */
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
+
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
+
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -358,15 +386,15 @@ $nombre_lista = $data_lista['nombre_lista'];
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -441,9 +469,9 @@ $nombre_lista = $data_lista['nombre_lista'];
         }
         ?>
 
-        <div class="card-footer text-muted">
-            Design by Alejandro Rodriguez 2022
-        </div>
+            <div class="card-footer text-muted" style="background-color:white">
+                Design by Alejandro Rodriguez 2022
+            </div>
 
         <!--Canvas imagen de perfil-->
         <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
@@ -708,26 +736,25 @@ $nombre_lista = $data_lista['nombre_lista'];
             <img class="modal-content_img" id="img01">
         </div>
 
-        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
-            <div class="caption">
-                <div class='filtrado_comics sticky-top '>
-                    <!-- Aquí irían los acordeones -->
-                </div>
+        <div class="caption">
+            <div class='filtrado_comics sticky-top '>
+                <!-- Aquí irían los acordeones -->
             </div>
+        </div>
 
-            <div style="display: flex; justify-content: center;">
-                <div class="container mt-5">
-                    <div class="last-pubs-1">
-                        <br>
-                        <div class="titulo" style="border-radius:10px">
-                            <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
-                            <h2 style='text-align: center'>Lista <?php echo $nombre_lista  ?></h2>
-                        </div>
-                        <br>
-                    </div>
+        <div style="display: flex; justify-content: center;">
+            <div class="container mt-5">
+                <div class="last-pubs-1">        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+            <br>
+                    <div class="titulo" style="border-radius:10px">
+                        <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
+                        <h2 style='text-align: center'>Lista <?php echo $nombre_lista  ?></h2>
+                    </div>        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+            <br>
                 </div>
             </div>
-            <!-- <div class="container mt-5">
+        </div>
+        <!-- <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
                     <div class="last-pubs2 col-md-8">
                         <div class="titulo">
@@ -743,30 +770,6 @@ $nombre_lista = $data_lista['nombre_lista'];
                 </div>
             </div> -->
 
-            <div id="footer-lite">
-                <div class="content">
-                    <p class="helpcenter">
-                        <a href="http://www.example.com/help">Ayuda</a>
-                    </p>
-                    <p class="legal">
-                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                        <span>·</span>
-                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                        <span>·</span>
-                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                        <span>·</span>
-                        <a href="about.php" style="color:black">Quiénes somos</a>
-                    </p>
-                    <!-- add social media with icons -->
-                    <p class="social">
-                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-
-                    </p>
-                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
-                </div>
-            </div>
-        </div>
         </div>
 
         <script>
@@ -810,7 +813,7 @@ $nombre_lista = $data_lista['nombre_lista'];
                 }
                 $.ajax({
 
-                    url: "php/apis/comics_lista.php",
+                    url: "php/apis/comics_lista_usuario.php",
                     data: data,
                     success: function(data) {
                         totalComics = $(data).filter("#total-comics").val();
@@ -879,6 +882,30 @@ $nombre_lista = $data_lista['nombre_lista'];
                 }
             }
         </script>
+                <div id="footer-lite" class="mt-5">
+                <div class="container">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="footer-title">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 

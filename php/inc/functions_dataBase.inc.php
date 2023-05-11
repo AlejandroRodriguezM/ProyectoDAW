@@ -852,7 +852,7 @@ function search_user($search): PDOStatement
 	global $conection;
 	$search = htmlspecialchars($search, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$consulta = $conection->prepare("SELECT userName,email,userPicture from users WHERE userName LIKE ? OR email LIKE ? AND accountStatus = 'active' AND tipo_perfil = 'publico'");
+		$consulta = $conection->prepare("SELECT userName,tipo_perfil,userPicture from users WHERE userName LIKE ? OR email LIKE ? AND accountStatus = 'active' AND tipo_perfil = 'publico'");
 		$consulta->execute(array("%$search%", "%$search%"));
 	} catch (PDOException $e) {
 		//Obtener el código de error
@@ -2582,4 +2582,25 @@ function enviar_correo_activacion($email_registro, $id_unico)
 	$message .= "<br><br><hr><p>Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!</p>";
 	$headers = "From: informacion@comicweb.es"; // Dirección de correo electrónico del remitente
 	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
+}
+
+function comprobar_propiedad_lista($id_usuario, $id_lista)
+{
+	global $conection;
+	$estado = false;
+	$id_usuario = htmlspecialchars($id_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$id_lista = htmlspecialchars($id_lista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+	try {
+		$consulta = $conection->prepare("SELECT id_user from lista_comics where id_lista = ? and id_user = ?");
+		if ($consulta->execute([$id_lista, $id_usuario])) {
+			$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+			if (count($resultados) > 0) {
+				$estado = true;
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
 }

@@ -172,7 +172,4 @@ if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
         loadComics(offset);
         $('.new-comic-list').remove();
     }
-
-    console.log(offset)
-    console.log(limit)
 </script>

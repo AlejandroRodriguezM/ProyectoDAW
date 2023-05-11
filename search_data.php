@@ -50,10 +50,10 @@ if (isset($_GET['search'])) {
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
-    <link rel="stylesheet" href="./assets/style/footer_style.css">
+    <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/novedades.css">
 
-    <link rel="stylesheet" href="./assets/style/media_barra_principal.css">
+    <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -330,14 +330,43 @@ if (isset($_GET['search'])) {
 
         body {
             margin: 0 !important;
-            padding: 0 !important;
+            /* padding: 0 !important; */
             height: 100% !important;
-            overflow-y: scroll !important;
-            /* Habilita el scroll vertical */
+            background-color: rgba(0, 0, 0, 0);
+
         }
 
         main {
-            min-height: 100vh !important;
+
+            height: 100% !important;
+        }
+
+        /* Estilos generales para el footer */
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
+
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
+
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -489,15 +518,15 @@ if (isset($_GET['search'])) {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -572,7 +601,7 @@ if (isset($_GET['search'])) {
         }
         ?>
 
-        <div class="card-footer text-muted">
+        <div class="card-footer text-muted" style="background-color:white">
             Design by Alejandro Rodriguez 2022
         </div>
 
@@ -828,36 +857,40 @@ if (isset($_GET['search'])) {
                 <div class="container-fluid mt-2">
 
                     <div class="d-flex justify-content-center">
-                        <div class="table-responsive">
-                            <table class="comic_table table table-hover table-responsive-sm">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>Foto de perfil</th>
-                                        <th>Usuario</th>
-                                        <th>Nombre</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $registros = search_user($input_user);
-                                    $user = $registros->fetch();
-                                    while ($user != null) {
-                                    ?>
-                                        <tr style="background-color:rgb(77,81,84)">
-                                            <td class="col-sm-3 col-md-2">
-                                                <a href="infoUser.php?userName=<?php echo $user['userName']; ?>">
-                                                    <img src="<?php echo $user['userPicture']; ?>" alt="profile picture" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
-                                                </a>
-                                            </td>
-                                            <td class="col-sm-4 col-md-3"><?php echo $user['userName']; ?></td>
-                                            <td class="col-sm-5 col-md-7"><?php echo $user['email']; ?></td>
+                        <div class="col-8">
+
+                            <div class="table-responsive">
+                                <table class="comic_table table table-hover table-responsive-sm">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Foto de perfil</th>
+                                            <th>Usuario</th>
+                                            <th>Tipo de perfil</th>
                                         </tr>
-                                    <?php
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $registros = search_user($input_user);
                                         $user = $registros->fetch();
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
+                                        while ($user != null) {
+                                        ?>
+                                            <tr style="background-color:rgb(77,81,84); color:white;">
+                                                <td class="text-wrap">
+                                                    <a href="infoUser.php?userName=<?php echo $user['userName']; ?>">
+                                                        <img src="<?php echo $user['userPicture']; ?>" alt="profile picture" class="avatarPicture" name="avatarUser" id="avatar" alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
+                                                    </a>
+                                                </td>
+                                                <td class="text-wrap" style="color:white;"><?php echo $user['userName']; ?></td>
+                                                <td class="text-wrap" style="color:white;"><?php echo $user['tipo_perfil']; ?></td>
+                                            </tr>
+                                        <?php
+                                            $user = $registros->fetch();
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -907,12 +940,86 @@ if (isset($_GET['search'])) {
             }
             ?>
 
-            <div id="footer-lite">
-                <div class="content">
+
+            <script>
+                var limit = 5;
+                var offset = 0;
+                var totalComics = 0;
+
+                $(document).ready(function() {
+                    loadComics();
+
+                    $(window).scroll(function() {
+                        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 20) {
+                            offset += limit;
+                            loadComics();
+                        }
+                    });
+                });
+
+                function loadComics() {
+                    var data = {
+                        limit: limit,
+                        offset: offset,
+                        search: "<?php echo $input_comic; ?>"
+                    };
+
+                    var url = "php/apis/resultado_comics.php?" + $.param(data);
+
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        success: function(data) {
+                            var newComicList = '<tbody class="busqueda_comics">' + data + '</tbody>';
+                            $('.comic_table').append(newComicList);
+                        }
+                    });
+                }
+            </script>
+            <script>
+                var resizeTimer;
+
+                function comics_recomendados() {
+                    // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+                    var width = $(window).width();
+                    var num_comics = Math.max(3, Math.min(8, Math.floor(width / 150))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
+
+                    var data = {
+                        num_comics: num_comics
+                    };
+                    $.ajax({
+                        url: "php/apis/recomendaciones_comics.php",
+                        data: data,
+                        success: function(data) {
+                            totalComics = $(data).filter("#total-comics").val();
+                            $('.comics').html('');
+                            $(data).appendTo('.comics');
+                        }
+                    });
+                }
+
+                comics_recomendados();
+                // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+                $(window).on('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(comics_recomendados, 100);
+                });
+
+                var myOffcanvas1 = document.getElementById('offcanvasExample')
+                var myOffcanvas1 = new bootstrap.Offcanvas(myOffcanvas1)
+
+                var myOffcanvas2 = document.getElementById('offcanvasNavbarDark')
+                var myOffcanvas2 = new bootstrap.Offcanvas(myOffcanvas2)
+            </script>
+
+
+
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
                     <p class="helpcenter">
                         <a href="http://www.example.com/help">Ayuda</a>
                     </p>
-                    <p class="legal">
+                    <p class="footer-title">
                         <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
                         <span>·</span>
                         <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
@@ -931,79 +1038,6 @@ if (isset($_GET['search'])) {
                 </div>
             </div>
         </div>
-        <script>
-            var limit = 5;
-            var offset = 0;
-            var totalComics = 0;
-
-            $(document).ready(function() {
-                loadComics();
-
-                $(window).scroll(function() {
-                    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 20) {
-                        offset += limit;
-                        loadComics();
-                    }
-                });
-            });
-
-            function loadComics() {
-                var data = {
-                    limit: limit,
-                    offset: offset,
-                    search: "<?php echo $input_comic; ?>"
-                };
-
-                var url = "php/apis/resultado_comics.php?" + $.param(data);
-
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(data) {
-                        var newComicList = '<tbody class="busqueda_comics">' + data + '</tbody>';
-                        $('.comic_table').append(newComicList);
-                    }
-                });
-            }
-        </script>
-        <script>
-            var resizeTimer;
-
-            function comics_recomendados() {
-                // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-                var width = $(window).width();
-                var num_comics = Math.max(3, Math.min(8, Math.floor(width / 150))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
-
-                var data = {
-                    num_comics: num_comics
-                };
-                $.ajax({
-                    url: "php/apis/recomendaciones_comics.php",
-                    data: data,
-                    success: function(data) {
-                        totalComics = $(data).filter("#total-comics").val();
-                        $('.comics').html('');
-                        $(data).appendTo('.comics');
-                    }
-                });
-            }
-
-            comics_recomendados();
-            // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-            $(window).on('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(comics_recomendados, 100);
-            });
-
-            var myOffcanvas1 = document.getElementById('offcanvasExample')
-            var myOffcanvas1 = new bootstrap.Offcanvas(myOffcanvas1)
-
-            var myOffcanvas2 = document.getElementById('offcanvasNavbarDark')
-            var myOffcanvas2 = new bootstrap.Offcanvas(myOffcanvas2)
-        </script>
-
-
-
     </main>
 </body>
 

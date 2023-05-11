@@ -172,5 +172,4 @@ if ($contador2 >= 8 && $total_comics_agregar > 8 && ceil($total_comics_agregar /
 
   }
 
-  console.log(offset_agregar)
 </script>
