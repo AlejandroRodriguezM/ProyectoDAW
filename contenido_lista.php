@@ -217,7 +217,7 @@ if (!check_lista_user($id_usuario, $id_lista)) {
 
         body {
             margin: 0 !important;
-            /* padding: 0 !important; */
+            padding: 0 ;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 

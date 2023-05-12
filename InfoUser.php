@@ -156,7 +156,7 @@ if (isset($_GET['userName'])) {
         html,
         body {
             margin: 0 !important;
-            /* padding: 0 !important; */
+            padding: 0 ;
             height: 100% !important;
 
         }

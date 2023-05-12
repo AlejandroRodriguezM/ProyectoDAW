@@ -151,7 +151,7 @@ if (isset($_SESSION['email'])) {
 
         body {
             margin: 0 !important;
-            /* padding: 0 !important; */
+            padding: 0 ;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 
@@ -696,8 +696,6 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
 
-        </div>
-
         <script>
             var limit = 24;
             var offset = 0;
@@ -764,7 +762,6 @@ if (isset($_SESSION['email'])) {
                 </p>
                 <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
             </div>
-        </div>
         </div>
     </main>
 </body>

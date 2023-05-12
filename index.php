@@ -181,7 +181,7 @@ if (isset($_SESSION['email'])) {
 
         body {
             margin: 0 !important;
-            /* padding: 0 !important; */
+            padding: 0;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 
@@ -844,18 +844,18 @@ if (isset($_SESSION['email'])) {
                                     if (isset($_SESSION['email'])) {
                                         if ($userPrivilege == 'admin') {
                                     ?>
-                                            <button type="button" class="btn btn-danger btn-sm float-end" style="display: block;" onclick="eliminarComentario(' . $id_opinion . ')">Eliminar</button>
+                                            <button type="button" class="btn btn-danger btn-sm float-end" style="display: block;" onclick="eliminarComentario('<?php echo $id_opinion ?>')">Eliminar</button>
                             <?php
                                         }
                                     }
                                     echo '<p class="text-justify comment-text mb-0" style="margin-top:5px;margin-left:10px">' . $opinion . '</p>
-                                            <div class="d-flex flex-row align-items-center mr-2" id="rating">
-                                                <div class="rating-lectura" style="margin-left:5px">
+                                                    <div class="d-flex flex-row align-items-center mr-2" id="rating">
+                                                        <div class="rating-lectura" style="margin-left:5px">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>';
+                                    </div>';
                                 }
                             } else {
                                 echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';

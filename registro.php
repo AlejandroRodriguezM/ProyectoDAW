@@ -13,12 +13,14 @@ if (isset($_SESSION['email'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
     <!-- <link rel="stylesheet" href="./assets/style/style.css"> -->
     <link rel="stylesheet" href="./assets/style/show-password-toggle.css">
     <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/style_index.css">
+
     <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
@@ -26,99 +28,64 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <title>Registro</title>
 
-<style>
-    .chosenUserProfile {
-        width: 106px;
-        height: 106px;
-        background-color: #999999;
-        border: 4px solid #CCCCCC;
-        color: #FFFFFF;
-        border-radius: 50%;
-        margin: 0px auto;
-        overflow: hidden;
-        transition: all 0.2s;
-        -webkit-transition: all 0.2s;
-    }
+    <style>
+        .chosenUserProfile {
+            width: 106px;
+            height: 106px;
+            background-color: #999999;
+            border: 4px solid #CCCCCC;
+            color: #FFFFFF;
+            border-radius: 50%;
+            margin: 0px auto;
+            overflow: hidden;
+            transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+        }
 
-    html,
-    body {
-        margin: 0 !important;
-        /* padding: 0 !important; */
-        height: 100% !important;
+        body {
+            margin: 0 !important;
+            /* padding: 0 !important; */
+            height: 100% !important;
 
-    }
+        }
 
-    main {
+        main {
 
-        min-height: 100vh !important;
-    }
+            min-height: 100vh !important;
+        }
 
-    /* Estilos generales para el footer */
-    #footer-lite {
-        background-color: #f5f5f5;
-        padding: 20px 0;
-        text-align: center;
-    }
+        /* Estilos generales para el footer */
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            text-align: center;
+        }
 
-    /* Estilos para los enlaces */
-    #footer-lite a {
-        color: #444;
-    }
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
 
-    #footer-lite a:hover {
-        color: #007bff;
-        text-decoration: none;
-    }
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
 
-    /* Estilos para los íconos de redes sociales */
-    #footer-lite .social a img {
-        margin-right: 10px;
-    }
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
 
-    /* Estilos para el texto del copyright */
-    #footer-lite .copyright {
-        font-size: 14px;
-        margin-top: 10px;
-    }
-</style>
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
+
 <body class="d-flex flex-column min-vh-100">
     <main class="flex-shrink-0">
-
-        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/background.jpg');opacity: 0.8;">
-            <br>
-            <div class="col-12 col-md-6 offset-md-3 mx-auto max-w-md text-center">
-                <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;">
-                    <div class="row justify-content-center col-lg-7 mx-auto">
-                        <!-- <div class="col-lg-7 "> -->
-                        <img src="./assets/img/logoWeb.png" class="mt-2" width="250px" alt="logo web">
-                        <form id="formInsert" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                            <div class="mb-3 text-center">
-                                <label for="name" class="form-label w-100">Nombre de usuario</label>
-                                <input type="text" class="form-control w-100" id="name" placeholder="Enter your name">
-                            </div>
-                            <div class="mb-3 text-center">
-                                <label for="correo" class="form-label w-100">Correo electronico</label>
-                                <input type="email" class="form-control w-100" id="correo" placeholder="name@test.com">
-                            </div>
-                            <div class="mb-3 text-center">
-                                <label for="password" class="form-label w-100">Contraseña</label>
-                                <input type="password" class="form-control w-100" id="password" placeholder="***********">
-                            </div>
-                            <div class="mb-3 text-center">
-                                <label for="repassword" class="form-label w-100">Repita contraseña</label>
-                                <input type="password" class="form-control w-100" id="repassword" placeholder="***********">
-                            </div>
-                            <div class="mb-3 text-center">
-                                <img class="chosenUserProfile mb-2" id="output" src="./assets/img/chosePicture.png" />
-                                <input class="form-control w-100" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)">
-                            </div>
-                            <div class="mb-3 text-center">
-                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Leer condiciones y servicios
-                                </button>
-                            </div>
-
                             <!-- Modal -->
                             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl">
@@ -177,6 +144,43 @@ if (isset($_SESSION['email'])) {
                                     </div>
                                 </div>
                             </div>
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/background.jpg');opacity: 0.8;">
+            <br>
+            <div class="col-12 col-md-6 offset-md-3 mx-auto max-w-md text-center">
+                <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;">
+
+                    <div class="row justify-content-center col-lg-7 mx-auto">
+                        <!-- <div class="col-lg-7 "> -->
+                        <img src="./assets/img/logoWeb.png" class="mt-2" width="250px" alt="logo web">
+                        <h3 class="mt-2">DATOS DE REGISTRO</h3>
+                        <form id="formInsert" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <div class="mb-3 text-center">
+                                <label for="name" class="form-label w-100">Nombre de usuario</label>
+                                <input type="text" class="form-control w-100" id="name" placeholder="Enter your name">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <label for="correo" class="form-label w-100">Correo electronico</label>
+                                <input type="email" class="form-control w-100" id="correo" placeholder="name@test.com">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <label for="password" class="form-label w-100">Contraseña</label>
+                                <input type="password" class="form-control w-100" id="password" placeholder="***********">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <label for="repassword" class="form-label w-100">Repita contraseña</label>
+                                <input type="password" class="form-control w-100" id="repassword" placeholder="***********">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <img class="chosenUserProfile mb-2" id="output" src="./assets/img/chosePicture.png" />
+                                <input class="form-control w-100" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)">
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Leer condiciones y servicios
+                                </button>
+                            </div>
+
+
 
                             <div class="mb-3 text-center">
 

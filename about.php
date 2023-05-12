@@ -39,7 +39,7 @@ if (isset($_SESSION['email'])) {
     <!-- <link rel="stylesheet" href="./assets/style/parallax.css"> -->
     <!-- <link rel="stylesheet" href="./assets/style/media_recomendaciones.css"> -->
     <link rel="stylesheet" href="./assets/style/media_videos.css">
-    <!-- <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> --> -->
+    <!-- <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -105,7 +105,7 @@ if (isset($_SESSION['email'])) {
 
         body {
             margin: 0 !important;
-            /* padding: 0 !important; */
+            padding: 0 ;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 

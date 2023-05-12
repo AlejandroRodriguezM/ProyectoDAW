@@ -43,7 +43,7 @@ if (isset($_SESSION['email'])) {
         html,
         body {
             margin: 0 !important;
-            /* padding: 0 !important; */
+            padding: 0 ;
             height: 100% !important;
 
         }
@@ -118,7 +118,6 @@ if (isset($_SESSION['email'])) {
                             <div class="mb-3">
                                 <a href="about.php" type="button" class="btn btn-info btn-block mb-2 w-100" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Saber mas</a>
                             </div>
-
                         </form>
                     </div>
                 </div>
