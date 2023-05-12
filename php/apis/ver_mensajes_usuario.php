@@ -9,6 +9,8 @@ if (isset($_SESSION['email'])) {
   $data = obtener_datos_usuario($email_user);
   $id_usuario = $data['IDuser'];
   $mensajes = get_mensajes($id_usuario);
+}else{
+  header('Location: ../index.php');
 }
 
 // Verificar si hay mensajes

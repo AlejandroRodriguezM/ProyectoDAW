@@ -55,20 +55,6 @@ if (!empty($mensajes)) {
     } else {
       echo "<p>No hay conversación para este ticket</p>";
     }
-
-
-    echo '<div class="comment-box">
-    <form id="form_mensaje-' . $mensaje['id_conversacion'] . '" action="#" method="POST" onsubmit="return false;">';
-    echo "<input type='hidden' id='id_usuario_destinatario-" . $mensaje['id_conversacion'] . "' value='$id_destinatario'>";
-    echo "<input type='hidden' id='id_usuario_remitente-" . $mensaje['id_conversacion'] . "' value='$id_usuario'>";
-    echo "<input type='hidden' id='id_conversacion-" . $mensaje['id_conversacion'] . "' value='$id_conversacion'>";
-    echo '<textarea id="mensaje_usuario_enviar-' . $mensaje['id_conversacion'] . '" name="mensaje_usuario_enviar" placeholder="Escribe aquí tu mensaje..." data-valor="' . $mensaje['id_conversacion'] . '"></textarea>
-    <button type="button" onclick="mandar_mensaje_actualizacion(' . $mensaje['id_conversacion'] . ')">Enviar</button>';
-
-
-
-    echo "</form>";
-    echo "</div>";
     echo "</div>"; // cierra ticket-info
     echo "</div>"; // cierra ticket
 

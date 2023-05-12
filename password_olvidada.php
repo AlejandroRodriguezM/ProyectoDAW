@@ -13,18 +13,20 @@ if (isset($_SESSION['email'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
     <!-- <link rel="stylesheet" href="./assets/style/style.css"> -->
     <link rel="stylesheet" href="./assets/style/show-password-toggle.css">
     <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/style_index.css">
+
     <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <title>Login</title>
+    <title>¿Has olvidado tu contraseña?</title>
 
     <style>
         .chosenUserProfile {
@@ -40,10 +42,9 @@ if (isset($_SESSION['email'])) {
             -webkit-transition: all 0.2s;
         }
 
-        html,
         body {
             margin: 0 !important;
-            padding: 0;
+            /* padding: 0 !important; */
             height: 100% !important;
 
         }
@@ -92,41 +93,22 @@ if (isset($_SESSION['email'])) {
                 <div class="d-flex justify-content-center align-items-center" style="min-height: 68vh;">
                     <div class="col-12 col-md-6 offset-md-3 mx-auto max-w-md text-center">
                         <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;border-radius:15px">
+
                             <div class="row justify-content-center col-lg-7 mx-auto">
-                                <!-- <div class="col-lg-7 "> -->
                                 <img src="./assets/img/logoWeb.png" class="mt-2" alt="logo web">
-                                <h3 class="mt-2">Datos de Login</h3>
-                                <form method="post" id="formIniciar" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form-control-sm">
-                                    <div class="mb-3">
-                                        <label for="acceso" class="form-label">Nombre de usuario/Email</label>
-                                        <input type="text" class="form-control w-100" id="acceso" placeholder="Introduce tu nombre de usuario o email" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">Contraseña</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control w-100" id="password_user" placeholder="Introduce tu contraseña" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                            <button id="toggle-password" type="button" class="d-none"></button>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <div class="mb-3">
-                                                <input type="button" name="enter_sesion" class="btn btn-danger btn-block mb-2 w-100" onclick="login_user();" value="Iniciar sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                <h3 class="mt-2">Datos para recuperar la contraseña</h3>
+                                <form id="form_pass_olvidada" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="mb-3">
-                                                <input type="button" name="guest_user" class="btn btn-secondary btn-block mb-2 w-100" onclick="guest_User();" value="Invitado" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <a href="registro.php" type="button" class="btn btn-primary btn-block mb-2 w-100" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Crear cuenta</a>
+                                    <div class="mb-3 text-center">
+                                        <label for="correo" class="form-label w-100">Correo electronico</label>
+                                        <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo electronico" required>
                                     </div>
 
                                     <div class="mb-3">
-                                        <a href="password_olvidada.php" type="button" class="btn btn-info btn-warning mb-2 w-100" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">¿Has olvidado tu contraseña?</a>
+                                        <input type="button" class="btn btn-danger form-control" onclick="solicitud_password();" value="Recuperar contraseña" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    </div>
+                                    <div class="mb-3">
+                                        <a href="login.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Volver</a>
                                     </div>
                                 </form>
                             </div>
@@ -134,26 +116,9 @@ if (isset($_SESSION['email'])) {
                     </div>
                 </div>
             </div>
-            <script>
-                var ShowPasswordToggle = document.querySelector("[type='password']");
-                ShowPasswordToggle.onclick = function() {
-                    document.querySelector("[type='password']").classList.add("input-password");
-                    document.getElementById("toggle-password").classList.remove("d-none");
-                    const passwordInput = document.querySelector("[type='password']");
-                    const togglePasswordButton = document.getElementById("toggle-password");
-                    togglePasswordButton.addEventListener("click", togglePassword);
 
-                    function togglePassword() {
-                        if (passwordInput.type === "password") {
-                            passwordInput.type = "text";
-                            togglePasswordButton.setAttribute("aria-label", "Hide password.")
-                        } else {
-                            passwordInput.type = "password";
-                            togglePasswordButton.setAttribute("aria-label", "Show password as plain text. " + "Warning: this will display your password on the screen.")
-                        }
-                    }
-                };
-            </script>
+
+
             <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">

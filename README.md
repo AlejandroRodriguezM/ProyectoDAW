@@ -508,3 +508,9 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
  - Se ha mejorado el estilo de casi todo el proyecto
  - Se han arreglado bugs que no dejaban hacer ciertas opciones
  - Se ha arreglado bug donde cualquier usuario podia acceder a listas de lectura de forma no autorizada
+
+12/05/2023 Log 1
+
+ - Ahora se puede recuperar la contraseña del usuario
+ - Eliminado bugs que permitian a usuarios no administrados a entrar en pestañas no autorizadas
+ - Mejorado la visualizacion de partes de la web en el movil

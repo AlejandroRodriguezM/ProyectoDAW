@@ -11,7 +11,7 @@ if (isset($_SESSION['email'])) {
     if ($privilege_admin == 'admin') {
         check_session_admin($email_admin);
         $name_admin = $data_admin['userName'];
-        $ID_admin = $data_admin['IDuser'];
+        $id_admin = $data_admin['IDuser'];
         $picture = $data_admin['userPicture'];
         $estado_cuenta_admin = $data_admin['accountStatus'];
         $privacidad_admin = $data_admin['tipo_perfil'];
@@ -122,7 +122,7 @@ guardar_ultima_conexion($email_admin);
 
         body {
             margin: 0 !important;
-            padding: 0 ;
+            padding: 0;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 
@@ -166,22 +166,22 @@ guardar_ultima_conexion($email_admin);
 
 <body class="d-flex flex-column min-vh-100" onload="checkSesionUpdate();showSelected();">
     <main class="flex-shrink-0">
+        <?php
+        if (isset($_SESSION['email'])) {
+            echo '
         <div id="session-expiration">
             <div id="session-expiration-message">
                 <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
                 <button id="session-expiration-continue-btn">Continuar</button>
                 <button id="session-expiration-logout-btn">Cerrar sesión</button>
             </div>
-        </div>
+        </div>';
+        ?>
+        <?php
+        }
+        ?>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
             <div class="container-fluid" style="background-color: #343a40;">
-
-                <!-- <a data-bs-toggle='offcanvas' data-bs-target='#offcanvasNavbarDark' aria-controls='offcanvasNavbarDark' href='#offcanvasExample' role='button' style='background-color: transparent;'>
-                    <button class="navbar-toggler navbar-toggler-sm ms-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon navbar-dark"></span>
-                    </button>
-                </a> -->
-
                 <button class="navbar-toggler navbar-toggler-sm ms-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -224,7 +224,7 @@ guardar_ultima_conexion($email_admin);
                             <?php
                             if (isset($_SESSION['email'])) {
                                 // Obtener el número de mensajes sin leer
-                                $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                                $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_admin);
 
                                 // Imprimir el enlace con el número de mensajes sin leer
                                 echo "<a class='nav-link' href='solicitudes_amistad.php'>";
@@ -242,7 +242,7 @@ guardar_ultima_conexion($email_admin);
                             <?php
                             if (isset($_SESSION['email'])) {
                                 // Obtener el número de mensajes sin leer
-                                $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
+                                $num_mensajes = obtener_numero_mensajes_sin_leer($id_admin);
 
                                 // Imprimir el enlace con el número de mensajes sin leer
                                 echo "<a class='nav-link' href='mensajes_usuario.php'>";
@@ -318,44 +318,16 @@ guardar_ultima_conexion($email_admin);
                                     </li>';
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
-                            } elseif ($userPrivilege == 'user') {
-                                echo '<li class="list-group-item list-group-item-action">
-                                            <div class="d-flex align-items-center">';
-                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                                echo "<div class='fw-bold'>$userName</div>";
-                                echo '
-                                    </div>
-                                    </li>';
-                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
-                            } else {
-                                echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
+
+                                echo '<li><a class="dropdown-item" href="escribir_comentario_pagina.php">Escribe tu opinión</a></li>';
+                                echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
+                                echo '<hr class="dropdown-divider">';
+                                echo '<li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion">Cerrar sesión</button></li>';
                             }
-
-                            echo '<li><a class="dropdown-item" href="escribir_comentario_pagina.php">Escribe tu opinión</a></li>';
-                            echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                            echo '<hr class="dropdown-divider">';
-                            echo '<li><button class="dropdown-item" onclick="closeSesion()" name="closeSesion">Cerrar sesión</button></li>';
-                        } else {
-
-                            echo '<li>
-                                <div class="d-flex align-items-center">';
-                            echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo '
-                            <div>
-                            <div class="fw-bold">Invitado</div>
-                            </div>
-                        </div>
-                        </li>';
-                            echo "<hr class='dropdown-divider'>";
-                            echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                            echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
                         }
                         ?>
                     </ul>
                 </div>
-
-
             </div>
         </nav>
 
@@ -755,8 +727,13 @@ guardar_ultima_conexion($email_admin);
                                         </fieldset>
                                         <hr>
                                         <div class="comics-lists">
-                                            <p><img class="icon" src="./assets/img/comic_usuario.png"> <?php echo  get_total_guardados($id_usuario); ?> comics guardados</p>
-                                            <p><img class="icon" src="./assets/img/libreria.png"> <?php echo num_listas_user($id_usuario); ?> listas</p>
+                                            <p>Numero de amigos: <?php echo num_amistades($id_usuario) ?></p>
+                                            <a href='#' onclick="window.location.href='comics_usuario.php?id_usuario=<?php echo $id_usuario ?>'; return false;">
+                                                <p><img class="icon" src="./assets/img/comic_usuario.png"><?php echo get_total_guardados($id_usuario) ?> comics guardados</p>
+                                            </a>
+                                            <a href='#' onclick="window.location.href='listas_usuarios.php?id_usuario=<?php echo $id_usuario ?>'; return false;">
+                                                <p><img class="icon" src="./assets/img/libreria.png"><?php echo num_listas_user($id_usuario) ?> listas</p>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

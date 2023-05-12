@@ -4,6 +4,15 @@ include_once 'php/inc/header.inc.php';
 if (isset($_SESSION['email'])) {
     header('Location: index.php');
 }
+
+if (isset($_GET['id_activacion'])) {
+    $id_activacion = $_GET['id_activacion'];
+    if (!comprobar_codigo_alta($id_activacion)) {
+        header('Location: login.php');
+    }
+} else {
+    header('Location: login.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +33,7 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-    <title>Login</title>
+    <title>Recupera tu contraseña</title>
 
     <style>
         .chosenUserProfile {
@@ -40,10 +49,9 @@ if (isset($_SESSION['email'])) {
             -webkit-transition: all 0.2s;
         }
 
-        html,
         body {
             margin: 0 !important;
-            padding: 0;
+            /* padding: 0 !important; */
             height: 100% !important;
 
         }
@@ -92,41 +100,26 @@ if (isset($_SESSION['email'])) {
                 <div class="d-flex justify-content-center align-items-center" style="min-height: 68vh;">
                     <div class="col-12 col-md-6 offset-md-3 mx-auto max-w-md text-center">
                         <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;border-radius:15px">
+
                             <div class="row justify-content-center col-lg-7 mx-auto">
-                                <!-- <div class="col-lg-7 "> -->
                                 <img src="./assets/img/logoWeb.png" class="mt-2" alt="logo web">
-                                <h3 class="mt-2">Datos de Login</h3>
-                                <form method="post" id="formIniciar" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form-control-sm">
-                                    <div class="mb-3">
-                                        <label for="acceso" class="form-label">Nombre de usuario/Email</label>
-                                        <input type="text" class="form-control w-100" id="acceso" placeholder="Introduce tu nombre de usuario o email" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">Contraseña</label>
+                                <h3 class="mt-2">Nueva contraseña</h3>
+                                <form id="form_new_pass" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                    <div class="mb-3 text-center">
+                                        <label for="password" class="form-label w-100">Contraseña</label>
                                         <div class="input-group">
                                             <input type="password" class="form-control w-100" id="password_user" placeholder="Introduce tu contraseña" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                             <button id="toggle-password" type="button" class="d-none"></button>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <div class="mb-3">
-                                                <input type="button" name="enter_sesion" class="btn btn-danger btn-block mb-2 w-100" onclick="login_user();" value="Iniciar sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-
-                                            </div>
+                                        <label for="repassword" class="form-label w-100">Repita contraseña</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control w-100" id="repassword_user" placeholder="Introduce tu contraseña de nuevo" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                            <button id="toggle-password" type="button" class="d-none"></button>
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <div class="mb-3">
-                                                <input type="button" name="guest_user" class="btn btn-secondary btn-block mb-2 w-100" onclick="guest_User();" value="Invitado" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                            </div>
+                                        <input type="hidden" id="id_activacion" name="id_activacion" value="<?php echo $id_activacion ?>">
+                                        <div class="mb-3">
+                                            <input type="button" class="btn btn-danger form-control" onclick="new_password();" value="Recuperar contraseña" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                         </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <a href="registro.php" type="button" class="btn btn-primary btn-block mb-2 w-100" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Crear cuenta</a>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <a href="password_olvidada.php" type="button" class="btn btn-info btn-warning mb-2 w-100" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">¿Has olvidado tu contraseña?</a>
                                     </div>
                                 </form>
                             </div>
@@ -134,26 +127,29 @@ if (isset($_SESSION['email'])) {
                     </div>
                 </div>
             </div>
-            <script>
-                var ShowPasswordToggle = document.querySelector("[type='password']");
-                ShowPasswordToggle.onclick = function() {
-                    document.querySelector("[type='password']").classList.add("input-password");
-                    document.getElementById("toggle-password").classList.remove("d-none");
-                    const passwordInput = document.querySelector("[type='password']");
-                    const togglePasswordButton = document.getElementById("toggle-password");
-                    togglePasswordButton.addEventListener("click", togglePassword);
 
-                    function togglePassword() {
-                        if (passwordInput.type === "password") {
-                            passwordInput.type = "text";
-                            togglePasswordButton.setAttribute("aria-label", "Hide password.")
-                        } else {
-                            passwordInput.type = "password";
-                            togglePasswordButton.setAttribute("aria-label", "Show password as plain text. " + "Warning: this will display your password on the screen.")
-                        }
-                    }
-                };
+            <script>
+                const passwordInputs = document.querySelectorAll('input[type="password"]');
+                const togglePasswordButtons = document.querySelectorAll('button[id^="toggle-password"]');
+
+                for (let i = 0; i < passwordInputs.length; i++) {
+                    passwordInputs[i].onclick = function() {
+                        passwordInputs[i].classList.add("input-password");
+                        togglePasswordButtons[i].classList.remove("d-none");
+
+                        togglePasswordButtons[i].addEventListener("click", function() {
+                            if (passwordInputs[i].type === "password") {
+                                passwordInputs[i].type = "text";
+                                togglePasswordButtons[i].setAttribute("aria-label", "Hide password.");
+                            } else {
+                                passwordInputs[i].type = "password";
+                                togglePasswordButtons[i].setAttribute("aria-label", "Show password as plain text. Warning: this will display your password on the screen.");
+                            }
+                        });
+                    };
+                }
             </script>
+
             <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">

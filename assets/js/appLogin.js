@@ -351,6 +351,116 @@ const actualizar_usuario = async () => {
     }
 }
 
+const solicitud_password = async () => {
+    var email = document.querySelector("#correo").value;
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append('email', email);
+
+    //pass data to php file
+    var respond = await fetch("php/apis/solicitar_pass.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_pass_olvidada').reset();
+        setTimeout(() => {
+            window.location.href = "login.php";
+        }, 2000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
+const new_password = async () => {
+    var id_activacion = document.querySelector("#id_activacion").value;
+    var password = document.querySelector("#password_user").value;
+    var repassword = document.querySelector("#repassword_user").value;
+
+    if (password.trim() === '' | repassword.trim() === '') {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de rellenar todos los campos",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    if (!validatePassword(password)) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "You have to introduce a valid password (upperCase,lowerCase,numer and min 8 characters)",
+            footer: "Web Comics"
+        })
+        return;
+    }
+
+    if (password != repassword) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "La contraseña no coincide",
+            footer: "Web Comics"
+        })
+
+        document.querySelector("#password_user").style.border = "1px solid red";
+        document.querySelector("#repassword_user").style.border = "1px solid red";
+        document.querySelector("#password_user").value = "";
+        document.querySelector("#repassword_user").value = "";
+        return;
+    }
+
+    //insert to data base in case of everything go correct.
+    const data = new FormData();
+    data.append("pass", password);
+    data.append("id_activacion", id_activacion);
+
+    //pass data to php file
+    var respond = await fetch("php/apis/password_recuperada.php", {
+        method: 'POST',
+        body: data
+    });
+
+    var result = await respond.json();
+
+    if (result.success == true) {
+        Swal.fire({
+            icon: "success",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
+        document.querySelector('#form_new_pass').reset();
+        setTimeout(() => {
+            window.location.href = "login.php";
+        }, 10000);
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: result.message,
+            footer: "Web Comics"
+        })
+    }
+}
+
 const modificar_usuario_administrador = async () => {
     var email = document.querySelector("#email_usuario").value;
     var nombre_cuenta = document.querySelector("#nombre_cuenta").value;

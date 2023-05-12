@@ -2533,8 +2533,6 @@ function comprobar_codigo_alta(String $codigo)
 			$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
 			if (count($resultados) > 0) {
 				$estado = true;
-				activar_usuario($codigo);
-				eliminar_codigo($codigo);
 			}
 		}
 	} catch (PDOException $e) {
@@ -2579,10 +2577,61 @@ function enviar_correo_activacion($email_registro, $id_unico)
 {
 	$subject = "Nuevo usuario. Activacion de cuenta"; // Asunto del correo
 	$message = "Haga clic en el siguiente enlace para activar su cuenta: https://comicweb.es/activacion_usuario.php?codigo_v=" . $id_unico;
-	$message .= "<br><br><hr><p>Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!</p>";
+	$message .= "Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!";
 	$headers = "From: informacion@comicweb.es"; // Dirección de correo electrónico del remitente
 	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
 }
+
+function enviar_pass_activacion($email_registro, $id_unico)
+{
+	$subject = "Nuevo usuario. Restaurar cuenta"; // Asunto del correo
+	$message = "Haga clic en el siguiente enlace para crear una nueva contraseña su cuenta: https://comicweb.es/activacion_password.php?id_activacion=" . $id_unico;
+	$message .= "Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!";
+	$headers = "From: informacion@comicweb.es"; // Dirección de correo electrónico del remitente
+	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
+}
+
+function solicitud_password($email)
+{
+	global $conection;
+	$estado = false;
+	$email = htmlspecialchars($email, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("SELECT IDuser FROM users WHERE email = ?");
+		if ($consulta->execute([$email])) {
+			$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
+			if (count($resultados) > 0) {
+				$id_unico = uniqid();
+				$consulta = $conection->prepare("UPDATE users SET id_activacion = ? WHERE email = ?");
+				if ($consulta->execute([$id_unico, $email])) {
+					enviar_pass_activacion($email, $id_unico);
+					$estado = true;
+				}
+			}
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+function actualizar_password($id_activacion,$password){
+	global $conection;
+	$estado = false;
+	$id_activacion = htmlspecialchars($id_activacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$password_hash = htmlspecialchars($password, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$consulta = $conection->prepare("UPDATE users SET password = ? WHERE id_activacion = ?");
+		if ($consulta->execute([$password_hash, $id_activacion])) {
+			$estado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $estado;
+}
+
+
 
 function comprobar_propiedad_lista($id_usuario, $id_lista)
 {

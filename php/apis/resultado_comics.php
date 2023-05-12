@@ -41,7 +41,7 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
 
         <td class="text-nowrap" style="color:white;" align="center"><?php echo $numero ?></td>
 
-        <td class="d-none d-md-table-cell">
+        <td class="d-md-table-cell">
             <div>
                 <?php
                 $variantes = explode('-', $variante);
@@ -51,7 +51,7 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
                 ?>
             </div>
         </td>
-        <td class="d-none d-md-table-cell" align="center">
+        <td class="d-md-table-cell" align="center">
             <div>
                 <?php
                 $nomEditorial = str_replace(' ', '-', $editorial);
@@ -59,7 +59,7 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
                 ?>
             </div>
         </td>
-        <td class="d-none d-md-table-cell" align="center">
+        <td class="d-md-table-cell" align="center">
             <div>
                 <?php
                 $formato = str_replace(' ', '-', $formato);
@@ -67,7 +67,7 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
                 ?>
             </div>
         </td>
-        <td class="d-none d-md-table-cell" align="center">
+        <td class="d-md-table-cell" align="center">
             <div>
                 <?php
                 $procedencia = str_replace(' ', '-', $procedencia);
@@ -75,14 +75,14 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
                 ?>
             </div>
         </td>
-        <td class="d-none d-md-table-cell" align="center">
+        <td class="d-md-table-cell" align="center">
             <div>
                 <?php
                 echo "<span class='comic-value'><a href='search_data.php?search=$fecha' style='color:white;'>$fecha</a></span>";
                 ?>
             </div>
         </td>
-        <td class="d-none d-md-table-cell">
+        <td class="d-md-table-cell">
             <div>
                 <?php
                 $guionistas = explode('-', $guionista);
@@ -92,7 +92,7 @@ while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
                 ?>
             </div>
         </td>
-        <td class="d-none d-md-table-cell">
+        <td class="d-md-table-cell">
             <div>
                 <?php
                 $dibujantes = explode('-', $dibujante);

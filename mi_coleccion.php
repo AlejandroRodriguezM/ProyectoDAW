@@ -260,13 +260,20 @@ if (isset($_SESSION['email'])) {
 
 <body class="d-flex flex-column min-vh-100" onload="checkSesionUpdate();showSelected();">
     <main class="flex-shrink-0">
+        <?php
+        if (isset($_SESSION['email'])) {
+            echo '
         <div id="session-expiration">
             <div id="session-expiration-message">
                 <p>Su sesión está a punto de caducar. ¿Desea continuar conectado?</p>
                 <button id="session-expiration-continue-btn">Continuar</button>
                 <button id="session-expiration-logout-btn">Cerrar sesión</button>
             </div>
-        </div>
+        </div>';
+        ?>
+        <?php
+        }
+        ?>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
             <div class="container-fluid" style="background-color: #343a40;">
 

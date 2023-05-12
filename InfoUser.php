@@ -156,7 +156,7 @@ if (isset($_GET['userName'])) {
         html,
         body {
             margin: 0 !important;
-            padding: 0 ;
+            padding: 0;
             height: 100% !important;
 
         }
@@ -836,7 +836,12 @@ if (isset($_GET['userName'])) {
                                                             <li>
                                                                 <a href="admin_info_usuario.php?id_usuario=<?php echo $id_usuario ?>" class="nav-link active">
                                                                     <span class='fa fa-user'></span>&nbsp;Perfil</a>
+                                                                <?php
+                                                                if (isset($_SESSION['email'])) {
+                                                                    if ($userPrivilege == 'admin') {
+                                                                ?>
                                                             </li>
+
                                                             <li>
                                                                 <a href="admin_actualizar_usuario.php?id_usuario=<?php echo $id_usuario ?>" class="nav-link link-dark">
                                                                     <span class='fa fa-user'></span>&nbsp;Editar</a>
@@ -846,6 +851,10 @@ if (isset($_GET['userName'])) {
                                                                     <span class="fa fa-cog"></span>&nbsp;Mensajes</a>
                                                                 </a>
                                                             </li>
+                                                    <?php
+                                                                    }
+                                                                }
+                                                    ?>
                                                         </ul>
                                                     </div>
                                                 </div>
