@@ -165,7 +165,7 @@ if (isset($_SESSION['email'])) {
 
         body {
             margin: 0 !important;
-            padding: 0 ;
+            padding: 0;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 
@@ -368,16 +368,15 @@ if (isset($_SESSION['email'])) {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                                    echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                                    echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
-
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -673,9 +672,9 @@ if (isset($_SESSION['email'])) {
         </div>
 
         <!-- FORMULARIO INSERTAR -->
-            <div class="card-footer text-muted" style="background-color:white">
-                Design by Alejandro Rodriguez 2022
-            </div>
+        <div class="card-footer text-muted" style="background-color:white">
+            Design by Alejandro Rodriguez 2022
+        </div>
 
         <div id="crear_ticket" class="modal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -695,53 +694,53 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-                    <!-- <div class="caption"> -->
+        <!-- <div class="caption"> -->
 
-            <br>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="carousel-publi" class="carousel slide" data-bs-ride="false">
-                            <!-- Indicators/dots -->
-                            <!-- The slideshow/carousel -->
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
-                                        <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block w-100">
-                                    </a>
-                                </div>
-                                <div class="carousel-item">
-                                    <a href='https://www.radarcomics.com/es/' target="_blank">
-                                        <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block w-100">
-                                    </a>
-                                </div>
-                                <div class="carousel-item">
-                                    <a href='https://www.whakoom.com/' target="_blank">
-                                        <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block w-100">
-                                    </a>
-                                </div>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="carousel-publi" class="carousel slide" data-bs-ride="false">
+                        <!-- Indicators/dots -->
+                        <!-- The slideshow/carousel -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
+                                    <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block w-100">
+                                </a>
                             </div>
-                            <!-- Left and right controls/icons -->
-                            <button class="carousel-control-prev carousel-control-no-hover" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon"></span>
-                            </button>
-                            <button class="carousel-control-next carousel-control-no-hover" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
-                                <span class="carousel-control-next-icon"></span>
-                            </button>
+                            <div class="carousel-item">
+                                <a href='https://www.radarcomics.com/es/' target="_blank">
+                                    <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block w-100">
+                                </a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href='https://www.whakoom.com/' target="_blank">
+                                    <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block w-100">
+                                </a>
+                            </div>
                         </div>
+                        <!-- Left and right controls/icons -->
+                        <button class="carousel-control-prev carousel-control-no-hover" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next carousel-control-no-hover" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <div class="container mt-5">
-                <div class="d-flex justify-content-center">
-                    <div class="last-pubs2 comics">
-                    </div>
+        <div class="container mt-5">
+            <div class="d-flex justify-content-center">
+                <div class="last-pubs2 comics">
                 </div>
             </div>
+        </div>
 
-            <!-- <div class="container mt-5">
+        <!-- <div class="container mt-5">
                 <div style="display: flex; justify-content: center;">
                     <div class="last-pubs2 col-md-8">
                         <div class="tweet-container" style="margin: 0 auto;">
@@ -786,35 +785,35 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div> -->
 
-            <div class="container mt-5">
-                <div style="display: flex; justify-content: center;">
-                    <div class="last-pubs2 col-md-8">
-                        <div class="headings ">
-                            <div class="titulo">
-                                <h2 style="color: black">Opiniones de los usuarios</h2>
-                            </div>
+        <div class="container mt-5">
+            <div style="display: flex; justify-content: center;">
+                <div class="last-pubs2 col-md-8">
+                    <div class="headings ">
+                        <div class="titulo">
+                            <h2 style="color: black">Opiniones de los usuarios</h2>
                         </div>
+                    </div>
 
-                        <?php
-                        $opiniones = mostrar_opiniones_pagina();
-                        if (numero_opiniones_pagina() > 0) {
-                            while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
+                    <?php
+                    $opiniones = mostrar_opiniones_pagina();
+                    if (numero_opiniones_pagina() > 0) {
+                        while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
 
-                                $id_opinion = $data_opinion['id_opinion'];
-                                $id_usuario = $data_opinion['id_user'];
-                                $opinion = $data_opinion['comentario'];
-                                $fecha_opinion = $data_opinion['fecha_comentario'];
-                                $data_user = obtener_datos_usuario($id_usuario);
-                                $foto_perfil = $data_user['userPicture'];
-                                $nombre_user = $data_user['userName'];
-                                $email_user = $data_user['email'];
+                            $id_opinion = $data_opinion['id_opinion'];
+                            $id_usuario = $data_opinion['id_user'];
+                            $opinion = $data_opinion['comentario'];
+                            $fecha_opinion = $data_opinion['fecha_comentario'];
+                            $data_user = obtener_datos_usuario($id_usuario);
+                            $foto_perfil = $data_user['userPicture'];
+                            $nombre_user = $data_user['userName'];
+                            $email_user = $data_user['email'];
 
-                                echo '<div class="card p-4 mt-1">
+                            echo '<div class="card p-4 mt-1">
                                         <div class="d-flex justify-content-between align-items-center">';
-                        ?>
-                                <a href="infoUser.php?userName=<?php echo $email_user ?>">
-                                    <?php
-                                    echo '<img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
+                    ?>
+                            <a href="infoUser.php?userName=<?php echo $email_user ?>">
+                                <?php
+                                echo '<img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
                                         </a>
                                         <div class="w-100">
                                                 <div class="d-flex justify-content-between align-items-center">
@@ -823,12 +822,12 @@ if (isset($_SESSION['email'])) {
                                                 </div>
                                                 <small>' . $fecha_opinion . '</small>
                                             </div>';
-                                    if (isset($_SESSION['email'])) {
-                                    ?>
-                                        <button type="button" class="btn btn-danger btn-sm float-end" style="display: block;" onclick="eliminarComentario(' . $id_opinion . ')">Eliminar</button>
-                            <?php
-                                    }
-                                    echo '<p class="text-justify comment-text mb-0" style="margin-top:5px;margin-left:10px">' . $opinion . '</p>
+                                if (isset($_SESSION['email'])) {
+                                ?>
+                                    <button type="button" class="btn btn-danger btn-sm float-end" style="display: block;" onclick="eliminarComentario(' . $id_opinion . ')">Eliminar</button>
+                        <?php
+                                }
+                                echo '<p class="text-justify comment-text mb-0" style="margin-top:5px;margin-left:10px">' . $opinion . '</p>
                                             <div class="d-flex flex-row align-items-center mr-2" id="rating">
                                                 <div class="rating-lectura" style="margin-left:5px">
                                             </div>
@@ -836,16 +835,16 @@ if (isset($_SESSION['email'])) {
                                     </div>
                                 </div>
                             </div>';
-                                }
-                            } else {
-                                echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';
-                                echo '<div class="user d-flex flex-row align-items-center"><span class="font-weight-bold text-primary">No hay opiniones</span></div>';
-                                echo '</div></div>';
                             }
-                            ?>
-                    </div>
+                        } else {
+                            echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';
+                            echo '<div class="user d-flex flex-row align-items-center"><span class="font-weight-bold text-primary">No hay opiniones</span></div>';
+                            echo '</div></div>';
+                        }
+                        ?>
                 </div>
             </div>
+        </div>
 
 
         </div>
@@ -891,29 +890,29 @@ if (isset($_SESSION['email'])) {
             var myOffcanvas2 = new bootstrap.Offcanvas(myOffcanvas2)
         </script>
 
-                <div id="footer-lite" class="mt-5">
-                <div class="container">
-                    <p class="helpcenter">
-                        <a href="http://www.example.com/help">Ayuda</a>
-                    </p>
-                    <p class="footer-title">
-                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                        <span>·</span>
-                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                        <span>·</span>
-                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                        <span>·</span>
-                        <a href="about.php" style="color:black">Quiénes somos</a>
-                    </p>
-                    <!-- add social media with icons -->
-                    <p class="social">
-                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+        <div id="footer-lite" class="mt-5">
+            <div class="container">
+                <p class="helpcenter">
+                    <a href="http://www.example.com/help">Ayuda</a>
+                </p>
+                <p class="footer-title">
+                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                    <span>·</span>
+                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                    <span>·</span>
+                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                    <span>·</span>
+                    <a href="about.php" style="color:black">Quiénes somos</a>
+                </p>
+                <!-- add social media with icons -->
+                <p class="social">
+                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                    </p>
-                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
-                </div>
+                </p>
+                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
             </div>
+        </div>
         </div>
     </main>
 </body>

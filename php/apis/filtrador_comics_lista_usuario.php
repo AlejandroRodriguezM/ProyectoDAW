@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once '../inc/header.inc.php';
-$id_user = $_POST['id_user'];
+$id_lista = $_POST['id_lista'];
 
 ?>
 <br>
@@ -18,7 +18,7 @@ $id_user = $_POST['id_user'];
                     <div class="overflow-auto" style="max-height: 200px; overflow-x: auto;">
                         <ul class="list-group">
                             <?php
-                            $tabla_escritores = getScreenwriters_user($id_user);
+                            $tabla_escritores = getScreenwriters_lista($id_lista);
                             foreach ($tabla_escritores as $key => $value) {
                                 echo "<li class='list-group-item'>
                                 $key
@@ -44,7 +44,7 @@ $id_user = $_POST['id_user'];
                     <div class="overflow-auto" style="max-height: 200px; overflow-x: auto;">
                         <ul class="list-group">
                             <?php
-                            $tabla_artistas = getArtists_user($id_user);
+                            $tabla_artistas = getArtists_lista($id_lista);
                             foreach ($tabla_artistas as $key => $value) {
                                 echo "<li class='list-group-item'>
                                 $key
@@ -70,7 +70,7 @@ $id_user = $_POST['id_user'];
                     <div class="overflow-auto" style="max-height: 200px; overflow-x: auto;">
                         <ul class="list-group">
                             <?php
-                            $tabla_portadas = getPortadas_user($id_user);
+                            $tabla_portadas = getPortadas_lista($id_lista);
                             foreach ($tabla_portadas as $key => $value) {
                                 echo "<li class='list-group-item'>
                       $key
@@ -96,7 +96,7 @@ $id_user = $_POST['id_user'];
                     <div class="overflow-auto" style="max-height: 200px; overflow-x: auto;">
                         <ul class="list-group">
                             <?php
-                            $tabla_portadas = getEditorial_user($id_user);
+                            $tabla_portadas = getEditorial_lista($id_lista);
                             foreach ($tabla_portadas as $key => $value) {
                                 echo "<li class='list-group-item'>
                       $key

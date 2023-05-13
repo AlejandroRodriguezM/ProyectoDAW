@@ -78,10 +78,9 @@ if (isset($_GET['IDcomic'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
-
-
     <script src="./assets/js/functions.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Informacion del comic</title>
@@ -183,39 +182,6 @@ if (isset($_GET['IDcomic'])) {
         .comic-value {
             color: blue;
         }
-
-        /*
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .titulo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-            background-color: #FFC107;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .titulo h2 {
-            color: white;
-            font-size: 36px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .side-bar {
-            position: fixed;
-            margin-top: -30px;
-            color: black;
-        }
-
-        .view-account {
-            top: 50px;
-            z-index: 100;
-            margin-top: auto;
-        } */
 
         #myButton {
             background-color: white;

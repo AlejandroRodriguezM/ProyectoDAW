@@ -13,7 +13,7 @@ if (isset($_SESSION['email'])) {
     if (!checkStatus($email)) {
         header("Location: index.php");
     }
-    if(!comprobar_activacion($userName)){
+    if (!comprobar_activacion($userName)) {
         header("Location: usuario_no_activado.php");
     }
 }
@@ -166,19 +166,46 @@ if (isset($_SESSION['email'])) {
 
 
         }
+
         body {
             margin: 0 !important;
-            padding: 0 !important;
+            padding: 0;
             height: 100% !important;
-            overflow-y: scroll !important; /* Habilita el scroll vertical */
+            background-color: rgba(0, 0, 0, 0);
 
         }
 
         main {
-            min-height: 100vh !important;
+
+            height: 100% !important;
         }
 
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 5px 0;
+            text-align: center;
+        }
 
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
+
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
+
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -344,16 +371,15 @@ if (isset($_SESSION['email'])) {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                                    echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                                    echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
-
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -428,9 +454,9 @@ if (isset($_SESSION['email'])) {
         }
         ?>
 
-            <div class="card-footer text-muted" style="background-color:white">
-                Design by Alejandro Rodriguez 2022
-            </div>
+        <div class="card-footer text-muted" style="background-color:white">
+            Design by Alejandro Rodriguez 2022
+        </div>
 
         <!--Canvas imagen de perfil-->
         <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
@@ -474,29 +500,28 @@ if (isset($_SESSION['email'])) {
                         } else {
                             echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                         }
+                    } else {
 
-                        } else {
-
-                            echo '<li>
+                        echo '<li>
                                 <div class="d-flex align-items-center">';
-                            echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo '
+                        echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                        echo '
                             <div>
                             <div class="fw-bold">Invitado</div>
                             </div>
                         </div>
                         </li>';
-                            echo "<hr class='dropdown-divider'>";
-                            echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                            echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
-                        }
-                        ?>
-                    </ul>
-                </div>
-
-
+                        echo "<hr class='dropdown-divider'>";
+                        echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
+                        echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                    }
+                    ?>
+                </ul>
             </div>
-                <!--Canvas menu-->
+
+
+        </div>
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -596,7 +621,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -691,175 +716,175 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
+        <!-- The Modal -->
+        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <img class="modal-content_img" id="img01">
+        </div>
 
-    <!-- FORMULARIO INSERTAR -->
+        <!-- FORMULARIO INSERTAR -->
 
 
-    <div class="card-footer text-muted">
-        Design by Alejandro Rodriguez 2022
-    </div>
+        <div class="card-footer text-muted">
+            Design by Alejandro Rodriguez 2022
+        </div>
 
-    <div id="crear_ticket" class="modal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_ticket" onsubmit="return false;">
-                        <h4 class="modal-title">Crear un ticket para administradores</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Asunto</label>
-                        <input type="text" id="asunto_usuario" class="form-control">
+        <div id="crear_ticket" class="modal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form method="post" id="form_ticket" onsubmit="return false;">
+                            <h4 class="modal-title">Crear un ticket para administradores</h4>
                     </div>
-                    <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                        }
-                        ?>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Asunto</label>
+                            <input type="text" id="asunto_usuario" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Mensaje</label>
+                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
+                            }
+                            ?>
+                        </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal" onclick="window.location.href = 'logOut.php'">Cerrar</button>
+                        <input type="button" name='ticket_bloq' id='ticket_bloq' class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket_bloqueo();return false">
+                    </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal" onclick="window.location.href = 'logOut.php'">Cerrar</button>
-                    <input type="button" name='ticket_bloq' id='ticket_bloq' class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket_bloqueo();return false">
-                </div>
-                </form>
             </div>
         </div>
-    </div>
 
-            <br>
+        <br>
+        <div style="display: flex; justify-content: center;">
+            <!-- Carousel -->
+            <div id="carousel-publi" class="carousel slide" data-bs-ride="carousel">
+                <!-- Indicators/dots -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                </div>
+                <!-- The slideshow/carousel -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
+                            <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block" style="width: 945px; height: 300px;">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href='https://www.radarcomics.com/es/' target="_blank">
+                            <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block" style="width: 945px; height: 300px;">
+                        </a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href='https://www.whakoom.com/' target="_blank">
+                            <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block" style="width: 945px; height: 300px;">
+                        </a>
+                    </div>
+                </div>
+                <!-- Left and right controls/icons -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <div class="d-flex justify-content-center">
+                <div class="last-pubs2 comics">
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="container mt-5">
             <div style="display: flex; justify-content: center;">
-                <!-- Carousel -->
-                <div id="carousel-publi" class="carousel slide" data-bs-ride="carousel">
-                    <!-- Indicators/dots -->
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-                        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                <div class="last-pubs2 col-md-8">
+                    <div class="titulo">
+                        <h2>Videos de interes</h2>
                     </div>
-                    <!-- The slideshow/carousel -->
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
-                                <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block" style="width: 945px; height: 300px;">
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href='https://www.radarcomics.com/es/' target="_blank">
-                                <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block" style="width: 945px; height: 300px;">
-                            </a>
-                        </div>
-                        <div class="carousel-item">
-                            <a href='https://www.whakoom.com/' target="_blank">
-                                <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block" style="width: 945px; height: 300px;">
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Left and right controls/icons -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-                </div>
-            </div>
-                        <div class="container mt-5">
-                <div class="d-flex justify-content-center">
-                    <div class="last-pubs2 comics">
-                    </div>
-                </div>
-            </div>
-
-            </div>
-            <div class="container mt-5">
-                <div style="display: flex; justify-content: center;">
-                    <div class="last-pubs2 col-md-8">
-                        <div class="titulo">
-                            <h2>Videos de interes</h2>
-                        </div>
-                        <hr>
-                        <div class="video-container">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
+                    <hr>
+                    <div class="video-container">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var miModal = new bootstrap.Modal(document.getElementById("crear_ticket"));
-            miModal.show();
-        });
-    </script>
-    <script>
-        var resizeTimer;
-
-        function comics_recomendados() {
-            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-            var width = $(window).width();
-            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
-
-            var data = {
-                num_comics: num_comics
-            };
-            $.ajax({
-                url: "php/apis/recomendaciones_comics.php",
-                data: data,
-                success: function(data) {
-                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
-                    $('.container.mt-5').css('width', container_width + 'px');
-
-                    totalComics = $(data).filter("#total-comics").val();
-
-                    // Elimina la lista anterior antes de agregar la nueva
-                    $('.recomendaciones').html('');
-                    $(data).appendTo('.recomendaciones');
-                }
+        </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var miModal = new bootstrap.Modal(document.getElementById("crear_ticket"));
+                miModal.show();
             });
-        }
+        </script>
+        <script>
+            var resizeTimer;
 
-        comics_recomendados();
-        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-        $(window).on('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(comics_recomendados, 100);
-        });
-    </script>
-                <div id="footer-lite" class="mt-5">
-                <div class="container">
-                    <p class="helpcenter">
-                        <a href="http://www.example.com/help">Ayuda</a>
-                    </p>
-                    <p class="footer-title">
-                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                        <span>·</span>
-                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                        <span>·</span>
-                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                        <span>·</span>
-                        <a href="about.php" style="color:black">Quiénes somos</a>
-                    </p>
-                    <!-- add social media with icons -->
-                    <p class="social">
-                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            function comics_recomendados() {
+                // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+                var width = $(window).width();
+                var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
 
-                    </p>
-                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
-                </div>
+                var data = {
+                    num_comics: num_comics
+                };
+                $.ajax({
+                    url: "php/apis/recomendaciones_comics.php",
+                    data: data,
+                    success: function(data) {
+                        // Calcular el ancho del contenedor "container mt-5" y establecerlo
+                        var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
+                        $('.container.mt-5').css('width', container_width + 'px');
+
+                        totalComics = $(data).filter("#total-comics").val();
+
+                        // Elimina la lista anterior antes de agregar la nueva
+                        $('.recomendaciones').html('');
+                        $(data).appendTo('.recomendaciones');
+                    }
+                });
+            }
+
+            comics_recomendados();
+            // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+            $(window).on('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(comics_recomendados, 100);
+            });
+        </script>
+        <div id="footer-lite" class="mt-5">
+            <div class="container">
+                <p class="helpcenter">
+                    <a href="http://www.example.com/help">Ayuda</a>
+                </p>
+                <p class="footer-title">
+                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                    <span>·</span>
+                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                    <span>·</span>
+                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                    <span>·</span>
+                    <a href="about.php" style="color:black">Quiénes somos</a>
+                </p>
+                <!-- add social media with icons -->
+                <p class="social">
+                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                </p>
+                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
             </div>
+        </div>
         </div>
     </main>
 </body>

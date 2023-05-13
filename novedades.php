@@ -151,7 +151,7 @@ if (isset($_SESSION['email'])) {
 
         body {
             margin: 0 !important;
-            padding: 0 ;
+            padding: 0;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 
@@ -460,20 +460,36 @@ if (isset($_SESSION['email'])) {
                                     </div>
                                     </li>';
                             echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="panel_tickets_admin.php">Panel tickets</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="panel_tickets_admin.php"><i class="fa fa-cog fa-fw"></i>Panel tickets</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="closeSesion()"><i class="fa fa-cog fa-fw"></i>Cerrar sesion</button></li>';
                         } elseif ($userPrivilege == 'user') {
                             echo '<li class="list-group-item list-group-item-action">
-                                    <div class="d-flex align-items-center">
-                                        <img src="ruta-a-imagen.jpg" alt="Avatar del usuario" class="me-2" style="width: 30px; height: 30px;">
-                                        <div>
-                                        <div class="fw-bold">Nombre de usuario</div>
-                                        <a href="infoPerfil.php" class="text-muted list-group-item-action active">Mi perfil</a>
-                                        </div>
+                                            <div class="d-flex align-items-center">';
+                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo "<div class='fw-bold'>$userName</div>";
+                            echo '
                                     </div>
                                     </li>';
-                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="#">Enviar un ticket</a></li>';
+                            echo '<li>
+                            <a class="dropdown-item" href="infoPerfil.php">
+                            <i class="fa fa-cog fa-fw"></i>Mi perfil
+                            </a><
+                            /li>';
+                            echo '<li>
+                            <a class="dropdown-item" href="#">
+                            <i class="fa fa-cog fa-fw"></i>Enviar un ticket
+                            </a>
+                            </li>';
+                            echo '<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action active" href="logOut.php">
+                            <i class="bi bi-person-circle p-1"></i>Cerrar sesion
+                            </a>
+                            </li>';
                         } else {
-                            echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="closeSesion()">Iniciar sesión</button></li>';
+                            echo '<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión
+                            </a>
+                            </li>';
                         }
                     } else {
 
@@ -487,8 +503,8 @@ if (isset($_SESSION['email'])) {
                         </div>
                         </li>';
                         echo "<hr class='dropdown-divider'>";
-                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre Comic web</a></li>';
-                        echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
                     }
                     ?>
                 </ul>
@@ -534,7 +550,7 @@ if (isset($_SESSION['email'])) {
                     </li>
                     <li>
                         <a class='list-group-item-action active' href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="fa fa-pencil fa-fw"></i>
-                            Sobre Comic web</a>
+                            Sobre WebComics</a>
                     </li>
                     <?php
                     if (isset($_SESSION['email'])) {
@@ -604,68 +620,91 @@ if (isset($_SESSION['email'])) {
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+
+                    <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
+                        <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                        <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
+                    </form>
                     <li class="list-group-item list-group-item-action">
-                        <a class="list-group-item-action active" aria-current="page" href="index.php">Inicio</a>
+                        <a class="list-group-item-action active" aria-current="page" href="index.php"><i class="fa fa-home fa-fw"></i>Inicio</a>
                     </li>
                     <li class="list-group-item list-group-item-action">
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
-                            <a class="list-group-item-action active" href="mi_coleccion.php">Mi colección</a>
-                        <?php
+                    <li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>
+                <?php
                         } else {
-                        ?>
-                            <a class="list-group-item-action active" href="#" onclick="no_logueado()">Mi colección</a>
-                        <?php
+                ?>
+                    <a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a>
+                <?php
                         }
-                        ?>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <a class="list-group-item-action active" href="novedades.php">Novedades</a>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            // Obtener el número de mensajes sin leer
-                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                ?>
+                </li>
+                <?php
+                if (isset($_SESSION['email'])) {
+                    if ($userPrivilege == 'admin') {
+                        echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                        echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                        echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                    } else {
+                        echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                        echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                    }
+                }
+                ?>
+                <li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="novedades.php"><i class='bi bi-person-circle p-1'></i>Novedades</a>
+                </li>
+                <li class="list-group-item list-group-item-action">
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        // Obtener el número de mensajes sin leer
+                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
 
-                            // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
-                            if ($num_solicitudes > 0) {
-                                echo "<span class='material-icons shaking'>notifications</span>";
-                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
-                            } else {
-                                echo "<span class='material-icons '>notifications</span>";
-                            }
-                            echo "</a>";
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
+                        if ($num_solicitudes > 0) {
+                            echo "<span class='material-icons shaking'>notifications</span>";
+                            //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
+                        } else {
+                            echo "<span class='material-icons '>notifications</span>";
                         }
-                        ?>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            // Obtener el número de mensajes sin leer
-                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
+                        echo "Notificaciones</a>";
+                    }
+                    ?>
+                </li>
+                <li class="list-group-item list-group-item-action">
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        // Obtener el número de mensajes sin leer
+                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
-                            // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
-                            if ($num_mensajes > 0) {
-                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
-                                //echo "<span class='num_mensajes'>$num_mensajes</span>";
-                            } else {
-                                echo "<span class='material-icons'>mark_email_unread</span>";
-                            }
-                            echo "</a>";
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
+                        if ($num_mensajes > 0) {
+                            echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                            //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                        } else {
+                            echo "<span class='material-icons'>mark_email_unread</span>";
                         }
-                        ?>
-                    </li>
+                        echo "Mensajes</a>";
+                    }
+                    ?>
+                </li>
                 </ul>
 
                 <!-- <div class="d-flex" role="search"> -->
-                <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
-                    <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
-                </form>
+
+                <?php
+                if (isset($_SESSION['email'])) {
+                    echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
+                    echo '<li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Cerrar sesion</button></a>';
+                    echo '</li>';
+                }
+                ?>
 
                 <script>
                     function searchData() {
@@ -703,73 +742,73 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
 
-        <script>
-            var limit = 24;
-            var offset = 0;
-            var totalComics = 0;
-            var checkboxChecked = null;
+            <script>
+                var limit = 24;
+                var offset = 0;
+                var totalComics = 0;
+                var checkboxChecked = null;
 
-            $('input[type=checkbox]').on('change', function() {
-                if ($(this).prop('checked') != true) {
-                    checkboxChecked = null;
-                }
-            });
-
-            $(document).ready(function() {
-                loadComics(checkboxChecked);
-            });
-
-            function loadComics(offset = 0) {
-                var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                    return encodeURIComponent(this.value);
-                }).get();
-
-                var data = {
-                    limit: limit,
-                    offset: offset,
-                };
-
-                if (selectedCheckboxes.length > 0) {
-                    data.checkboxChecked = selectedCheckboxes.join(",");
-                }
-
-                $.ajax({
-                    url: "php/apis/comics.php",
-                    data: data,
-                    success: function(data) {
-                        totalComics = $(data).filter("#total-comics").val();
-                        if (offset + limit >= totalComics) {
-                            $("#load-more-comics").hide();
-                        }
-                        $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs');
+                $('input[type=checkbox]').on('change', function() {
+                    if ($(this).prop('checked') != true) {
+                        checkboxChecked = null;
                     }
                 });
-            }
-            actualizar_filtrado_completo()
-        </script>
-        <div id="footer-lite" class="mt-5">
-            <div class="container">
-                <p class="helpcenter">
-                    <a href="http://www.example.com/help">Ayuda</a>
-                </p>
-                <p class="footer-title">
-                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                    <span>·</span>
-                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                    <span>·</span>
-                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                    <span>·</span>
-                    <a href="about.php" style="color:black">Quiénes somos</a>
-                </p>
-                <!-- add social media with icons -->
-                <p class="social">
-                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                </p>
-                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                $(document).ready(function() {
+                    loadComics(checkboxChecked);
+                });
+
+                function loadComics(offset = 0) {
+                    var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
+                        return encodeURIComponent(this.value);
+                    }).get();
+
+                    var data = {
+                        limit: limit,
+                        offset: offset,
+                    };
+
+                    if (selectedCheckboxes.length > 0) {
+                        data.checkboxChecked = selectedCheckboxes.join(",");
+                    }
+
+                    $.ajax({
+                        url: "php/apis/comics.php",
+                        data: data,
+                        success: function(data) {
+                            totalComics = $(data).filter("#total-comics").val();
+                            if (offset + limit >= totalComics) {
+                                $("#load-more-comics").hide();
+                            }
+                            $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs');
+                        }
+                    });
+                }
+                actualizar_filtrado_completo()
+            </script>
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="footer-title">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                </div>
             </div>
-        </div>
     </main>
 </body>
 

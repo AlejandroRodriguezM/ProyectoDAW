@@ -16,7 +16,7 @@ if (isset($_SESSION['email'])) {
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
-    if(!comprobar_activacion($userName)){
+    if (!comprobar_activacion($userName)) {
         header("Location: usuario_no_activado.php");
     }
 } else {
@@ -49,7 +49,7 @@ if (isset($_SESSION['email'])) {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/functions.js"></script>
@@ -59,7 +59,6 @@ if (isset($_SESSION['email'])) {
     <title>Mis listas de comics</title>
 
     <style>
-
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -246,19 +245,46 @@ if (isset($_SESSION['email'])) {
             cursor: pointer;
             text-decoration: none;
         }
+
         body {
             margin: 0 !important;
-            padding: 0 !important;
+            padding: 0;
             height: 100% !important;
-            overflow-y: scroll !important; /* Habilita el scroll vertical */
+            background-color: rgba(0, 0, 0, 0);
 
         }
 
         main {
-            min-height: 100vh !important;
+
+            height: 100% !important;
         }
 
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 5px 0;
+            text-align: center;
+        }
 
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
+
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
+
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -424,16 +450,15 @@ if (isset($_SESSION['email'])) {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                                    echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                                    echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
-
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -508,9 +533,9 @@ if (isset($_SESSION['email'])) {
         }
         ?>
 
-            <div class="card-footer text-muted" style="background-color:white">
-                Design by Alejandro Rodriguez 2022
-            </div>
+        <div class="card-footer text-muted" style="background-color:white">
+            Design by Alejandro Rodriguez 2022
+        </div>
 
         <!--Canvas imagen de perfil-->
         <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
@@ -554,29 +579,28 @@ if (isset($_SESSION['email'])) {
                         } else {
                             echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                         }
+                    } else {
 
-                        } else {
-
-                            echo '<li>
+                        echo '<li>
                                 <div class="d-flex align-items-center">';
-                            echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo '
+                        echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                        echo '
                             <div>
                             <div class="fw-bold">Invitado</div>
                             </div>
                         </div>
                         </li>';
-                            echo "<hr class='dropdown-divider'>";
-                            echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                            echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
-                        }
-                        ?>
-                    </ul>
-                </div>
-
-
+                        echo "<hr class='dropdown-divider'>";
+                        echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
+                        echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                    }
+                    ?>
+                </ul>
             </div>
-                <!--Canvas menu-->
+
+
+        </div>
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -676,7 +700,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -771,195 +795,192 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
-
-    <!-- FORMULARIO INSERTAR -->
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_ticket" onsubmit="return false;">
-                        <h4 class="modal-title">Crear un ticket para administradores</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Asunto</label>
-                        <input type="text" id="asunto_usuario" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                        }
-                        ?>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                </div>
-                </form>
-            </div>
+        <!-- The Modal -->
+        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <img class="modal-content_img" id="img01">
         </div>
-    </div>
 
-    <!-- FORMULARIO nueva lista -->
-    <div id="nueva_lista" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_lista" onsubmit="return false;">
-                        <h4 class="modal-title">Crea una lista de lectura</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Nombre de la lista</label>
-                        <input type="text" id="nombre_lista" class="form-control">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            echo "<input type='hidden' id='id_user' value='$id_usuario'>";
-                        }
-                        ?>
+        <!-- FORMULARIO INSERTAR -->
+        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form method="post" id="form_ticket" onsubmit="return false;">
+                            <h4 class="modal-title">Crear un ticket para administradores</h4>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Crear lista" onclick="nueva_lista()">
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- FORMULARIO modificar lista -->
-    <div id="modificar_lista" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Modificar lista de lectura</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nombre_lista_modificar">Nuevo nombre de la lista:</label>
-                        <input type="text" class="form-control" id="nombre_lista_modificar">
-                        <input type="hidden" id="id_lista_modificar">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="modificar_lista()">Guardar cambios</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- AQUI VA EL CONTENIDO DE LA PAGINA -->
-    
-            <div class="card-category-3">
-                <ul>
-                    <li class="card-item">
-                        <div class="ioverlay-card io-card-2">
-                            <a href='#' data-bs-toggle='modal' data-bs-target='#nueva_lista'>
-                                <div class="card-content">
-                                    <span class="card-title">Nueva lista</span>
-                                    <p class="card-text">
-                                        Crea una nueva lista
-                                    </p>
-                                </div>
-                                <img src="assets/img/comic3.jpg" />
-                            </a>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Asunto</label>
+                            <input type="text" id="asunto_usuario" class="form-control">
                         </div>
-                    </li>
-
-                    <?php
-                    $listas = get_listas($id_usuario);
-
-                    $i = -4;
-                    foreach ($listas as $lista) {
-                        $id_lista = $lista['id_lista'];
-                        $nombre_lista = $lista['nombre_lista'];
-                        $num_listas = num_listas_user($id_usuario);
-                        $num_comics = get_total_contenido($id_lista);
-                        echo "<li class='card-item'>";
-                        echo "<a href='contenido_lista.php?id_lista=$id_lista'>";
-                        echo "<div class='ioverlay-card io-card-2'>";
-                        echo "<div class='card-content'>";
-                        echo "<span class='card-title'>$nombre_lista</span>";
-                        echo "<p class='card-text'>Total: $num_comics Comics</p>";
-                        echo "<button class='delete-button' data-lista-id='$id_lista' id='delete-button-$id_lista' onclick='confirmar_eliminacion($id_lista,$id_usuario); return false;'>Eliminar</button>";
-                        echo "</div>";
-                        echo "<img src='assets/img/comic2.jpg' />";
-                        echo "<a href='#' data-bs-toggle='modal' data-bs-target='#modificar_lista' data-lista-id='$id_lista' data-nombre-lista='$nombre_lista' class='edit-button' onclick='abrir_modal_modificar($id_lista); return false;'>Modificar</a>";
-                        echo "</div>";
-                        echo "</a>";
-                        echo "</li>";
-
-                        $i++;
-                        if ($i % 5 == 0) {
-                            echo "<div class='clearfix'></div>";
-                        }
-                    }
-
-                    // Asegurarse de que se añade clearfix si el número total de listas es divisible por 3
-                    if ($i % 3 != 0) {
-                        echo "<div class='clearfix'></div>";
-                    }
-                    ?>
-
-                </ul>
+                        <div class="form-group">
+                            <label>Mensaje</label>
+                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                    </div>
+                    </form>
+                </div>
             </div>
+        </div>
 
-                        <div class="container mt-5">
-                <div class="d-flex justify-content-center">
-                    <div class="last-pubs2 comics">
+        <!-- FORMULARIO nueva lista -->
+        <div id="nueva_lista" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form method="post" id="form_lista" onsubmit="return false;">
+                            <h4 class="modal-title">Crea una lista de lectura</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nombre de la lista</label>
+                            <input type="text" id="nombre_lista" class="form-control">
+                            <?php
+                            if (isset($_SESSION['email'])) {
+                                echo "<input type='hidden' id='id_user' value='$id_usuario'>";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-info" value="Crear lista" onclick="nueva_lista()">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULARIO modificar lista -->
+        <div id="modificar_lista" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Modificar lista de lectura</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nombre_lista_modificar">Nuevo nombre de la lista:</label>
+                            <input type="text" class="form-control" id="nombre_lista_modificar">
+                            <input type="hidden" id="id_lista_modificar">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="modificar_lista()">Guardar cambios</button>
                     </div>
                 </div>
-            </div></div>
-
+            </div>
         </div>
-<script>
-        var resizeTimer;
 
-        function comics_recomendados() {
-            // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-            var width = $(window).width();
-            var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
 
-            var data = {
-                num_comics: num_comics
-            };
-            $.ajax({
-                url: "php/apis/recomendaciones_comics.php",
-                data: data,
-                success: function(data) {
-                    // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                    var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
-                    $('.container.mt-5').css('width', container_width + 'px');
 
-                    totalComics = $(data).filter("#total-comics").val();
+        <!-- AQUI VA EL CONTENIDO DE LA PAGINA -->
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+            <br>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="card-category-3">
+                        <ul>
+                            <li class="card-item">
+                                <div class="ioverlay-card io-card-2">
+                                    <a href='#' data-bs-toggle='modal' data-bs-target='#nueva_lista'>
+                                        <div class="card-content">
+                                            <span class="card-title">Nueva lista</span>
+                                            <p class="card-text">
+                                                Crea una nueva lista
+                                            </p>
+                                        </div>
+                                        <img src="assets/img/comic3.jpg" />
+                                    </a>
+                                </div>
+                            </li>
 
-                    // Elimina la lista anterior antes de agregar la nueva
-                    $('.recomendaciones').html('');
-                    $(data).appendTo('.recomendaciones');
+                            <?php
+                            $listas = get_listas($id_usuario);
+
+                            $i = -4;
+                            foreach ($listas as $lista) {
+                                $id_lista = $lista['id_lista'];
+                                $nombre_lista = $lista['nombre_lista'];
+                                $num_listas = num_listas_user($id_usuario);
+                                $num_comics = get_total_contenido($id_lista);
+                                echo "<li class='card-item'>";
+                                echo "<a href='contenido_lista.php?id_lista=$id_lista'>";
+                                echo "<div class='ioverlay-card io-card-2'>";
+                                echo "<div class='card-content'>";
+                                echo "<span class='card-title'>$nombre_lista</span>";
+                                echo "<p class='card-text'>Total: $num_comics Comics</p>";
+                                echo "<button class='delete-button' data-lista-id='$id_lista' id='delete-button-$id_lista' onclick='confirmar_eliminacion($id_lista,$id_usuario); return false;'>Eliminar</button>";
+                                echo "</div>";
+                                echo "<img src='assets/img/comic2.jpg' />";
+                                echo "<a href='#' data-bs-toggle='modal' data-bs-target='#modificar_lista' data-lista-id='$id_lista' data-nombre-lista='$nombre_lista' class='edit-button' onclick='abrir_modal_modificar($id_lista); return false;'>Modificar</a>";
+                                echo "</div>";
+                                echo "</a>";
+                                echo "</li>";
+
+                                $i++;
+                                if ($i % 5 == 0) {
+                                    echo "<div class='clearfix'></div>";
+                                }
+                            }
+
+                            // Asegurarse de que se añade clearfix si el número total de listas es divisible por 3
+                            if ($i % 3 != 0) {
+                                echo "<div class='clearfix'></div>";
+                            }
+                            ?>
+
+                        </ul>
+                    </div>
+
+                    <div class="container mt-5">
+                        <div class="d-flex justify-content-center">
+                            <div class="last-pubs2 comics">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                var resizeTimer;
+
+                function comics_recomendados() {
+                    // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+                    var width = $(window).width();
+                    var num_comics = Math.max(3, Math.min(8, Math.floor(width / 150))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
+
+                    var data = {
+                        num_comics: num_comics
+                    };
+                    $.ajax({
+                        url: "php/apis/recomendaciones_comics.php",
+                        data: data,
+                        success: function(data) {
+                            totalComics = $(data).filter("#total-comics").val();
+                            $('.comics').html('');
+                            $(data).appendTo('.comics');
+                        }
+                    });
                 }
-            });
-        }
-        comics_recomendados();
-        // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-        $(window).on('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(comics_recomendados, 100);
-        });
-    </script>
+                comics_recomendados();
+                // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+                $(window).on('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(comics_recomendados, 100);
+                });
+            </script>
 
-                <div id="footer-lite" class="mt-5">
+            <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">
                         <a href="http://www.example.com/help">Ayuda</a>
@@ -984,6 +1005,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
     </main>
+
 </body>
 
 </html>

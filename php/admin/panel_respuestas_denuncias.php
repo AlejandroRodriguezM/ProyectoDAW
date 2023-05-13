@@ -10,15 +10,12 @@ if (isset($_SESSION['email'])) {
     $userPrivilege = $userData['privilege'];
     $id_usuario = $userData['IDuser'];
     $numero_comics = get_total_guardados($id_usuario);
-    //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
-    
     $userName = $userData['userName'];
-
 
     if (checkStatus($email)) {
         header("Location: usuario_bloqueado.php");
     }
-    if(!comprobar_activacion($userName)){
+    if (!comprobar_activacion($userName)) {
         header("Location: usuario_no_activado.php");
     }
 } else {
@@ -40,14 +37,8 @@ if ($userPrivilege == 'admin') {
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/style.css">
-    <!-- <link rel="stylesheet" href="./assets/style/bandeja_comics.css"> -->
     <link rel="stylesheet" href="./assets/style/mensajes_style.css">
-    <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/novedades.css">
-    <!-- <link rel="stylesheet" href="./assets/style/parallax.css"> -->
-    <!-- <link rel="stylesheet" href="./assets/style/media_recomendaciones.css"> -->
-    <link rel="stylesheet" href="./assets/style/media_videos.css">
-    <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -189,11 +180,13 @@ if ($userPrivilege == 'admin') {
             border-radius: 4px;
             background-color: #f8f8f8;
         }
+
         body {
             margin: 0 !important;
             padding: 0 !important;
             height: 100% !important;
-            overflow-y: scroll !important; /* Habilita el scroll vertical */
+            overflow-y: scroll !important;
+            /* Habilita el scroll vertical */
 
         }
 
@@ -201,7 +194,46 @@ if ($userPrivilege == 'admin') {
             min-height: 100vh !important;
         }
 
+        body {
+            margin: 0 !important;
+            padding: 0;
+            height: 100% !important;
+            background-color: rgba(0, 0, 0, 0);
 
+        }
+
+        main {
+
+            height: 100% !important;
+        }
+
+        /* Estilos generales para el footer */
+        #footer-lite {
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* Estilos para los enlaces */
+        #footer-lite a {
+            color: #444;
+        }
+
+        #footer-lite a:hover {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Estilos para los íconos de redes sociales */
+        #footer-lite .social a img {
+            margin-right: 10px;
+        }
+
+        /* Estilos para el texto del copyright */
+        #footer-lite .copyright {
+            font-size: 14px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -367,16 +399,15 @@ if ($userPrivilege == 'admin') {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                                    echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                                    echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
-
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -451,9 +482,9 @@ if ($userPrivilege == 'admin') {
         }
         ?>
 
-            <div class="card-footer text-muted" style="background-color:white">
-                Design by Alejandro Rodriguez 2022
-            </div>
+        <div class="card-footer text-muted" style="background-color:white">
+            Design by Alejandro Rodriguez 2022
+        </div>
 
         <!--Canvas imagen de perfil-->
         <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
@@ -474,52 +505,66 @@ if ($userPrivilege == 'admin') {
                     <?php
                     if (isset($_SESSION['email'])) {
                         if ($userPrivilege == 'admin') {
-                            echo '<li>
+                            echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
                             echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
                             echo "<div class='fw-bold'>$userName</div>";
                             echo '
                                     </div>
                                     </li>';
-                            echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                            echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="panel_tickets_admin.php"><i class="fa fa-cog fa-fw"></i>Panel tickets</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="closeSesion()"><i class="fa fa-cog fa-fw"></i>Cerrar sesion</button></li>';
                         } elseif ($userPrivilege == 'user') {
-                            echo '<li>
-                                    <div class="d-flex align-items-center">
-                                        <img src="ruta-a-imagen.jpg" alt="Avatar del usuario" class="me-2" style="width: 30px; height: 30px;">
-                                        <div>
-                                        <div class="fw-bold">Nombre de usuario</div>
-                                        <a href="infoPerfil.php" class="text-muted">Mi perfil</a>
-                                        </div>
+                            echo '<li class="list-group-item list-group-item-action">
+                                            <div class="d-flex align-items-center">';
+                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo "<div class='fw-bold'>$userName</div>";
+                            echo '
                                     </div>
                                     </li>';
-                            echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
-                        } else {
-                            echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
-                        }
-
-                        } else {
-
                             echo '<li>
+                            <a class="dropdown-item" href="infoPerfil.php">
+                            <i class="fa fa-cog fa-fw"></i>Mi perfil
+                            </a><
+                            /li>';
+                            echo '<li>
+                            <a class="dropdown-item" href="#">
+                            <i class="fa fa-cog fa-fw"></i>Enviar un ticket
+                            </a>
+                            </li>';
+                            echo '<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action active" href="logOut.php">
+                            <i class="bi bi-person-circle p-1"></i>Cerrar sesion
+                            </a>
+                            </li>';
+                        } else {
+                            echo '<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión
+                            </a>
+                            </li>';
+                        }
+                    } else {
+
+                        echo '<li class="list-group-item list-group-item-action">
                                 <div class="d-flex align-items-center">';
-                            echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo '
+                        echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                        echo '
                             <div>
                             <div class="fw-bold">Invitado</div>
                             </div>
                         </div>
                         </li>';
-                            echo "<hr class='dropdown-divider'>";
-                            echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                            echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
-                        }
-                        ?>
-                    </ul>
-                </div>
-
-
+                        echo "<hr class='dropdown-divider'>";
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
+                    }
+                    ?>
+                </ul>
             </div>
-                <!--Canvas menu-->
+        </div>
+
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -550,6 +595,7 @@ if ($userPrivilege == 'admin') {
                             echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                             echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
                         }
+                        echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="closeSesion()">Cerrar sesion</button></li>';
                     }
                     ?>
                     <li>
@@ -558,7 +604,7 @@ if ($userPrivilege == 'admin') {
                     </li>
                     <li>
                         <a class='list-group-item-action active' href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="fa fa-pencil fa-fw"></i>
-                            Sobre Comic web</a>
+                            Sobre WebComics</a>
                     </li>
                     <?php
                     if (isset($_SESSION['email'])) {
@@ -619,7 +665,7 @@ if ($userPrivilege == 'admin') {
             </div>
         </div>
 
-                <!--Canvas menu movil-->
+        <!--Canvas menu movil-->
         <div class="offcanvas offcanvas-top text-bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header">
 
@@ -628,81 +674,92 @@ if ($userPrivilege == 'admin') {
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+
+                    <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
+                        <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                        <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
+                    </form>
                     <li class="list-group-item list-group-item-action">
-                        <a class="list-group-item-action active" aria-current="page" href="index.php">Inicio</a>
+                        <a class="list-group-item-action active" aria-current="page" href="index.php"><i class="fa fa-home fa-fw"></i>Inicio</a>
                     </li>
                     <li class="list-group-item list-group-item-action">
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
-                            <a class="list-group-item-action active" href="mi_coleccion.php">Mi colección</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="list-group-item-action active" href="#" onclick="no_logueado()">Mi colección</a>
-                        <?php
-                        }
-                        ?>
                     </li>
+                    <li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>
+                <?php
+                        } else {
+                ?>
+                    <li class="nav-item"><a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a></li>
+                <?php
+                        }
+                ?>
+
+                <?php
+                if (isset($_SESSION['email'])) {
+                    if ($userPrivilege == 'admin') {
+                        echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                        echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                        echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                    } else {
+                        echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                        echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                    }
+                }
+                ?>
+                <li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="novedades.php"><i class='bi bi-person-circle p-1'></i>Novedades</a>
+                </li>
+                <li class="list-group-item list-group-item-action">
                     <?php
                     if (isset($_SESSION['email'])) {
-                        echo '<li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>';
-                        if ($userPrivilege == 'admin') {
-                            echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
-                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                            echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                        // Obtener el número de mensajes sin leer
+                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
+                        if ($num_solicitudes > 0) {
+                            echo "<span class='material-icons shaking'>notifications</span>";
+                            //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
                         } else {
-                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                            echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                            echo "<span class='material-icons '>notifications</span>";
                         }
+                        echo "Notificaciones</a>";
                     }
                     ?>
-                    <li class="list-group-item list-group-item-action">
-                        <a class="list-group-item-action active" href="novedades.php">Novedades</a>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            // Obtener el número de mensajes sin leer
-                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                </li>
+                <li class="list-group-item list-group-item-action">
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        // Obtener el número de mensajes sin leer
+                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
-                            // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
-                            if ($num_solicitudes > 0) {
-                                echo "<span class='material-icons shaking'>notifications</span>";
-                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
-                            } else {
-                                echo "<span class='material-icons '>notifications</span>";
-                            }
-                            echo "</a>";
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
+                        if ($num_mensajes > 0) {
+                            echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                            //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                        } else {
+                            echo "<span class='material-icons'>mark_email_unread</span>";
                         }
-                        ?>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            // Obtener el número de mensajes sin leer
-                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
-
-                            // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
-                            if ($num_mensajes > 0) {
-                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
-                                //echo "<span class='num_mensajes'>$num_mensajes</span>";
-                            } else {
-                                echo "<span class='material-icons'>mark_email_unread</span>";
-                            }
-                            echo "</a>";
-                        }
-                        ?>
-                    </li>
+                        echo "Mensajes</a>";
+                    }
+                    ?>
+                </li>
                 </ul>
 
                 <!-- <div class="d-flex" role="search"> -->
-                <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
-                    <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
-                </form>
+
+                <?php
+                if (isset($_SESSION['email'])) {
+                    echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
+                    echo '<li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Cerrar sesion</button></a>';
+                    echo '</li>';
+                }
+                ?>
 
                 <script>
                     function searchData() {
@@ -713,299 +770,265 @@ if ($userPrivilege == 'admin') {
                 <!-- </div> -->
             </div>
         </div>
-    <!-- The Modal -->
-    <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <img class="modal-content_img" id="img01">
-    </div>
+        <!-- The Modal -->
 
-    <!-- FORMULARIO INSERTAR -->
+        <br>
+        <div class="contenedor mt-5">
+            <div class="view-account" style="width:90%;justify-content: center;margin: 0 auto;">
+                <section class="module">
+                    <div class="module-inner">
+                        <div class="side-bar">
+                            <div class="user-info">
+                                <?php
 
-    <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <form method="post" id="form_ticket" onsubmit="return false;">
-                        <h4 class="modal-title">Crear un ticket para administradores</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Asunto</label>
-                        <input type="text" id="asunto_usuario" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Mensaje</label>
-                        <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                        <?php
-                        echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                        ?>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                    <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-            <br>
-            <div class="contenedor mt-5">
-                <div class="view-account" style="width:90%;justify-content: center;margin: 0 auto;">
-                    <section class="module">
-                        <div class="module-inner">
-                            <div class="side-bar">
-                                <div class="user-info">
-                                    <?php
-
-                                    echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$picture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
-                                    ?>
-                                    <ul class="meta list list-unstyled">
-                                        <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
-                                            <?php
-
-                                            echo "$userName";
-                                            ?>
-                                        </li>
-                                        <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
-                                            <?php
-
-                                            // echo with style font size 
-                                            echo " " . "<span style='font-size: 0.7em'>$email</span>";
-                                            ?>
-                                        </li>
-                                        <li class="activity">
-                                            <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
-                                            <?php
-                                            echo comprobar_ultima_conexion($id_usuario);
-                                            ?>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <nav class="side-menu">
-                                    <ul class="nav">
-                                        <li><a href="infoPerfil.php"><span class="fa fa-user"></span>Perfil</a></li>
-                                        <li><a href='solicitudes_amistad.php'><span class='fa fa-user'></span>Solicitudes de amistad</a></li>
-                                        <li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>
-                                        <li><a href="modificar_perfil.php"><span class="fa fa-cog"></span> Opciones</a></li>
+                                echo "<img class='img-profile img-circle img-responsive center-block' id='avatarUser' alt='Avatar' src='$picture' onclick='pictureProfileUser()'; style='width:100%; height: 100%;' />";
+                                ?>
+                                <ul class="meta list list-unstyled">
+                                    <li class="name"><label for="" style="font-size: 0.8em;">Nombre:</label>
                                         <?php
-                                        if ($userPrivilege == 'user') {
-                                            echo "<li class='active'><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
-                                        }
+
+                                        echo "$userName";
                                         ?>
-                                        <li><a href="mensajes_usuario.php"><span class="fa fa-cog"></span>Mis mensajes</a></li>
-                                    </ul>
-                                </nav>
+                                    </li>
+                                    <li class="email"><label for="" style="font-size: 0.8em;">Mail: </label>
+                                        <?php
+
+                                        // echo with style font size 
+                                        echo " " . "<span style='font-size: 0.7em'>$email</span>";
+                                        ?>
+                                    </li>
+                                    <li class="activity">
+                                        <label for="" style="font-size: 0.8em;">Ultima conexion: </label>
+                                        <?php
+                                        echo comprobar_ultima_conexion($id_usuario);
+                                        ?>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="content-panel">
-                                <!-- AQUI VA EL CONTENIDO DE LOS TICKETS -->
-                                <form class="form-horizontal" onsubmit="return false;" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                    <fieldset class="fieldset">
-                                        <h3 class="fieldset-title">Mensajes</h3>
-                                        <div id="mensajes-container"></div>
-                                    </fieldset>
-                                </form>
-                            </div>
+                            <nav class="side-menu">
+                                <ul class="nav">
+                                    <li><a href="infoPerfil.php"><span class="fa fa-user"></span>Perfil</a></li>
+                                    <li><a href='solicitudes_amistad.php'><span class='fa fa-user'></span>Solicitudes de amistad</a></li>
+                                    <li><a href='lista_amigos.php'><span class='fa fa-user'></span>Mis amigos</a></li>
+                                    <li><a href="modificar_perfil.php"><span class="fa fa-cog"></span> Opciones</a></li>
+                                    <?php
+                                    if ($userPrivilege == 'user') {
+                                        echo "<li class='active'><a href='panel_tickets_user.php'><span class='fa fa-cog'></span>Tickets enviados</a></li>";
+                                    }
+                                    ?>
+                                    <li><a href="mensajes_usuario.php"><span class="fa fa-cog"></span>Mis mensajes</a></li>
+                                </ul>
+                            </nav>
                         </div>
-                    </section>
-                </div>
+                        <div class="content-panel">
+                            <!-- AQUI VA EL CONTENIDO DE LOS TICKETS -->
+                            <form class="form-horizontal" onsubmit="return false;" id="formUpdate" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                <fieldset class="fieldset">
+                                    <h3 class="fieldset-title">Mensajes</h3>
+                                    <div id="mensajes-container"></div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </section>
             </div>
+        </div>
 
 
 
         </div>
-    </div>
-    <script>
-        $(document).ready(function() {
-            $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
-        });
-
-        var procesando_mensaje = false;
-        var mensaje_abierto_id = null;
-
-        function toggleTicketInfo(id) {
-            var header = document.getElementById('mensaje-header-' + id);
-            var info = document.getElementById('mensaje-info-' + id);
-            var arrow = header.querySelector('.arrow');
-            modificar_estado_mensaje(id);
+        </div>
+        <script>
             $(document).ready(function() {
                 $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
             });
-            if (mensaje_abierto_id && mensaje_abierto_id !== id) {
-                var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
-                var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
-                var arrowAnterior = headerAnterior.querySelector('.arrow');
 
-                infoAnterior.style.display = 'none';
-                arrowAnterior.innerHTML = '&#9654;';
+            var procesando_mensaje = false;
+            var mensaje_abierto_id = null;
+
+            function toggleTicketInfo(id) {
+                var header = document.getElementById('mensaje-header-' + id);
+                var info = document.getElementById('mensaje-info-' + id);
+                var arrow = header.querySelector('.arrow');
+                modificar_estado_mensaje(id);
+                $(document).ready(function() {
+                    $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
+                });
+                if (mensaje_abierto_id && mensaje_abierto_id !== id) {
+                    var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
+                    var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
+                    var arrowAnterior = headerAnterior.querySelector('.arrow');
+
+                    infoAnterior.style.display = 'none';
+                    arrowAnterior.innerHTML = '&#9654;';
+                }
+
+                if (info.style.display === 'block') {
+                    // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
+                    if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
+                        arrow.innerHTML = '&#9660;';
+                        return;
+                    }
+                    // Si no hay mensaje enviado, ocultar el elemento
+                    info.style.display = 'none';
+                    arrow.innerHTML = '&#9654;';
+                    mensaje_abierto_id = null;
+
+                } else {
+                    // Si el elemento está cerrado, mostrarlo
+                    info.style.display = 'block';
+                    arrow.innerHTML = '&#9660;';
+                    mensaje_abierto_id = id;
+                }
             }
 
-            if (info.style.display === 'block') {
-                // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
-                if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
-                    arrow.innerHTML = '&#9660;';
+            // Asignar la función a los eventos de clic de los headers de los tickets
+            if (document.getElementById('mensajes-container')) {
+                document.getElementById('mensajes-container').addEventListener('click', function(event) {
+                    if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
+                    var arrow = event.target.closest('.arrow');
+                    if (arrow) {
+                        var header = arrow.closest('.mensaje-header');
+                        var id = header.id.replace('mensaje-header-', '');
+                        toggleTicketInfo(id);
+
+                    }
+                });
+            }
+        </script>
+        <script>
+            function actualizarMensajes(ticket_id, id_usuario) {
+                $.ajax({
+                    url: "php/apis/tickets_denuncias.php",
+                    method: 'POST',
+                    data: {
+                        id_usuario_destinatario: ticket_id,
+                        mensaje: ''
+                    },
+                    success: function(data) {
+                        $('#mensaje-info-' + ticket_id).html(data);
+                        $("#mensajes-container").html(data);
+                        $('#mensaje-info-' + ticket_id).css('display', 'block');
+                    }
+                });
+            }
+            $(document).ready(function() {
+                actualizarMensajes(0);
+            });
+            // Enviar mensaje mediante AJAX
+            const mandar_mensaje_actualizacion = async (ticket_id) => {
+                var id_denuncia = document.querySelector("#id_denuncia_" + ticket_id).value;
+                var id_admin = document.querySelector("#id_admin_" + ticket_id).value;
+                var id_usuario = document.querySelector("#id_usuario_" + ticket_id).value;
+                var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
+
+                if (respuesta.trim() === '') {
+                    Swal.fire({
+                        icon: "error",
+                        title: "ERROR.",
+                        text: "No puedes enviar un mensaje vacío.",
+                        footer: "Web Comics"
+                    })
                     return;
                 }
-                // Si no hay mensaje enviado, ocultar el elemento
-                info.style.display = 'none';
-                arrow.innerHTML = '&#9654;';
-                mensaje_abierto_id = null;
 
-            } else {
-                // Si el elemento está cerrado, mostrarlo
-                info.style.display = 'block';
-                arrow.innerHTML = '&#9660;';
-                mensaje_abierto_id = id;
+                //insert to data base in case of everything go correct.
+                const data = new FormData();
+                data.append('id_denuncia', id_denuncia);
+                data.append('id_admin', id_admin);
+                data.append('id_usuario', id_usuario);
+                data.append("mensaje", respuesta);
+
+                //pass data to php file
+                var respond = await fetch("php/apis/respuesta_denuncia.php", {
+                    method: 'POST',
+                    body: data
+                });
+
+                var result = await respond.json();
+
+                if (result.success == false) {
+                    document.querySelector('#form_mensaje').reset();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    // Actualizar la lista de mensajes
+                    $('#mensaje_usuario_enviar').val('');
+                    $('#mensaje-info-' + ticket_id).html(result.data);
+                    // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
+                    // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
+                    actualizarMensajes(ticket_id, id_usuario);
+                }
             }
-        }
-
-        // Asignar la función a los eventos de clic de los headers de los tickets
-        if (document.getElementById('mensajes-container')) {
-            document.getElementById('mensajes-container').addEventListener('click', function(event) {
-                if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
-                var arrow = event.target.closest('.arrow');
-                if (arrow) {
-                    var header = arrow.closest('.mensaje-header');
-                    var id = header.id.replace('mensaje-header-', '');
-                    toggleTicketInfo(id);
-
-                }
-            });
-        }
-    </script>
-    <script>
-        function actualizarMensajes(ticket_id, id_usuario) {
-            $.ajax({
-                url: "php/apis/tickets_denuncias.php",
-                method: 'POST',
-                data: {
-                    id_usuario_destinatario: ticket_id,
-                    mensaje: ''
-                },
-                success: function(data) {
-                    $('#mensaje-info-' + ticket_id).html(data);
-                    $("#mensajes-container").html(data);
-                    $('#mensaje-info-' + ticket_id).css('display', 'block');
-                }
-            });
-        }
-        $(document).ready(function() {
-            actualizarMensajes(0);
-        });
-        // Enviar mensaje mediante AJAX
-        const mandar_mensaje_actualizacion = async (ticket_id) => {
-            var id_denuncia = document.querySelector("#id_denuncia_" + ticket_id).value;
-            var id_admin = document.querySelector("#id_admin_" + ticket_id).value;
-            var id_usuario = document.querySelector("#id_usuario_" + ticket_id).value;
-            var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
-
-            if (respuesta.trim() === '') {
-                Swal.fire({
-                    icon: "error",
-                    title: "ERROR.",
-                    text: "No puedes enviar un mensaje vacío.",
-                    footer: "Web Comics"
-                })
-                return;
+        </script>
+        <script>
+            // Función para abrir el modal
+            function openModal(modalId) {
+                var modal = document.querySelector('.modal-form' + modalId);
+                modal.style.display = "block";
             }
 
-            //insert to data base in case of everything go correct.
-            const data = new FormData();
-            data.append('id_denuncia', id_denuncia);
-            data.append('id_admin', id_admin);
-            data.append('id_usuario', id_usuario);
-            data.append("mensaje", respuesta);
-
-            //pass data to php file
-            var respond = await fetch("php/apis/respuesta_denuncia.php", {
-                method: 'POST',
-                body: data
-            });
-
-            var result = await respond.json();
-
-            if (result.success == false) {
-                document.querySelector('#form_mensaje').reset();
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-            } else {
-                // Actualizar la lista de mensajes
-                $('#mensaje_usuario_enviar').val('');
-                $('#mensaje-info-' + ticket_id).html(result.data);
-                // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
-                // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
-                actualizarMensajes(ticket_id, id_usuario);
+            // Función para cerrar el modal
+            function closeModal(modalId) {
+                var modal = document.getElementById(modalId);
+                modal.style.display = "none";
             }
-        }
-    </script>
-    <script>
-        // Función para abrir el modal
-        function openModal(modalId) {
-            var modal = document.querySelector('.modal-form' + modalId);
-            modal.style.display = "block";
-        }
 
-        // Función para cerrar el modal
-        function closeModal(modalId) {
-            var modal = document.getElementById(modalId);
-            modal.style.display = "none";
-        }
-
-        // Botón para abrir el modal
-        var btns = document.querySelectorAll(".btn-open-modal");
-        btns.forEach(function(btn) {
-            btn.addEventListener("click", function() {
-                var modalId = btn.dataset.target;
-                openModal(modalId);
+            // Botón para abrir el modal
+            var btns = document.querySelectorAll(".btn-open-modal");
+            btns.forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                    var modalId = btn.dataset.target;
+                    openModal(modalId);
+                });
             });
-        });
 
-        // Botón para cerrar el modal
-        var closeBtns = document.querySelectorAll(".close-modal");
-        closeBtns.forEach(function(closeBtn) {
-            closeBtn.addEventListener("click", function() {
-                var modalId = closeBtn.dataset.target;
-                closeModal(modalId);
+            // Botón para cerrar el modal
+            var closeBtns = document.querySelectorAll(".close-modal");
+            closeBtns.forEach(function(closeBtn) {
+                closeBtn.addEventListener("click", function() {
+                    var modalId = closeBtn.dataset.target;
+                    closeModal(modalId);
+                });
             });
-        });
 
-        // Cerrar el modal al hacer clic en cualquier parte de la pantalla
-        var modals = document.querySelectorAll(".modal");
-        modals.forEach(function(modal) {
-            window.addEventListener("click", function(event) {
-                if (event.target === modal) {
-                    modal.style.display = "none";
-                }
+            // Cerrar el modal al hacer clic en cualquier parte de la pantalla
+            var modals = document.querySelectorAll(".modal");
+            modals.forEach(function(modal) {
+                window.addEventListener("click", function(event) {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                });
             });
-        });
-    </script>
+        </script>
 
 
 
-                <div id="footer-lite" class="mt-5">
-                <div class="container">
-                    <p class="helpcenter">
-                        <a href="http://www.example.com/help">Ayuda</a>
-                    </p>
-                    <p class="footer-title">
-                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                        <span>·</span>
-                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                        <span>·</span>
-                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                        <span>·</span>
-                        <a href="about.php" style="color:black">Quiénes somos</a>
-                    </p>
-                    <!-- add social media with icons -->
-                    <p class="social">
-                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+        <div id="footer-lite" class="mt-5">
+            <div class="container">
+                <p class="helpcenter">
+                    <a href="http://www.example.com/help">Ayuda</a>
+                </p>
+                <p class="footer-title">
+                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                    <span>·</span>
+                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                    <span>·</span>
+                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                    <span>·</span>
+                    <a href="about.php" style="color:black">Quiénes somos</a>
+                </p>
+                <!-- add social media with icons -->
+                <p class="social">
+                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                    </p>
-                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
-                </div>
+                </p>
+                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
             </div>
+        </div>
         </div>
     </main>
 </body>

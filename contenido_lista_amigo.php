@@ -21,7 +21,7 @@ if (isset($_SESSION['email'])) {
     }
 }
 $userData = obtener_datos_usuario($email);
-$id_usuario = $userData['IDuser'];
+$id_otro_usuario = $userData['IDuser'];
 $id_lista = $_GET['id_lista'];
 $data_lista =  get_nombre_lista($id_lista);
 $nombre_lista = $data_lista['nombre_lista'];
@@ -190,7 +190,7 @@ $nombre_lista = $data_lista['nombre_lista'];
 
         body {
             margin: 0 !important;
-            padding: 0 ;
+            padding: 0;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 
@@ -476,9 +476,9 @@ $nombre_lista = $data_lista['nombre_lista'];
         }
         ?>
 
-            <div class="card-footer text-muted" style="background-color:white">
-                Design by Alejandro Rodriguez 2022
-            </div>
+        <div class="card-footer text-muted" style="background-color:white">
+            Design by Alejandro Rodriguez 2022
+        </div>
 
         <!--Canvas imagen de perfil-->
         <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
@@ -499,32 +499,48 @@ $nombre_lista = $data_lista['nombre_lista'];
                     <?php
                     if (isset($_SESSION['email'])) {
                         if ($userPrivilege == 'admin') {
-                            echo '<li>
+                            echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
                             echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
                             echo "<div class='fw-bold'>$userName</div>";
                             echo '
                                     </div>
                                     </li>';
-                            echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                            echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="panel_tickets_admin.php"><i class="fa fa-cog fa-fw"></i>Panel tickets</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="closeSesion()"><i class="fa fa-cog fa-fw"></i>Cerrar sesion</button></li>';
                         } elseif ($userPrivilege == 'user') {
-                            echo '<li>
-                                    <div class="d-flex align-items-center">
-                                        <img src="ruta-a-imagen.jpg" alt="Avatar del usuario" class="me-2" style="width: 30px; height: 30px;">
-                                        <div>
-                                        <div class="fw-bold">Nombre de usuario</div>
-                                        <a href="infoPerfil.php" class="text-muted">Mi perfil</a>
-                                        </div>
+                            echo '<li class="list-group-item list-group-item-action">
+                                            <div class="d-flex align-items-center">';
+                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo "<div class='fw-bold'>$userName</div>";
+                            echo '
                                     </div>
                                     </li>';
-                            echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
+                            echo '<li>
+                            <a class="dropdown-item" href="infoPerfil.php">
+                            <i class="fa fa-cog fa-fw"></i>Mi perfil
+                            </a><
+                            /li>';
+                            echo '<li>
+                            <a class="dropdown-item" href="#">
+                            <i class="fa fa-cog fa-fw"></i>Enviar un ticket
+                            </a>
+                            </li>';
+                            echo '<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action active" href="logOut.php">
+                            <i class="bi bi-person-circle p-1"></i>Cerrar sesion
+                            </a>
+                            </li>';
                         } else {
-                            echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
+                            echo '<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión
+                            </a>
+                            </li>';
                         }
                     } else {
 
-                        echo '<li>
+                        echo '<li class="list-group-item list-group-item-action">
                                 <div class="d-flex align-items-center">';
                         echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
                         echo '
@@ -534,15 +550,14 @@ $nombre_lista = $data_lista['nombre_lista'];
                         </div>
                         </li>';
                         echo "<hr class='dropdown-divider'>";
-                        echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                        echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
                     }
                     ?>
                 </ul>
             </div>
-
-
         </div>
+
         <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
@@ -582,7 +597,7 @@ $nombre_lista = $data_lista['nombre_lista'];
                     </li>
                     <li>
                         <a class='list-group-item-action active' href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="fa fa-pencil fa-fw"></i>
-                            Sobre Comic web</a>
+                            Sobre WebComics</a>
                     </li>
                     <?php
                     if (isset($_SESSION['email'])) {
@@ -652,81 +667,91 @@ $nombre_lista = $data_lista['nombre_lista'];
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+
+                    <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
+                        <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                        <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
+                    </form>
                     <li class="list-group-item list-group-item-action">
-                        <a class="list-group-item-action active" aria-current="page" href="index.php">Inicio</a>
+                        <a class="list-group-item-action active" aria-current="page" href="index.php"><i class="fa fa-home fa-fw"></i>Inicio</a>
                     </li>
                     <li class="list-group-item list-group-item-action">
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
-                            <a class="list-group-item-action active" href="mi_coleccion.php">Mi colección</a>
-                        <?php
+                    <li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>
+                <?php
                         } else {
-                        ?>
-                            <a class="list-group-item-action active" href="#" onclick="no_logueado()">Mi colección</a>
-                        <?php
+                ?>
+                    <a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a>
+                <?php
                         }
-                        ?>
-                    </li>
+                ?>
+                </li>
+                <?php
+                if (isset($_SESSION['email'])) {
+                    if ($userPrivilege == 'admin') {
+                        echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                        echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                        echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                    } else {
+                        echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                        echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                    }
+                }
+                ?>
+                <li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="novedades.php"><i class='bi bi-person-circle p-1'></i>Novedades</a>
+                </li>
+                <li class="list-group-item list-group-item-action">
                     <?php
                     if (isset($_SESSION['email'])) {
-                        echo '<li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>';
-                        if ($userPrivilege == 'admin') {
-                            echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
-                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                            echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                        // Obtener el número de mensajes sin leer
+                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
+                        if ($num_solicitudes > 0) {
+                            echo "<span class='material-icons shaking'>notifications</span>";
+                            //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
                         } else {
-                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                            echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                            echo "<span class='material-icons '>notifications</span>";
                         }
+                        echo "Notificaciones</a>";
                     }
                     ?>
-                    <li class="list-group-item list-group-item-action">
-                        <a class="list-group-item-action active" href="novedades.php">Novedades</a>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            // Obtener el número de mensajes sin leer
-                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                </li>
+                <li class="list-group-item list-group-item-action">
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        // Obtener el número de mensajes sin leer
+                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
-                            // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
-                            if ($num_solicitudes > 0) {
-                                echo "<span class='material-icons shaking'>notifications</span>";
-                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
-                            } else {
-                                echo "<span class='material-icons '>notifications</span>";
-                            }
-                            echo "</a>";
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
+                        if ($num_mensajes > 0) {
+                            echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                            //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                        } else {
+                            echo "<span class='material-icons'>mark_email_unread</span>";
                         }
-                        ?>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            // Obtener el número de mensajes sin leer
-                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
-
-                            // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
-                            if ($num_mensajes > 0) {
-                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
-                                //echo "<span class='num_mensajes'>$num_mensajes</span>";
-                            } else {
-                                echo "<span class='material-icons'>mark_email_unread</span>";
-                            }
-                            echo "</a>";
-                        }
-                        ?>
-                    </li>
+                        echo "Mensajes</a>";
+                    }
+                    ?>
+                </li>
                 </ul>
 
                 <!-- <div class="d-flex" role="search"> -->
-                <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
-                    <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
-                </form>
+
+                <?php
+                if (isset($_SESSION['email'])) {
+                    echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
+                    echo '<li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Cerrar sesion</button></a>';
+                    echo '</li>';
+                }
+                ?>
 
                 <script>
                     function searchData() {
@@ -738,158 +763,143 @@ $nombre_lista = $data_lista['nombre_lista'];
             </div>
         </div>
 
-        <!-- The Modal -->
-        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <img class="modal-content_img" id="img01">
-        </div>
 
-        <div class="caption">
-            <div class='filtrado_comics sticky-top '>
-                <!-- Aquí irían los acordeones -->
-            </div>
-        </div>
-
-        <div style="display: flex; justify-content: center;">
-            <div class="container mt-5">
-                <div class="last-pubs-1">        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
-                    <div class="titulo" style="border-radius:10px">
-                        <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
-                        <h2 style='text-align: center'>Lista <?php echo $nombre_lista  ?></h2>
-                    </div>        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
-            <br>
-                </div>
-            </div>
-        </div>
-        <!-- <div class="container mt-5">
-                <div style="display: flex; justify-content: center;">
-                    <div class="last-pubs2 col-md-8">
-                        <div class="titulo">
-                            <h2>Videos de interes</h2>
-                        </div>
-                        <hr>
-                        <div class="video-container">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
+            <div style="display: flex; justify-content: center;">
+                <div class="container mt-4">
+                    <div class='filtrado_comics'>
+                        <!-- Aquí irían los acordeones -->
                     </div>
                 </div>
-            </div> -->
+            </div>
 
-        </div>
-
-        <script>
-            var id_lista = document.querySelector('#id_lista').value;
-
-            var limit_agregar = 16;
-            var offset_agregar = 0;
-
-            var limit_lista = 16;
-            var offset_lista = 0;
-
-            var totalComics;
-            var checkboxChecked = null;
-            actualizar_filtrado_usuario(id_lista)
-            $('input[type=checkbox]').on('change', function() {
-                if ($(this).prop('checked') != true) {
-                    checkboxChecked = null;
-                }
-            });
-
-            $(document).ready(function() {
-                loadComics(0);
-            });
+            <div style="display: flex; justify-content: center;">
+                <div class="container mt-5">
+                    <div class="last-pubs-1">
+                        <br>
+                        <div class="titulo" style="border-radius:10px">
+                            <input type='hidden' name='id_lista' id='id_lista' value='<?php echo $id_lista ?>'>
+                            <h2 style='text-align: center'>Lista <?php echo $nombre_lista  ?></h2>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
 
 
 
-            function loadComics(offset_lista = 0) {
 
-                var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
-                    return encodeURIComponent(this.value);
-                }).get();
+            <script>
+                var id_lista = document.querySelector('#id_lista').value;
 
-                var data = {
-                    limit: limit_lista,
-                    offset: offset_lista,
-                    id_lista: id_lista
-                };
+                var limit_agregar = 16;
+                var offset_agregar = 0;
 
-                if (selectedCheckboxes.length > 0) {
-                    data.checkboxChecked = selectedCheckboxes.join(",");
-                }
-                $.ajax({
+                var limit_lista = 16;
+                var offset_lista = 0;
 
-                    url: "php/apis/comics_lista_usuario.php",
-                    data: data,
-                    success: function(data) {
-                        totalComics = $(data).filter("#total-comics").val();
-
-                        if (offset_lista == 0) {
-                            $('.comic-list').html('');
-                        }
-                        $('<div class="comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-1');
+                var totalComics;
+                var checkboxChecked = null;
+                actualizar_filtrado_usuario(id_lista)
+                $('input[type=checkbox]').on('change', function() {
+                    if ($(this).prop('checked') != true) {
+                        checkboxChecked = null;
                     }
                 });
-            }
-        </script>
-        <script>
-            function toggleDropdown(element) {
-                var dropdownContent1 = document.getElementById("dropdownContent1");
-                var dropdownContent2 = document.getElementById("dropdownContent2");
-                var dropdownContent3 = document.getElementById("dropdownContent3");
-                var dropdownContent4 = document.getElementById("dropdownContent4");
 
-                if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
-                    dropdownContent1.style.display = "none";
-                    dropdownContent2.style.display = "none";
-                    dropdownContent3.style.display = "none";
-                    dropdownContent4.style.display = "none";
-                } else {
-                    dropdownContent1.style.display = "none";
-                    dropdownContent2.style.display = "none";
-                    dropdownContent3.style.display = "none";
-                    dropdownContent4.style.display = "none";
-                    element.querySelector(".dropdown-content").style.display = "block";
+                $(document).ready(function() {
+                    loadComics(0);
+                });
+
+
+                function loadComics(offset_lista = 0) {
+                    actualizar_filtrado_lista_usuario(id_lista)
+                    var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
+                        return encodeURIComponent(this.value);
+                    }).get();
+
+                    var data = {
+                        limit: limit_lista,
+                        offset: offset_lista,
+                        id_lista: id_lista
+                    };
+
+                    if (selectedCheckboxes.length > 0) {
+                        data.checkboxChecked = selectedCheckboxes.join(",");
+                    }
+                    $.ajax({
+
+                        url: "php/apis/comics_lista_usuario.php",
+                        data: data,
+                        success: function(data) {
+                            totalComics = $(data).filter("#total-comics").val();
+
+                            if (offset_lista == 0) {
+                                $('.comic-list').html('');
+                            }
+                            $('<div class="comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs-1');
+                        }
+                    });
                 }
-            }
+            </script>
+            <script>
+                function toggleDropdown(element) {
+                    var dropdownContent1 = document.getElementById("dropdownContent1");
+                    var dropdownContent2 = document.getElementById("dropdownContent2");
+                    var dropdownContent3 = document.getElementById("dropdownContent3");
+                    var dropdownContent4 = document.getElementById("dropdownContent4");
 
-            function closeDropdown(dropdownContent) {
-                dropdownContent.style.display = "none";
-            }
-
-            document.addEventListener("click", function(event) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var dropdown = dropdowns[i];
-                    if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
-                        dropdown.style.display = "none";
+                    if (element.querySelector(".dropdown-content").style.display === "block" && event.target.tagName !== 'INPUT') {
+                        dropdownContent1.style.display = "none";
+                        dropdownContent2.style.display = "none";
+                        dropdownContent3.style.display = "none";
+                        dropdownContent4.style.display = "none";
+                    } else {
+                        dropdownContent1.style.display = "none";
+                        dropdownContent2.style.display = "none";
+                        dropdownContent3.style.display = "none";
+                        dropdownContent4.style.display = "none";
+                        element.querySelector(".dropdown-content").style.display = "block";
                     }
                 }
-            });
-        </script>
 
-        <script>
-            function searchData(id) {
-                let input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("searchInput" + id);
-                filter = input.value.toUpperCase();
-                table = document.getElementById("dropdownContent" + id);
-                tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[0];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
+                function closeDropdown(dropdownContent) {
+                    dropdownContent.style.display = "none";
+                }
+
+                document.addEventListener("click", function(event) {
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    for (var i = 0; i < dropdowns.length; i++) {
+                        var dropdown = dropdowns[i];
+                        if (event.target.closest(".dropdown") !== dropdown.parentNode && event.target !== dropdown.parentNode) {
+                            dropdown.style.display = "none";
+                        }
+                    }
+                });
+            </script>
+
+            <script>
+                function searchData(id) {
+                    let input, filter, table, tr, td, i, txtValue;
+                    input = document.getElementById("searchInput" + id);
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("dropdownContent" + id);
+                    tr = table.getElementsByTagName("tr");
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[0];
+                        if (td) {
+                            txtValue = td.textContent || td.innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                            } else {
+                                tr[i].style.display = "none";
+                            }
                         }
                     }
                 }
-            }
-        </script>
-                <div id="footer-lite" class="mt-5">
+            </script>
+            <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">
                         <a href="http://www.example.com/help">Ayuda</a>

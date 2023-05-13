@@ -809,13 +809,6 @@ background-repeat: no-repeat;opacity: 0.9;">
                         data: data,
                         success: function(data) {
                             totalComics = $(data).filter("#total-comics").val();
-                            // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                            // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                            // var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
-                            // $('.container mt-5').css('width', container_width + 'px');
-
-
-                            // Elimina la lista anterior antes de agregar la nueva
                             $('.comics').html('');
                             $(data).appendTo('.comics');
                         }
