@@ -501,24 +501,23 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 - Se ha añadido nueva pestaña para la verificacion de usuarios
 - La pagina web se encuentra subida a un hosting https://comicweb.es/
 
-
 11/05/2023 Log 2
 
- - Mejorado el responsive porque bugs visuales en resoluciones de pantalla mas bajas
- - Se ha mejorado el estilo de casi todo el proyecto
- - Se han arreglado bugs que no dejaban hacer ciertas opciones
- - Se ha arreglado bug donde cualquier usuario podia acceder a listas de lectura de forma no autorizada
+- Mejorado el responsive porque bugs visuales en resoluciones de pantalla mas bajas
+- Se ha mejorado el estilo de casi todo el proyecto
+- Se han arreglado bugs que no dejaban hacer ciertas opciones
+- Se ha arreglado bug donde cualquier usuario podia acceder a listas de lectura de forma no autorizada
 
 12/05/2023 Log 1
 
- - Ahora se puede recuperar la contraseña del usuario
- - Eliminado bugs que permitian a usuarios no administrados a entrar en pestañas no autorizadas
- - Mejorado la visualizacion de partes de la web en el movil
+- Ahora se puede recuperar la contraseña del usuario
+- Eliminado bugs que permitian a usuarios no administrados a entrar en pestañas no autorizadas
+- Mejorado la visualizacion de partes de la web en el movil
 
 13/05/2023 Log 1
 
- - Se han arreglado los estilos de todas las paginas, aunque es posible que alguna tenga bugs visuales
- - Se ha mejorado la funcionalidad añadiendo nuevas funciones para controlar funciones de muestra de comics de otros usuarios
- - Se ha actualizado los modals y offcanvas para los usuarios de movil
- - La pagina se encuentra ya en su fase final, queda la documentacion y la entrega del proyecto
- - This is the End, my only friend, the end https://www.youtube.com/watch?v=BXqPNlng6uI&ab_channel=TheDoors-Topic
+- Se han arreglado los estilos de todas las paginas, aunque es posible que alguna tenga bugs visuales
+- Se ha mejorado la funcionalidad añadiendo nuevas funciones para controlar funciones de muestra de comics de otros usuarios
+- Se ha actualizado los modals y offcanvas para los usuarios de movil
+- La pagina se encuentra ya en su fase final, queda la documentacion y la entrega del proyecto
+- This is the End, my only friend, the end https://www.youtube.com/watch?v=BXqPNlng6uI&ab_channel=TheDoors-Topic
