@@ -20,9 +20,9 @@ if (isset($_SESSION['email'])) {
     <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/style_index.css">
     <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
-    <script src="./assets/js/functions.js"></script>
-    <script src="./assets/js/appLogin.js"></script>
-    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/funciones_utilidades.js"></script>
+    <script src="./assets/js/ajaxFunctions,js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <title>Login</title>
 
@@ -80,6 +80,11 @@ if (isset($_SESSION['email'])) {
             font-size: 14px;
             margin-top: 10px;
         }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 
@@ -94,7 +99,11 @@ if (isset($_SESSION['email'])) {
                         <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;border-radius:15px">
                             <div class="row justify-content-center col-lg-7 mx-auto">
                                 <!-- <div class="col-lg-7 "> -->
-                                <img src="./assets/img/logoWeb.png" class="mt-2" alt="logo web">
+                                <div class="logo-container">
+                                    <a href="login.php">
+                                        <img src="./assets/img/logoWeb.png" alt="logo web">
+                                    </a>
+                                </div>
                                 <h3 class="mt-2">Datos de Login</h3>
                                 <form method="post" id="formIniciar" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form-control-sm">
                                     <div class="mb-3">
@@ -112,7 +121,6 @@ if (isset($_SESSION['email'])) {
                                         <div class="col-md-6 mb-3">
                                             <div class="mb-3">
                                                 <input type="button" name="enter_sesion" class="btn btn-danger btn-block mb-2 w-100" onclick="login_user();" value="Iniciar sesion" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">

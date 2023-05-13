@@ -56,11 +56,11 @@ if (isset($_GET['userName'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <script src="./assets/js/appLogin.js"></script>
+    <script src="./assets/js/ajaxFunctions,js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
 
 
-    <script src="./assets/js/functions.js"></script>
+    <script src="./assets/js/funciones_utilidades.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Perfil de usuario</title>
 
@@ -437,7 +437,7 @@ if (isset($_GET['userName'])) {
             ?>
 
             <div class="card-footer text-muted">
-                Design by Alejandro Rodriguez 2022
+                Creado por Alejandro Rodriguez ©2023
             </div>
 
             <!--Canvas imagen de perfil-->

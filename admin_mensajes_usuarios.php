@@ -53,8 +53,8 @@ if (isset($_SESSION['email'])) {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
-    <script src="./assets/js/functions.js"></script>
-    <script src="./assets/js/appLogin.js"></script>
+    <script src="./assets/js/funciones_utilidades.js"></script>
+    <script src="./assets/js/ajaxFunctions,js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Mensajes de usuarios</title>
@@ -468,7 +468,7 @@ if (isset($_GET['id_usuario'])) {
         ?>
 
         <div class="card-footer text-muted" style="background-color:white">
-            Design by Alejandro Rodriguez 2022
+            Creado por Alejandro Rodriguez ©2023
         </div>
 
         <!--Canvas imagen de perfil-->

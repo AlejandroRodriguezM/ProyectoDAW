@@ -380,7 +380,7 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 - Ahora hay un boton para mostrar mas comics en las paginas mencionadas anteriormente, se ahorra carga de datos y se mejora la velocidad del servidor.
 - Se ha añadido mas seguridad al codigo para evitar inyeccion de codigo maligno.
 - Ahora se guarda correctamente la ultima hora de conexion de un usuario.
-- Se han mejorado algunas funciones en appLogin.js y functions.js
+- Se han mejorado algunas funciones en ajaxFunctions,js y funciones_utilidades.js
 
 07/04/2023 Log 2
 
