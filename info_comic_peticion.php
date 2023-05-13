@@ -78,7 +78,7 @@ if (isset($_GET['IDcomic'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    
+
     <script src="./assets/js/appLogin.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/functions.js"></script>
@@ -373,32 +373,17 @@ if (isset($_GET['IDcomic'])) {
             color: #ccc;
         }
 
-        html,
         body {
             margin: 0 !important;
-            padding: 0 !important;
+            padding: 0;
             height: 100% !important;
-            overflow-y: scroll !important;
-        }
+            background-color: rgba(0, 0, 0, 0);
 
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('assets/img/img_parallax.jpg');
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-            opacity: 0.8;
-            z-index: -1;
         }
 
         main {
 
-            min-height: 100vh !important;
+            height: 100% !important;
         }
 
         /* Estilos generales para el footer */
@@ -587,16 +572,15 @@ if (isset($_GET['IDcomic'])) {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$nombre_usuario</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$nombre_usuario</div>";
+                                echo '
                                     </div>
                                     </li>';
-                                    echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                                    echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
-
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -671,9 +655,9 @@ if (isset($_GET['IDcomic'])) {
         }
         ?>
 
-            <div class="card-footer text-muted" style="background-color:white">
-                Design by Alejandro Rodriguez 2022
-            </div>
+        <div class="card-footer text-muted" style="background-color:white">
+            Design by Alejandro Rodriguez 2022
+        </div>
 
         <!--Canvas imagen de perfil-->
         <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
@@ -936,46 +920,9 @@ if (isset($_GET['IDcomic'])) {
         </div>
 
 
-
-        <!-- The Modal -->
-        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <img class="modal-content_img" id="img01">
-        </div>
-
-        <!-- FORMULARIO INSERTAR -->
-        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <form method="post" id="form_ticket" onsubmit="return false;">
-                            <h4 class="modal-title">Crear un ticket para administradores</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Asunto</label>
-                            <input type="text" id="asunto_usuario" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Mensaje</label>
-                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                                echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
-            <div class="container mt-5" style="margin-top:auto !important;background-color:#ffffff88">
+            <div class="container mt-5" style="margin-top:auto !important;">
                 <div class="row">
                     <div class="col-md-3 side-bar">
 
@@ -985,10 +932,11 @@ if (isset($_GET['IDcomic'])) {
                             if ($estado_comic != 'aceptado') {
                             ?>
                                 <button class='btn btn-primary' id='boton_confirmar' type='button' style='margin-top:20px' onclick='confirmar_envio_peticion_comic()'>Aceptar peticion</button>
-                                <button class='btn btn-danger' type='button' style='margin-top:20px' onclick='eliminar_peticion_usuario(<?php echo $id_comic ?>)'>Eliminar peticion</button>
                             <?php
                             }
                             ?>
+                            <button class='btn btn-danger' type='button' style='margin-top:20px' onclick='eliminar_peticion_usuario(<?php echo $id_comic ?>)'>Eliminar peticion</button>
+
                         </div>
 
                     </div>
@@ -1081,10 +1029,7 @@ if (isset($_GET['IDcomic'])) {
                     </div>
                 </div>
             </div>
-            <br>
-
-        </div>
-                <div id="footer-lite" class="mt-5">
+            <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">
                         <a href="http://www.example.com/help">Ayuda</a>
