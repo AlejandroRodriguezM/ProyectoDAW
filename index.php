@@ -218,6 +218,10 @@ if (isset($_SESSION['email'])) {
             font-size: 14px;
             margin-top: 10px;
         }
+
+        .container {
+            padding: 30px;
+        }
     </style>
 </head>
 

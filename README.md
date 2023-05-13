@@ -514,3 +514,11 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
  - Ahora se puede recuperar la contraseña del usuario
  - Eliminado bugs que permitian a usuarios no administrados a entrar en pestañas no autorizadas
  - Mejorado la visualizacion de partes de la web en el movil
+
+13/05/2023 Log 1
+
+ - Se han arreglado los estilos de todas las paginas, aunque es posible que alguna tenga bugs visuales
+ - Se ha mejorado la funcionalidad añadiendo nuevas funciones para controlar funciones de muestra de comics de otros usuarios
+ - Se ha actualizado los modals y offcanvas para los usuarios de movil
+ - La pagina se encuentra ya en su fase final, queda la documentacion y la entrega del proyecto
+ - This is the End, my only friend, the end https://www.youtube.com/watch?v=BXqPNlng6uI&ab_channel=TheDoors-Topic

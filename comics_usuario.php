@@ -44,12 +44,8 @@ if (isset($_GET['id_usuario'])) {
     <link rel="stylesheet" href="./assets/style/styleProfile.css">
     <link rel="stylesheet" href="./assets/style/stylePicture.css">
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
-    <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/novedades.css">
-    <!-- <link rel="stylesheet" href="./assets/style/parallax.css"> -->
-    <!-- <link rel="stylesheet" href="./assets/style/media_recomendaciones.css"> -->
     <link rel="stylesheet" href="./assets/style/media_videos.css">
-    <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
@@ -105,6 +101,8 @@ if (isset($_GET['id_usuario'])) {
             margin-top: 20px;
             margin-left: 10px;
         }
+
+
 
         .side-bar {
             position: fixed;
@@ -206,13 +204,6 @@ if (isset($_GET['id_usuario'])) {
         ?>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
             <div class="container-fluid" style="background-color: #343a40;">
-
-                <!-- <a data-bs-toggle='offcanvas' data-bs-target='#offcanvasNavbarDark' aria-controls='offcanvasNavbarDark' href='#offcanvasExample' role='button' style='background-color: transparent;'>
-                    <button class="navbar-toggler navbar-toggler-sm ms-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon navbar-dark"></span>
-                    </button>
-                </a> -->
-
                 <button class="navbar-toggler navbar-toggler-sm ms-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -722,7 +713,6 @@ if (isset($_GET['id_usuario'])) {
 
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
-
             <input type='hidden' id='num_comics' value='<?php echo $numero_comics ?>'>
             <div style="display: flex; justify-content: center;">
                 <div class="container mt-4">
@@ -732,19 +722,14 @@ if (isset($_GET['id_usuario'])) {
                 </div>
             </div>
 
-            <div class="container mt-5">
+            <div class="container mt-4">
                 <div class="row justify-content-center">
-
-
-
                     <div style="display: flex; justify-content: center;">
                         <div class="container mt-5">
                             <div class="last-pubs1">
-                                <br>
                                 <div class="titulo" style="border-radius:10px">
                                     <h2 style='text-align: center'>Comics de <?php echo $nombre_usuario ?></h2>
                                 </div>
-                                <br>
                             </div>
                         </div>
                     </div>

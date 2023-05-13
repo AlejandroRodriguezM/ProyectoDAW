@@ -56,6 +56,9 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/temporizador.js"></script>
     <title>Formulario peticion</title>
     <style>
+                .container {
+            padding: 30px;
+        }
         .rating {
             display: flex;
             flex-direction: row-reverse;

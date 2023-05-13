@@ -64,6 +64,10 @@ if (isset($_GET['IDcomic'])) {
     <script src="./assets/js/temporizador.js"></script>
     <title>Informacion del comic</title>
     <style>
+        .container {
+            padding: 30px;
+        }
+
         .rating {
             display: flex;
             flex-direction: row-reverse;
