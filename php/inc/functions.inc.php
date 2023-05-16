@@ -1,50 +1,11 @@
 <?php
 
-function errorLogin($email_userName, $password_user)
-{
-	$error = '';
-	if (empty($email_userName)) {
-		$error = "<div class='alert alert-danger'>Error. You must fill the user name/email.</div>";
-	}
-	if (empty($password_user)) {
-		$error = "<div class='alert alert-danger'>Error. You must fill the password </div>";
-	}
-	return $error;
-}
-
-// function cookiesUser($email, $password)
-// {
-// 	setcookie('loginUser', $email, time() + 3600, '/');
-// 	setcookie('passwordUser', $password, time() + 3600, '/');
-// }
-
-// function destroyCookiesUser()
-// {
-// 	setcookie('loginUser', '', time() - 3600, '/');
-// 	setcookie('passwordUser', '', time() - 3600, '/');
-// }
-
-// function cookiesUserTemporal($email, $password, $id)
-// {
-// 	setcookie('loginUserTemp', $email, time() + 3600, '/');
-// 	setcookie('passwordUserTemp', $password, time() + 3600, '/');
-// 	setcookie('idTemp', $id, time() + 3600, '/');
-// }
-
-// function destroyCookiesUserTemporal()
-// {
-// 	setcookie('loginUserTemp', '', time() - 3600, '/');
-// 	setcookie('passwordUserTemp', '', time() - 3600, '/');
-// 	setcookie('idTemp', '', time() - 3600, '/');
-// }
-
-// function cookiesAdmin($email, $password)
-// {
-// 	setcookie('adminUser', $email, time() + 3600, '/');
-// 	setcookie('passwordAdmin', $password, time() + 3600, '/');
-// }
-
-
+/**
+ * Verifica si la sesión actual pertenece a un administrador.
+ *
+ * @param string $email El correo electrónico del usuario.
+ * @return void
+ */
 function check_session_admin(String $email)
 {
 	if (obtener_privilegio($email)) {
@@ -62,46 +23,10 @@ function check_session_admin(String $email)
 	}
 }
 
-// function checkCookiesUser()
-// {
-// 	if (!isset($_SESSION['email']) || !isset($_COOKIE['loginUser'])) {
-// 		echo '<script type="text/JavaScript"> 
-// 		localStorage.clear();
-//      </script>';
-// 		die("Error. You are not logged <a href='logOut.php'>Log in</a>");
-// 	} elseif (checkStatus($_SESSION['email'])) {
-// 		echo '<script type="text/JavaScript"> 
-// 		localStorage.clear();
-// 	 </script>';
-// 		$data_usuario_bloqueado = obtener_datos_usuario($_SESSION['email']);
-// 		$id_user = $data_usuario_bloqueado['IDuser'];
-// 		$asunto_ticket = 'Usuario bloqueado';
-// 		$descripcion_ticket = 'El usuario ' . $data_usuario_bloqueado['userName'] .  ' con el email ' . $data_usuario_bloqueado['email'] . ' ha intentado acceder a la pagina y ha sido bloqueado.';
-// 		$fecha = date("Y-m-d H:i:s");
-// 		$estado = 'abierto';
-// 		new_ticket($id_user, $asunto_ticket, $descripcion_ticket, $fecha, $estado);
-// 		die("Error. You are block <a href='logOut.php'>Log in</a>");
-// 	}
-// }
-
-
-// function deleteCookies()
-// {
-// 	session_start();
-// 	session_destroy();
-
-// 	echo '<script type="text/JavaScript">
-// 	localStorage.clear();
-// 	</script>';
-
-// 	destroyCookiesUser();
-// 	destroyCookiesUserTemporal();
-// }
-
 /**
- * Function that is used to check that reserved words cannot be saved
+ * Obtiene un array de palabras reservadas.
  *
- * @return array
+ * @return array El array de palabras reservadas.
  */
 function reservedWords()
 {
@@ -134,6 +59,12 @@ function reservedWords()
 	return $palabras;
 }
 
+/**
+ * Guarda la imagen de perfil del usuario.
+ *
+ * @param string $email El correo electrónico del usuario.
+ * @param int $idUser El ID del usuario.
+ */
 function saveImage($email, $idUser)
 {
 	$email = explode("@", $email);
@@ -155,6 +86,12 @@ function saveImage($email, $idUser)
 	fclose($file);
 }
 
+/**
+ * Actualiza y guarda la imagen de perfil del usuario.
+ *
+ * @param string $email El correo electrónico del usuario.
+ * @param string $image La ruta de la imagen actual del usuario.
+ */
 function updateSaveImage($email, $image)
 {
 	$dataUser = obtener_datos_usuario($email);
@@ -175,6 +112,12 @@ function updateSaveImage($email, $image)
 	fclose($file);
 }
 
+/**
+ * Guarda la imagen de portada de una petición de cómic.
+ *
+ * @param string $image La imagen de portada de la petición.
+ * @param int $id_comic_peticion El ID de la petición de cómic.
+ */
 function portadas_peticiones($image, $id_comic_peticion)
 {
 	$file_path = '../../assets/covers_img_peticiones';
@@ -184,6 +127,13 @@ function portadas_peticiones($image, $id_comic_peticion)
 	fclose($file);
 }
 
+/**
+ * Guarda la imagen de portada de un cómic confirmado.
+ *
+ * @param string $image La imagen de portada del cómic.
+ * @param int $id_comic_peticion El ID de la petición de cómic.
+ * @param int $id_comic El ID del cómic confirmado.
+ */
 function portadas_confirmadas($image, $id_comic_peticion, $id_comic)
 {
 	$nueva_imagen = $_POST['portada_comic'];
@@ -200,6 +150,12 @@ function portadas_confirmadas($image, $id_comic_peticion, $id_comic)
 	fclose($file);
 }
 
+/**
+ * Crea un directorio para el perfil de un usuario.
+ *
+ * @param string $email El correo electrónico del usuario.
+ * @param int $idUser El ID del usuario.
+ */
 function createDirectory($email, $idUser)
 {
 	$email = explode("@", $email);
@@ -210,6 +166,12 @@ function createDirectory($email, $idUser)
 	}
 }
 
+/**
+ * Elimina un directorio y todos sus archivos.
+ *
+ * @param string $email El correo electrónico del usuario.
+ * @param int $idUser El ID del usuario.
+ */
 function deleteDirectory($email, $idUser)
 {
 	$email = explode("@", $email);
@@ -225,15 +187,25 @@ function deleteDirectory($email, $idUser)
 	}
 }
 
+/**
+ * Elimina una portada de cómic.
+ *
+ * @param int $id_comic El ID del cómic.
+ */
 function eliminar_portada($id_comic)
 {
-
 	$file_path = '../../assets/covers_img_peticiones/' . $id_comic . ".jpg";
 	if (file_exists($file_path)) {
 		unlink($file_path);
 	}
 }
 
+/**
+ * Obtiene la imagen de perfil de un usuario.
+ *
+ * @param string $email El correo electrónico del usuario.
+ * @return string La ruta de la imagen de perfil.
+ */
 function pictureProfile($email)
 {
 	$dataUser = obtener_datos_usuario($email);
@@ -241,6 +213,12 @@ function pictureProfile($email)
 	return $profilePicture;
 }
 
+/**
+ * Obtiene los guionistas de los cómics.
+ *
+ * @return array Un arreglo asociativo donde las claves son los nombres de los guionistas
+ *              y los valores son la cantidad de cómics asociados a cada guionista.
+ */
 function getScreenwriters()
 {
 	$table = get_comics();
@@ -258,8 +236,12 @@ function getScreenwriters()
 	return $screenwriters;
 }
 
-
-
+/**
+ * Obtiene los dibujantes de los cómics.
+ *
+ * @return array Un arreglo asociativo donde las claves son los nombres de los dibujantes
+ *              y los valores son la cantidad de cómics asociados a cada dibujante.
+ */
 function getArtists()
 {
 	$table = get_comics();
@@ -277,6 +259,12 @@ function getArtists()
 	return $artists;
 }
 
+/**
+ * Obtiene las editoriales de los cómics.
+ *
+ * @return array Un arreglo asociativo donde las claves son los nombres de las editoriales
+ *              y los valores son la cantidad de cómics asociados a cada editorial.
+ */
 function getEditorial()
 {
 	$table = get_comics();
@@ -294,6 +282,12 @@ function getEditorial()
 	return $editorial;
 }
 
+/**
+ * Obtiene las portadas de los cómics 
+ *
+ * @return array Un arreglo asociativo donde las claves son los nombres de las portadas
+ *              y los valores son la cantidad de cómics asociados a cada portada.
+ */
 function getPortadas()
 {
 	$table = get_comics();
@@ -311,6 +305,12 @@ function getPortadas()
 	return $editorial;
 }
 
+/**
+ * Obtiene los escritores de los cómics por un usuario específico.
+ *
+ * @return array Un arreglo asociativo donde las claves son los nombres de los escritores
+ *              y los valores son la cantidad de cómics asociados a cada portada.
+ */
 function getScreenwriters_user($id_user)
 {
 	global $conection;
@@ -334,6 +334,12 @@ function getScreenwriters_user($id_user)
 	return $screenwriters;
 }
 
+/**
+ * Obtiene los artistas de los cómics por un usuario específico.
+ *
+ * @return array Un arreglo asociativo donde las claves son los nombres de los artistas
+ *              y los valores son la cantidad de cómics asociados a cada portada.
+ */
 function getArtists_user($id_user)
 {
 	global $conection;
@@ -357,6 +363,12 @@ function getArtists_user($id_user)
 	return $artists;
 }
 
+/**
+ * Obtiene las editoriales de los cómics por un usuario específico.
+ *
+ * @return array Un arreglo asociativo donde las claves son los nombres de las editoriales
+ *              y los valores son la cantidad de cómics asociados a cada portada.
+ */
 function getEditorial_user($id_user)
 {
 	global $conection;
@@ -380,6 +392,13 @@ function getEditorial_user($id_user)
 	return $editorial;
 }
 
+/**
+ * Obtiene las portadas de los cómics guardados por un usuario específico.
+ *
+ * @param int $id_user El ID del usuario.
+ * @return array Un arreglo asociativo donde las claves son los nombres de las portadas
+ *              y los valores son la cantidad de cómics asociados a cada portada.
+ */
 function getPortadas_user($id_user)
 {
 	global $conection;
@@ -403,6 +422,13 @@ function getPortadas_user($id_user)
 	return $portadas;
 }
 
+/**
+ * Obtiene los guionistas de los cómics en una lista específica.
+ *
+ * @param int $id_lista El ID de la lista.
+ * @return array Un arreglo asociativo donde las claves son los nombres de los guionistas
+ *              y los valores son la cantidad de cómics asociados a cada guionista.
+ */
 function getScreenwriters_lista($id_lista)
 {
 	global $conection;
@@ -426,6 +452,13 @@ function getScreenwriters_lista($id_lista)
 	return $screenwriters;
 }
 
+/**
+ * Obtiene los dibujantes de los cómics en una lista específica.
+ *
+ * @param int $id_lista El ID de la lista.
+ * @return array Un arreglo asociativo donde las claves son los nombres de los dibujantes
+ *              y los valores son la cantidad de cómics asociados a cada guionista.
+ */
 function getArtists_lista($id_lista)
 {
 	global $conection;
@@ -449,6 +482,13 @@ function getArtists_lista($id_lista)
 	return $artists;
 }
 
+/**
+ * Obtiene los guionistas de las editoriales en una lista específica.
+ *
+ * @param int $id_lista El ID de la lista.
+ * @return array Un arreglo asociativo donde las claves son los nombres de las editoriales
+ *              y los valores son la cantidad de cómics asociados a cada guionista.
+ */
 function getEditorial_lista($id_lista)
 {
 	global $conection;
@@ -472,6 +512,13 @@ function getEditorial_lista($id_lista)
 	return $editorial;
 }
 
+/**
+ * Obtiene las portadas de los cómics en una lista específica.
+ *
+ * @param int $id_lista El ID de la lista.
+ * @return array Un arreglo asociativo donde las claves son los nombres de las portadas
+ *              y los valores son la cantidad de cómics asociados a cada guionista.
+ */
 function getPortadas_lista($id_lista)
 {
 	global $conection;
@@ -495,6 +542,13 @@ function getPortadas_lista($id_lista)
 	return $portadas;
 }
 
+/**
+ * Copia una imagen de una ruta de origen a una ruta de destino.
+ *
+ * @param string $id_comic El ID del cómic en la ruta de origen.
+ * @param string $id_comic_confirmado El ID del cómic en la ruta de destino.
+ * @return bool Devuelve true si la imagen se copió correctamente, o false si ocurrió algún error.
+ */
 function copiar_imagen($id_comic, $id_comic_confirmado)
 {
 	$ruta_origen = '../../assets/covers_img_peticiones/' . $id_comic . '.jpg';
@@ -507,80 +561,3 @@ function copiar_imagen($id_comic, $id_comic_confirmado)
 	}
 	return $existe;
 }
-
-function mostrar_datos($datos): void
-{
-	// Ordenar por clave
-	ksort($datos);
-	echo "<table class='custom-table'>
-	<thead>
-	<tr>
-	</tr>
-	</thead>
-	<tbody>";
-
-	// Iterar por los valores
-	foreach ($datos as $key => $value) {
-		echo "<tr>
-		<td>$key</td>
-	<td>
-	<input type='checkbox' id='comic' name='comic' value='$key' onclick='handleCheckboxChange();'>
-	<input type='hidden' name='comic_value' value='$key'>
-	</td>
-	</tr>";
-	}
-
-	echo "</tbody>
-		</table>";
-}
-
-
-  
-
-// function mostrar_datos($datos)
-// {
-//     $datos_comic = $datos;
-//     ksort($datos_comic);
-//     echo "<table class='custom-table'>
-//         <thead>
-//             <tr></tr>
-//         </thead>
-//         <tbody>";
-//     foreach ($datos_comic as $key => $value) {
-//         echo "<tr>
-//             <td class='comic-cell' data-comic='$key'>$key</td>
-//         </tr>";
-//     }
-//     echo "</tbody>
-//         </table>";
-//     echo "<input type='hidden' id='comic' name='comic' value=''>";
-//     echo "<script>
-//         document.addEventListener('DOMContentLoaded', () => {
-//             const comicCells = document.querySelectorAll('.comic-cell');
-//             comicCells.forEach(cell => {
-//                 cell.addEventListener('click', () => {
-//                     const key = cell.dataset.comic;
-//                     document.getElementById('comic').value = key;
-//                 });
-//             });
-//         });
-//     </script>";
-// }
-
-// function update_cover_database(){
-// 	global $conection;
-// 	$max = 15278;
-
-// 	$id = 9630;
-// 	$contador = 0;
-// 	$id_actual = $id + $contador;
-// 	while($id_actual <= $max){
-// 		$cover = "./assets/covers_img/$id_actual.jpg";
-// 		$consulta = $conection->prepare("UPDATE comics SET cover=:cover WHERE IDcomic=:id");
-// 		$consulta->bindParam(':cover', $cover, PDO::PARAM_STR);
-// 		$consulta->bindParam(':id', $id_actual, PDO::PARAM_INT);
-// 		$consulta->execute();
-// 		$contador++;
-// 		$id_actual = $id + $contador;
-// 	}
-// }

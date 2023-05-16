@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Funcion que sera utlizada para comprobar si el usuario existe en la base de datos
+ *
+ * @param string $acceso
+ * @param string $password
+ * @return boolean
+ */
 function checkUser(string $acceso, string $password): bool
 {
 	global $conection;
@@ -17,23 +24,12 @@ function checkUser(string $acceso, string $password): bool
 	return $existe;
 }
 
-// function check_nombre_user(string $nombre): bool
-// {
-// 	global $conection;
-// 	$existe = false;
-// 	try {
-// 		$consulta = $conection->prepare("SELECT IDcomic from users WHERE userName = ?");
-// 		if ($consulta->execute(array($nombre))) {
-// 			if ($consulta->fetchColumn() > 0) {
-// 				$existe = true;
-// 			}
-// 		}
-// 	} catch (PDOException $e) {
-// 		die("Code: " . $e->getCode() . "\nMessage: " . $e->getMessage());
-// 	}
-// 	return $existe;
-// }
-
+/**
+ * Funcion que sera utlizada para comprobar si el mail existe en la base de datos
+ *
+ * @param string $acceso
+ * @return boolean
+ */
 function check_email_user(string $email): bool
 {
 	global $conection;
@@ -100,6 +96,12 @@ function obtener_datos_usuario(string $acces): array
 	return $row;
 }
 
+/**
+ * Obtiene el tipo de privilegio que tiene un usuario
+ *
+ * @param string $email
+ * @return string
+ */
 function obtener_privilegio(String $email): String
 {
 	global $conection;
@@ -121,6 +123,15 @@ function obtener_privilegio(String $email): String
 	return $privilegio;
 }
 
+/**
+ * Permite crear un usuario en la base de datos
+ *
+ * @param string $userName
+ * @param string $email
+ * @param string $password
+ * @param [type] $id_activacion
+ * @return boolean
+ */
 function crear_usuario(string $userName, string $email, string $password, $id_activacion): bool
 {
 	global $conection;
@@ -145,7 +156,13 @@ function crear_usuario(string $userName, string $email, string $password, $id_ac
 	}
 }
 
-function comprobar_activacion($userName)
+/**
+ * Comprueba si una cuenta de usuario se encuentra activa en la base de datos
+ *
+ * @param string $userName
+ * @return boolean
+ */
+function comprobar_activacion(String $userName): bool
 {
 	global $conection;
 	$activado = false;
@@ -162,6 +179,12 @@ function comprobar_activacion($userName)
 	return $activado;
 }
 
+/**
+ * Actualiza una cuenta de usuario en la base de datos, siendo usuario y no administrador
+ *
+ * @param string $userName
+ * @return boolean
+ */
 function actualizar_usuario(string $userName, string $email, string $password): bool
 {
 	global $conection;
@@ -184,6 +207,13 @@ function actualizar_usuario(string $userName, string $email, string $password): 
 	}
 }
 
+/**
+ * Elimina un usuario de la base de datos y tambien diferentes datos en las tablas relacionadas con ese usuario
+ *
+ * @param string $email
+ * @param integer $idUser
+ * @return boolean
+ */
 function eliminar_usuario(String $email, int $idUser): bool
 {
 	global $conection;
@@ -239,6 +269,13 @@ function eliminar_usuario(String $email, int $idUser): bool
 }
 
 
+/**
+ * Actualiza el correo de un usuario
+ *
+ * @param string $new_email
+ * @param string $old_email
+ * @return boolean
+ */
 function actualizar_email(string $new_email, string $old_email): bool
 {
 	global $conection;
@@ -259,6 +296,13 @@ function actualizar_email(string $new_email, string $old_email): bool
 	}
 }
 
+/**
+ * Inserta en la columna de userPicture la direccion de la imagen de perfil en la tabla users
+ *
+ * @param string $email
+ * @param integer $idUser
+ * @return boolean
+ */
 function insertURL(string $email, int $idUser): bool
 {
 	global $conection;
@@ -281,6 +325,13 @@ function insertURL(string $email, int $idUser): bool
 	}
 }
 
+/**
+ * Inserta en la columna de Cover la direccion de la imagen del comic en la tabla comics
+ *
+ * @param string $email
+ * @param integer $idUser
+ * @return boolean
+ */
 function direccion_imagen_comic(int $id_comic, String $tabla): bool
 {
 	global $conection;
@@ -302,6 +353,12 @@ function direccion_imagen_comic(int $id_comic, String $tabla): bool
 	return $modificado;
 }
 
+/**
+ * Selecciona el estado de una cuenta, para saber si esta activada, desactivada o bloqueada
+ *
+ * @param string $email
+ * @return boolean
+ */
 function checkStatus(string $email): bool
 {
 	global $conection;
@@ -323,6 +380,13 @@ function checkStatus(string $email): bool
 	return $status;
 }
 
+/**
+ * Desactiva o activa una cuenta de usuario
+ *
+ * @param string $email
+ * @param boolean $estado
+ * @return boolean
+ */
 function desautorizar_cuenta(string $email, bool $estado): bool
 {
 	global $conection;
@@ -345,13 +409,19 @@ function desautorizar_cuenta(string $email, bool $estado): bool
 	return $cambio;
 }
 
+/**
+ *Desactiva la cuenta de usuario con el correo electrónico proporcionado
+ *@param string $email Correo electrónico de la cuenta a desactivar
+ *@return boolean Devuelve true si la cuenta ha sido desactivada correctamente, false en caso contrario
+ */
 function desactivar_cuenta(string $email): bool
 {
 	global $conection;
 	$cambio = false;
 	$email = htmlspecialchars($email, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
 	try {
-		$consulta = $conection->prepare("UPDATE users SET accountStatus = 'inactive',tipo_perfil = 'privado' WHERE email = ?");
+		$consulta = $conection->prepare("UPDATE users SET accountStatus = 'inactive', tipo_perfil = 'privado' WHERE email = ?");
 		if ($consulta->execute(array($email))) {
 			$cambio = true;
 		}
@@ -360,14 +430,22 @@ function desactivar_cuenta(string $email): bool
 		$message = $e->getMessage();
 		die("Code: " . $error_Code . "\nMessage: " . $message);
 	}
+
 	return $cambio;
 }
 
+/**
+ *Cambia la privacidad de la cuenta de usuario con el correo electrónico proporcionado
+ *@param string $email Correo electrónico de la cuenta a modificar la privacidad
+ *@param boolean $estado Indica si se quiere poner la cuenta como privada (true) o pública (false)
+ *@return boolean Devuelve true si se ha cambiado la privacidad correctamente, false en caso contrario
+ */
 function cambiar_privacidad(string $email, bool $estado): bool
 {
 	global $conection;
 	$cambio = false;
 	$email = htmlspecialchars($email, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
 	try {
 		if ($estado) {
 			$consulta = $conection->prepare("UPDATE users SET tipo_perfil = 'privado' WHERE email = ?");
@@ -375,16 +453,22 @@ function cambiar_privacidad(string $email, bool $estado): bool
 		} else {
 			$consulta = $conection->prepare("UPDATE users SET tipo_perfil = 'publico' WHERE email = ?");
 		}
-
 		$consulta->execute(array($email));
 	} catch (PDOException $e) {
 		$error_Code = $e->getCode();
 		$message = $e->getMessage();
 		die("Code: " . $error_Code . "\nMessage: " . $message);
 	}
+
 	return $cambio;
 }
-
+/**
+ *Inserta información del usuario en la tabla "aboutuser"
+ *@param int $IDuser ID del usuario
+ *@param string $infoUser Información del usuario a insertar
+ *@param string $fechaCreacion Fecha de creación de la información
+ *@return void
+ */
 function insertAbourUser(int $IDuser, string $infoUser, string $fechaCreacion): void
 {
 	global $conection;
@@ -409,6 +493,15 @@ function insertAbourUser(int $IDuser, string $infoUser, string $fechaCreacion): 
 	}
 }
 
+/**
+ * Actualiza la informacion del usuario en la tabla aboutuser
+ *
+ * @param integer $IDuser
+ * @param string $infoUser
+ * @param string $name
+ * @param string $lastname
+ * @return void
+ */
 function updateAboutUser(int $IDuser, string $infoUser, string $name, string $lastname): void
 {
 	global $conection;
@@ -438,6 +531,16 @@ function updateAboutUser(int $IDuser, string $infoUser, string $name, string $la
 	}
 }
 
+/**
+ * Crea un ticket para un administrador
+ *
+ * @param integer $id_user
+ * @param string $asunto_ticket
+ * @param string $descripcion_ticket
+ * @param string $fecha
+ * @param string $estado
+ * @return boolean
+ */
 function new_ticket(int $id_user, string $asunto_ticket, string $descripcion_ticket, string $fecha, string $estado): bool
 {
 	global $conection;
@@ -466,6 +569,14 @@ function new_ticket(int $id_user, string $asunto_ticket, string $descripcion_tic
 	return $confirmado;
 }
 
+/**
+ * Crea un mensaje para un usuario
+ *
+ * @param integer $id_usuario_destinatario
+ * @param integer $id_usuario_remitente
+ * @param string $mensaje_usuario
+ * @return boolean
+ */
 function new_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente, String $mensaje_usuario): bool
 {
 	global $conection;
@@ -507,30 +618,13 @@ function new_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente, St
 	return $confirmado;
 }
 
-function num_mensajes_usuario(int $id_usuario): int
-{
-	global $conection;
-	$num_mensajes = 0;
-	try {
-		$consulta = $conection->prepare("SELECT id_conversacion as num_mensajes FROM nuevo_mensajes_usuarios WHERE id_usuario_destinatario = ? OR id_usuario_remitente = ?");
-		$consulta->bindParam(1, $id_usuario);
-		$consulta->bindParam(2, $id_usuario);
-		if ($consulta->execute()) {
-			if ($consulta->rowCount() > 0) {
-				$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
-				$num_mensajes = $resultado['num_mensajes'];
-			} else {
-				$num_mensajes = 0;
-			}
-		}
-	} catch (PDOException $e) {
-		$error_Code = $e->getCode();
-		$message = $e->getMessage();
-		die("Code: " . $error_Code . "\nMessage: " . $message);
-	}
-	return $num_mensajes;
-}
-
+/**
+ * Devuelve el identificador de una conversacion
+ *
+ * @param integer $id_usuario_remitente
+ * @param integer $id_usuario_destinatario
+ * @return integer
+ */
 function identificador_conversacion(int $id_usuario_remitente, int $id_usuario_destinatario): int
 {
 	global $conection;
@@ -557,6 +651,13 @@ function identificador_conversacion(int $id_usuario_remitente, int $id_usuario_d
 	return $conversacion_id;
 }
 
+/**
+ * Devuelve el identificador de un mensaje
+ *
+ * @param integer $id_usuario_destinatario
+ * @param integer $id_usuario_remitente
+ * @return integer
+ */
 function identificador_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente): int
 {
 	global $conection;
@@ -582,6 +683,13 @@ function identificador_mensaje(int $id_usuario_destinatario, int $id_usuario_rem
 }
 
 
+/**
+ * Comprueba si existe una conversacion entre dos usuarios
+ *
+ * @param integer $id_remitente
+ * @param integer $id_destinatario
+ * @return boolean
+ */
 function existe_conversacion(int $id_remitente, int $id_destinatario): bool
 {
 	global $conection;
@@ -608,6 +716,13 @@ function existe_conversacion(int $id_remitente, int $id_destinatario): bool
 	return $confirmado;
 }
 
+/**
+ * Comprueba si existe un mensaje entre dos usuarios
+ *
+ * @param integer $id_usuario_destinatario
+ * @param integer $id_usuario_remitente
+ * @return boolean
+ */
 function comprobar_mensaje(int $id_usuario_destinatario, int $id_usuario_remitente): bool
 {
 	global $conection;
@@ -632,6 +747,18 @@ function comprobar_mensaje(int $id_usuario_destinatario, int $id_usuario_remiten
 	return $confirmado;
 }
 
+/**
+ * Funcion para devolver un mensaje a un ticket 
+ *
+ * @param integer $ticket_id
+ * @param integer $usuario_id_admin
+ * @param integer $usuario_id
+ * @param string $mensaje_ticket
+ * @param string $fecha
+ * @param string $nombre_admin
+ * @param string $privilegio_user
+ * @return boolean
+ */
 function respond_tickets(int $ticket_id, int $usuario_id_admin, int $usuario_id, string $mensaje_ticket, string $fecha, string $nombre_admin, string $privilegio_user): bool
 {
 	global $conection;
@@ -661,7 +788,12 @@ function respond_tickets(int $ticket_id, int $usuario_id_admin, int $usuario_id,
 	return $confirmado;
 }
 
-function datos_tickets()
+/**
+ * Devuelve todos los datos de los tickets
+ *
+ * @return array
+ */
+function datos_tickets(): array
 {
 	global $conection;
 	$consulta = $conection->prepare("SELECT * FROM tickets");
@@ -670,7 +802,12 @@ function datos_tickets()
 	return $consulta;
 }
 
-function datos_tickets_denuncias()
+/**
+ * Devuelve todos los datos de una denuncia de un usuario
+ *
+ * @return array
+ */
+function datos_tickets_denuncias(): array
 {
 	global $conection;
 	$consulta = $conection->prepare("SELECT * FROM denuncias_usuarios");
@@ -679,21 +816,12 @@ function datos_tickets_denuncias()
 	return $consulta;
 }
 
-function datos_conversacion_identificador(int $id_conversacion): array
-{
-	global $conection;
-	$id_conversacion = htmlspecialchars($id_conversacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-	$consulta = $conection->prepare("SELECT * FROM respuestas_mensajes_usuarios WHERE id_respuesta_mensaje = ?");
-	$consulta->bindParam(1, $id_conversacion);
-	$consulta->execute();
-	$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
-	$datos = array();
-	foreach ($resultados as $resultado) {
-		$datos[] = $resultado;
-	}
-	return $datos;
-}
-
+/**
+ * Cambio el estado de un ticket
+ * @param string $estado
+ * @param integer $id
+ * @return void
+ */
 function cambiar_estado(string $estado, int $id): void
 {
 	global $conection;
@@ -711,6 +839,13 @@ function cambiar_estado(string $estado, int $id): void
 	}
 }
 
+
+/**
+ * Devuelve un ticket cuyo identificador esta siendo mandado como parametro
+ *
+ * @param integer $id
+ * @return array
+ */
 function getTickets(int $id): array
 {
 	global $conection;
@@ -728,6 +863,12 @@ function getTickets(int $id): array
 	return $consulta;
 }
 
+/**
+ * Devuelve una denuncia cuyo identificador esta siendo mandado como parametro
+ *
+ * @param integer $id
+ * @return array
+ */
 function respuestas_denuncias(int $id_denuncia): array
 {
 	global $conection;
@@ -745,6 +886,12 @@ function respuestas_denuncias(int $id_denuncia): array
 	return $consulta;
 }
 
+/**
+ * Devuelve el numero de tickets de denuncias que tiene un usuario
+ *
+ * @param integer $id
+ * @return integer
+ */
 function num_tickets_denuncias(int $id): int
 {
 	global $conection;
@@ -762,6 +909,12 @@ function num_tickets_denuncias(int $id): int
 	return $consulta;
 }
 
+/**
+ * Devuelve los mensajes que tiene un usuario
+ *
+ * @param integer $id_usuario
+ * @return array
+ */
 function get_mensajes(int $id_usuario): array
 {
 	global $conection;
@@ -779,21 +932,19 @@ function get_mensajes(int $id_usuario): array
 	return $consulta;
 }
 
+/**
+ * Devuelve las respuestas de los usuarios cuyo identificador se manda como parametro
+ *
+ * @param integer $id_usuario
+ * @return integer
+ */
 function get_conversacion(int $id_conversacion): array
 {
 	global $conection;
 	$id_conversacion = htmlspecialchars($id_conversacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		// $consulta = $conection->prepare("
-		//     SELECT nm.id_mensaje, rm.id_respuesta_mensaje, nm.id_usuario_remitente, nm.id_usuario_destinatario, rm.mensaje_usuario, rm.fecha_envio_mensaje, rm.estado_mensaje, rm.mensaje_denunciado 
-		//     FROM nuevo_mensajes_usuarios nm 
-		//     LEFT JOIN respuestas_mensajes_usuarios rm 
-		//     ON nm.id_mensaje = rm.id_mensaje 
-		//     WHERE nm.id_usuario_remitente = ? OR nm.id_usuario_destinatario = ?
-		//     ORDER BY rm.fecha_envio_mensaje ASC");
 
 		$consulta = $conection->prepare("SELECT * FROM respuestas_mensajes_usuarios WHERE id_conversacion = ?  ORDER BY fecha_envio_mensaje ASC");
-
 		if ($consulta->execute(array($id_conversacion))) {
 			$consulta = $consulta->fetchAll(PDO::FETCH_ASSOC);
 		}
@@ -805,8 +956,12 @@ function get_conversacion(int $id_conversacion): array
 	return $consulta;
 }
 
-
-
+/**
+ * Devuelve los tickets de un usuario cuyo ID se pasa como parametro
+ *
+ * @param integer $id_usuario
+ * @return array
+ */
 function getTickets_user(int $id): array
 {
 	global $conection; //We need to use the global variable $conection
@@ -829,6 +984,12 @@ function getTickets_user(int $id): array
 	return $consulta;
 }
 
+/**
+ * Devuelve la informacion de un usuario cuyo ID se pasa por parametro
+ *
+ * @param integer $IDuser
+ * @return array
+ */
 function getInfoAboutUser(int $IDuser): array
 {
 	global $conection;
@@ -846,6 +1007,12 @@ function getInfoAboutUser(int $IDuser): array
 	return $consulta;
 }
 
+/**
+ * Devuelve la busqueda de usuarios mediante una palabra clave
+ *
+ * @param integer $IDuser
+ * @return array
+ */
 //Esta función hace una búsqueda de usuario en la base de datos
 function search_user($search): PDOStatement
 {
@@ -865,6 +1032,12 @@ function search_user($search): PDOStatement
 	return $consulta;
 }
 
+/**
+ * Devuelve la busqueda de comics mediante una palabra clave
+ *
+ * @param integer $IDuser
+ * @return array
+ */
 function search_comics($search): PDOStatement
 {
 	global $conection;
@@ -883,12 +1056,23 @@ function search_comics($search): PDOStatement
 	return $consulta;
 }
 
+/**
+ * Comprueba si el comic existe en la base de datos mediante el uso de una palabra clave
+ *
+ * @param string $search
+ * @return boolean
+ */
 function existe_comic(string $search): bool
 {
 	global $conection;
+	$existe = false;
 	$search = htmlspecialchars($search, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		$consulta = $conection->prepare("SELECT * from comics WHERE nomComic LIKE ? OR nomVariante LIKE ? OR nomEditorial LIKE ? OR Formato LIKE ? OR Procedencia LIKE ? OR date_published LIKE ? OR nomGuionista LIKE ? OR nomDibujante LIKE ?");
+		$consulta->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
+		if ($consulta->rowCount() > 0) {
+			$existe = true;
+		}
 	} catch (PDOException $e) {
 		//Obtener el código de error
 		$error_Code = $e->getCode();
@@ -897,9 +1081,15 @@ function existe_comic(string $search): bool
 		//Mostrar el error
 		die("Code: " . $error_Code . "\nMessage: " . $message);
 	}
-	return $consulta->execute(array("%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%", "%$search%"));
+	return $existe;
 }
 
+/**
+ * Devuelve la busqueda de usuarios mediante una palabra clave
+ *
+ * @param integer $IDuser
+ * @return array
+ */
 function existe_user(string $search): bool
 {
 	global $conection;
@@ -916,6 +1106,12 @@ function existe_user(string $search): bool
 	return $consulta->execute(array("%$search%", "%$search%"));
 }
 
+/**
+ * Devuelve datos de los usuarios
+ *
+ * @param integer $IDuser
+ * @return array
+ */
 function showUsers(): PDOStatement
 {
 	global $conection;
@@ -932,6 +1128,12 @@ function showUsers(): PDOStatement
 	return $conection->query($sql);
 }
 
+/**
+ * Devuelve el numero de usuarios cuyo datos coincidan con la palabra clave
+ *
+ * @param string $search
+ * @return integer
+ */
 function countUserSearch(string $search): int
 {
 	global $conection;
@@ -949,6 +1151,12 @@ function countUserSearch(string $search): int
 	}
 }
 
+/**
+ * Devuelve el numero de comics cuyo datos coincidan con la palabra clave
+ *
+ * @param string $search
+ * @return integer
+ */
 function countComicSearch($search): int
 {
 	global $conection;
@@ -966,6 +1174,12 @@ function countComicSearch($search): int
 	}
 }
 
+/**
+ * Devuelve un comic de forma aleatoria
+ *
+ * @param string $search
+ * @return integer
+ */
 function randomComic(): int
 {
 	global $conection;
@@ -978,6 +1192,13 @@ function randomComic(): int
 	return (int) $row['IDcomic'];
 }
 
+/**
+ * Devuelve un comic pero ordenado por fecha de salida
+ *
+ * @param [type] $limit
+ * @param [type] $offset
+ * @return PDOStatement
+ */
 function return_comic_published($limit, $offset): PDOStatement
 {
 	global $conection;
@@ -1001,6 +1222,14 @@ function return_comic_published($limit, $offset): PDOStatement
 	return $stmt;
 }
 
+/**
+ * Devuelve un comic que coincida con la palabra clave y mediante unos limites dados
+ *
+ * @param [type] $limit
+ * @param [type] $offset
+ * @param [type] $busqueda
+ * @return PDOStatement
+ */
 function return_comic_search($limit, $offset, $busqueda): PDOStatement
 {
 	global $conection;
@@ -1034,6 +1263,12 @@ function return_comic_search($limit, $offset, $busqueda): PDOStatement
 	return $stmt;
 }
 
+/**
+ * Devuelve la informacion de un comic que coincida con la ID pasada como parametro
+ *
+ * @param integer $id
+ * @return array|null
+ */
 function getDataComic(int $id): ?array
 {
 	global $conection;
@@ -1048,6 +1283,11 @@ function getDataComic(int $id): ?array
 	return $consulta;
 }
 
+/**
+ * Devuelve todos los datos de los comics en espera de aprobación
+ *
+ * @return PDOStatement
+ */
 function peticiones_comics_espera(): PDOStatement
 {
 	global $conection;
@@ -1062,6 +1302,11 @@ function peticiones_comics_espera(): PDOStatement
 	return $consulta;
 }
 
+/**
+ * Devuelve todos los datos de los comics cancelados
+ *
+ * @return PDOStatement
+ */
 function peticiones_comics_cancelados(): PDOStatement
 {
 	global $conection;
@@ -1076,6 +1321,11 @@ function peticiones_comics_cancelados(): PDOStatement
 	return $consulta;
 }
 
+/**
+ * Devuelve todos los datos de los comics aceptados
+ *
+ * @return PDOStatement
+ */
 function peticiones_comics_aceptados(): PDOStatement
 {
 	global $conection;
@@ -1090,6 +1340,11 @@ function peticiones_comics_aceptados(): PDOStatement
 	return $consulta;
 }
 
+/**
+ * Devuelve todos los datos de los comics
+ *
+ * @return array
+ */
 function get_comics(): array
 {
 	global $conection;
@@ -1104,20 +1359,11 @@ function get_comics(): array
 	return $consulta;
 }
 
-// function getDatacomicName($search)
-// {
-// 	global $conection;
-// 	try {
-// 		$consulta = $conection->prepare("SELECT * from comics where nomComic LIKE ?");
-// 		if($consulta->execute(array($search))){
-// 			$consulta = $consulta->fetch(PDO::FETCH_ASSOC);
-// 		}
-// 	} catch (PDOException $e) {
-// 		echo "Error: " . $e->getMessage();
-// 	}
-// 	return $consulta;
-// }
-
+/**
+ * Devuelve el numero total de comics
+ *
+ * @return integer
+ */
 function numComics(): int
 {
 	global $conection;
@@ -1132,6 +1378,11 @@ function numComics(): int
 	return $consulta;
 }
 
+/**
+ * Devuelve el numero total de comics de un usuario
+ *
+ * @return integer
+ */
 function numComics_usuario(int $id_usuario): int
 {
 	global $conection;
@@ -1148,6 +1399,15 @@ function numComics_usuario(int $id_usuario): int
 	return $consulta;
 }
 
+/**
+ * Funcion que permite agregar la opinion de un comics en la bbdd
+ *
+ * @param integer $id_user
+ * @param integer $id_comic
+ * @param string $opinion
+ * @param integer $puntuacion
+ * @return boolean
+ */
 function agregar_opinion(int $id_user, int $id_comic, string $opinion, int $puntuacion): bool
 {
 	global $conection;
@@ -1168,6 +1428,13 @@ function agregar_opinion(int $id_user, int $id_comic, string $opinion, int $punt
 	return $agregado;
 }
 
+/**
+ * Funcion que permite agregar la opinion de la pagina en la bbdd
+ *
+ * @param integer $id_user
+ * @param string $opinion
+ * @return boolean
+ */
 function agregar_opinion_pagina(int $id_user, string $opinion): bool
 {
 	global $conection;
@@ -1185,6 +1452,12 @@ function agregar_opinion_pagina(int $id_user, string $opinion): bool
 	return $agregado;
 }
 
+/**
+ * Devuelve el numero de opiniones de un comic en concreto
+ *
+ * @param integer $id_comic
+ * @return integer
+ */
 function num_opiniones(int $id_comic): int
 {
 	global $conection;
@@ -1200,18 +1473,12 @@ function num_opiniones(int $id_comic): int
 	return $consulta;
 }
 
-// function opiniones_usuario(string $id_usuario): array
-// {
-// 	global $conection;
-// 	try {
-// 		$consulta = $conection->prepare("SELECT COUNT(*) from opiniones_comics where id_usuario=?");
-// 		$consulta->execute(array($id_usuario));
-// 	} catch (PDOException $e) {
-// 		echo "Error: " . $e->getMessage();
-// 	}
-// 	return $consulta->fetchAll(PDO::FETCH_ASSOC);
-// }
-
+/**
+ * muestra las opiniones de un comic en concreto
+ *
+ * @param integer $id_comic
+ * @return PDOStatement
+ */
 function mostrar_opiniones(int $id_comic): PDOStatement
 {
 	global $conection;
@@ -1225,6 +1492,11 @@ function mostrar_opiniones(int $id_comic): PDOStatement
 	return $consulta;
 }
 
+/**
+ * Funcion que muestra las opiniones de la pagina
+ *
+ * @return PDOStatement
+ */
 function mostrar_opiniones_pagina(): PDOStatement
 {
 	global $conection;
@@ -1238,9 +1510,8 @@ function mostrar_opiniones_pagina(): PDOStatement
 }
 
 /**
- * It returns the number of rows in the table opiniones_pagina.
- * 
- * @return int The number of rows in the table.
+ * Devuelve el número de filas de la tabla opiniones_pagina. * 
+ * @return int El número de filas en la tabla.
  */
 function numero_opiniones_pagina(): int
 {
@@ -1255,6 +1526,12 @@ function numero_opiniones_pagina(): int
 	return $resultado[0];
 }
 
+/**
+ * Calcula y devuelve la puntuacion media de un comic en concreto
+ *
+ * @param integer $id_comic
+ * @return float
+ */
 function valoracion_media(int $id_comic): float
 {
 	global $conection;
@@ -1268,6 +1545,13 @@ function valoracion_media(int $id_comic): float
 	return (float) $consulta;
 }
 
+/**
+ * Devuelve la puntuacion que ha dado un usuario a un comic en concreto
+ *
+ * @param integer $id_user
+ * @param integer $id_comic
+ * @return float
+ */
 function valoracion_usuario(int $id_user, int $id_comic): float
 {
 	global $conection;
@@ -1281,6 +1565,13 @@ function valoracion_usuario(int $id_user, int $id_comic): float
 	return (float) $consulta;
 }
 
+/**
+ * Funcion que permite crear una nueva lista de lectura personalizada
+ *
+ * @param string $id_user
+ * @param string $nombre_lista
+ * @return boolean
+ */
 function nueva_lista(string $id_user, string $nombre_lista): bool
 {
 	global $conection;
@@ -1298,6 +1589,13 @@ function nueva_lista(string $id_user, string $nombre_lista): bool
 	return $agregado;
 }
 
+/**
+ * Funcion que permite modificar el nombre de una lista de lectura personalizada
+ *
+ * @param integer $id_lista
+ * @param string $nombre_lista
+ * @return boolean
+ */
 function modificar_lista(int $id_lista, string $nombre_lista): bool
 {
 	global $conection;
@@ -1316,6 +1614,13 @@ function modificar_lista(int $id_lista, string $nombre_lista): bool
 	return $modificada;
 }
 
+/**
+ * Devuelve el numero de comics guardado en la bbdd de un uusario en concreto
+ *
+ * @param integer $id_user
+ * @param integer $id_comic
+ * @return boolean
+ */
 function check_guardado(int $id_user, int $id_comic): bool
 {
 	global $conection;
@@ -1335,6 +1640,13 @@ function check_guardado(int $id_user, int $id_comic): bool
 	return $guardado;
 }
 
+/**
+ * Verifica si un cómic está guardado en una lista de lectura en la base de datos.
+ *
+ * @param integer $id_lista
+ * @param integer $id_comic
+ * @return boolean
+ */
 function check_guardado_lista(int $id_lista, int $id_comic): bool
 {
 	global $conection;
@@ -1344,15 +1656,24 @@ function check_guardado_lista(int $id_lista, int $id_comic): bool
 	try {
 		$consulta = $conection->prepare("SELECT COUNT(*) from contenido_listas where id_lista=? AND id_comic=?");
 		$consulta->execute(array($id_lista, $id_comic));
-		if ($consulta->fetchColumn() > 0) {
+		$cantidad = $consulta->fetchColumn();
+
+		if ($cantidad > 0) {
 			$guardado = true;
 		}
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
 	}
+
 	return $guardado;
 }
 
+/**
+ * Obtiene el número de cómics en una lista de lectura.
+ *
+ * @param int $id_lista El ID de la lista de lectura.
+ * @return int El número de cómics en la lista.
+ */
 function numero_comics_lista($id_lista)
 {
 	global $conection;
@@ -1367,6 +1688,13 @@ function numero_comics_lista($id_lista)
 	return $resultado[0];
 }
 
+/**
+ * Guarda un cómic asociado a un usuario en la base de datos.
+ *
+ * @param int $id_user ID del usuario.
+ * @param int $id_comic ID del cómic.
+ * @return bool Retorna true si el cómic fue agregado exitosamente, false en caso contrario.
+ */
 function guardar_comic(int $id_user, int $id_comic): bool
 {
 	global $conection;
@@ -1374,7 +1702,7 @@ function guardar_comic(int $id_user, int $id_comic): bool
 	$id_user = htmlspecialchars($id_user, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		// Check if user exists
+		// Comprobamos si el usuario existe
 		$user_query = $conection->prepare("SELECT * FROM users WHERE IDuser = ?");
 		$user_query->execute([$id_user]);
 		$user = $user_query->fetch();
@@ -1384,7 +1712,7 @@ function guardar_comic(int $id_user, int $id_comic): bool
 			$consulta->execute(array($id_user, $id_comic));
 			$agregado = true;
 		} else {
-			// User does not exist
+			// En caso de que el usuario no exista
 			$agregado = false;
 		}
 	} catch (PDOException $e) {
@@ -1393,7 +1721,13 @@ function guardar_comic(int $id_user, int $id_comic): bool
 	return $agregado;
 }
 
-
+/**
+ * Elimina un cómic asociado a un usuario de la base de datos.
+ *
+ * @param int $id_user ID del usuario.
+ * @param int $id_comic ID del cómic.
+ * @return bool Retorna true si el cómic fue eliminado exitosamente, false en caso contrario.
+ */
 function quitar_comic(int $id_user, int $id_comic): bool
 {
 	global $conection;
@@ -1417,6 +1751,13 @@ function quitar_comic(int $id_user, int $id_comic): bool
 	return $agregado;
 }
 
+/**
+ * Guarda un cómic en una lista específica en la base de datos.
+ *
+ * @param int $id_comic ID del cómic.
+ * @param int $id_lista ID de la lista.
+ * @return bool Retorna true si el cómic fue agregado exitosamente a la lista, false en caso contrario.
+ */
 function guardar_comic_lista(int $id_comic, int $id_lista): bool
 {
 	global $conection;
@@ -1433,6 +1774,13 @@ function guardar_comic_lista(int $id_comic, int $id_lista): bool
 	return $agregado;
 }
 
+/**
+ * Elimina un cómic de una lista específica en la base de datos.
+ *
+ * @param int $id_comic ID del cómic.
+ * @param int $id_lista ID de la lista.
+ * @return bool Retorna true si el cómic fue eliminado exitosamente de la lista, false en caso contrario.
+ */
 function quitar_comic_lista(int $id_comic, int $id_lista): bool
 {
 	global $conection;
@@ -1449,8 +1797,19 @@ function quitar_comic_lista(int $id_comic, int $id_lista): bool
 	return $agregado;
 }
 
+/**
+ * Obtiene los cómics guardados por un usuario de la base de datos.
+ *
+ * @param int $limit Cantidad máxima de cómics a obtener.
+ * @param int $offset Valor de desplazamiento para la paginación de resultados.
+ * @param int $id_user ID del usuario.
+ * @return PDOStatement Retorna un objeto PDOStatement que contiene los resultados de la consulta.
+ */
 function get_comics_guardados(int $limit, int $offset, int $id_user): PDOStatement
 {
+	$id_user = htmlspecialchars($id_user, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$limit = htmlspecialchars($limit, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$offset = htmlspecialchars($offset, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	global $conection;
 	try {
 		$consulta = $conection->prepare("SELECT * from comics_guardados JOIN comics ON comics_guardados.comic_id=comics.IDcomic where user_id=:id_user ORDER BY comic_id  DESC LIMIT :limit OFFSET :offset");
@@ -1464,8 +1823,19 @@ function get_comics_guardados(int $limit, int $offset, int $id_user): PDOStateme
 	return $consulta;
 }
 
+/**
+ * Obtiene los cómics de una lista específica de la base de datos.
+ *
+ * @param int $limit Cantidad máxima de cómics a obtener.
+ * @param int $offset Valor de desplazamiento para la paginación de resultados.
+ * @param int $id_lista ID de la lista.
+ * @return PDOStatement Retorna un objeto PDOStatement que contiene los resultados de la consulta.
+ */
 function get_comics_lista(int $limit, int $offset, int $id_lista): PDOStatement
 {
+	$id_lista = htmlspecialchars($id_lista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$limit = htmlspecialchars($limit, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	$offset = htmlspecialchars($offset, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	global $conection;
 	try {
 		$consulta = $conection->prepare("SELECT * FROM contenido_listas JOIN comics ON contenido_listas.id_comic=comics.IDcomic WHERE contenido_listas.id_lista=:id_lista ORDER BY comics.IDcomic DESC LIMIT :limit OFFSET :offset");
@@ -1479,21 +1849,15 @@ function get_comics_lista(int $limit, int $offset, int $id_lista): PDOStatement
 	return $consulta;
 }
 
-// function get_id_contenido(int $id_lista, int $id_comic): string
-// {
-// 	global $conection;
-// 	try {
-// 		$consulta = $conection->prepare("SELECT id_contenido from contenido_listas where id_lista=? and id_comic=?");
-// 		$consulta->execute(array($id_lista, $id_comic));
-// 	} catch (PDOException $e) {
-// 		echo "Error: " . $e->getMessage();
-// 	}
-// 	$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
-// 	return "[" . $resultado['id_contenido'] . "]";
-// }
-
+/**
+ * Obtiene el número total de elementos en una lista específica de la base de datos.
+ *
+ * @param int $id_lista ID de la lista.
+ * @return int Retorna el número total de elementos en la lista.
+ */
 function get_total_contenido(int $id_lista): int
 {
+	$id_lista = htmlspecialchars($id_lista, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	global $conection;
 	try {
 		$consulta = $conection->prepare("SELECT COUNT(*) from contenido_listas where id_lista=?");
@@ -1504,8 +1868,15 @@ function get_total_contenido(int $id_lista): int
 	return $consulta->fetchColumn();
 }
 
+/**
+ * Obtiene el número total de cómics guardados por un usuario de la base de datos.
+ *
+ * @param int $id_user ID del usuario.
+ * @return int Retorna el número total de cómics guardados por el usuario.
+ */
 function get_total_guardados(int $id_user): int
 {
+	$id_user = htmlspecialchars($id_user, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	global $conection;
 	try {
 		$consulta = $conection->prepare("SELECT COUNT(*) from comics_guardados where user_id=?");
@@ -1516,6 +1887,11 @@ function get_total_guardados(int $id_user): int
 	return $consulta->fetchColumn();
 }
 
+/**
+ * Obtiene el número total de cómics en la base de datos.
+ *
+ * @return int Retorna el número total de cómics.
+ */
 function get_total_comics(): int
 {
 	global $conection;
@@ -1528,6 +1904,12 @@ function get_total_comics(): int
 	return $consulta->fetchColumn();
 }
 
+/**
+ * Obtiene la descripción de un cómic específico de la base de datos.
+ *
+ * @param int $id ID del cómic.
+ * @return array Retorna un array asociativo con los datos de la descripción del cómic.
+ */
 function get_descripcion(int $id): array
 {
 	global $conection;
@@ -1540,6 +1922,12 @@ function get_descripcion(int $id): array
 	return $consulta->fetch(PDO::FETCH_ASSOC);
 }
 
+/**
+ * Obtiene las listas de cómics de un usuario específico de la base de datos.
+ *
+ * @param int $id ID del usuario.
+ * @return array Retorna un array con los datos de las listas de cómics del usuario.
+ */
 function get_listas($id): array
 {
 	global $conection;
@@ -1552,6 +1940,12 @@ function get_listas($id): array
 	return $consulta->fetchAll(PDO::FETCH_ASSOC);
 }
 
+/**
+ * Obtiene el nombre de una lista de cómics específica de la base de datos.
+ *
+ * @param int $id_lista ID de la lista de cómics.
+ * @return array Retorna un array asociativo con los datos del nombre de la lista.
+ */
 function get_nombre_lista(int $id_lista): array
 {
 	global $conection;
@@ -1564,6 +1958,12 @@ function get_nombre_lista(int $id_lista): array
 	return $consulta->fetch(PDO::FETCH_ASSOC);
 }
 
+/**
+ * Obtiene el número de listas de cómics de un usuario específico en la base de datos.
+ *
+ * @param int $id ID del usuario.
+ * @return int Retorna el número de listas de cómics del usuario.
+ */
 function num_listas_user($id): int
 {
 	global $conection;
@@ -1576,6 +1976,13 @@ function num_listas_user($id): int
 	return $consulta->fetchColumn();
 }
 
+/**
+ * Verifica si un usuario específico tiene acceso a una lista de cómics en la base de datos.
+ *
+ * @param int $id_user ID del usuario.
+ * @param int $id_lista ID de la lista de cómics.
+ * @return int Retorna 1 si el usuario tiene acceso a la lista, de lo contrario retorna 0.
+ */
 function check_lista_user(int $id_user, int $id_lista): int
 {
 	global $conection;
@@ -1638,18 +2045,12 @@ function eliminar_contenido_listas($id_lista): bool
 	return $eliminado;
 }
 
-function lista_usuario($id_usuario): array
-{
-	try {
-		global $conection;
-		$consulta = $conection->prepare("SELECT * from lista_comics where id_user=?");
-		$consulta->execute(array($id_usuario));
-		return $consulta->fetchAll(PDO::FETCH_ASSOC);
-	} catch (PDOException $e) {
-		return [];
-	}
-}
-
+/**
+ * Reactiva una cuenta de usuario inactiva en la base de datos.
+ *
+ * @param string $email Dirección de correo electrónico asociada a la cuenta.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function reactivar_cuenta(string $email): void
 {
 	global $conection;
@@ -1662,6 +2063,14 @@ function reactivar_cuenta(string $email): void
 	}
 }
 
+/**
+ * Obtiene el estado de una solicitud de amistad entre dos usuarios en la base de datos.
+ *
+ * @param int $id_destinatario ID del usuario destinatario de la solicitud.
+ * @param int $id_solicitante ID del usuario solicitante de la solicitud.
+ * @return string Retorna el estado de la solicitud ('pendiente', 'aceptada', 'rechazada').
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function estado_solicitud(int $id_destinatario, int $id_solicitante): string
 {
 	global $conection;
@@ -1675,6 +2084,13 @@ function estado_solicitud(int $id_destinatario, int $id_solicitante): string
 	return $consulta;
 }
 
+/**
+ * Obtiene el número de amistades de un usuario en la base de datos.
+ *
+ * @param int $id_usuario ID del usuario.
+ * @return int Retorna el número de amistades del usuario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function num_amistades(int $id_usuario): int
 {
 	global $conection;
@@ -1687,6 +2103,13 @@ function num_amistades(int $id_usuario): int
 	}
 }
 
+/**
+ * Obtiene las solicitudes de amistad pendientes de un usuario en la base de datos.
+ *
+ * @param int $id_user ID del usuario.
+ * @return array Retorna un array con las solicitudes de amistad pendientes.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function solicitudes_amistad(int $id_user): array
 {
 	global $conection;
@@ -1711,30 +2134,14 @@ function num_solicitudes_amistad(int $id_user): int
 	}
 }
 
-function solicitudes_amistad_enviadas(int $id_user): array
-{
-	global $conection;
-	try {
-		$consulta = $conection->prepare("SELECT * from solicitudes_amistad where id_usuario_solicitante= ? AND estado_solicitud='en espera'");
-		$consulta->execute(array($id_user));
-		return $consulta->fetchAll(PDO::FETCH_ASSOC);
-	} catch (PDOException $e) {
-		throw new Exception('Error en la base de datos: ' . $e->getMessage());
-	}
-}
-
-function num_solicitudes_amistad_enviadas(int $id_user): int
-{
-	global $conection;
-	try {
-		$consulta = $conection->prepare("SELECT COUNT(*) from solicitudes_amistad where id_usuario_solicitante = ? AND estado_solicitud='en espera'");
-		$consulta->execute(array($id_user));
-		return $consulta->fetchColumn();
-	} catch (PDOException $e) {
-		throw new Exception('Error en la base de datos: ' . $e->getMessage());
-	}
-}
-
+/**
+ * Acepta una solicitud de amistad en la base de datos.
+ *
+ * @param int $id_remitente ID del usuario remitente de la solicitud.
+ * @param int $id_mi_usuario ID de mi usuario.
+ * @return bool Retorna true si se acepta la solicitud correctamente, o false si ocurre un error.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function aceptar_solicitud(int $id_remitente, int $id_mi_usuario): bool
 {
 	global $conection;
@@ -1756,6 +2163,14 @@ function aceptar_solicitud(int $id_remitente, int $id_mi_usuario): bool
 	return $aceptado;
 }
 
+/**
+ * Rechaza una solicitud de amistad en la base de datos.
+ *
+ * @param int $id_remitente ID del usuario remitente de la solicitud.
+ * @param int $id_mi_usuario ID de mi usuario.
+ * @return bool Retorna true si se rechaza la solicitud correctamente, o false si ocurre un error.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function rechazar_solicitud(int $id_remitente, int $id_mi_usuario): bool
 {
 	global $conection;
@@ -1773,6 +2188,14 @@ function rechazar_solicitud(int $id_remitente, int $id_mi_usuario): bool
 	return $rechazado;
 }
 
+/**
+ * Cancela una solicitud de amistad en la base de datos.
+ *
+ * @param int $id_remitente ID del usuario remitente de la solicitud.
+ * @param int $id_mi_usuario ID de mi usuario.
+ * @return bool Retorna true si se cancela la solicitud correctamente, o false si ocurre un error.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function cancelar_solicitud(int $id_remitente, int $id_mi_usuario): bool
 {
 	global $conection;
@@ -1790,23 +2213,14 @@ function cancelar_solicitud(int $id_remitente, int $id_mi_usuario): bool
 	return $cancelado;
 }
 
-function comprobar_solicitud(int $id_solicitante, int $id_mi_usuario): bool
-{
-	global $conection;
-	$solicitud = false;
-	/* Trying to connect to the database. */
-	try {
-		$consulta = $conection->prepare("SELECT * from solicitudes_amistad where id_usuario_solicitante=? AND id_usuario_destinatario=? AND estado_solicitud='en espera'");
-		$consulta->execute(array($id_solicitante, $id_mi_usuario));
-		if ($consulta->fetchAll(PDO::FETCH_ASSOC)) {
-			$solicitud = true;
-		}
-	} catch (PDOException $e) {
-		echo "Error: " . $e->getMessage();
-	}
-	return $solicitud;
-}
-
+/**
+ * Comprueba si existe una amistad entre dos usuarios en la base de datos.
+ *
+ * @param int $id_amigo ID del usuario amigo.
+ * @param int $id_mi_usuario ID de mi usuario.
+ * @return bool Retorna true si existe una amistad entre los usuarios, o false si no existe.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function comprobar_amistad(int $id_amigo, int $id_mi_usuario): bool
 {
 	global $conection;
@@ -1823,6 +2237,14 @@ function comprobar_amistad(int $id_amigo, int $id_mi_usuario): bool
 	return $amistad;
 }
 
+/**
+ * Envía una solicitud de amistad desde un usuario solicitante a un usuario destinatario.
+ *
+ * @param int $id_destinatario ID del usuario destinatario.
+ * @param int $id_solicitante ID del usuario solicitante.
+ * @return bool Retorna true si la solicitud se envió correctamente, o false si ocurrió un error.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function enviar_solicitud(int $id_destinatario, int $id_solicitante): bool
 {
 	global $conection;
@@ -1840,6 +2262,14 @@ function enviar_solicitud(int $id_destinatario, int $id_solicitante): bool
 	return $enviado;
 }
 
+/**
+ * Elimina una amistad entre dos usuarios.
+ *
+ * @param int $id_amigo ID del amigo a eliminar.
+ * @param int $id_mi_usuario ID del usuario actual.
+ * @return bool Retorna true si la amistad se eliminó correctamente, o false si ocurrió un error.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function eliminar_amigo(int $id_amigo, int $id_mi_usuario): bool
 {
 	global $conection;
@@ -1862,6 +2292,13 @@ function eliminar_amigo(int $id_amigo, int $id_mi_usuario): bool
 	return $eliminado;
 }
 
+/**
+ * Obtiene la lista de amigos de un usuario.
+ *
+ * @param int $id_user ID del usuario.
+ * @return array Retorna un array con los datos de los amigos del usuario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function amigos(int $id_user): array
 {
 	global $conection;
@@ -1876,6 +2313,13 @@ function amigos(int $id_user): array
 	return $resultado;
 }
 
+/**
+ * Obtiene el número de amigos de un usuario.
+ *
+ * @param int $id_user ID del usuario.
+ * @return int Retorna el número de amigos del usuario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function num_amigos(int $id_user): int
 {
 	global $conection;
@@ -1892,6 +2336,14 @@ function num_amigos(int $id_user): int
 	return $resultado;
 }
 
+/**
+ * Bloquea a un usuario.
+ *
+ * @param int $id_destinatario ID del usuario que se va a bloquear.
+ * @param int $id_solicitante ID del usuario que realiza el bloqueo.
+ * @return bool Retorna true si el usuario ha sido bloqueado correctamente, false en caso contrario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function bloquear_usuario(int $id_destinatario, int $id_solicitante): bool
 {
 	global $conection;
@@ -1899,21 +2351,28 @@ function bloquear_usuario(int $id_destinatario, int $id_solicitante): bool
 	$id_destinatario = htmlspecialchars($id_destinatario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$id_solicitante = htmlspecialchars($id_solicitante, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$consulta1 = $conection->prepare("INSERT INTO usuarios_bloqueados (id_usuario_bloqueado,id_solicitante) VALUES (?,?)");
+		// Insertar en la tabla de usuarios bloqueados
+		$consulta1 = $conection->prepare("INSERT INTO usuarios_bloqueados (id_usuario_bloqueado, id_solicitante) VALUES (?, ?)");
 		$consulta1->execute(array($id_destinatario, $id_solicitante));
 
-		$consulta1 = $conection->prepare("SELECT COUNT(*) from amistades_usuario where id_amigo=?");
-		$consulta1->execute(array($id_destinatario));
-		$consulta1 = $consulta1->fetchColumn();
-		if ($consulta1 > 0) {
-			$consulta2 = $conection->prepare("DELETE FROM amistades_usuario WHERE id_usuario = ? AND id_amigo = ?");
-			$consulta2->execute(array($id_destinatario, $id_solicitante));
+		// Verificar si existen amistades entre los usuarios
+		$consulta2 = $conection->prepare("SELECT COUNT(*) FROM amistades_usuario WHERE id_amigo = ?");
+		$consulta2->execute(array($id_destinatario));
+		$amistades_destinatario = $consulta2->fetchColumn();
+
+		if ($amistades_destinatario > 0) {
+			// Eliminar la amistad en ambos sentidos
 			$consulta3 = $conection->prepare("DELETE FROM amistades_usuario WHERE id_usuario = ? AND id_amigo = ?");
-			$consulta3->execute(array($id_solicitante, $id_destinatario));
+			$consulta3->execute(array($id_destinatario, $id_solicitante));
+
+			$consulta4 = $conection->prepare("DELETE FROM amistades_usuario WHERE id_usuario = ? AND id_amigo = ?");
+			$consulta4->execute(array($id_solicitante, $id_destinatario));
 		}
 
-		$consulta4 = $conection->prepare("DELETE FROM solicitudes_amistad WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
-		$consulta4->execute(array($id_solicitante, $id_destinatario));
+		// Eliminar las solicitudes de amistad entre los usuarios
+		$consulta5 = $conection->prepare("DELETE FROM solicitudes_amistad WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
+		$consulta5->execute(array($id_solicitante, $id_destinatario));
+
 		$bloqueado = true;
 	} catch (PDOException $e) {
 		echo "Error: " . $e->getMessage();
@@ -1921,6 +2380,14 @@ function bloquear_usuario(int $id_destinatario, int $id_solicitante): bool
 	return $bloqueado;
 }
 
+/**
+ * Verifica si un usuario está bloqueado.
+ *
+ * @param int $id_destinatario ID del usuario bloqueado.
+ * @param int $id_solicitante ID del usuario que realiza la verificación.
+ * @return bool Retorna true si el usuario está bloqueado, false en caso contrario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function check_usuario_bloqueado(int $id_destinatario, int $id_solicitante): bool
 {
 	global $conection;
@@ -1939,6 +2406,14 @@ function check_usuario_bloqueado(int $id_destinatario, int $id_solicitante): boo
 	return $existe;
 }
 
+/**
+ * Desbloquea a un usuario.
+ *
+ * @param int $id_destinatario ID del usuario a desbloquear.
+ * @param int $id_solicitante ID del usuario que realiza el desbloqueo.
+ * @return bool Retorna true si el usuario fue desbloqueado, false en caso contrario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function desbloquear_usuario(int $id_destinatario, int $id_solicitante): bool
 {
 	global $conection;
@@ -1958,6 +2433,14 @@ function desbloquear_usuario(int $id_destinatario, int $id_solicitante): bool
 	return $desbloquear;
 }
 
+/**
+ * Comprueba si un usuario está bloqueado por otro usuario.
+ *
+ * @param int $id_destinatario ID del usuario bloqueado.
+ * @param int $id_solicitante ID del usuario que realiza la comprobación.
+ * @return bool Retorna true si el usuario está bloqueado, false en caso contrario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function comprobar_bloqueo(int $id_destinatario, int $id_solicitante): bool
 {
 	global $conection;
@@ -1977,6 +2460,13 @@ function comprobar_bloqueo(int $id_destinatario, int $id_solicitante): bool
 	return $bloqueado;
 }
 
+/**
+ * Obtiene el número de usuarios bloqueados por un usuario.
+ *
+ * @param int $id_mi_usuario ID del usuario que realiza la consulta.
+ * @return int Retorna el número de usuarios bloqueados.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function num_usuarios_bloqueados(int $id_mi_usuario): int
 {
 	global $conection;
@@ -1993,6 +2483,14 @@ function num_usuarios_bloqueados(int $id_mi_usuario): int
 	}
 	return $usuarios_bloqueados;
 }
+
+/**
+ * Obtiene la lista de usuarios bloqueados por un usuario.
+ *
+ * @param int $id_mi_usuario ID del usuario que realiza la consulta.
+ * @return array Retorna un array con los datos de los usuarios bloqueados.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function usuarios_bloqueados(int $id_mi_usuario): array
 {
 	global $conection;
@@ -2008,6 +2506,13 @@ function usuarios_bloqueados(int $id_mi_usuario): array
 	return $datos_usuario_bloqueado;
 }
 
+/**
+ * Obtiene el tipo de privacidad de un usuario.
+ *
+ * @param int $id_user ID del usuario.
+ * @return string Retorna el tipo de privacidad del usuario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function tipo_privacidad(int $id_user): string
 {
 	global $conection;
@@ -2024,6 +2529,12 @@ function tipo_privacidad(int $id_user): string
 	return $tipo_privacidad;
 }
 
+/**
+ * Guarda la fecha de la última conexión de un usuario.
+ *
+ * @param string $email_usuario Email del usuario.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function guardar_ultima_conexion($email_usuario)
 {
 	global $conection;
@@ -2042,6 +2553,13 @@ function guardar_ultima_conexion($email_usuario)
 	}
 }
 
+/**
+ * Comprueba la última conexión de un usuario y devuelve la diferencia de tiempo.
+ *
+ * @param int $id_usuario ID del usuario.
+ * @return string Retorna la diferencia de tiempo desde la última conexión.
+ * @throws Exception Si ocurre un error en la base de datos.
+ */
 function comprobar_ultima_conexion($id_usuario)
 {
 	global $conection;
@@ -2093,10 +2611,19 @@ function comprobar_ultima_conexion($id_usuario)
 	return $diferencia;
 }
 
-function comics_lista($userData, $limit, $offset, $conection)
+/**
+ * Obtiene una lista de cómics según los filtros de búsqueda y paginación.
+ *
+ * @param array $userData Datos del usuario.
+ * @param int $limit Límite de resultados por página.
+ * @param int $offset Desplazamiento de resultados para paginación.
+ * @param object $conection Conexión a la base de datos.
+ * @return object Retorna el resultado de la consulta de cómics.
+ */
+function comics_lista($userData, $limit, $offset)
 {
+	global $conection;
 	$id_user = $userData['IDuser'];
-	$id_lista = $_GET['id_lista'];
 	if (isset($_GET['checkboxChecked'])) {
 		$search = explode(",", $_GET['checkboxChecked']);
 		$search = array_map('trim', $search);
@@ -2119,6 +2646,12 @@ function comics_lista($userData, $limit, $offset, $conection)
 	return $comics;
 }
 
+/**
+ * Obtiene el número de mensajes sin leer de un usuario.
+ *
+ * @param int $id_usuario ID del usuario.
+ * @return int Retorna el número de mensajes sin leer.
+ */
 function obtener_numero_mensajes_sin_leer($id_usuario)
 {
 	global $conection;
@@ -2133,6 +2666,12 @@ function obtener_numero_mensajes_sin_leer($id_usuario)
 	return $numero_mensajes_sin_leer;
 }
 
+/**
+ * Obtiene el número de notificaciones de amistad sin leer de un usuario.
+ *
+ * @param int $id_usuario ID del usuario.
+ * @return int Retorna el número de notificaciones de amistad sin leer.
+ */
 function obtener_numero_notificaciones_amistad_sin_leer($id_usuario)
 {
 	global $conection;
@@ -2147,6 +2686,13 @@ function obtener_numero_notificaciones_amistad_sin_leer($id_usuario)
 	return $numero_mensajes_sin_leer;
 }
 
+/**
+ * Cambia el estado de los mensajes de una conversación a "leído" para el usuario actual.
+ *
+ * @param int $id_conversacion ID de la conversación.
+ * @param int $id_usuario ID del usuario.
+ * @return void
+ */
 function cambiar_estado_mensajes(int $id_conversacion, int $id_usuario): void
 {
 	global $conection;
@@ -2172,6 +2718,14 @@ function cambiar_estado_mensajes(int $id_conversacion, int $id_usuario): void
 	}
 }
 
+/**
+ * Envía una solicitud de cómic asociada a un usuario y una descripción de cómic.
+ *
+ * @param int $id_comic ID del cómic.
+ * @param int $id_usuario ID del usuario que envía la solicitud.
+ * @param int $id_descripcion ID de la descripción de cómic.
+ * @return bool Retorna true si la solicitud se envió correctamente, de lo contrario retorna false.
+ */
 function enviar_solicitud_comic($id_comic, $id_usuario, $id_descripcion)
 {
 	global $conection;
@@ -2189,6 +2743,23 @@ function enviar_solicitud_comic($id_comic, $id_usuario, $id_descripcion)
 	return $estado;
 }
 
+/**
+ * Envía una solicitud de nuevos datos de cómic.
+ *
+ * @param string $nombre_comic Nombre del cómic.
+ * @param string $nombre_variante Nombre de la variante del cómic.
+ * @param string $numero Número del cómic.
+ * @param string $formato Formato del cómic.
+ * @param string $editorial Editorial del cómic.
+ * @param string $fecha Fecha de publicación del cómic.
+ * @param string $guionista Guionista del cómic.
+ * @param string $procedencia Procedencia del cómic.
+ * @param string $descipcion_comic Descripción del cómic.
+ * @param string $dibujante Dibujante del cómic.
+ * @param string $portada_comic Portada del cómic.
+ * @param int $id_usuario ID del usuario que envía la solicitud.
+ * @return bool Retorna true si la solicitud se envió correctamente, de lo contrario retorna false.
+ */
 function enviar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $descipcion_comic, $dibujante, $portada_comic, $id_usuario)
 {
 	global $conection;
@@ -2218,6 +2789,23 @@ function enviar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numero, 
 	return $estado;
 }
 
+/**
+ * Confirma una solicitud de datos de cómic, guardando los datos proporcionados en la base de datos.
+ *
+ * @param int $id_comic_peticion ID de la solicitud de cómic.
+ * @param string $nombre_comic Nombre del cómic.
+ * @param string $nombre_variante Nombre de la variante del cómic.
+ * @param string $numero Número del cómic.
+ * @param string $formato Formato del cómic.
+ * @param string $editorial Editorial del cómic.
+ * @param string $fecha Fecha de publicación del cómic.
+ * @param string $guionista Guionista del cómic.
+ * @param string $procedencia Procedencia del cómic.
+ * @param string $descipcion_comic Descripción del cómic.
+ * @param string $dibujante Dibujante del cómic.
+ * @param string $portada_comic Portada del cómic.
+ * @return bool Retorna true si la confirmación se realizó correctamente, de lo contrario retorna false.
+ */
 function confirmar_solicitud_datos_comic($id_comic_peticion, $nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $descipcion_comic, $dibujante, $portada_comic)
 {
 	global $conection;
@@ -2250,6 +2838,12 @@ function confirmar_solicitud_datos_comic($id_comic_peticion, $nombre_comic, $nom
 	return $estado;
 }
 
+/**
+ * Cambia el estado de una petición de cómic a "cancelado".
+ *
+ * @param int $id_comic_peticion ID de la petición de cómic.
+ * @return bool Retorna true si el cambio de estado se realizó correctamente, de lo contrario retorna false.
+ */
 function cambiar_estado_peticion_cancelar(int $id_comic_peticion): bool
 {
 	global $conection;
@@ -2266,6 +2860,11 @@ function cambiar_estado_peticion_cancelar(int $id_comic_peticion): bool
 	return $estado;
 }
 
+/**
+ * Cambia el estado de una petición de cómic a "aceptado".
+ *
+ * @param int $id_comic_peticion ID de la petición de cómic.
+ */
 function cambiar_estado_peticion_confirmado(int $id_comic_peticion): void
 {
 	global $conection;
@@ -2278,6 +2877,12 @@ function cambiar_estado_peticion_confirmado(int $id_comic_peticion): void
 	}
 }
 
+/**
+ * Obtiene la información de una petición de cómic.
+ *
+ * @param int $id_comic ID del cómic de la petición.
+ * @return array Retorna un array asociativo con la información de la petición de cómic, o un array vacío si no se encuentra la petición.
+ */
 function info_peticiones_comics(int $id_comic): array
 {
 	global $conection;
@@ -2292,6 +2897,12 @@ function info_peticiones_comics(int $id_comic): array
 	return $resultados;
 }
 
+/**
+ * Obtiene la información de un cómic registrado a través del formulario.
+ *
+ * @param int $id_comic ID del cómic.
+ * @return array Retorna un array asociativo con la información del cómic, o un array vacío si no se encuentra el cómic.
+ */
 function info_comic_formulario(int $id_comic): array
 {
 	global $conection;
@@ -2306,6 +2917,12 @@ function info_comic_formulario(int $id_comic): array
 	return $resultados;
 }
 
+/**
+ * Obtiene la descripción de un cómic registrado a través del formulario.
+ *
+ * @param int $id_comic ID del cómic.
+ * @return array Retorna un array asociativo con la descripción del cómic, o un array vacío si no se encuentra la descripción.
+ */
 function info_comic_descripcion_formulario(int $id_comic): array
 {
 	global $conection;
@@ -2320,7 +2937,15 @@ function info_comic_descripcion_formulario(int $id_comic): array
 	return $resultados;
 }
 
-function enviar_solicitud_descripcion_comic($id_comic, $descipcion_comic, $id_usuario)
+/**
+ * Envía una solicitud de descripción de cómic.
+ *
+ * @param int $id_comic ID del cómic.
+ * @param string $descripcion_comic Descripción del cómic.
+ * @param int $id_usuario ID del usuario que envía la solicitud.
+ * @return bool Retorna true si la solicitud se envía correctamente, o false en caso contrario.
+ */
+function enviar_solicitud_descripcion_comic($id_comic, $descipcion_comic, $id_usuario): bool
 {
 	global $conection;
 	$estado = false;
@@ -2340,32 +2965,12 @@ function enviar_solicitud_descripcion_comic($id_comic, $descipcion_comic, $id_us
 	return $estado;
 }
 
-function obtener_peticiones_nuevos_comics()
-{
-	global $conection;
-	try {
-		$consulta = $conection->prepare("SELECT * FROM peticiones_nuevos_comics");
-		$consulta->execute();
-		$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
-	} catch (PDOException $e) {
-		echo "Error: " . $e->getMessage();
-	}
-	return $resultados;
-}
-
-function obtener_numero_peticiones_nuevos_comics()
-{
-	global $conection;
-	try {
-		$consulta = $conection->prepare("SELECT COUNT(*) FROM peticiones_nuevos_comics");
-		$consulta->execute();
-		$numero_peticiones = $consulta->fetchColumn();
-	} catch (PDOException $e) {
-		echo "Error: " . $e->getMessage();
-	}
-	return $numero_peticiones;
-}
-
+/**
+ * Obtiene el último ID de cómic de una tabla específica.
+ *
+ * @param string $nombre_tabla Nombre de la tabla.
+ * @return int Retorna el último ID de cómic de la tabla especificada.
+ */
 function ultimo_id_comic(String $nombre_tabla): int
 {
 	global $conection;
@@ -2380,6 +2985,12 @@ function ultimo_id_comic(String $nombre_tabla): int
 	return $ultimo_id;
 }
 
+/**
+ * Elimina una petición de cómic y sus registros relacionados.
+ *
+ * @param int $id_peticion ID de la petición de cómic a eliminar.
+ * @return bool Retorna true si se elimina correctamente, false en caso contrario.
+ */
 function eliminar_peticion_comic(int $id_peticion): bool
 {
 	global $conection;
@@ -2406,7 +3017,16 @@ function eliminar_peticion_comic(int $id_peticion): bool
 	return $estado;
 }
 
-function nueva_denuncia($id_usuario_denunciado, $id_user_denunciante, $mensaje_usuario, $motivo_denuncia)
+/**
+ * Registra una nueva denuncia de usuario.
+ *
+ * @param int $id_usuario_denunciado ID del usuario denunciado.
+ * @param int $id_user_denunciante ID del usuario denunciante.
+ * @param string $mensaje_usuario Mensaje del usuario denunciante.
+ * @param string $motivo_denuncia Motivo de la denuncia.
+ * @return bool Retorna true si se registra correctamente, false en caso contrario.
+ */
+function nueva_denuncia($id_usuario_denunciado, $id_user_denunciante, $mensaje_usuario, $motivo_denuncia): bool
 {
 	global $conection;
 	$estado = false;
@@ -2427,6 +3047,15 @@ function nueva_denuncia($id_usuario_denunciado, $id_user_denunciante, $mensaje_u
 	return $estado;
 }
 
+/**
+ * Registra una respuesta a una denuncia de usuario.
+ *
+ * @param int $id_denuncia ID de la denuncia.
+ * @param int $id_admin ID del administrador que responde.
+ * @param int $id_usuario ID del usuario denunciado.
+ * @param string $respuesta_mensaje Mensaje de respuesta a la denuncia.
+ * @return bool Retorna true si se registra correctamente, false en caso contrario.
+ */
 function respuesta_denuncia(int $id_denuncia, int $id_admin, int $id_usuario, String $respuesta_mensaje): bool
 {
 	global $conection;
@@ -2448,7 +3077,13 @@ function respuesta_denuncia(int $id_denuncia, int $id_admin, int $id_usuario, St
 	return $estado;
 }
 
-function obtener_denuncias_usuarios(int $id_denuncia)
+/**
+ * Obtiene información de una denuncia de usuario.
+ *
+ * @param int $id_denuncia ID de la denuncia.
+ * @return array Retorna un array con los datos de la denuncia.
+ */
+function obtener_denuncias_usuarios(int $id_denuncia): array
 {
 	global $conection;
 	try {
@@ -2461,7 +3096,12 @@ function obtener_denuncias_usuarios(int $id_denuncia)
 	return $resultados;
 }
 
-function obtener_numero_denuncias_usuarios()
+/**
+ * Obtiene el número total de denuncias de usuarios.
+ *
+ * @return int Retorna el número total de denuncias de usuarios.
+ */
+function obtener_numero_denuncias_usuarios(): int
 {
 	global $conection;
 	try {
@@ -2474,7 +3114,13 @@ function obtener_numero_denuncias_usuarios()
 	return $numero_denuncias;
 }
 
-function eliminar_comentario_pagina($id_comentario)
+/**
+ * Elimina un comentario de la página.
+ *
+ * @param int $id_comentario El ID del comentario a eliminar.
+ * @return bool Retorna true si se elimina el comentario correctamente, false en caso contrario.
+ */
+function eliminar_comentario_pagina($id_comentario): bool
 {
 	global $conection;
 	$estado = false;
@@ -2490,7 +3136,13 @@ function eliminar_comentario_pagina($id_comentario)
 	return $estado;
 }
 
-function eliminar_comentario_comic($id_comentario)
+/**
+ * Elimina un comentario de un cómic.
+ *
+ * @param int $id_comentario El ID del comentario a eliminar.
+ * @return bool Retorna true si se elimina el comentario correctamente, false en caso contrario.
+ */
+function eliminar_comentario_comic($id_comentario): bool
 {
 	global $conection;
 	$estado = false;
@@ -2506,7 +3158,13 @@ function eliminar_comentario_comic($id_comentario)
 	return $estado;
 }
 
-function eliminar_comic($id_comic)
+/**
+ * Elimina un cómic.
+ *
+ * @param int $id_comic El ID del cómic a eliminar.
+ * @return bool Retorna true si se elimina el cómic correctamente, false en caso contrario.
+ */
+function eliminar_comic($id_comic): bool
 {
 	global $conection;
 	$estado = false;
@@ -2522,7 +3180,13 @@ function eliminar_comic($id_comic)
 	return $estado;
 }
 
-function comprobar_codigo_alta(String $codigo)
+/**
+ * Comprueba si un código de activación existe en la base de datos.
+ *
+ * @param string $codigo El código de activación a comprobar.
+ * @return bool Retorna true si el código de activación existe en la base de datos, false en caso contrario.
+ */
+function comprobar_codigo_alta(String $codigo): bool
 {
 	global $conection;
 	$estado = false;
@@ -2541,7 +3205,13 @@ function comprobar_codigo_alta(String $codigo)
 	return $estado;
 }
 
-function activar_usuario(String $codigo)
+/**
+ * Activa la cuenta de un usuario en la base de datos.
+ *
+ * @param string $codigo El código de activación asociado a la cuenta del usuario.
+ * @return bool Retorna true si se activa la cuenta correctamente, false en caso contrario.
+ */
+function activar_usuario(String $codigo): bool
 {
 	global $conection;
 	$estado = false;
@@ -2557,7 +3227,13 @@ function activar_usuario(String $codigo)
 	return $estado;
 }
 
-function eliminar_codigo(String $codigo)
+/**
+ * Elimina un código de activación de la base de datos.
+ *
+ * @param string $codigo El código de activación a eliminar.
+ * @return bool Retorna true si se elimina el código correctamente, false en caso contrario.
+ */
+function eliminar_codigo(String $codigo): bool
 {
 	global $conection;
 	$estado = false;
@@ -2573,7 +3249,14 @@ function eliminar_codigo(String $codigo)
 	return $estado;
 }
 
-function enviar_correo_activacion($email_registro, $id_unico)
+/**
+ * Envía un correo de activación de cuenta al usuario registrado.
+ *
+ * @param string $email_registro El correo electrónico del usuario registrado.
+ * @param string $id_unico El identificador único para la activación de la cuenta.
+ * @return string Retorna true si el correo se envía correctamente, false en caso contrario.
+ */
+function enviar_correo_activacion(String $email_registro, String $id_unico): string
 {
 	$subject = "Nuevo usuario. Activacion de cuenta"; // Asunto del correo
 	$message = "Haga clic en el siguiente enlace para activar su cuenta: https://comicweb.es/activacion_usuario.php?codigo_v=" . $id_unico;
@@ -2582,7 +3265,14 @@ function enviar_correo_activacion($email_registro, $id_unico)
 	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
 }
 
-function enviar_pass_activacion($email_registro, $id_unico)
+/**
+ * Envía un correo de restauración de contraseña al usuario.
+ *
+ * @param string $email_registro El correo electrónico del usuario.
+ * @param string $id_unico El identificador único para la restauración de contraseña.
+ * @return string Retorna true si el correo se envía correctamente, false en caso contrario.
+ */
+function enviar_pass_activacion(String $email_registro, String $id_unico): string
 {
 	$subject = "Nuevo usuario. Restaurar cuenta"; // Asunto del correo
 	$message = "Haga clic en el siguiente enlace para crear una nueva contraseña su cuenta: https://comicweb.es/activacion_password.php?id_activacion=" . $id_unico;
@@ -2591,7 +3281,13 @@ function enviar_pass_activacion($email_registro, $id_unico)
 	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
 }
 
-function solicitud_password($email)
+/**
+ * Envía una solicitud de restauración de contraseña al usuario.
+ *
+ * @param string $email El correo electrónico del usuario.
+ * @return bool Retorna true si se realiza la solicitud correctamente, false en caso contrario.
+ */
+function solicitud_password(String $email): bool
 {
 	global $conection;
 	$estado = false;
@@ -2615,7 +3311,15 @@ function solicitud_password($email)
 	return $estado;
 }
 
-function actualizar_password($id_activacion,$password){
+/**
+ * Actualiza la contraseña de un usuario utilizando el código de activación.
+ *
+ * @param string $id_activacion El código de activación del usuario.
+ * @param string $password La nueva contraseña del usuario.
+ * @return bool Retorna true si se actualiza la contraseña correctamente, false en caso contrario.
+ */
+function actualizar_password(string $id_activacion, string $password): bool
+{
 	global $conection;
 	$estado = false;
 	$id_activacion = htmlspecialchars($id_activacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -2631,9 +3335,14 @@ function actualizar_password($id_activacion,$password){
 	return $estado;
 }
 
-
-
-function comprobar_propiedad_lista($id_usuario, $id_lista)
+/**
+ * Verifica si un usuario es propietario de una lista de comics.
+ *
+ * @param int $id_usuario El ID del usuario.
+ * @param int $id_lista El ID de la lista de comics.
+ * @return bool Retorna true si el usuario es propietario de la lista, false en caso contrario.
+ */
+function comprobar_propiedad_lista(int $id_usuario, int $id_lista): bool
 {
 	global $conection;
 	$estado = false;

@@ -1,14 +1,13 @@
 <?php
 session_start();
 include_once '../inc/header.inc.php';
-global $conection;
 $email = $_SESSION['email'];
 $userData = obtener_datos_usuario($email);
 $id_user = $userData['IDuser'];
 $limit = intval($_GET['limit']);
 $offset = intval($_GET['offset']);
 
-$comics = comics_lista($userData, $limit, $offset, $conection);
+$comics = comics_lista($userData, $limit, $offset);
 
 $contador = 0;
 $contador2 = 8; // contador para mostrar los botones de navegación
