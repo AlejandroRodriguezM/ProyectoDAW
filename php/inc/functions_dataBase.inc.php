@@ -936,7 +936,7 @@ function get_mensajes(int $id_usuario): array
  * Devuelve las respuestas de los usuarios cuyo identificador se manda como parametro
  *
  * @param integer $id_usuario
- * @return integer
+ * @return array
  */
 function get_conversacion(int $id_conversacion): array
 {

@@ -1,12 +1,13 @@
 <?php
 session_start();
-include_once '../inc/header.inc.php';
-global $conection;
-$email = $_SESSION['email'];
-$userData = obtener_datos_usuario($email);
-$limit = intval($_GET['limit']);
-$offset = intval($_GET['offset']);
-$id_lista = $_GET['id_lista'];
+include_once '../inc/header.inc.php'; // Incluye un archivo de cabecera común.
+global $conection; // Permite acceder a la conexión de la base de datos.
+
+$email = $_SESSION['email']; // Obtiene el correo electrónico del usuario actualmente autenticado.
+$userData = obtener_datos_usuario($email); // Obtiene los datos del usuario basados en el correo electrónico.
+$limit = intval($_GET['limit']); // Obtiene el límite de resultados de la URL y lo convierte en un entero.
+$offset = intval($_GET['offset']); // Obtiene el desplazamiento de resultados de la URL y lo convierte en un entero.
+$id_lista = $_GET['id_lista']; // Obtiene el ID de la lista de la URL.
 
 if (isset($_GET['checkboxChecked'])) {
   $search = explode(",", $_GET['checkboxChecked']);
@@ -36,6 +37,8 @@ $total_comics = numero_comics_lista($id_lista);
 echo "<input type='hidden' id='id_lista' value='$id_lista'>";
 echo "<input type='hidden' id='total_comics' value='$total_comics'>";
 while ($data_comic = $comics->fetch(PDO::FETCH_ASSOC)) {
+  // Recorre cada cómic obtenido.
+
   $id_comic = $data_comic['IDcomic'];
   $numero = $data_comic['numComic'];
   $titulo = $data_comic['nomComic'];
@@ -97,8 +100,7 @@ if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
         button.addEventListener('click', function() {
           if (button.classList.contains('activate')) {
             quitar_comic_lista(id_comic, id_lista.value, function() {
-              // Callback function to trigger loadComics after removing comic from list
-              loadComics();
+              // Función de devolución de llamada para cargarComics después de eliminar el cómic de la lista              loadComics();
               limit_lista = 16;
               offset_lista = 0;
             });
@@ -148,26 +150,20 @@ if ($contador2 >= 8 && $total_comics > 8 && ceil($total_comics / 8) > 1) {
   }
 
   function ocultarBotones() {
-    $('.navigation-buttons').hide();
+    $('.navigation-buttons').hide(); // Oculta los botones de navegación
   }
 
   function cargarMasComics() {
-    offset_lista += 16;
-    limit_lista = 16; // aumentar el límite
-    loadComics(offset_lista);
-    // addComic(offset_agregar);
-    $('.comic-list').remove();
-    // $('.new-comic-list').remove();
-
+    offset_lista += 16; // Incrementa el valor de offset_lista en 16 para obtener los siguientes cómics
+    limit_lista = 16; // Establece el límite en 16 para la carga de cómics
+    loadComics(offset_lista); // Carga los cómics utilizando el nuevo valor de offset_lista
+    $('.comic-list').remove(); // Elimina los cómics existentes en la lista
   }
 
   function cargarComicsAnteriores() {
-    offset_lista -= 16; // actualizar el offset_lista
-    limit_lista = 16; // disminuir el límite
-    loadComics(offset_lista);
-    // addComic(offset_agregar);
-    $('.comic-list').remove();
-    // $('.new-comic-list').remove();
-
+    offset_lista -= 16; // Actualiza el valor de offset_lista restando 16 para obtener los cómics anteriores
+    limit_lista = 16; // Establece el límite en 16 para la carga de cómics
+    loadComics(offset_lista); // Carga los cómics utilizando el nuevo valor de offset_lista
+    $('.comic-list').remove(); // Elimina los cómics existentes en la lista
   }
 </script>

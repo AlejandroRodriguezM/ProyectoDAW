@@ -1,8 +1,8 @@
 <?php
-
 session_start();
 include_once '../inc/header.inc.php';
 
+// Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "", "userName" => "");
 
 if ($_POST) {
@@ -10,6 +10,7 @@ if ($_POST) {
     $pass = $_POST['pass'];
     $password = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 
+    // Actualizar la contraseña del usuario
     if (actualizar_password($codigo_id, $password)) {
         eliminar_codigo($codigo_id);
         header("HTTP/1.1 200 OK");
@@ -23,4 +24,6 @@ if ($_POST) {
     }
 }
 
+// Establecer el encabezado y devolver la respuesta en formato JSON
+header('Content-type: application/json');
 echo json_encode($validate);

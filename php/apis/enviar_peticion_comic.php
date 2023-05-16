@@ -31,15 +31,15 @@ if ($userPrivilege != 'guest') {
             $validate['message'] = 'Solicitud enviada';
             header("HTTP/1.1 200 OK");
         } else {
-            header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
             $validate['message'] = 'ERROR. No se ha podido enviar la solicitud';
+            header("HTTP/1.1 500 Internal Server Error");
         }
     }
 }else {
-    header("HTTP/1.1 401 Unauthorized");
     $validate['success'] = false;
     $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';
+    header("HTTP/1.1 401 Unauthorized");
 }
-
+header('Content-type: application/json');
 echo json_encode($validate);

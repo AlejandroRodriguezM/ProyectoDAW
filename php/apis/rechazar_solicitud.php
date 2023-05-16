@@ -26,5 +26,5 @@ if ($userPrivilege != 'guest') {
     $validate['success'] = false;
     $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';
 }
-
+header('Content-type: application/json');
 echo json_encode($validate);

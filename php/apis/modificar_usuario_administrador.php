@@ -1,11 +1,20 @@
 <?php
 session_start();
 include_once '../inc/header.inc.php';
+
+// Obtener el correo electrónico del usuario de la sesión
 $email = $_SESSION['email'];
+
+// Obtener los datos del usuario
 $userData = obtener_datos_usuario($email);
+
+// Obtener el privilegio del usuario
 $userPrivilege = $userData['privilege'];
 
+// Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
+
+// Verificar si el privilegio del usuario no es "guest"
 if ($userPrivilege != 'guest') {
     if ($_POST) {
         $nuevo_nombre_cuenta = $_POST['nombre_cuenta'];
@@ -14,6 +23,8 @@ if ($userPrivilege != 'guest') {
         $nuevo_mail_usuario = $_POST['email'];
         $id_usuario = $_POST['id_usuario'];
         $image = $_POST['userPicture'];
+
+        // Obtener los datos del usuario a modificar
         $datos_usuario = obtener_datos_usuario($id_usuario);
         $antiguo_mail = $datos_usuario['email'];
         $antiguo_nombre_cuenta = $datos_usuario['userName'];
@@ -21,38 +32,44 @@ if ($userPrivilege != 'guest') {
         $informacion_usuario = getInfoAboutUser($id_usuario);
         $descripcion_usuario = $informacion_usuario['infoUser'];
 
+        // Obtener las palabras reservadas del sistema
         $reservedWords = reservedWords();
+
         if ($nuevo_nombre_cuenta == $antiguo_nombre_cuenta) {
             $userName = $datos_usuario['userName'];
         }
         if (empty($image)) {
             $image = $datos_usuario['userPicture'];
         }
-        if (checkUser($nuevo_nombre_cuenta,'') && $nuevo_nombre_cuenta != $antiguo_nombre_cuenta) {
-            header("HTTP/1.1 400 Bad Request");
+
+        // Verificar si el nuevo nombre de cuenta ya existe
+        if (checkUser($nuevo_nombre_cuenta, '') && $nuevo_nombre_cuenta != $antiguo_nombre_cuenta) {
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. That user name already exists';
+            $validate['message'] = 'ERROR. Ese nombre de usuario ya existe';
+            header("HTTP/1.1 400 Bad Request");
         } elseif (in_array(strtolower($nuevo_nombre_cuenta), $reservedWords)) {
-            header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. You cannot use system reserved words';
+            $validate['message'] = 'ERROR. No puedes utilizar palabras reservadas del sistema';
+            header("HTTP/1.1 400 Bad Request");
         } elseif ($antiguo_mail == $nuevo_mail_usuario) {
+            // Actualizar el usuario con el nuevo nombre de cuenta y correo electrónico
             if (actualizar_usuario($nuevo_nombre_cuenta, $nuevo_mail_usuario, $password)) {
-                header("HTTP/1.1 200 OK");
                 updateSaveImage($nuevo_mail_usuario, $image);
                 updateAboutUser($id_usuario, "", $nuevo_nombre_usuario, $nuevo_apellido_usuario);
                 $validate['success'] = true;
-                $validate['message'] = 'The user saved correctly';
+                $validate['message'] = 'El usuario se ha guardado correctamente';
+                header("HTTP/1.1 200 OK");
             } else {
-                header("HTTP/1.1 400 Bad Request");
                 $validate['success'] = false;
-                $validate['message'] = 'ERROR. The user did not save correctly';
+                $validate['message'] = 'ERROR. El usuario no se ha guardado correctamente';
+                header("HTTP/1.1 400 Bad Request");
             }
         } elseif (check_email_user($nuevo_mail_usuario)) {
-            header("HTTP/1.1 400 Bad Request");
             $validate['success'] = false;
-            $validate['message'] = 'ERROR. The email is already in use';
+            $validate['message'] = 'ERROR. El correo electrónico ya está en uso';
+            header("HTTP/1.1 400 Bad Request");
         } else {
+            // Actualizar el usuario con el nuevo nombre de cuenta, correo electrónico y otros datos
             if (actualizar_usuario($nuevo_nombre_cuenta, $antiguo_mail, $password)) {
                 if ($datos_usuario['privilege'] == 'admin') {
                     unset($_SESSION['email']);
@@ -65,23 +82,25 @@ if ($userPrivilege != 'guest') {
                 insertURL($nuevo_mail_usuario, $id_usuario);
                 deleteDirectory($antiguo_mail, $id_usuario);
                 $validate['success'] = true;
-                $validate['message'] = 'The user has been updated';
+                $validate['message'] = 'El usuario se ha actualizado';
                 header("HTTP/1.1 200 OK");
             } else {
-                header("HTTP/1.1 400 Bad Request");
                 $validate['success'] = false;
-                $validate['message'] = 'ERROR. The user did not save correctly';
+                $validate['message'] = 'ERROR. El usuario no se ha guardado correctamente';
+                header("HTTP/1.1 400 Bad Request");
             }
         }
     } else {
-        header("HTTP/1.1 400 Bad Request");
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. The user was not saved in the database';
+        $validate['message'] = 'ERROR. El usuario no se ha guardado en la base de datos';
+        header("HTTP/1.1 400 Bad Request");
     }
 } else {
-    header("HTTP/1.1 401 Unauthorized");
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. You must be logged in to modify a user';
+    $validate['message'] = 'ERROR. Debes iniciar sesión para modificar un usuario';
+    header("HTTP/1.1 400 Bad Request");
 }
 
+// Establecer el encabezado y devolver la respuesta en formato JSON
+header('Content-type: application/json');
 echo json_encode($validate);
