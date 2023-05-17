@@ -9,10 +9,11 @@ $email = $_SESSION['email'];
 $userData = obtener_datos_usuario($email);
 $userPrivilege = $userData['privilege'];
 
-// Verifica si el usuario tiene los privilegios adecuados
-if ($userPrivilege != 'guest') {
-    // Verifica si se ha enviado el formulario
-    if ($_POST) {
+// Verifica si se ha enviado el formulario
+if ($_POST) {
+    // Verifica si el usuario tiene los privilegios adecuados
+    if ($userPrivilege != 'guest') {
+
         $email_user = $_POST['email'];
 
         // Desactiva la cuenta de usuario
@@ -25,6 +26,10 @@ if ($userPrivilege != 'guest') {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. No se ha podido desactivar tu usuario';
         }
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+        $validate['success'] = false;
+        $validate['message'] = 'ERROR. No se ha podido desactivar tu usuario';
     }
 } else {
     header("HTTP/1.1 401 Unauthorized");

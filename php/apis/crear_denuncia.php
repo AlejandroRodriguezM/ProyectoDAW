@@ -13,10 +13,11 @@ $userPrivilege = $userData['privilege'];
 // Inicializa el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verifica si el correo electrónico está definido
-if (isset($email)) {
-    // Verifica si se ha enviado el formulario
-    if ($_POST) {
+if ($_POST) {
+    // Verifica si el correo electrónico está definido
+    if (isset($email)) {
+        // Verifica si se ha enviado el formulario
+
         // Obtiene los datos del formulario
         $id_usuario_denunciado = $_POST['id_usuario_denunciado'];
         $id_usuario_denunciante = $_POST['id_usuario_denunciante'];
@@ -42,6 +43,10 @@ if (isset($email)) {
                 $validate['message'] = 'ERROR. No se ha podido enviar la denuncia';
             }
         }
+    } else {
+        header("HTTP/1.1 400 Bad Request"); // Bad Request
+        $validate['success'] = false;
+        $validate['message'] = 'ERROR. No se ha podido enviar la denuncia';
     }
 } else {
     header("HTTP/1.1 401 Unauthorized"); // Unauthorized

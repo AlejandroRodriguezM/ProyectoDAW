@@ -50,7 +50,7 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/funciones_utilidades.js"></script>
-    <script src="./assets/js/ajaxFunctions,js"></script>
+    <script src="./assets/js/ajaxFunctions.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
 
@@ -444,7 +444,7 @@ if (isset($_SESSION['email'])) {
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                            <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
+                            <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket_bloqueo()">
                         </div>
                         </form>
                     </div>
@@ -716,177 +716,186 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-        <!-- The Modal -->
-        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <img class="modal-content_img" id="img01">
-        </div>
-
-        <!-- FORMULARIO INSERTAR -->
+        <!-- <div class="caption"> -->
 
 
-        <div class="card-footer text-muted">
-            Creado por Alejandro Rodriguez ©2023
-        </div>
-
-        <div id="crear_ticket" class="modal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <form method="post" id="form_ticket" onsubmit="return false;">
-                            <h4 class="modal-title">Crear un ticket para administradores</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Asunto</label>
-                            <input type="text" id="asunto_usuario" class="form-control">
+        <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
+            <br>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="carousel-publi" class="carousel slide" data-bs-ride="false">
+                            <!-- Indicators/dots -->
+                            <!-- The slideshow/carousel -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
+                                        <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block w-100">
+                                    </a>
+                                </div>
+                                <div class="carousel-item">
+                                    <a href='https://www.radarcomics.com/es/' target="_blank">
+                                        <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block w-100">
+                                    </a>
+                                </div>
+                                <div class="carousel-item">
+                                    <a href='https://www.whakoom.com/' target="_blank">
+                                        <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block w-100">
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Left and right controls/icons -->
+                            <button class="carousel-control-prev carousel-control-no-hover" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next carousel-control-no-hover" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label>Mensaje</label>
-                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container mt-5">
+                <div class="d-flex justify-content-center">
+                    <div class="last-pubs2 comics">
+                    </div>
+                </div>
+            </div>
+
+            <div class="container mt-5">
+                <div class="d-flex justify-content-center">
+                    <div class="last-pubs2 col-md-8">
+                        <div class="headings ">
+                            <div class="titulo">
+                                <h2 style="color: black">Opiniones de los usuarios</h2>
+                            </div>
+                        </div>
+
+                        <?php
+                        $opiniones = mostrar_opiniones_pagina();
+                        if (numero_opiniones_pagina() > 0) {
+                            while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
+
+                                $id_opinion = $data_opinion['id_opinion'];
+                                $id_usuario = $data_opinion['id_user'];
+                                $opinion = $data_opinion['comentario'];
+                                $fecha_opinion = $data_opinion['fecha_comentario'];
+                                $data_user = obtener_datos_usuario($id_usuario);
+                                $foto_perfil = $data_user['userPicture'];
+                                $nombre_user = $data_user['userName'];
+                                $email_user = $data_user['email'];
+
+                                echo '<div class="card p-4 mt-1">
+                                        <div class="d-flex justify-content-between align-items-center">';
+                        ?>
+                                <a href="infoUser.php?userName=<?php echo $email_user ?>">
+                                    <?php
+                                    echo '<img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
+                                        </a>
+                                        <div class="w-100">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex flex-row align-items-center">
+                                                    <span class="mr-2" style="font-weight:bold;;margin-left:10px">Nombre de usuario: ' . $nombre_user . '</span>
+                                                </div>
+                                                <small>' . $fecha_opinion . '</small>
+                                            </div>';
+                                    if (isset($_SESSION['email'])) {
+                                        if ($userPrivilege == 'admin') {
+                                    ?>
+                                            <button type="button" class="btn btn-danger btn-sm float-end" style="display: block;" onclick="eliminarComentario('<?php echo $id_opinion ?>')">Eliminar</button>
                             <?php
-                            if (isset($_SESSION['email'])) {
-                                echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
+                                        }
+                                    }
+                                    echo '<p class="text-justify comment-text mb-0" style="margin-top:5px;margin-left:10px">' . $opinion . '</p>
+                                                    <div class="d-flex flex-row align-items-center mr-2" id="rating">
+                                                        <div class="rating-lectura" style="margin-left:5px">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                }
+                            } else {
+                                echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';
+                                echo '<div class="user d-flex flex-row align-items-center"><span class="font-weight-bold text-primary">No hay opiniones</span></div>';
+                                echo '</div></div>';
                             }
                             ?>
-                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-bs-dismiss="modal" onclick="window.location.href = 'logOut.php'">Cerrar</button>
-                        <input type="button" name='ticket_bloq' id='ticket_bloq' class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket_bloqueo();return false">
-                    </div>
-                    </form>
                 </div>
             </div>
-        </div>
 
-        <br>
-        <div style="display: flex; justify-content: center;">
-            <!-- Carousel -->
-            <div id="carousel-publi" class="carousel slide" data-bs-ride="carousel">
-                <!-- Indicators/dots -->
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
-                </div>
-                <!-- The slideshow/carousel -->
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
-                            <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block" style="width: 945px; height: 300px;">
-                        </a>
-                    </div>
-                    <div class="carousel-item">
-                        <a href='https://www.radarcomics.com/es/' target="_blank">
-                            <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block" style="width: 945px; height: 300px;">
-                        </a>
-                    </div>
-                    <div class="carousel-item">
-                        <a href='https://www.whakoom.com/' target="_blank">
-                            <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block" style="width: 945px; height: 300px;">
-                        </a>
-                    </div>
-                </div>
-                <!-- Left and right controls/icons -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-            </div>
-        </div>
-        <div class="container mt-5">
-            <div class="d-flex justify-content-center">
-                <div class="last-pubs2 comics">
-                </div>
-            </div>
-        </div>
+            <script>
+                var resizeTimer;
 
-        </div>
-        <div class="container mt-5">
-            <div style="display: flex; justify-content: center;">
-                <div class="last-pubs2 col-md-8">
-                    <div class="titulo">
-                        <h2>Videos de interes</h2>
-                    </div>
-                    <hr>
-                    <div class="video-container">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/rYy0o-J0x20" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/1Rx_p3NW7gQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
+                function comics_recomendados() {
+                    // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
+                    var width = $(window).width();
+                    var num_comics = Math.max(3, Math.min(8, Math.floor(width / 150))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
+
+                    var data = {
+                        num_comics: num_comics
+                    };
+                    $.ajax({
+                        url: "php/apis/recomendaciones_comics.php",
+                        data: data,
+                        success: function(data) {
+                            totalComics = $(data).filter("#total-comics").val();
+                            $('.comics').html('');
+                            $(data).appendTo('.comics');
+                        }
+                    });
+                }
+
+                comics_recomendados();
+                // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
+                $(window).on('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(comics_recomendados, 100);
+                });
+
+                var myOffcanvas1 = document.getElementById('offcanvasExample')
+                var myOffcanvas1 = new bootstrap.Offcanvas(myOffcanvas1)
+
+                var myOffcanvas2 = document.getElementById('offcanvasNavbarDark')
+                var myOffcanvas2 = new bootstrap.Offcanvas(myOffcanvas2)
+            </script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var miModal = new bootstrap.Modal(document.getElementById("crear_ticket"));
                 miModal.show();
             });
         </script>
-        <script>
-            var resizeTimer;
 
-            function comics_recomendados() {
-                // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-                var width = $(window).width();
-                var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
 
-                var data = {
-                    num_comics: num_comics
-                };
-                $.ajax({
-                    url: "php/apis/recomendaciones_comics.php",
-                    data: data,
-                    success: function(data) {
-                        // Calcular el ancho del contenedor "container mt-5" y establecerlo
-                        var container_width = Math.max(300 * num_comics, 960); // Establecer un ancho mínimo de 960px
-                        $('.container.mt-5').css('width', container_width + 'px');
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="footer-title">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                        totalComics = $(data).filter("#total-comics").val();
-
-                        // Elimina la lista anterior antes de agregar la nueva
-                        $('.recomendaciones').html('');
-                        $(data).appendTo('.recomendaciones');
-                    }
-                });
-            }
-
-            comics_recomendados();
-            // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-            $(window).on('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(comics_recomendados, 100);
-            });
-        </script>
-        <div id="footer-lite" class="mt-5">
-            <div class="container">
-                <p class="helpcenter">
-                    <a href="http://www.example.com/help">Ayuda</a>
-                </p>
-                <p class="footer-title">
-                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                    <span>·</span>
-                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                    <span>·</span>
-                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                    <span>·</span>
-                    <a href="about.php" style="color:black">Quiénes somos</a>
-                </p>
-                <!-- add social media with icons -->
-                <p class="social">
-                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
-
-                </p>
-                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                </div>
             </div>
         </div>
-        </div>
     </main>
+
 </body>
 
 </html>

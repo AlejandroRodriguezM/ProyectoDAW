@@ -64,7 +64,7 @@ if (!check_lista_user($id_usuario, $id_lista)) {
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/funciones_utilidades.js"></script>
-    <script src="./assets/js/ajaxFunctions,js"></script>
+    <script src="./assets/js/ajaxFunctions.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Lista <?php echo $nombre_lista ?></title>

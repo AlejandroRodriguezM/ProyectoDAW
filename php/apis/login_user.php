@@ -8,7 +8,7 @@ $validate['success'] = array('success' => false, 'message' => "", "userName" => 
 if ($_POST) {
     $acceso = $_POST['acceso'];
     $pass = $_POST['pass'];
-    
+
     // Verificar si el usuario existe en la base de datos
     if (!obtener_datos_usuario($acceso)) {
         $validate['success'] = false;
@@ -17,19 +17,19 @@ if ($_POST) {
     } else {
         $pass_encrypted = obtain_password($acceso);
         $reservedWords = reservedWords();
-        
+
         // Verificar si la contraseña coincide con la contraseña almacenada
         if (password_verify($pass, $pass_encrypted)) {
             if (checkUser($acceso, $pass_encrypted)) {
                 $row = obtener_datos_usuario($acceso);
                 $email = $row['email'];
-                
+
                 // Reactivar la cuenta del usuario
                 reactivar_cuenta($email);
-                
+
                 // Establecer los datos de sesión del usuario
                 $_SESSION['email'] = $row['email'];
-                
+
                 // Establecer la respuesta de éxito con el mensaje de bienvenida y el nombre de usuario
                 $validate['success'] = true;
                 $validate['message'] = '¡Bienvenido a comic Web usuario , ' . $row['userName'] . '!';

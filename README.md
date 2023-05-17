@@ -380,7 +380,7 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 - Ahora hay un boton para mostrar mas comics en las paginas mencionadas anteriormente, se ahorra carga de datos y se mejora la velocidad del servidor.
 - Se ha añadido mas seguridad al codigo para evitar inyeccion de codigo maligno.
 - Ahora se guarda correctamente la ultima hora de conexion de un usuario.
-- Se han mejorado algunas funciones en ajaxFunctions,js y funciones_utilidades.js
+- Se han mejorado algunas funciones en ajaxFunctions.js y funciones_utilidades.js
 
 07/04/2023 Log 2
 
@@ -521,3 +521,11 @@ Cambios en parallax arreglados y funcional, quizas se cambie mas adelante.
 - Se ha actualizado los modals y offcanvas para los usuarios de movil
 - La pagina se encuentra ya en su fase final, queda la documentacion y la entrega del proyecto
 - This is the End, my only friend, the end https://www.youtube.com/watch?v=BXqPNlng6uI&ab_channel=TheDoors-Topic
+
+17/05/2023 Entrada final
+
+- Se ha documentado completamente
+- Se han arreglado bugs referentes a como ver los mensajes el usuario en la pestaña de tickets
+- Se han eliminado funciones y apis no necesarias
+- Fin del proyecto
+

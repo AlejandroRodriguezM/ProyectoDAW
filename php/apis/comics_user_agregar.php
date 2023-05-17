@@ -1,11 +1,17 @@
 <?php
 session_start();
 include_once '../inc/header.inc.php';
-$email = $_SESSION['email'];
-$userData = obtener_datos_usuario($email);
-$id_user = $userData['IDuser'];
-$limit = intval($_GET['limit']);
-$offset = intval($_GET['offset']);
+
+
+if(isset($_GET['limit']) and isset($_GET['offset'])){
+  $email = $_SESSION['email'];
+  $userData = obtener_datos_usuario($email);
+  $id_user = $userData['IDuser'];
+  $limit = intval($_GET['limit']);
+  $offset = intval($_GET['offset']);
+}else{
+  header("Location: ../../index.php");
+}
 
 $comics = comics_lista($userData, $limit, $offset);
 

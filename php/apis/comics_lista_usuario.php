@@ -3,11 +3,16 @@ session_start();
 include_once '../inc/header.inc.php'; // Incluye un archivo de cabecera común.
 global $conection; // Permite acceder a la conexión de la base de datos.
 
-$email = $_SESSION['email']; // Obtiene el correo electrónico del usuario actualmente autenticado.
-$userData = obtener_datos_usuario($email); // Obtiene los datos del usuario basados en el correo electrónico.
-$limit = intval($_GET['limit']); // Obtiene el límite de resultados de la URL y lo convierte en un entero.
-$offset = intval($_GET['offset']); // Obtiene el desplazamiento de resultados de la URL y lo convierte en un entero.
-$id_lista = $_GET['id_lista']; // Obtiene el ID de la lista de la URL.
+if(isset($_GET['id_lista'])){
+  $email = $_SESSION['email']; // Obtiene el correo electrónico del usuario actualmente autenticado.
+  $userData = obtener_datos_usuario($email); // Obtiene los datos del usuario basados en el correo electrónico.
+  $limit = intval($_GET['limit']); // Obtiene el límite de resultados de la URL y lo convierte en un entero.
+  $offset = intval($_GET['offset']); // Obtiene el desplazamiento de resultados de la URL y lo convierte en un entero.
+  $id_lista = $_GET['id_lista']; // Obtiene el ID de la lista de la URL.
+}else{
+  header("Location: ../../index.php");
+}
+
 
 if (isset($_GET['checkboxChecked'])) {
   $search = explode(",", $_GET['checkboxChecked']);

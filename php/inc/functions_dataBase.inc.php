@@ -3260,7 +3260,7 @@ function enviar_correo_activacion(String $email_registro, String $id_unico): str
 {
 	$subject = "Nuevo usuario. Activacion de cuenta"; // Asunto del correo
 	$message = "Haga clic en el siguiente enlace para activar su cuenta: https://comicweb.es/activacion_usuario.php?codigo_v=" . $id_unico;
-	$message .= "Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!";
+	$message .= " Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!";
 	$headers = "From: informacion@comicweb.es"; // Dirección de correo electrónico del remitente
 	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
 }
@@ -3276,7 +3276,7 @@ function enviar_pass_activacion(String $email_registro, String $id_unico): strin
 {
 	$subject = "Nuevo usuario. Restaurar cuenta"; // Asunto del correo
 	$message = "Haga clic en el siguiente enlace para crear una nueva contraseña su cuenta: https://comicweb.es/activacion_password.php?id_activacion=" . $id_unico;
-	$message .= "Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!";
+	$message .= " Gracias por unirse a nuestro sitio web. ¡Esperamos que disfrute de su experiencia de usuario!";
 	$headers = "From: informacion@comicweb.es"; // Dirección de correo electrónico del remitente
 	return mail($email_registro, $subject, $message, $headers); // Envía el correo electrónico y devuelve el resultado (true o false)
 }

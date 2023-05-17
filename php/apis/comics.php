@@ -2,15 +2,16 @@
 session_start();
 include_once '../inc/header.inc.php';
 global $conection;
-if (isset($_SESSION['email'])) {
+if (isset($_GET['limit']) and isset($_GET['offset'])) {
     $email = $_SESSION['email'];
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
     $id_user = $userData['IDuser'];
+    $limit = intval($_GET['limit']);
+    $offset = intval($_GET['offset']);
     echo "<input type='hidden' id='id_user' value='$id_user'>";
 }
-$limit = intval($_GET['limit']);
-$offset = intval($_GET['offset']);
+
 
 if (isset($_GET['checkboxChecked'])) {
     $search = explode(",", $_GET['checkboxChecked']);

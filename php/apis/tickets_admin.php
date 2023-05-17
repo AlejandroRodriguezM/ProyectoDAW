@@ -31,8 +31,6 @@ if (!empty($tickets)) {
     echo "<p><strong>Fecha: </strong>" . $fecha . "</p>";
     echo "<p><strong>Status: </strong>" . $status . "</p>";
 
-    // Aquí incluirías el código para obtener y mostrar la conversación del ticket
-
     $conversations = getTickets($ticket['ticket_id']);
     // Verificar si hay conversación
     if (!empty($conversations)) {
@@ -57,7 +55,7 @@ if (!empty($tickets)) {
     echo "<input type='hidden' id='user_id_" . $ticket['ticket_id'] . "' value='" . $ticket['user_id'] . "'>";
     //echo select, abierto o cerrado
     echo "<select id='estado_" . $ticket['ticket_id'] . "' onchange='cambiar_status(" . $ticket['ticket_id'] . "); return false;'>";
-    if ($ticket['status'] == 'abierto') {
+    if ($status == 'abierto') {
       echo "<option value='abierto' selected>Abierto</option>";
       echo "<option value='cerrado'>Cerrado</option>";
     } else {

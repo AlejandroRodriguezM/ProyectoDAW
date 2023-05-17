@@ -54,7 +54,7 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/funciones_utilidades.js"></script>
-    <script src="./assets/js/ajaxFunctions,js"></script>
+    <script src="./assets/js/ajaxFunctions.js"></script>
     <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
     <title>Mensajes de usuarios</title>

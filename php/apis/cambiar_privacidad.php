@@ -11,9 +11,10 @@ $userPrivilege = $userData['privilege']; // Obtiene el privilegio del usuario ba
 
 $validate['success'] = array('success' => false, 'message' => ""); // Inicializa un arreglo de validación con valores predeterminados.
 
-if ($userPrivilege != 'guest') {
-    // Verifica si el privilegio del usuario no es 'guest'.
-    if ($_POST) {
+if ($_POST) {
+    if ($userPrivilege != 'guest') {
+        // Verifica si el privilegio del usuario no es 'guest'.
+
         // Verifica si se ha enviado una solicitud POST.
         $email_user = $_POST['email'];
         $estado = filter_var($_POST['estado'], FILTER_VALIDATE_BOOLEAN);
@@ -30,16 +31,16 @@ if ($userPrivilege != 'guest') {
             header("HTTP/1.1 200 OK"); // Se establece el código de respuesta HTTP a 200 (éxito).
         }
     } else {
-        // Si no se han recibido datos en la solicitud POST, se muestra un mensaje de error.
-        header("HTTP/1.1 400 Bad Request"); // Se establece el código de respuesta HTTP a 400 (solicitud incorrecta).
+        // Si el privilegio del usuario es 'guest', se muestra un mensaje de error de falta de permisos.
+        header("HTTP/1.1 401 Unauthorized"); // Se establece el código de respuesta HTTP a 401 (no autorizado).
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. No se ha podido modificar la privacidad';
+        $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';
     }
 } else {
-    // Si el privilegio del usuario es 'guest', se muestra un mensaje de error de falta de permisos.
-    header("HTTP/1.1 401 Unauthorized"); // Se establece el código de respuesta HTTP a 401 (no autorizado).
+    // Si no se ha enviado una solicitud POST, se muestra un mensaje de error de solicitud incorrecta.
+    header("HTTP/1.1 400 Bad Request"); // Se establece el código de respuesta HTTP a 400 (solicitud incorrecta).
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';
+    $validate['message'] = 'ERROR. No se ha podido cambiar la privacidad de la cuenta';
 }
 header('Content-type: application/json');
 echo json_encode($validate); // Se imprime el arreglo de validación como una respuesta JSON.

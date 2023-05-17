@@ -10,10 +10,11 @@ $userPrivilege = $userData['privilege'];
 // Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verificar los privilegios del usuario y procesar la solicitud
-if ($userPrivilege != 'guest') {
-    // Verificar si se ha enviado el formulario
-    if ($_POST) {
+// Verificar si se ha enviado el formulario
+if ($_POST) {
+    // Verificar los privilegios del usuario y procesar la solicitud
+    if ($userPrivilege != 'guest') {
+
         // Obtener el ID de la lista y el ID del usuario desde el formulario
         $id_lista = $_POST['id_lista'];
         $id_user = $_POST['id_user'];
@@ -35,7 +36,7 @@ if ($userPrivilege != 'guest') {
     }
 } else {
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. Debes iniciar sesión para poder eliminar una lista';
+    $validate['message'] = 'ERROR. No se ha podido eliminar la lista';
     header("HTTP/1.1 401 Unauthorized");
 }
 

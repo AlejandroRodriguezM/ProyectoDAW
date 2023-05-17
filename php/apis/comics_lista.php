@@ -2,12 +2,16 @@
 session_start();
 include_once '../inc/header.inc.php';
 global $conection;
-$email = $_SESSION['email'];
-$userData = obtener_datos_usuario($email);
-$id_user = $userData['IDuser'];
-$limit = intval($_GET['limit']);
-$offset = intval($_GET['offset']);
-$id_lista = $_GET['id_lista'];
+
+
+if (isset($_GET['id_lista'])) {
+  $email = $_SESSION['email'];
+  $userData = obtener_datos_usuario($email);
+  $id_user = $userData['IDuser'];
+  $limit = intval($_GET['limit']);
+  $offset = intval($_GET['offset']);
+  $id_lista = $_GET['id_lista'];
+}
 
 if (isset($_GET['checkboxChecked'])) {
   $search = explode(",", $_GET['checkboxChecked']);

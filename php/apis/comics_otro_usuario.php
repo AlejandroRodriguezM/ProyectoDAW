@@ -2,11 +2,17 @@
 session_start();
 include_once '../inc/header.inc.php';
 global $conection;
-$email = $_SESSION['email'];
-$userData = obtener_datos_usuario($email);
-$id_user = $_GET['id_user'];
-$limit = intval($_GET['limit']);
-$offset = intval($_GET['offset']);
+
+
+if(isset($_GET['id_user'])){
+    $email = $_SESSION['email'];
+    $userData = obtener_datos_usuario($email);
+    $id_user = $_GET['id_user'];
+    $limit = intval($_GET['limit']);
+    $offset = intval($_GET['offset']);
+}else {
+header("Location: ../../index.php");
+}
 
 
 if (isset($_GET['checkboxChecked'])) {

@@ -162,26 +162,26 @@ function buscarUsuarios() {
     });
 }
 
-/**
- * Busca cómics en función del valor ingresado en el campo de búsqueda.
- */
-function buscarComics() {
-    $("#search-data").keyup(function () {
-        var input = $(this).val();
-        if (input != "") {
-            $.ajax({
-                url: "php/apis/search_comics.php",
-                method: "POST",
-                data: { input: input },
-                success: function (data) {
-                    mostrarDatos(data);
-                }
-            });
-        } else {
-            $("#search-result").css("display", "none");
-        }
-    });
-}
+// /**
+//  * Busca cómics en función del valor ingresado en el campo de búsqueda.
+//  */
+// function buscarComics() {
+//     $("#search-data").keyup(function () {
+//         var input = $(this).val();
+//         if (input != "") {
+//             $.ajax({
+//                 url: "php/apis/search_comics.php",
+//                 method: "POST",
+//                 data: { input: input },
+//                 success: function (data) {
+//                     mostrarDatos(data);
+//                 }
+//             });
+//         } else {
+//             $("#search-result").css("display", "none");
+//         }
+//     });
+// }
 
 /**
  * Realiza una búsqueda general en función del valor ingresado en el campo de búsqueda.

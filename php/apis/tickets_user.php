@@ -54,7 +54,7 @@ if (!empty($tickets)) {
     } else {
       echo "<p>No hay conversación para este ticket</p>";
     }
-    if ($ticket['status'] == 'cerrado') {
+    if ($status == 'cerrado') {
       echo "<p>Este ticket está cerrado</p>";
     } else {
       echo "<input type='hidden' id='ticket_id_" . $ticket['ticket_id'] . "' value='" . $ticket['ticket_id'] . "'>";
@@ -64,10 +64,10 @@ if (!empty($tickets)) {
       echo '<div class="comment-box">';
       echo '<textarea id="respuesta_' . $ticket['ticket_id'] . '" name="mensaje_usuario_enviar" placeholder="Escribe aquí tu mensaje..." data-valor="' . $ticket['ticket_id'] . '"></textarea>
               <button style="margin-top:10px" type="button" onclick="mandar_mensaje_actualizacion(' . $ticket['ticket_id'] . '); return false;">Enviar</button>';
-      echo "</div>
-          </div>
-          </div>
-          </div>";
     }
+    echo "</div>
+    </div>
+    </div>
+    </div>";
   }
 }

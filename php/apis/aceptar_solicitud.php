@@ -12,12 +12,13 @@ $userPrivilege = $userData['privilege']; // Obtiene el privilegio del usuario ba
 
 $validate['success'] = array('success' => false, 'message' => ""); // Inicializa un arreglo de validación con valores predeterminados.
 
-if ($userPrivilege != 'guest') {
-    // Verifica si el privilegio del usuario no es 'guest'.
-    $id_solicitante = $_POST['id_solicitante'];
-    $id_destinatario = $_POST['id_destinatario'];
+if ($_POST) {
+    if ($userPrivilege != 'guest') {
+        // Verifica si el privilegio del usuario no es 'guest'.
+        $id_solicitante = $_POST['id_solicitante'];
+        $id_destinatario = $_POST['id_destinatario'];
 
-    if ($_POST) {
+
         // Verifica si se ha enviado una solicitud POST.
         if (aceptar_solicitud($id_solicitante, $id_destinatario)) {
             // Si la función aceptar_solicitud() devuelve true, se acepta la solicitud.
@@ -30,14 +31,17 @@ if ($userPrivilege != 'guest') {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. No se ha podido aceptar la solicitud';
         }
+    }else{
+        // Si el privilegio del usuario es 'guest', se muestra un mensaje de error de falta de permisos.
+        header("HTTP/1.1 401 Unauthorized"); // Se establece el código de respuesta HTTP a 401 (no autorizado).
+        $validate['success'] = false;
+        $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';
     }
-} elseif ($userPrivilege == 'user') {
-    // Si el privilegio del usuario es 'user', no se realiza ninguna acción.
-} else {
-    // Si el privilegio del usuario no es 'guest' ni 'user', se muestra un mensaje de error de falta de permisos.
-    header("HTTP/1.1 401 Unauthorized"); // Se establece el código de respuesta HTTP a 401 (no autorizado).
+}else {
+    // Si no se ha enviado una solicitud POST, se muestra un mensaje de error de solicitud incorrecta.
+    header("HTTP/1.1 400 Bad Request"); // Se establece el código de respuesta HTTP a 400 (solicitud incorrecta).
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';
+    $validate['message'] = 'ERROR. No se ha podido aceptar la solicitud';
 }
 
 header('Content-type: application/json');

@@ -10,13 +10,14 @@ $userPrivilege = $userData['privilege'];
 // Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verificar los privilegios del usuario y procesar la solicitud
-if ($userPrivilege != 'guest') {
-    // Obtener los datos del formulario
-    $id_solicitante = $_POST['id_solicitante'];
-    $id_destinatario = $_POST['id_destinatario'];
 
-    if ($_POST) {
+if ($_POST) {
+    // Verificar los privilegios del usuario y procesar la solicitud
+    if ($userPrivilege != 'guest') {
+        // Obtener los datos del formulario
+        $id_solicitante = $_POST['id_solicitante'];
+        $id_destinatario = $_POST['id_destinatario'];
+
         // Enviar la solicitud
         if (enviar_solicitud($id_solicitante, $id_destinatario)) {
             $validate['success'] = true;

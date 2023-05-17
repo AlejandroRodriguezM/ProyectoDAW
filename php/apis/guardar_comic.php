@@ -14,10 +14,11 @@ $userPrivilege = $userData['privilege'];
 // Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verificar si el usuario no es un invitado
-if ($userPrivilege != 'guest') {
-    // Verificar si se ha enviado una solicitud POST
-    if ($_POST) {
+// Verificar si se ha enviado una solicitud POST
+if ($_POST) {
+    // Verificar si el usuario no es un invitado
+    if ($userPrivilege != 'guest') {
+
         // Obtener los datos del formulario
         $id_user = $_POST['id_user'];
         $id_comic = $_POST['id_comic'];

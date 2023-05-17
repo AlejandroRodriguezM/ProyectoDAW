@@ -12,10 +12,11 @@ $validate['success'] = array('success' => false, 'message' => "");
 
 $id_comentario = $_POST['id_comentario'];
 
-// Verificar los privilegios del usuario y procesar la solicitud
-if ($userPrivilege != 'guest') {
-    // Verificar si se ha enviado el formulario
-    if ($_POST) {
+// Verificar si se ha enviado el formulario
+if ($_POST) {
+    // Verificar los privilegios del usuario y procesar la solicitud
+    if ($userPrivilege != 'guest') {
+
         // Eliminar el comentario del cómic según el ID proporcionado
         if (eliminar_comentario_comic($id_comentario)) {
             $validate['success'] = true;
@@ -33,7 +34,7 @@ if ($userPrivilege != 'guest') {
     }
 } else {
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. Debes iniciar sesión para poder eliminar un comentario';
+    $validate['message'] = 'ERROR. No se ha podido eliminar el comentario';
     header("HTTP/1.1 401 Unauthorized");
 }
 

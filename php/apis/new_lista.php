@@ -14,9 +14,10 @@ $userPrivilege = $userData['privilege'];
 // Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verificar si el privilegio del usuario no es "guest"
-if ($userPrivilege != 'guest') {
-    if ($_POST) {
+if ($_POST) {
+    // Verificar si el privilegio del usuario no es "guest"
+    if ($userPrivilege != 'guest') {
+
         $id_user = $_POST['id_user'];
         $nombre_lista = $_POST['nombre_lista'];
 

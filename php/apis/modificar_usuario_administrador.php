@@ -14,9 +14,10 @@ $userPrivilege = $userData['privilege'];
 // Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verificar si el privilegio del usuario no es "guest"
-if ($userPrivilege != 'guest') {
-    if ($_POST) {
+if ($_POST) {
+    // Verificar si el privilegio del usuario no es "guest"
+    if ($userPrivilege != 'guest') {
+
         $nuevo_nombre_cuenta = $_POST['nombre_cuenta'];
         $nuevo_nombre_usuario = $_POST['nombre_usuario'];
         $nuevo_apellido_usuario = $_POST['apellido_usuario'];

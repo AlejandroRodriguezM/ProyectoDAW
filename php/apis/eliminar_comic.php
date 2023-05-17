@@ -13,16 +13,16 @@ $id_comic = $_POST['id_comic'];
 // Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verificar los privilegios del usuario y procesar la solicitud
-if ($userPrivilege != 'guest') {
-    // Verificar si se ha enviado el formulario
-    if ($_POST) {
+// Verificar si se ha enviado el formulario
+if ($_POST) {
+    // Verificar los privilegios del usuario y procesar la solicitud
+    if ($userPrivilege != 'guest') {
+
         // Eliminar el cómic según el ID proporcionado
         if (eliminar_comic($id_comic)) {
             $validate['success'] = true;
             $validate['message'] = 'La lista se ha eliminado correctamente';
             header("HTTP/1.1 200 OK");
-
         } else {
             $validate['success'] = false;
             $validate['message'] = 'ERROR. No se ha podido eliminar la lista';
@@ -35,7 +35,7 @@ if ($userPrivilege != 'guest') {
     }
 } else {
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. Debes iniciar sesión para poder eliminar una lista';
+    $validate['message'] = 'ERROR. No se ha podido eliminar la lista';
     header("HTTP/1.1 401 Unauthorized");
 }
 

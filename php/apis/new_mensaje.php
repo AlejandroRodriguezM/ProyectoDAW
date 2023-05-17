@@ -15,9 +15,10 @@ $userPrivilege = $userData['privilege'];
 // Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verificar si el correo electrónico está definido (el usuario está autenticado)
-if (isset($email)) {
-    if ($_POST) {
+if ($_POST) {
+    // Verificar si el correo electrónico está definido (el usuario está autenticado)
+    if (isset($email)) {
+
         $id_user_destinatario = $_POST['id_usuario_destinatario'];
         $id_user_remitente = $_POST['id_usuario_remitente'];
         $mensaje_usuario = $_POST['mensaje'];

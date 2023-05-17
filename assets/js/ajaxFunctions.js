@@ -782,6 +782,8 @@ const mandar_ticket = async () => {
     }
 }
 
+
+
 /**
  * Envía un nuevo ticket de bloqueo al sistema con la información proporcionada.
  * Realiza una solicitud de creación de ticket a través de AJAX.

@@ -10,9 +10,10 @@ $userPrivilege = $userData['privilege'];
 // Inicializar el array de respuesta
 $validate['success'] = array('success' => false, 'message' => "");
 
-// Verificar los privilegios del usuario y procesar la solicitud
-if ($userPrivilege == 'admin') {
-    if ($_POST) {
+if ($_POST) {
+    // Verificar los privilegios del usuario y procesar la solicitud
+    if ($userPrivilege == 'admin') {
+
         // Obtener los datos del usuario a eliminar desde el formulario
         $id_user = $_POST['id_user'];
         $email = $_POST['emailUser'];
@@ -34,7 +35,7 @@ if ($userPrivilege == 'admin') {
     }
 } else {
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. No tienes permisos para eliminar usuarios';
+    $validate['message'] = 'ERROR. No se ha podido eliminar la lista';
     header("HTTP/1.1 401 Unauthorized");
 }
 

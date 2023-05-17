@@ -23,6 +23,10 @@ if ($_POST) {
             $validate['message'] = 'ERROR. El usuario no existe';
         }
     }
+}else{
+    header("HTTP/1.1 401 Unauthorized");
+    $validate['success'] = false;
+    $validate['message'] = 'ERROR. No se ha podido enviar el correo';
 }
 header('Content-type: application/json');
 echo json_encode($validate);

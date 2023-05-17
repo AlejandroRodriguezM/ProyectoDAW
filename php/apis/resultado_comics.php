@@ -1,9 +1,15 @@
 <?php
 include_once '../inc/header.inc.php';
 global $conection;
-$limit = intval($_GET['limit']);
-$offset = intval($_GET['offset']);
-$search = $_GET['search'];
+
+
+if(isset($_GET['search'])){
+    $limit = intval($_GET['limit']);
+    $offset = intval($_GET['offset']);
+    $search = $_GET['search'];
+}else{
+    header("Location: ../../index.php");
+}
 
 $comics = return_comic_search($limit, $offset, $search);
 

@@ -14,24 +14,24 @@ $id_usuario = $userData['IDuser'];
 $validate['success'] = array('success' => false, 'message' => "");
 
 // Verifica si el usuario tiene los privilegios adecuados
-if ($userPrivilege != 'guest') {
-    // Obtiene los datos del formulario
-    $id_comic_peticion = $_POST['id_comic_peticion'];
-    $nombre_comic = $_POST['nombre_comic'];
-    $nombre_variante = $_POST['nombre_variante'];
-    $numero = $_POST['numero'];
-    $formato = $_POST['formato'];
-    $editorial = $_POST['editorial'];
-    $fecha = $_POST['fecha']; // fecha en formato yyyy-mm-dd
-    $fecha_con_formato = date('d/m/Y', strtotime($fecha)); // fecha en formato dd/mm/yyyy
-    $guionista = $_POST['guionista'];
-    $procedencia = $_POST['procedencia'];
-    $dibujante = $_POST['dibujante'];
-    $descripcion = $_POST['descripcion'];
-    $portada_comic = $_POST['portada_comic'];
-    $nombre_tabla_peticiones = 'comics';
+if ($_POST) {
+    if ($userPrivilege != 'guest') {
+        // Obtiene los datos del formulario
+        $id_comic_peticion = $_POST['id_comic_peticion'];
+        $nombre_comic = $_POST['nombre_comic'];
+        $nombre_variante = $_POST['nombre_variante'];
+        $numero = $_POST['numero'];
+        $formato = $_POST['formato'];
+        $editorial = $_POST['editorial'];
+        $fecha = $_POST['fecha']; // fecha en formato yyyy-mm-dd
+        $fecha_con_formato = date('d/m/Y', strtotime($fecha)); // fecha en formato dd/mm/yyyy
+        $guionista = $_POST['guionista'];
+        $procedencia = $_POST['procedencia'];
+        $dibujante = $_POST['dibujante'];
+        $descripcion = $_POST['descripcion'];
+        $portada_comic = $_POST['portada_comic'];
+        $nombre_tabla_peticiones = 'comics';
 
-    if ($_POST) {
         // Verifica y confirma la solicitud de datos del cómic
         if (confirmar_solicitud_datos_comic($id_comic_peticion, $nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha_con_formato, $guionista, $procedencia, $descripcion, $dibujante, $portada_comic)) {
             // Obtiene el ID del cómic recién creado
@@ -54,11 +54,15 @@ if ($userPrivilege != 'guest') {
             $validate['message'] = 'ERROR. No se ha podido enviar la solicitud';
             header("HTTP/1.1 400 Bad Request");
         }
+    } else {
+        $validate['success'] = false;
+        $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';
+        header("HTTP/1.1 401 Unauthorized");
     }
 } else {
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. No tienes permisos para realizar esta acción';
-    header("HTTP/1.1 401 Unauthorized");
+    $validate['message'] = 'ERROR. No se ha podido enviar la solicitud';
+    header("HTTP/1.1 400 Bad Request");
 }
 header('Content-type: application/json');
 // Devuelve la respuesta en formato JSON
