@@ -1,27 +1,49 @@
 /*jshint -W033 */
+/**
+ * Valida si una dirección de correo electrónico es válida.
+ * @param {string} email - La dirección de correo electrónico a validar.
+ * @returns {boolean} - Devuelve true si la dirección de correo electrónico es válida, de lo contrario devuelve false.
+ */
 const validateEmail = (email) => {
     return /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/.test(email.trim());
 }
 
+/**
+ * Valida si una contraseña cumple con los requisitos mínimos de seguridad.
+ * @param {string} password - La contraseña a validar.
+ * @returns {boolean} - Devuelve true si la contraseña cumple con los requisitos, de lo contrario devuelve false.
+ */
 const validatePassword = (password) => {
     return /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,16})$/.test(password.trim());
 }
 
-const validateUserNAme = (userName) => {
+/**
+ * Valida si un nombre de usuario cumple con los requisitos establecidos.
+ * @param {string} userName - El nombre de usuario a validar.
+ * @returns {boolean} - Devuelve true si el nombre de usuario cumple con los requisitos, de lo contrario devuelve false.
+ */
+const validateUserName = (userName) => {
     return /^[a-z ñáéíóú-]{2,60}$/i.test(userName.trim());
 }
 
+/**
+ * Carga un archivo y muestra su vista previa en un elemento de imagen.
+ * @param {Event} event - El evento de carga de archivo.
+ */
 var loadFile = function (event) {
     var output = document.getElementById('output');
     output.src = URL.createObjectURL(event.target.files[0]);
     output.onload = function () {
-        URL.revokeObjectURL(output.src) // free memory
+        URL.revokeObjectURL(output.src); // Liberar memoria
     }
 }
 
+/**
+ * Muestra una imagen de perfil de usuario en un modal.
+ */
 var pictureProfileUser = () => {
     var modal = document.getElementById("myModal");
-    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    // Obtener la imagen e insertarla dentro del modal, utilizando el texto "alt" como leyenda.
     var img = document.getElementById("avatarUser");
     var modalImg = document.getElementById("img01");
     img.onclick = function () {
@@ -34,9 +56,12 @@ var pictureProfileUser = () => {
     })
 }
 
+/**
+ * Muestra una imagen de perfil de avatar en un modal.
+ */
 function pictureProfileAvatar() {
     var modal = document.getElementById("myModal");
-    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    // Obtener la imagen e insertarla dentro del modal, utilizando el texto "alt" como leyenda.
     var img = document.getElementById("avatar");
     var modalImg = document.getElementById("img01");
     img.onclick = function () {
@@ -49,6 +74,9 @@ function pictureProfileAvatar() {
     })
 }
 
+/**
+ * Cuenta la cantidad de caracteres en un textarea y muestra el conteo de caracteres actual.
+ */
 function countChar() {
     $('textarea').keyup(function () {
 
@@ -59,8 +87,6 @@ function countChar() {
 
         current.text(characterCount);
 
-
-        /*This isn't entirely necessary, just playin around*/
         if (characterCount < 70) {
             current.css('color', '#666');
         }
@@ -91,30 +117,36 @@ function countChar() {
     });
 }
 
+/**
+ * Maneja la selección de una imagen de perfil.
+ */
 function profileImage() {
     function handleFileSelect(evt) {
-        var f = evt.target.files[0]; // FileList object
+        var f = evt.target.files[0]; // Objeto FileList
         var reader = new FileReader();
-        // Closure to capture the file information.
+        // Cierre para capturar la información del archivo.
         reader.onload = (function (theFile) {
             return function (e) {
                 var binaryData = e.target.result;
-                //Converting Binary Data to base 64
+                // Convertir datos binarios a base 64
                 var base64String = window.btoa(binaryData);
-                //save into var globally string
+                // Guardar la cadena base64 en una variable global
                 image = base64String;
             };
         })(f);
-        // Read in the image file as a data URL
+        // Leer el archivo de imagen como una URL de datos
         reader.readAsBinaryString(f);
     }
     document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
 }
 
+
+/**
+ * Busca usuarios en función del valor ingresado en el campo de búsqueda.
+ */
 function buscarUsuarios() {
     $("#search-data").keyup(function () {
         var input = $(this).val();
-        // alert(input);
         if (input != "") {
             $.ajax({
                 url: "php/apis/search_user.php",
@@ -130,10 +162,12 @@ function buscarUsuarios() {
     });
 }
 
+/**
+ * Busca cómics en función del valor ingresado en el campo de búsqueda.
+ */
 function buscarComics() {
     $("#search-data").keyup(function () {
         var input = $(this).val();
-        // alert(input);
         if (input != "") {
             $.ajax({
                 url: "php/apis/search_comics.php",
@@ -149,10 +183,12 @@ function buscarComics() {
     });
 }
 
+/**
+ * Realiza una búsqueda general en función del valor ingresado en el campo de búsqueda.
+ */
 function buscar_todo() {
     $("#search-data").keyup(function () {
         var input = $(this).val();
-        // alert(input);
         if (input != "") {
             $.ajax({
                 url: "php/apis/search_datos.php",
@@ -168,6 +204,10 @@ function buscar_todo() {
     });
 }
 
+/**
+ * Muestra los datos en el resultado de búsqueda.
+ * @param {string} data - Los datos a mostrar.
+ */
 function mostrarDatos(data) {
     $("#search-result").css("display", "block");
     $("#search-result").html(data);
@@ -175,6 +215,10 @@ function mostrarDatos(data) {
 
 
 
+
+/**
+ * Alterna la visualización del fieldset de búsqueda.
+ */
 function toggleFieldset() {
     var fieldset = document.getElementById("searchFieldset");
     if (fieldset.style.display === "none") {
@@ -184,51 +228,10 @@ function toggleFieldset() {
     }
 }
 
+/**
+ * Muestra los resultados seleccionados al presionar la tecla "Enter" en el campo de búsqueda.
+ */
 function showSelected() {
-    // const span1 = document.getElementById('span1');
-    // const span2 = document.getElementById('span2');
-    // const span3 = document.getElementById('span3');
-    // const respuesta = document.getElementById('show_information');
-
-    // span1.classList.add('selected');
-    // respuesta.style.display = 'block';
-    // buscar_todo();
-
-    // const removeSelected = () => {
-    //     span1.classList.remove('selected');
-    //     span2.classList.remove('selected');
-    //     span3.classList.remove('selected');
-    // }
-
-    // span1.addEventListener('load', function () {
-    //     removeSelected();
-    //     span1.classList.add('selected');
-    //     respuesta.style.display = 'block';
-    //     buscar_todo();
-    // });
-
-    // span1.addEventListener('click', () => {
-    //     removeSelected();
-    //     span1.classList.add('selected');
-    //     respuesta.style.display = 'block';
-    //     buscar_todo();
-    // });
-
-    // span2.addEventListener('click', () => {
-    //     removeSelected();
-    //     span2.classList.add('selected');
-    //     respuesta.style.display = 'block';
-    //     buscarUsuarios();
-    // });
-
-    // span3.addEventListener('click', () => {
-    //     removeSelected();
-    //     span3.classList.add('selected');
-    //     respuesta.style.display = 'block';
-    //     buscarComics();
-    // });
-
-
     document.getElementById("search-data").addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             event.preventDefault();
@@ -236,98 +239,111 @@ function showSelected() {
             window.location.href = "search_data.php?search=" + encodeURIComponent(searchData);
         }
     });
-
-    // document.getElementById("search-data").addEventListener("submit", function (event) {
-    //     event.preventDefault();
-    //     const searchData = document.getElementById("search-data").value;
-    //     window.location.href = "search_data.php?search=" + encodeURIComponent(searchData);
-    // });
 }
 
-// Misma funcion pero asincrona
-// async function buscarUsuarios() {
-//     try {
-//         const input = $("#search-data").val();
-//         if (input !== "") {
-//             const data = await $.ajax({
-//                 url: "php/apis/search_user.php",
-//                 method: "POST",
-//                 data: { input: input }
-//             });
-//             mostrarUsuarios(data);
-//         } else {
-//             $("#search-result").css("display", "none");
-//         }
-//     } catch (error) {
-//         console.error(error);
-//     }
-// }
-
+/**
+ * Confirma la eliminación de una lista y llama a la función "eliminar_lista" si se confirma.
+ * @param {string} id_lista - El ID de la lista a eliminar.
+ * @param {string} id_user - El ID del usuario.
+ */
 function confirmar_eliminacion(id_lista, id_user) {
     if (confirm("¿Estás seguro de que deseas eliminar esta lista?")) {
         eliminar_lista(id_lista, id_user);
     }
 }
 
+/**
+ * Confirma la eliminación de un usuario y llama a la función "eliminar_usuario" si se confirma.
+ * @param {string} id_user - El ID del usuario a eliminar.
+ * @param {string} emailUser - El correo electrónico del usuario.
+ */
 function confirmar_eliminacion_usuario(id_user, emailUser) {
     if (confirm("¿Estás seguro de que deseas eliminar a este usuario?")) {
         eliminar_usuario(id_user, emailUser);
     }
 }
 
+/**
+ * Cambia el estado de autorización de una cuenta y llama a la función "desautorizar_usuario" según corresponda.
+ * @param {boolean} boolean - El estado de autorización (true o false).
+ * @param {string} email - El correo electrónico del usuario.
+ */
 function cambiar_autorizacion(boolean, email) {
     if (confirm("¿Estás seguro de quieres cambiar el estado de la cuenta?")) {
         if (boolean) {
-            desautorizar_usuario(boolean, email)
-        }
-        else {
-            desautorizar_usuario(boolean, email)
+            desautorizar_usuario(boolean, email);
+        } else {
+            desautorizar_usuario(boolean, email);
         }
     }
 }
 
+
+/**
+ * Confirma la desactivación de un usuario y llama a la función "desactivar_cuenta" si se confirma.
+ */
 function desactivar_usuario() {
     if (confirm("¿Estás seguro de que deseas desactivar el usuario?")) {
         desactivar_cuenta();
     }
 }
 
+/**
+ * Cambia el estado de privacidad y llama a la función "cambiar_privacidad_usuario" según corresponda.
+ * @param {boolean} boolean - El estado de privacidad (true o false).
+ */
 function cambiar_privacidad(boolean) {
     if (confirm("¿Estás seguro de que deseas cambiar tu estado actual de privacidad?")) {
         if (boolean) {
-            cambiar_privacidad_usuario(true)
+            cambiar_privacidad_usuario(true);
+        } else {
+            cambiar_privacidad_usuario(false);
         }
-        else {
-            cambiar_privacidad_usuario(false)
-        }
-
     }
 }
 
+/**
+ * Confirma el envío de una petición de cómic y llama a la función "confirmar_peticion_comic" si se confirma.
+ */
 function confirmar_envio_peticion_comic() {
     if (confirm("¿Aceptar la petición?")) {
         confirmar_peticion_comic();
     }
 }
 
+/**
+ * Confirma el envío del formulario de petición de cómic y llama a la función "mandar_peticion_comic" si se confirma.
+ */
 function peticion_comic_formulario() {
     if (confirm("¿Estás seguro que quieres mandar la petición?")) {
         mandar_peticion_comic();
     }
 }
 
+/**
+ * Confirma la cancelación de una petición de cómic y llama a la función "cancelar_peticion_comic" si se confirma.
+ * @param {string} id - El ID de la petición de cómic.
+ */
 function cancelar_peticion_usuario(id) {
     if (confirm("¿Estás seguro de que deseas eliminar la petición?")) {
         cancelar_peticion_comic(id);
     }
 }
 
+/**
+ * Confirma la eliminación de una petición de cómic y llama a la función "eliminar_peticion_comic" si se confirma.
+ * @param {string} id - El ID de la petición de cómic.
+ */
 function eliminar_peticion_usuario(id) {
     if (confirm("¿Estás seguro de que deseas eliminar la petición?")) {
         eliminar_peticion_comic(id);
     }
 }
 
+/**
+ * Abre el modal de modificar lista y muestra el nombre de la lista correspondiente.
+ * @param {string} id_lista - El ID de la lista a modificar.
+ */
 function abrir_modal_modificar(id_lista) {
     // Obtener el nombre de la lista a partir del atributo data-nombre-lista del botón
     var nombre_lista = $("#edit-button-" + id_lista).data("nombre-lista");
@@ -342,6 +358,9 @@ function abrir_modal_modificar(id_lista) {
     $("#modificar_lista").modal("show");
 }
 
+/**
+ * Actualiza el filtrado de cómics al cargar la página.
+ */
 function actualizar_filtrado() {
     $(document).ready(function () {
         $.ajax({
@@ -354,6 +373,10 @@ function actualizar_filtrado() {
     });
 }
 
+/**
+ * Actualiza el filtrado de cómics según el usuario especificado.
+ * @param {string} id_user - El ID del usuario.
+ */
 function actualizar_filtrado_usuario(id_user) {
     $.ajax({
         url: 'php/apis/filtrador_comics_usuario.php',
@@ -367,6 +390,10 @@ function actualizar_filtrado_usuario(id_user) {
     });
 }
 
+/**
+ * Actualiza el filtrado de cómics según la lista de usuario especificada.
+ * @param {string} id_lista - El ID de la lista de usuario.
+ */
 function actualizar_filtrado_lista_usuario(id_lista) {
     $.ajax({
         url: 'php/apis/filtrador_comics_lista_usuario.php',
@@ -380,7 +407,9 @@ function actualizar_filtrado_lista_usuario(id_lista) {
     });
 }
 
-
+/**
+ * Actualiza el filtrado completo de cómics al cargar la página.
+ */
 function actualizar_filtrado_completo() {
     $(document).ready(function () {
         $.ajax({
@@ -393,6 +422,9 @@ function actualizar_filtrado_completo() {
     });
 }
 
+/**
+ * Maneja el cambio de estado de los checkboxes.
+ */
 function handleCheckboxChange() {
     var checkboxes = document.querySelectorAll('input[type=checkbox]');
 
@@ -402,6 +434,9 @@ function handleCheckboxChange() {
     }
 }
 
+/**
+ * Maneja el cambio de estado de un checkbox y realiza las acciones correspondientes.
+ */
 function checkboxChanged() {
     offset = 0;
     if ($("input[type='checkbox']:checked").length > 0) {
@@ -424,6 +459,10 @@ function checkboxChanged() {
     }
 }
 
+/**
+ * Alterna la visualización de un menú desplegable.
+ * @param {HTMLElement} element - El elemento que activa el menú desplegable.
+ */
 function toggleDropdown(element) {
     var dropdownContent1 = document.getElementById("dropdownContent1");
     var dropdownContent2 = document.getElementById("dropdownContent2");
@@ -444,10 +483,17 @@ function toggleDropdown(element) {
     }
 }
 
+/**
+ * Cierra el menú desplegable especificado.
+ * @param {HTMLElement} dropdownContent - El contenido del menú desplegable a cerrar.
+ */
 function closeDropdown(dropdownContent) {
     dropdownContent.style.display = "none";
 }
 
+/**
+ * Cierra los menús desplegables al hacer clic fuera de ellos.
+ */
 document.addEventListener("click", function (event) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
     for (var i = 0; i < dropdowns.length; i++) {
@@ -458,6 +504,10 @@ document.addEventListener("click", function (event) {
     }
 });
 
+/**
+ * Realiza una búsqueda en una tabla según el texto ingresado.
+ * @param {string} id - El ID del elemento de entrada de búsqueda.
+ */
 function searchData(id) {
     let input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("searchInput" + id);
