@@ -10,7 +10,7 @@ if ($_POST) {
     $pass = $_POST['pass'];
 
     // Verificar si el usuario existe en la base de datos
-    if (!obtener_datos_usuario($acceso)) {
+    if (!check_email_user($acceso)) {
         $validate['success'] = false;
         $validate['message'] = 'ERROR. El usuario no existe';
         header("HTTP/1.1 404 Not Found");

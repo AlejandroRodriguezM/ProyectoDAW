@@ -51,6 +51,8 @@ if (isset($_POST['input'])) {
     } else {
         echo "<h6 class='text-danger text-center mt-3 >No data found</h6>";
     }
+}else{
+    header("Location: ../../index.php");
 }
 
 ?>

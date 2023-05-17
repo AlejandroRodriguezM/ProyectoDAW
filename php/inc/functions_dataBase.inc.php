@@ -30,13 +30,13 @@ function checkUser(string $acceso, string $password): bool
  * @param string $acceso
  * @return boolean
  */
-function check_email_user(string $email): bool
+function check_email_user(string $acceso): bool
 {
 	global $conection;
 	$existe = false;
 	try {
-		$consulta = $conection->prepare("SELECT * from users WHERE email = ?");
-		if ($consulta->execute(array($email))) {
+		$consulta = $conection->prepare("SELECT * from users WHERE email = ? OR userName = ?");
+		if ($consulta->execute(array($acceso,$acceso))) {
 			if ($consulta->fetchColumn() > 0) {
 				$existe = true;
 			}
@@ -46,8 +46,6 @@ function check_email_user(string $email): bool
 	}
 	return $existe;
 }
-
-
 
 /**
  * Return the password from a user using loggin
@@ -1011,7 +1009,7 @@ function getInfoAboutUser(int $IDuser): array
  * Devuelve la busqueda de usuarios mediante una palabra clave
  *
  * @param integer $IDuser
- * @return array
+ * @return PDOStatement
  */
 //Esta función hace una búsqueda de usuario en la base de datos
 function search_user($search): PDOStatement

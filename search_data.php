@@ -339,7 +339,6 @@ if (isset($_GET['search'])) {
         }
 
         main {
-
             height: 100% !important;
         }
 
@@ -938,7 +937,6 @@ if (isset($_GET['search'])) {
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>

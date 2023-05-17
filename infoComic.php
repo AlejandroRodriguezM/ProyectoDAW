@@ -1110,7 +1110,6 @@ if (isset($_GET['IDcomic'])) {
                     </div>
                 </div>
             </div>
-
             <br>
 
             <div class="container mt-5" style="margin-top:auto !important;background-color:white">
@@ -1167,11 +1166,11 @@ if (isset($_GET['IDcomic'])) {
                                 <?php
                                 }
                                 ?>
-
                             </div>
+                        </div>
                     </form>
+                    <div class="comentarios"></div>
                 </div>
-                <div class="comentarios"></div>
             </div>
 
             <div class="container mt-5">

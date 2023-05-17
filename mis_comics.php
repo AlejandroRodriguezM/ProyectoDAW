@@ -828,8 +828,13 @@ if (isset($_SESSION['email'])) {
                     actualizar_filtrado()
                     // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
                     var width = $(window).width();
-                    var num_comics = Math.max(3, Math.min(8, Math.floor(width / 300))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
+                    var num_comics = Math.floor(width / 150); // Suponiendo que cada cómic tiene un ancho de 150px
 
+                    if (width >= 450) {
+                        num_comics = Math.max(3, Math.min(8, num_comics)); // Mostrar mínimo 3 cómics y máximo 8 cómics en resoluciones mayores o iguales a 450px
+                    } else {
+                        num_comics = Math.max(1, num_comics); // Mostrar mínimo 1 cómic en resoluciones menores a 450px
+                    }
                     var data = {
                         num_comics: num_comics
                     };
@@ -847,7 +852,7 @@ if (isset($_SESSION['email'])) {
                 // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
                 $(window).on('resize', function() {
                     clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(comics_recomendados, 100);
+                    resizeTimer = setTimeout(comics_recomendados, 250); // Espera 250ms antes de llamar a la función
                 });
             </script>
 

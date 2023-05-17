@@ -13,13 +13,14 @@ if (isset($_SESSION['email'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="./assets/img/webico.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
     <!-- <link rel="stylesheet" href="./assets/style/style.css"> -->
     <link rel="stylesheet" href="./assets/style/show-password-toggle.css">
     <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/style_index.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
     <script src="./assets/js/funciones_utilidades.js"></script>
@@ -44,7 +45,7 @@ if (isset($_SESSION['email'])) {
 
         body {
             margin: 0 !important;
-            /* padding: 0 !important; */
+            padding: 0;
             height: 100% !important;
 
         }
@@ -82,9 +83,36 @@ if (isset($_SESSION['email'])) {
             margin-top: 10px;
         }
 
-        .logo-container {
-            display: flex;
-            justify-content: center;
+        .vibrate {
+            animation: vibrate 0.5s linear infinite;
+            outline: 2px solid red;
+            box-shadow: 0 0 5px red;
+        }
+
+        @keyframes vibrate {
+            0% {
+                transform: translateX(-4px) rotate(-2deg);
+            }
+
+            20% {
+                transform: translateX(4px) rotate(2deg);
+            }
+
+            40% {
+                transform: translateX(-4px) rotate(-2deg);
+            }
+
+            60% {
+                transform: translateX(4px) rotate(2deg);
+            }
+
+            80% {
+                transform: translateX(-4px) rotate(-2deg);
+            }
+
+            100% {
+                transform: translateX(0) rotate(0);
+            }
         }
     </style>
 </head>
@@ -97,7 +125,7 @@ if (isset($_SESSION['email'])) {
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="staticBackdropLabel">Condiciones de uso</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="uncheckOnClose()"></button>
                     </div>
                     <div class="modal-body">
                         <h1>Términos y condiciones</h1>
@@ -143,8 +171,8 @@ if (isset($_SESSION['email'])) {
                         </p>
                     </div>
                     <div class="modal-footer">
-                        <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="close">
-                        <input type="button" id="test" name="test" data-bs-dismiss="modal" class="btn btn-primary" onclick="changeCheckboxState()" value="Understood">
+                        <input type="button" id="cancelar" name="cancelar" class="btn btn-secondary" data-bs-dismiss="modal" onclick="uncheckOnClose()" value="Close">
+                        <input type="button" id="aceptar" name="aceptar" data-bs-dismiss="modal" class="btn btn-primary" onclick="changeCheckboxState()" value="Understood">
                     </div>
                 </div>
             </div>
@@ -156,12 +184,12 @@ if (isset($_SESSION['email'])) {
                     <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;border-radius:15px">
 
                         <div class="row justify-content-center col-lg-7 mx-auto">
-                            <!-- <div class="col-lg-7 "> -->
-                                <div class="logo-container">
-                                    <a href="login.php">
-                                        <img src="./assets/img/logoWeb.png" alt="logo web">
-                                    </a>
-                                </div>                            <h3 class="mt-2">DATOS DE REGISTRO</h3>
+                            <div class="d-flex justify-content-center">
+                                <a href="login.php">
+                                    <img src="./assets/img/logoWeb.png" class="img-fluid mt-2" alt="logo web">
+                                </a>
+                            </div>
+                            <h3 class="mt-2">DATOS DE REGISTRO</h3>
                             <form id="formInsert" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                 <div class="mb-3 text-center">
                                     <label for="name" class="form-label w-100">Nombre de usuario</label>
@@ -173,7 +201,7 @@ if (isset($_SESSION['email'])) {
                                 </div>
                                 <label for="password" class="form-label w-100">Contraseña</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control w-100" id="password_user" placeholder="Introduce tu contraseña" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                    <input type="password" class="form-control w-100" id="password" placeholder="Introduce tu contraseña" name="current-password" autocomplete="current-password" class="form-control rounded" spellcheck="false" autocorrect="off" autocapitalize="off" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                     <button id="toggle-password" type="button" class="d-none"></button>
                                 </div>
                                 <label for="repassword" class="form-label w-100">Repita contraseña</label>
@@ -186,7 +214,7 @@ if (isset($_SESSION['email'])) {
                                     <input class="form-control w-100" type="file" name="files" id="files" accept=".jpg, .png" onchange="loadFile(event)">
                                 </div>
                                 <div class="mb-3 text-center">
-                                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    <button type="button" id="condiciones-aceptar" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="toggleCheckbox()">
                                         Leer condiciones y servicios
                                     </button>
                                 </div>
@@ -194,17 +222,9 @@ if (isset($_SESSION['email'])) {
 
 
 
-                                <div class="mb-3 text-center">
-
+                                <div class="mb-3 text-center checkbox-opcion">
                                     <label>Acepto y he leido las condiciones y servicios</label>
-                                    <?php
-                                    if (isset($_POST['test'])) {
-                                        echo "<input type='checkbox' name='checkbox' id='checkbox' value='checkbox' checked readonly disabled>";
-                                    } else {
-                                        echo "<input type='checkbox' name='checkbox' id='checkbox' value='checkbox' readonly disabled>";
-                                    }
-                                    ?>
-
+                                    <input type="checkbox" name="checkbox" id="checkbox" value="checkbox" readonly onclick="toggleCheckbox()">
                                 </div>
 
                                 <div class="mb-3">
@@ -231,7 +251,7 @@ if (isset($_SESSION['email'])) {
 
                                 </div>
                                 <div class="mb-3">
-                                    <a href="login.php" type="button" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">Volver</a>
+                                    <a href="login.php" type="button" id="volverBtn" class="btn btn-primary form-control" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png), pointer!important">Volver</a>
                                 </div>
                             </form>
                         </div>
@@ -265,6 +285,66 @@ if (isset($_SESSION['email'])) {
                     };
                 }
             </script>
+
+            <script>
+                const checkbox = document.getElementById('checkbox');
+
+                function changeCheckboxState() {
+                    $('#checkbox').prop('checked', true);
+                    checkbox.disabled = true;
+                }
+
+                function uncheckOnClose() {
+                    const checkbox = document.getElementById('checkbox');
+                    checkbox.checked = false;
+                    checkbox.disabled = false;
+                    const cancelButton = document.getElementById('condiciones-aceptar');
+                    cancelButton.classList.add('vibrate');
+
+                    setTimeout(function() {
+                        cancelButton.classList.remove('vibrate');
+                    }, 3000);
+                }
+            </script>
+
+            <script>
+                function toggleCheckbox() {
+                    if (!checkbox.checked) {
+                        checkbox.disabled = true;
+                        checkbox.checked = true;
+                    } else {
+                        $('#staticBackdrop').modal('show');
+                        checkbox.disabled = true;
+                        checkbox.checked = true;
+                    }
+                }
+
+                function uncheckCheckbox() {
+                    const checkbox = document.getElementById('checkbox');
+                    checkbox.checked = false;
+                }
+
+                function acceptModal() {
+                    const checkbox = document.getElementById('checkbox');
+                    checkbox.disabled = true;
+                }
+
+                $(document).ready(function() {
+                    $('#staticBackdrop').on('hide.bs.modal', function(event) {
+                        const checkbox = document.getElementById('checkbox');
+                        const target = $(event.relatedTarget);
+                        if (target.attr('id') === 'cancelar') {
+                            checkbox.checked = false;
+                            checkbox.disabled = false;
+                        } else {
+                            checkbox.disabled = true;
+                        }
+                    });
+                });
+            </script>
+
+
+
             <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">

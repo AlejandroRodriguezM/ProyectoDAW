@@ -81,10 +81,10 @@ if (isset($_SESSION['email'])) {
             margin-top: 10px;
         }
 
-        .logo-container {
+        /* .logo-container {
             display: flex;
             justify-content: center;
-        }
+        } */
     </style>
 </head>
 
@@ -99,9 +99,9 @@ if (isset($_SESSION['email'])) {
                         <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;border-radius:15px">
                             <div class="row justify-content-center col-lg-7 mx-auto">
                                 <!-- <div class="col-lg-7 "> -->
-                                <div class="logo-container">
+                                <div class="d-flex justify-content-center">
                                     <a href="login.php">
-                                        <img src="./assets/img/logoWeb.png" alt="logo web">
+                                        <img src="./assets/img/logoWeb.png" class="img-fluid mt-2" alt="logo web">
                                     </a>
                                 </div>
                                 <h3 class="mt-2">Datos de Login</h3>
