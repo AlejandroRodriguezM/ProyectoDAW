@@ -907,7 +907,7 @@ if (isset($_GET['search'])) {
                         <div class="col-8">
 
                             <div class="table-responsive">
-                                <table class="comic_table table table-hover table-responsive-sm">
+                                <table class="table table-hover table-responsive-sm">
                                     <thead class="table-dark">
                                         <tr>
                                             <th>Foto de perfil</th>

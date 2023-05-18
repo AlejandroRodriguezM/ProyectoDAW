@@ -1017,7 +1017,7 @@ function search_user($search): PDOStatement
 	global $conection;
 	$search = htmlspecialchars($search, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$consulta = $conection->prepare("SELECT userName,tipo_perfil,userPicture from users WHERE userName LIKE ? OR email LIKE ? AND accountStatus = 'active' AND tipo_perfil = 'publico'");
+		$consulta = $conection->prepare("SELECT userName,tipo_perfil,userPicture from users WHERE userName LIKE ? OR email LIKE ? AND accountStatus = 'active'");
 		$consulta->execute(array("%$search%", "%$search%"));
 	} catch (PDOException $e) {
 		//Obtener el código de error

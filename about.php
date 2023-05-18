@@ -716,29 +716,6 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
 
-
-
-
-
-
-            <div class="container mt-5">
-                <div style="display: flex; justify-content: center;">
-                    <div class="last-pubs2 col-md-8">
-                        <div class="titulo">
-                            <h2>Videos de interes</h2>
-                        </div>
-                        <hr>
-                        <div class="video-container">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/eLhnu9GoNSI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/mFStz7ERrYE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/sYs8jbDF18Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- <div class="bgimg-2"> -->
             <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">
