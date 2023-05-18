@@ -635,7 +635,7 @@ if (isset($_POST['adminPanel'])) {
                     }
                     ?>
                 </li>
-                
+
 
                 <!-- <div class="d-flex" role="search"> -->
 
@@ -647,7 +647,7 @@ if (isset($_POST['adminPanel'])) {
                     echo '</li>';
                 }
                 ?>
-</ul>
+                </ul>
                 <script>
                     function searchData() {
                         const searchData = document.getElementById("search").value;
@@ -752,18 +752,29 @@ if (isset($_POST['adminPanel'])) {
                                                 </div>
 
                                                 <div class="form-group col-xs-12 col-sm-6">
-                                                    <label class="control-label">Nueva contraseña</label>
-                                                    <input type="password" class="form-control" id="password" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                                    <div class="d-flex justify-content-between">
+                                                        <label class="form-check-label control-label" for="showPassword">Mostrar formulario de cambio de contraseña</label>
+                                                        <input class="form-check-input control-label" type="checkbox" id="showPassword" onchange="togglePasswordFields()">
+                                                    </div>
                                                 </div>
 
-                                                <div class="form-group col-xs-12 col-sm-6">
-                                                    <label class="control-label">Repite la contraseña</label>
-                                                    <input type="password" class="form-control" id="repassword" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
-                                                </div>
 
+                                                <div id="passwordFields" style="display: none;">
+                                                    <h3 class="fieldset-title">Cambiar contraseña</h3>
+                                                    <div class="form-group col-xs-12 col-sm-6">
+                                                        <label class="control-label">Nueva contraseña</label>
+                                                        <input type="password" class="form-control" id="password" placeholder="Introduce tu contraseña" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
+                                                    </div>
+
+                                                    <div class="form-group col-xs-12 col-sm-6">
+                                                        <label class="control-label">Repite la contraseña</label>
+                                                        <input type="password" class="form-control" id="repassword" placeholder="Introduce tu contraseña" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
+                                                    </div>
+                                                </div>
+                                                <br>
                                                 <div class="form-group col-xs-12">
                                                     <label class="control-label">Sobre mi</label>
-                                                    <textarea maxlength="450" class="form-control" id="field" onkeyup="countChar()" name="text" rows="3" style="resize:none; background-color:smoke;height:200px"><?php echo $descripcion_usuario ?></textarea>
+                                                    <textarea maxlength="450" class="form-control" id="field" onkeyup="countChar()" name="text" rows="3" style="resize:none; background-color:smoke;height:200px"><?php echo $sobreUser ?></textarea>
                                                     <div id="the-count">
                                                         <span id="current">0</span>
                                                         <span id="maximum">/ 450</span>
@@ -774,51 +785,52 @@ if (isset($_POST['adminPanel'])) {
                                         <hr>
                                         <div class="mb-3 d-flex flex-wrap justify-content-between align-items-center">
                                             <div class="col-12 col-sm-4 col-md-2 mb-3 mb-sm-0">
-                                                <input class="btn btn-primary w-auto" type="button" onclick="actualizar_usuario();" value="Actualizar perfil">
-                                            </div>
-                                            <div class="col-12 col-sm-4 col-md-3 mb-3 mb-sm-0">
-                                                <?php
-                                                if ($tipo_perfil == 'publico') {
-                                                    if ($userPrivilege == 'admin') {
-                                                        echo '<input class="btn btn-danger w-auto" type="button" value="Hacer perfil privado" disabled>';
-                                                    } else {
-                                                        echo '<input class="btn btn-danger w-auto" type="button" onclick="cambiar_privacidad(true); return false;" value="Hacer perfil privado">';
-                                                    }
-                                                } else {
-                                                    echo '<input class="btn btn-danger w-auto" type="button" onclick="cambiar_privacidad(false); return false;"value="Hacer perfil publico">';
-                                                }
-                                                ?>
-                                                <script>
-                                                    function handleFileSelect(evt) {
-                                                        var f = evt.target.files[0]; // FileList object
-                                                        var reader = new FileReader();
-                                                        // Closure to capture the file information.
-                                                        reader.onload = (function(theFile) {
-                                                            return function(e) {
-                                                                var binaryData = e.target.result;
-                                                                //Converting Binary Data to base 64
-                                                                var base64String = window.btoa(binaryData);
-                                                                //save into var globally string
-                                                                image = base64String;
-                                                            };
-                                                        })(f);
-                                                        // Read in the image file as a data URL
-                                                        reader.readAsBinaryString(f);
-                                                    }
-                                                    document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
-                                                </script>
-                                            </div>
-                                            <div class="col-12 col-sm-4 col-md-3 mb-3 mb-sm-0">
-                                                <?php
-                                                if ($userPrivilege == 'admin') {
-                                                    echo '<input class="btn btn-danger w-auto" type="button" value="Desactivar usuario" disabled>';
-                                                } else {
-                                                    echo '<input class="btn btn-danger w-auto" type="button" onclick="desactivar_usuario(); return false;" value="Desactivar usuario">';
-                                                }
-                                                ?>
+                                                <div class="d-flex justify-content-between">
+                                                    <input class="btn btn-primary w-auto mr-2" type="button" onclick="actualizar_usuario();" value="Actualizar perfil">
+                                                    <div class="btn-group">
+                                                        <?php
+                                                        if ($tipo_perfil == 'publico') {
+                                                            if ($userPrivilege == 'admin') {
+                                                                echo '<input class="btn btn-danger w-auto mx-1" type="button" value="Hacer perfil privado" disabled>';
+                                                            } else {
+                                                                echo '<input class="btn btn-danger w-auto mx-1" type="button" onclick="cambiar_privacidad(true); return false;" value="Hacer perfil privado">';
+                                                            }
+                                                        } else {
+                                                            echo '<input class="btn btn-danger w-auto mx-1" type="button" onclick="cambiar_privacidad(false); return false;"value="Hacer perfil publico">';
+                                                        }
+                                                        ?>
+                                                        <script>
+                                                            function handleFileSelect(evt) {
+                                                                var f = evt.target.files[0]; // FileList object
+                                                                var reader = new FileReader();
+                                                                // Closure to capture the file information.
+                                                                reader.onload = (function(theFile) {
+                                                                    return function(e) {
+                                                                        var binaryData = e.target.result;
+                                                                        //Converting Binary Data to base 64
+                                                                        var base64String = window.btoa(binaryData);
+                                                                        //save into var globally string
+                                                                        image = base64String;
+                                                                    };
+                                                                })(f);
+                                                                // Read in the image file as a data URL
+                                                                reader.readAsBinaryString(f);
+                                                            }
+                                                            document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
+                                                        </script>
+                                                    </div>
+                                                    <div class="col-12 col-sm-4 col-md-3 mb-3 mb-sm-0">
+                                                        <?php
+                                                        if ($userPrivilege == 'admin') {
+                                                            echo '<input class="btn btn-danger w-auto mx-1" type="button" value="Desactivar usuario" disabled>';
+                                                        } else {
+                                                            echo '<input class="btn btn-danger w-auto mx-1" type="button" onclick="desactivar_usuario(); return false;" value="Desactivar usuario">';
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -826,6 +838,18 @@ if (isset($_POST['adminPanel'])) {
                     </div>
                 </div>
             </div>
+            <script>
+                function togglePasswordFields() {
+                    var passwordFields = document.getElementById("passwordFields");
+                    var showPassword = document.getElementById("showPassword");
+
+                    if (showPassword.checked) {
+                        passwordFields.style.display = "block";
+                    } else {
+                        passwordFields.style.display = "none";
+                    }
+                }
+            </script>
             <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">
