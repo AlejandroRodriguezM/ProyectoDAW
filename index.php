@@ -219,9 +219,9 @@ if (isset($_SESSION['email'])) {
             margin-top: 10px;
         }
 
-        .container {
+        /* .container {
             padding: 30px;
-        }
+        } */
     </style>
 </head>
 

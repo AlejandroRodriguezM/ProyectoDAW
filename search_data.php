@@ -942,6 +942,12 @@ if (isset($_GET['search'])) {
                 </div>
 
             <?php
+            } else {
+                echo '                <div class="container mt-4">
+                <div class="d-flex justify-content-center" style="background-color:black">';
+                echo "<h1 class='text-center' style='color:white;'>No se han encontrado resultados</h1>";
+                echo '</div>
+                </div>';
             }
             if ($count_comic > 0) {
             ?>
@@ -972,7 +978,7 @@ if (isset($_GET['search'])) {
                 </div>
             <?php
             }
-            if ($count_user > 0 && $count_comic == 0) {
+            if ($count_user > 0 || $count_comic == 0) {
             ?>
 
                 <div class="container mt-5">
