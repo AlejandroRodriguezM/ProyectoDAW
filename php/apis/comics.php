@@ -3,12 +3,15 @@ session_start();
 include_once '../inc/header.inc.php';
 global $conection;
 if (isset($_GET['limit']) and isset($_GET['offset'])) {
+    $limit = intval($_GET['limit']);
+    $offset = intval($_GET['offset']);
+}
+
+if(isset($_SESSION['email'])){
     $email = $_SESSION['email'];
     $userData = obtener_datos_usuario($email);
     $userPrivilege = $userData['privilege'];
     $id_user = $userData['IDuser'];
-    $limit = intval($_GET['limit']);
-    $offset = intval($_GET['offset']);
     echo "<input type='hidden' id='id_user' value='$id_user'>";
 }
 

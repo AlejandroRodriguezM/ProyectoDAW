@@ -7,23 +7,24 @@ $validate['success'] = array('success' => false, 'message' => "", "userName" => 
 
 if ($_POST) {
     $email = $_POST['email'];
-    if (!obtener_datos_usuario($email)) {
+    if (!check_email_user($email)) {
         header("HTTP/1.1 400 Bad Request");
         $validate['success'] = false;
         $validate['message'] = 'ERROR. El usuario no existe';
     } else {
-        if(solicitud_password($email)){
+        if (solicitud_password($email)) {
             header("HTTP/1.1 200 OK");
             $validate['success'] = true;
             $validate['message'] = 'Se ha enviado un correo a su cuenta de correo electrónico';
-        }else{
+        } else {
             header("HTTP/1.1 404 Not Found");
-            http_response_code(500); // Internal Server Error
             $validate['success'] = false;
             $validate['message'] = 'ERROR. El usuario no existe';
+            http_response_code(500); // Internal Server Error
+
         }
     }
-}else{
+} else {
     header("HTTP/1.1 401 Unauthorized");
     $validate['success'] = false;
     $validate['message'] = 'ERROR. No se ha podido enviar el correo';
