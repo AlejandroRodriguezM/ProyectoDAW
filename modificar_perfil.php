@@ -61,6 +61,11 @@ if (isset($_SESSION['email'])) {
     <script src="./assets/js/temporizador.js"></script>
     <title>Ajustes de usuario</title>
     <style>
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
         body {
             margin: 0 !important;
             padding: 0;
@@ -784,18 +789,18 @@ if (isset($_SESSION['email'])) {
                                         <hr>
                                         <div class="mb-3 d-flex flex-wrap justify-content-between align-items-center">
                                             <div class="col-12 col-sm-4 col-md-2 mb-3 mb-sm-0">
-                                                <div class="d-flex justify-content-between">
-                                                    <input class="btn btn-primary w-auto mr-2" type="button" onclick="actualizar_usuario();" value="Actualizar perfil">
+                                                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
+                                                    <input class="btn btn-primary w-auto mr-2 mb-2 mb-sm-0" type="button" onclick="actualizar_usuario();" value="Actualizar perfil">
                                                     <div class="btn-group">
                                                         <?php
                                                         if ($tipo_perfil == 'publico') {
                                                             if ($userPrivilege == 'admin') {
-                                                                echo '<input class="btn btn-danger w-auto mx-1" type="button" value="Hacer perfil privado" disabled>';
+                                                                echo '<input class="btn btn-danger w-auto mr-2 mb-2 mb-sm-0 mx-1" type="button" value="Hacer perfil privado" disabled>';
                                                             } else {
-                                                                echo '<input class="btn btn-danger w-auto mx-1" type="button" onclick="cambiar_privacidad(true); return false;" value="Hacer perfil privado">';
+                                                                echo '<input class="btn btn-danger w-auto mr-2 mb-2 mb-sm-0 mx-1" type="button" onclick="cambiar_privacidad(true); return false;" value="Hacer perfil privado">';
                                                             }
                                                         } else {
-                                                            echo '<input class="btn btn-danger w-auto mx-1" type="button" onclick="cambiar_privacidad(false); return false;"value="Hacer perfil publico">';
+                                                            echo '<input class="btn btn-danger w-auto mr-2 mb-2 mb-sm-0 mx-1" type="button" onclick="cambiar_privacidad(false); return false;"value="Hacer perfil publico">';
                                                         }
                                                         ?>
                                                         <script>
@@ -818,15 +823,13 @@ if (isset($_SESSION['email'])) {
                                                             document.getElementById('file-input').addEventListener('change', handleFileSelect, false);
                                                         </script>
                                                     </div>
-                                                    <div class="col-12 col-sm-4 col-md-3 mb-3 mb-sm-0">
-                                                        <?php
-                                                        if ($userPrivilege == 'admin') {
-                                                            echo '<input class="btn btn-danger w-auto mx-1" type="button" value="Desactivar usuario" disabled>';
-                                                        } else {
-                                                            echo '<input class="btn btn-danger w-auto mx-1" type="button" onclick="desactivar_usuario(); return false;" value="Desactivar usuario">';
-                                                        }
-                                                        ?>
-                                                    </div>
+                                                    <?php
+                                                    if ($userPrivilege == 'admin') {
+                                                        echo '<input class="btn btn-danger w-auto mr-2 mb-2 mb-sm-0 mx-1" type="button" value="Desactivar usuario" disabled>';
+                                                    } else {
+                                                        echo '<input class="btn btn-danger w-auto mr-2 mb-2 mb-sm-0 mx-1" type="button" onclick="desactivar_usuario(); return false;" value="Desactivar usuario">';
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                         </div>
