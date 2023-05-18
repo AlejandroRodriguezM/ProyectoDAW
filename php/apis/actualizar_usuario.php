@@ -8,19 +8,19 @@ $validate['success'] = array('success' => false, 'message' => ""); // Inicializa
 if ($_POST) {
     // Verifica si se ha enviado una solicitud POST.
     $email = $_POST['email'];
-    $name = $_POST['nameUser'];
+    $name = $_POST['userName'];
     $lastname = $_POST['lastnameUser'];
     $row = obtener_datos_usuario($email); // Obtiene los datos del usuario basados en el correo electrónico.
     $image = $_POST['userPicture'];
     if (empty($image)) {
         $image = $row['userPicture'];
     }
-    $userName = $_POST['userName'];
-    $oldUserName = $row['userName'];
+    $userName = $_POST['nameUser'];
+    $oldUserName = $row['nameUser'];
     $emailOld = $_SESSION['email'];
     $password = password_hash($_POST['pass'], PASSWORD_DEFAULT); // Genera un hash de la contraseña proporcionada.
     if ($userName == $oldUserName) {
-        $userName = $row['userName'];
+        $userName = $row['nameUser'];
     }
     $id = $row['IDuser'];
     $infoUser = $_POST['field'];
@@ -32,10 +32,10 @@ if ($_POST) {
     if (checkUser($userName, '') && $userName != $oldUserName) {
         // Verifica si el nombre de usuario ya existe en la base de datos.
         $validate['success'] = false;
-        $validate['message'] = 'ERROR. That user name already exists';
+        $validate['message'] = 'ERROR. El usuario ya existe';
         header('HTTP/1.1 409 Conflict'); // Se establece el código de respuesta HTTP a 409 (conflicto).
     } else {
-        if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords)) {
+        if (in_array(strtolower($userName), $reservedWords) || in_array(strtolower($password), $reservedWords) || in_array(strtolower($name), $reservedWords) || in_array(strtolower($lastname), $reservedWords)) {
             // Verifica si el nombre de usuario o la contraseña coinciden con las palabras reservadas del sistema.
             $validate['success'] = false;
             $validate['message'] = 'ERROR. No puedes utilizar palabras reservadas del sistema.';
@@ -48,12 +48,12 @@ if ($_POST) {
                 $row = obtener_datos_usuario($email);
                 updateAboutUser($id, $infoUser, $name, $lastname);
                 $validate['success'] = true;
-                $validate['message'] = 'The user saved correctly';
+                $validate['message'] = 'Usuario actualizado correctamente';
                 header('HTTP/1.1 200 OK'); // Se establece el código de respuesta HTTP a 200 (éxito).
             } else {
                 // Si la actualización del usuario en la base de datos falla.
                 $validate['success'] = false;
-                $validate['message'] = 'ERROR. The user didn\'t save correctly';
+                $validate['message'] = 'ERROR. No se ha podido actualizar el usuario';
                 header('HTTP/1.1 500 Internal Server Error'); // Se establece el código de respuesta HTTP a 500 (error interno del servidor).
             }
         }
@@ -61,8 +61,8 @@ if ($_POST) {
 } else {
     // Si no se ha enviado una solicitud POST.
     $validate['success'] = false;
-    $validate['message'] = 'ERROR. The user is not save in database';
-    header('HTTP/1.1 400 Bad Request');
+    $validate['message'] = 'ERROR. No se ha podido actualizar el usuario';
+    header('HTTP/1.1 400 Bad Request'); // Se establece el código de respuesta HTTP a 400 (solicitud incorrecta).
 }
 header('Content-type: application/json');
 echo json_encode($validate);

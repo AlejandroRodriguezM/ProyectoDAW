@@ -735,29 +735,30 @@ if (isset($_SESSION['email'])) {
                                                 ?>
 
                                                 <div class="form-group col-xs-12 col-sm-6">
-                                                    <label class="control-label">Nombre de usuario</label>
-                                                    <input type="text" class="form-control" id="name" value="<?php echo $dataUser['userName'] ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                                    <label class="control-label">Nombre de usuario<span style="color: red">*</span></label>
+                                                    <input type="text" class="form-control" id="nameUser" value="<?php echo $userName ?>" placeholder="Introduce o cambia tu nombre de usuario" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
                                                     <input type="hidden" id="correo" value="<?php echo $email ?>">
                                                 </div>
 
                                                 <div class="form-group col-xs-12 col-sm-6">
                                                     <label class="control-label">Tu nombre</label>
-                                                    <input type="text" class="form-control" id="nameUser" value="<?php echo $nameUser ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
+                                                    <input type="text" class="form-control" id="name" value="<?php echo $nameUser ?>" placeholder="Introduce tu nombre" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important">
                                                 </div>
 
                                                 <div class="form-group col-xs-12 col-sm-6">
                                                     <label class="control-label">Tu apellido</label>
-                                                    <input type="text" class="form-control" id="lastnameUser" value="<?php echo $lastName ?>" placeholder="Enter your name" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                                    <input type="text" class="form-control" id="lastnameUser" value="<?php echo $lastName ?>" placeholder="Introduce tu apellido" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                                 </div>
 
+                                                <h3 class="fieldset-title">Cambiar contraseña</h3>
                                                 <div class="form-group col-xs-12 col-sm-6">
                                                     <label class="control-label">Nueva contraseña</label>
-                                                    <input type="password" class="form-control" id="password" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                                    <input type="password" class="form-control" id="password" placeholder="Introduce tu contraseña" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                                 </div>
 
                                                 <div class="form-group col-xs-12 col-sm-6">
                                                     <label class="control-label">Repite la contraseña</label>
-                                                    <input type="password" class="form-control" id="repassword" placeholder="***********" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
+                                                    <input type="password" class="form-control" id="repassword" placeholder="Introduce tu contraseña" style="cursor:url(https://cdn.custom-cursor.com/db/pointer/32/Infinity_Gauntlet_Pointer.png) , pointer!important ">
                                                 </div>
 
                                                 <div class="form-group col-xs-12">

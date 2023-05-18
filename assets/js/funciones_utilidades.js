@@ -22,7 +22,7 @@ const validatePassword = (password) => {
  * @param {string} userName - El nombre de usuario a validar.
  * @returns {boolean} - Devuelve true si el nombre de usuario cumple con los requisitos, de lo contrario devuelve false.
  */
-const validateUserName = (userName) => {
+const validar_nombre = (userName) => {
     return /^[a-z ñáéíóú-]{2,60}$/i.test(userName.trim());
 }
 

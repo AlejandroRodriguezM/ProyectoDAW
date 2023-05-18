@@ -3195,6 +3195,8 @@ function comprobar_codigo_alta(String $codigo): bool
 			$resultados = $consulta->fetchAll(PDO::FETCH_ASSOC);
 			if (count($resultados) > 0) {
 				$estado = true;
+				activar_usuario($codigo);
+				eliminar_codigo($codigo);
 			}
 		}
 	} catch (PDOException $e) {

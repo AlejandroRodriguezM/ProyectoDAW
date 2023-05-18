@@ -106,7 +106,7 @@ const crear_usuario = async () => {
         return;
     }
 
-    if (!validateUserNAme(name)) {
+    if (!validar_nombre(name)) {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
@@ -293,48 +293,48 @@ const actualizar_usuario = async () => {
     var lastNameUSer = document.querySelector("#lastnameUser").value;
     var textArea = document.querySelector("#field").value;
 
-    if (password.trim() === '' | repassword.trim() === '' | name.trim() === '') {
+    if (nameUSer.trim() === '') {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
-            text: "You have to fill all the camps",
+            text: "No puedes dejar tu nombre de usuario vacio",
             footer: "Web Comics"
         })
         return;
     }
 
-    if (!validatePassword(password)) {
+    if (password === repassword ) {
+            if (!validatePassword(password) && password.trim() !== '') {
+                Swal.fire({
+                    icon: "error",
+                    title: "ERROR.",
+                    text: "Debes de introducir una contraseña conrrecta (1 mayuscula,1 minuscula,numero y minimo 8 caracteres)",
+                    footer: "Web Comics"
+                })
+                return;
+            }
+    } else {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
-            text: "You have to introduce a valid password (upperCase,lowerCase,numer and min 8 characters)",
+            text: "Las contraseñas no coinciden",
             footer: "Web Comics"
         })
-        return;
-    }
-
-    if (!validateUserNAme(name)) {
-        Swal.fire({
-            icon: "error",
-            title: "ERROR.",
-            text: "You have introduce a valid Name",
-            footer: "Web Comics"
-        })
-        return;
-    }
-
-    if (password != repassword) {
-        Swal.fire({
-            icon: "error",
-            title: "ERROR.",
-            text: "The password doesn't match",
-            footer: "Web Comics"
-        })
-
         document.querySelector("#password").style.border = "1px solid red";
         document.querySelector("#repassword").style.border = "1px solid red";
         document.querySelector("#password").value = "";
         document.querySelector("#repassword").value = "";
+        return;
+    }
+
+
+    if (!validar_nombre(name)) {
+        Swal.fire({
+            icon: "error",
+            title: "ERROR.",
+            text: "Debes de introducir un nombre valido",
+            footer: "Web Comics"
+        })
         return;
     }
 
@@ -527,7 +527,7 @@ const modificar_usuario_administrador = async () => {
         return;
     }
 
-    if (!validateUserNAme(nombre_cuenta)) {
+    if (!validar_nombre(nombre_cuenta)) {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
@@ -537,7 +537,7 @@ const modificar_usuario_administrador = async () => {
         return;
     }
 
-    if (!validateUserNAme(nombre_usuario)) {
+    if (!validar_nombre(nombre_usuario)) {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
@@ -547,7 +547,7 @@ const modificar_usuario_administrador = async () => {
         return;
     }
 
-    if (!validateUserNAme(apellido_usuario)) {
+    if (!validar_nombre(apellido_usuario)) {
         Swal.fire({
             icon: "error",
             title: "ERROR.",
