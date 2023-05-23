@@ -1104,12 +1104,7 @@ function existe_user(string $search): bool
 	return $consulta->execute(array("%$search%", "%$search%"));
 }
 
-/**
- * Devuelve datos de los usuarios
- *
- * @param integer $IDuser
- * @return array
- */
+
 function showUsers(): PDOStatement
 {
 	global $conection;

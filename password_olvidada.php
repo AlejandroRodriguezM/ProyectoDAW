@@ -120,8 +120,6 @@ if (isset($_SESSION['email'])) {
                 </div>
             </div>
 
-
-
             <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">
@@ -147,7 +145,6 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
     </main>
-
 </body>
 
 </html>

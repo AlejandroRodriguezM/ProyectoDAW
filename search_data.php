@@ -653,8 +653,8 @@ if (isset($_GET['search'])) {
                             echo '<li>
                             <a class="dropdown-item" href="infoPerfil.php">
                             <i class="fa fa-cog fa-fw"></i>Mi perfil
-                            </a><
-                            /li>';
+                            </a>
+                            </li>';
                             echo '<li>
                             <a class="dropdown-item" href="#">
                             <i class="fa fa-cog fa-fw"></i>Enviar un ticket
@@ -683,7 +683,7 @@ if (isset($_GET['search'])) {
                         </div>
                         </li>';
                         echo "<hr class='dropdown-divider'>";
-                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                         echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
                     }
                     ?>
@@ -742,6 +742,7 @@ if (isset($_GET['search'])) {
                     <?php
                     }
                     ?>
+                    <li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>
 
 
                     <?php
@@ -878,6 +879,7 @@ if (isset($_GET['search'])) {
                 <!-- <div class="d-flex" role="search"> -->
 
                 <?php
+                echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                 if (isset($_SESSION['email'])) {
                     echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
                     echo '<li class="list-group-item list-group-item-action">
@@ -895,7 +897,6 @@ if (isset($_GET['search'])) {
                 <!-- </div> -->
             </div>
         </div>
-
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
             <?php
@@ -942,12 +943,6 @@ if (isset($_GET['search'])) {
                 </div>
 
             <?php
-            } else {
-                echo '                <div class="container mt-4">
-                <div class="d-flex justify-content-center" style="background-color:black">';
-                echo "<h1 class='text-center' style='color:white;'>No se han encontrado resultados</h1>";
-                echo '</div>
-                </div>';
             }
             if ($count_comic > 0) {
             ?>
@@ -978,6 +973,14 @@ if (isset($_GET['search'])) {
                 </div>
             <?php
             }
+            if ($count_user == 0 && $count_comic == 0) {
+                echo '                <div class="container mt-4">
+                    <div class="d-flex justify-content-center" style="background-color:black">';
+                echo "<h1 class='text-center' style='color:white;'>No se han encontrado resultados</h1>";
+                echo '</div>
+                    </div>';
+            }
+
             if ($count_user > 0 || $count_comic == 0) {
             ?>
 
@@ -990,8 +993,8 @@ if (isset($_GET['search'])) {
 
             <?php
             }
-            ?>
 
+            ?>
 
             <script>
                 var limit = 5;

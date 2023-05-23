@@ -515,8 +515,8 @@ if (isset($_SESSION['email'])) {
                             echo '<li>
                             <a class="dropdown-item" href="infoPerfil.php">
                             <i class="fa fa-cog fa-fw"></i>Mi perfil
-                            </a><
-                            /li>';
+                            </a>
+                            </li>';
                             echo '<li>
                             <a class="dropdown-item" href="#">
                             <i class="fa fa-cog fa-fw"></i>Enviar un ticket
@@ -545,7 +545,7 @@ if (isset($_SESSION['email'])) {
                         </div>
                         </li>';
                         echo "<hr class='dropdown-divider'>";
-                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                         echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
                     }
                     ?>
@@ -553,7 +553,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-        <!--Canvas menu-->
+         <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -604,6 +604,7 @@ if (isset($_SESSION['email'])) {
                     <?php
                     }
                     ?>
+                    <li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>
 
 
                     <?php
@@ -675,15 +676,15 @@ if (isset($_SESSION['email'])) {
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
+                    </li>
                     <li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>
                 <?php
                         } else {
                 ?>
-                    <a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a>
+                    <li class="nav-item"><a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a></li>
                 <?php
                         }
                 ?>
-                </li>
                 <?php
                 if (isset($_SESSION['email'])) {
                     if ($userPrivilege == 'admin') {
@@ -740,6 +741,7 @@ if (isset($_SESSION['email'])) {
                 <!-- <div class="d-flex" role="search"> -->
 
                 <?php
+                echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                 if (isset($_SESSION['email'])) {
                     echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
                     echo '<li class="list-group-item list-group-item-action">
@@ -853,157 +855,154 @@ if (isset($_SESSION['email'])) {
                     </div>
                 </div>
             </div>
-
-
-        </div>
-        <script>
-            $(document).ready(function() {
-                $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
-            });
-
-            var procesando_mensaje = false;
-            var mensaje_abierto_id = null;
-
-            function toggleTicketInfo(id) {
-                var header = document.getElementById('mensaje-header-' + id);
-                var info = document.getElementById('mensaje-info-' + id);
-                var arrow = header.querySelector('.arrow');
-                modificar_estado_mensaje(id);
+            <script>
                 $(document).ready(function() {
                     $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
                 });
-                if (mensaje_abierto_id && mensaje_abierto_id !== id) {
-                    var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
-                    var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
-                    var arrowAnterior = headerAnterior.querySelector('.arrow');
 
-                    infoAnterior.style.display = 'none';
-                    arrowAnterior.innerHTML = '&#9654;';
+                var procesando_mensaje = false;
+                var mensaje_abierto_id = null;
+
+                function toggleTicketInfo(id) {
+                    var header = document.getElementById('mensaje-header-' + id);
+                    var info = document.getElementById('mensaje-info-' + id);
+                    var arrow = header.querySelector('.arrow');
+                    modificar_estado_mensaje(id);
+                    $(document).ready(function() {
+                        $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
+                    });
+                    if (mensaje_abierto_id && mensaje_abierto_id !== id) {
+                        var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
+                        var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
+                        var arrowAnterior = headerAnterior.querySelector('.arrow');
+
+                        infoAnterior.style.display = 'none';
+                        arrowAnterior.innerHTML = '&#9654;';
+                    }
+
+                    if (info.style.display === 'block') {
+                        // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
+                        if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
+                            arrow.innerHTML = '&#9660;';
+                            return;
+                        }
+                        // Si no hay mensaje enviado, ocultar el elemento
+                        info.style.display = 'none';
+                        arrow.innerHTML = '&#9654;';
+                        mensaje_abierto_id = null;
+
+                    } else {
+                        // Si el elemento está cerrado, mostrarlo
+                        info.style.display = 'block';
+                        arrow.innerHTML = '&#9660;';
+                        mensaje_abierto_id = id;
+                    }
                 }
 
-                if (info.style.display === 'block') {
-                    // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
-                    if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
-                        arrow.innerHTML = '&#9660;';
+                // Asignar la función a los eventos de clic de los headers de los tickets
+                if (document.getElementById('mensajes-container')) {
+                    document.getElementById('mensajes-container').addEventListener('click', function(event) {
+                        if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
+                        var arrow = event.target.closest('.arrow');
+                        if (arrow) {
+                            var header = arrow.closest('.mensaje-header');
+                            var id = header.id.replace('mensaje-header-', '');
+                            toggleTicketInfo(id);
+
+                        }
+                    });
+                }
+            </script>
+            <script>
+                function actualizarMensajes(id_conversacion, id_usuario_remitente) {
+                    $.ajax({
+                        url: "php/apis/ver_mensajes_usuario.php",
+                        method: 'POST',
+                        data: {
+                            id_usuario_destinatario: id_conversacion,
+                            mensaje: ''
+                        },
+                        success: function(data) {
+                            $('#mensaje-info-' + id_conversacion).html(data);
+                            $("#mensajes-container").html(data);
+                            $('#mensaje-info-' + id_conversacion).css('display', 'block');
+                        }
+                    });
+                }
+                $(document).ready(function() {
+                    actualizarMensajes(0);
+                });
+                // Enviar mensaje mediante AJAX
+                const mandar_mensaje_actualizacion = async (id_conversacion) => {
+                    var id_usuario_destinatario = document.querySelector("#id_usuario_destinatario-" + id_conversacion).value;
+                    var id_usuario_remitente = document.querySelector("#id_usuario_remitente-" + id_conversacion).value;
+                    var id_conversacion = document.querySelector("#id_conversacion-" + id_conversacion).value;
+                    var mensaje = document.querySelector("#mensaje_usuario_enviar-" + id_conversacion).value;
+
+                    if (mensaje.trim() === '') {
+                        Swal.fire({
+                            icon: "error",
+                            title: "ERROR.",
+                            text: "You have to fill all the camps",
+                            footer: "Web Comics"
+                        })
                         return;
                     }
-                    // Si no hay mensaje enviado, ocultar el elemento
-                    info.style.display = 'none';
-                    arrow.innerHTML = '&#9654;';
-                    mensaje_abierto_id = null;
 
-                } else {
-                    // Si el elemento está cerrado, mostrarlo
-                    info.style.display = 'block';
-                    arrow.innerHTML = '&#9660;';
-                    mensaje_abierto_id = id;
-                }
-            }
+                    //insert to data base in case of everything go correct.
+                    const data = new FormData();
+                    data.append('id_usuario_destinatario', id_usuario_destinatario);
+                    data.append("id_usuario_remitente", id_usuario_remitente);
+                    data.append("mensaje", mensaje);
 
-            // Asignar la función a los eventos de clic de los headers de los tickets
-            if (document.getElementById('mensajes-container')) {
-                document.getElementById('mensajes-container').addEventListener('click', function(event) {
-                    if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
-                    var arrow = event.target.closest('.arrow');
-                    if (arrow) {
-                        var header = arrow.closest('.mensaje-header');
-                        var id = header.id.replace('mensaje-header-', '');
-                        toggleTicketInfo(id);
+                    //pass data to php file
+                    var respond = await fetch("php/apis/new_mensaje.php", {
+                        method: 'POST',
+                        body: data
+                    });
 
+                    var result = await respond.json();
+
+                    if (result.success == false) {
+                        document.querySelector('#form_mensaje').reset();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        // Actualizar la lista de mensajes
+                        $('#mensaje_usuario_enviar').val('');
+                        $('#mensaje-info-' + id_conversacion).html(result.data);
+                        // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
+                        // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
+                        actualizarMensajes(id_conversacion, id_usuario_remitente);
                     }
-                });
-            }
-        </script>
-        <script>
-            function actualizarMensajes(id_conversacion, id_usuario_remitente) {
-                $.ajax({
-                    url: "php/apis/ver_mensajes_usuario.php",
-                    method: 'POST',
-                    data: {
-                        id_usuario_destinatario: id_conversacion,
-                        mensaje: ''
-                    },
-                    success: function(data) {
-                        $('#mensaje-info-' + id_conversacion).html(data);
-                        $("#mensajes-container").html(data);
-                        $('#mensaje-info-' + id_conversacion).css('display', 'block');
-                    }
-                });
-            }
-            $(document).ready(function() {
-                actualizarMensajes(0);
-            });
-            // Enviar mensaje mediante AJAX
-            const mandar_mensaje_actualizacion = async (id_conversacion) => {
-                var id_usuario_destinatario = document.querySelector("#id_usuario_destinatario-" + id_conversacion).value;
-                var id_usuario_remitente = document.querySelector("#id_usuario_remitente-" + id_conversacion).value;
-                var id_conversacion = document.querySelector("#id_conversacion-" + id_conversacion).value;
-                var mensaje = document.querySelector("#mensaje_usuario_enviar-" + id_conversacion).value;
-
-                if (mensaje.trim() === '') {
-                    Swal.fire({
-                        icon: "error",
-                        title: "ERROR.",
-                        text: "You have to fill all the camps",
-                        footer: "Web Comics"
-                    })
-                    return;
                 }
-
-                //insert to data base in case of everything go correct.
-                const data = new FormData();
-                data.append('id_usuario_destinatario', id_usuario_destinatario);
-                data.append("id_usuario_remitente", id_usuario_remitente);
-                data.append("mensaje", mensaje);
-
-                //pass data to php file
-                var respond = await fetch("php/apis/new_mensaje.php", {
-                    method: 'POST',
-                    body: data
-                });
-
-                var result = await respond.json();
-
-                if (result.success == false) {
-                    document.querySelector('#form_mensaje').reset();
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    // Actualizar la lista de mensajes
-                    $('#mensaje_usuario_enviar').val('');
-                    $('#mensaje-info-' + id_conversacion).html(result.data);
-                    // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
-                    // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
-                    actualizarMensajes(id_conversacion, id_usuario_remitente);
-                }
-            }
-        </script>
+            </script>
 
 
-        <div id="footer-lite" class="mt-5">
-            <div class="container">
-                <p class="helpcenter">
-                    <a href="http://www.example.com/help">Ayuda</a>
-                </p>
-                <p class="footer-title">
-                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                    <span>·</span>
-                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                    <span>·</span>
-                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                    <span>·</span>
-                    <a href="about.php" style="color:black">Quiénes somos</a>
-                </p>
-                <!-- add social media with icons -->
-                <p class="social">
-                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="footer-title">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
 
-                </p>
-                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                </div>
             </div>
-        </div>
         </div>
     </main>
 </body>

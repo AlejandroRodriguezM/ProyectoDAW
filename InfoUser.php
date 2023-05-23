@@ -479,8 +479,8 @@ if (isset($_GET['userName'])) {
                             echo '<li>
                             <a class="dropdown-item" href="infoPerfil.php">
                             <i class="fa fa-cog fa-fw"></i>Mi perfil
-                            </a><
-                            /li>';
+                            </a>
+                            </li>';
                             echo '<li>
                             <a class="dropdown-item" href="#">
                             <i class="fa fa-cog fa-fw"></i>Enviar un ticket
@@ -509,7 +509,7 @@ if (isset($_GET['userName'])) {
                         </div>
                         </li>';
                         echo "<hr class='dropdown-divider'>";
-                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                         echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
                     }
                     ?>
@@ -517,7 +517,7 @@ if (isset($_GET['userName'])) {
             </div>
         </div>
 
-        <!--Canvas menu-->
+         <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -548,7 +548,6 @@ if (isset($_GET['userName'])) {
                             echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
                             echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
                         }
-                        echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="closeSesion()">Cerrar sesion</button></li>';
                     }
                     ?>
                     <li>
@@ -569,6 +568,7 @@ if (isset($_GET['userName'])) {
                     <?php
                     }
                     ?>
+                    <li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>
 
 
                     <?php
@@ -640,15 +640,15 @@ if (isset($_GET['userName'])) {
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
+                    </li>
                     <li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>
                 <?php
                         } else {
                 ?>
-                    <a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a>
+                    <li class="nav-item"><a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a></li>
                 <?php
                         }
                 ?>
-                </li>
                 <?php
                 if (isset($_SESSION['email'])) {
                     if ($userPrivilege == 'admin') {
@@ -705,6 +705,7 @@ if (isset($_GET['userName'])) {
                 <!-- <div class="d-flex" role="search"> -->
 
                 <?php
+                echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                 if (isset($_SESSION['email'])) {
                     echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
                     echo '<li class="list-group-item list-group-item-action">
@@ -720,110 +721,6 @@ if (isset($_GET['userName'])) {
                     }
                 </script>
                 <!-- </div> -->
-            </div>
-        </div>
-        <!-- The Modal -->
-        <div id="myModal" class="modal modal_img" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <img class="modal-content_img" id="img01">
-        </div>
-
-        <!-- FORMULARIO INSERTAR -->
-        <div id="crear_ticket" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <form method="post" id="form_ticket" onsubmit="return false;">
-
-                            <h4 class="modal-title">Crear un ticket para administradores</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Asunto</label>
-                            <input type="text" id="asunto_usuario" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Mensaje</label>
-                            <textarea class="form-control" id="mensaje_usuario" style="resize:none;"></textarea>
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                                echo "<input type='hidden' id='id_user_ticket' value='$id_usuario'>";
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div id="mensaje_privado" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <form method="post" id="form_ticket" onsubmit="return false;">
-
-                            <h4 class="modal-title">Mensaje para usuario <?php echo $nombre_otro_usuario ?></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Mensaje</label>
-                            <textarea class="form-control" id="mensaje_usuario_enviar" style="resize:none;"></textarea>
-                            <?php
-                            if (isset($_SESSION['email'])) {
-                                echo "<input type='hidden' id='id_usuario_remitente' value='$id_usuario'>";
-                                echo "<input type='hidden' id='id_usuario_destinatario' value='$id_otros_usuario'>";
-                            }
-                            ?>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_mensaje()">
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div id="denunciar_usuario" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <form method="post" id="form_ticket" onsubmit="return false;">
-
-                            <h4 class="modal-title">Denunciar usuario</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Motivo de la denuncia</label>
-                            <select class="form-control" id="motivo_denuncia">
-                                <option value="">Selecciona un motivo</option>
-                                <option value="acoso">Acoso</option>
-                                <option value="spam">Spam</option>
-                                <option value="contenido inapropiado">Contenido inapropiado</option>
-                                <option value="insultos">Insultos</option>
-                                <option value="otro">Otro motivo</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Añade mas contexto</label>
-                            <textarea class="form-control" id="contexto_denuncia_usuario" style="resize:none;"></textarea>
-
-                            <?php
-                            echo "<input type='hidden' id='id_usuario_denunciante' value='$id_usuario'>";
-                            echo "<input type='hidden' id='id_usuario_denunciado' value='$id_otros_usuario'>";
-                            ?>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_denuncia()">
-                    </div>
-                    </form>
-                </div>
             </div>
         </div>
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">

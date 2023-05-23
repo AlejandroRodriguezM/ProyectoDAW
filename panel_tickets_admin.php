@@ -203,7 +203,7 @@ if ($userPrivilege == 'user') {
 
         body {
             margin: 0 !important;
-            padding: 0 ;
+            padding: 0;
             height: 100% !important;
             background-color: rgba(0, 0, 0, 0);
 
@@ -406,16 +406,15 @@ if ($userPrivilege == 'user') {
                                 echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
                                 echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
                             } elseif ($userPrivilege == 'user') {
-                            echo '<li class="list-group-item list-group-item-action">
+                                echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
-                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
-                            echo "<div class='fw-bold'>$userName</div>";
-                            echo '
+                                echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                                echo "<div class='fw-bold'>$userName</div>";
+                                echo '
                                     </div>
                                     </li>';
-                                    echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                                    echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
-
+                                echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
+                                echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
                             } else {
                                 echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
                             }
@@ -490,12 +489,12 @@ if ($userPrivilege == 'user') {
         }
         ?>
 
-            <div class="card-footer text-muted" style="background-color:white">
-                Creado por Alejandro Rodriguez ©2023
-            </div>
+        <div class="card-footer text-muted" style="background-color:white">
+            Creado por Alejandro Rodriguez ©2023
+        </div>
 
-        <!--Canvas imagen de perfil-->
-        <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
+                <!--Canvas imagen de perfil-->
+                <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
             <div class="offcanvas-header">
                 <?php
                 if (isset($_SESSION['email'])) {
@@ -513,32 +512,48 @@ if ($userPrivilege == 'user') {
                     <?php
                     if (isset($_SESSION['email'])) {
                         if ($userPrivilege == 'admin') {
-                            echo '<li>
+                            echo '<li class="list-group-item list-group-item-action">
                                             <div class="d-flex align-items-center">';
                             echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
                             echo "<div class='fw-bold'>$userName</div>";
                             echo '
                                     </div>
                                     </li>';
-                            echo '<li><a class="dropdown-item" href="infoPerfil.php" >Mi perfil</a></li>';
-                            echo '<li><a class="dropdown-item" href="panel_tickets_admin.php">Panel tickets</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="infoPerfil.php" ><i class="fa fa-cog fa-fw"></i>Mi perfil</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="panel_tickets_admin.php"><i class="fa fa-cog fa-fw"></i>Panel tickets</a></li>';
+                            echo '<li class="list-group-item list-group-item-action"><button class="list-group-item-action active" onclick="closeSesion()"><i class="fa fa-cog fa-fw"></i>Cerrar sesion</button></li>';
                         } elseif ($userPrivilege == 'user') {
-                            echo '<li>
-                                    <div class="d-flex align-items-center">
-                                        <img src="ruta-a-imagen.jpg" alt="Avatar del usuario" class="me-2" style="width: 30px; height: 30px;">
-                                        <div>
-                                        <div class="fw-bold">Nombre de usuario</div>
-                                        <a href="infoPerfil.php" class="text-muted">Mi perfil</a>
-                                        </div>
+                            echo '<li class="list-group-item list-group-item-action">
+                                            <div class="d-flex align-items-center">';
+                            echo "<img src=$picture id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
+                            echo "<div class='fw-bold'>$userName</div>";
+                            echo '
                                     </div>
                                     </li>';
-                            echo '<li><a class="dropdown-item" href="#">Enviar un ticket</a></li>';
+                            echo '<li>
+                            <a class="dropdown-item" href="infoPerfil.php">
+                            <i class="fa fa-cog fa-fw"></i>Mi perfil
+                            </a>
+                            </li>';
+                            echo '<li>
+                            <a class="dropdown-item" href="#">
+                            <i class="fa fa-cog fa-fw"></i>Enviar un ticket
+                            </a>
+                            </li>';
+                            echo '<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action active" href="logOut.php">
+                            <i class="bi bi-person-circle p-1"></i>Cerrar sesion
+                            </a>
+                            </li>';
                         } else {
-                            echo '<li><button class="dropdown-item" onclick="closeSesion()">Iniciar sesión</button></li>';
+                            echo '<li class="list-group-item list-group-item-action">
+                            <a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión
+                            </a>
+                            </li>';
                         }
                     } else {
 
-                        echo '<li>
+                        echo '<li class="list-group-item list-group-item-action">
                                 <div class="d-flex align-items-center">';
                         echo "<img src='assets/pictureProfile/default/default.jpg' id='avatar' alt='Avatar' class='avatarPicture me-2' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;'>";
                         echo '
@@ -548,16 +563,15 @@ if ($userPrivilege == 'user') {
                         </div>
                         </li>';
                         echo "<hr class='dropdown-divider'>";
-                        echo '<li><a class="dropdown-item" href="about.php">Sobre Comic web</a></li>';
-                        echo '<li><button class="dropdown-item" onclick="iniciar_sesion()">Iniciar sesión</button></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
                     }
                     ?>
                 </ul>
             </div>
         </div>
 
-
-        <!--Canvas menu-->
+         <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -596,7 +610,7 @@ if ($userPrivilege == 'user') {
                     </li>
                     <li>
                         <a class='list-group-item-action active' href="about.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class="fa fa-pencil fa-fw"></i>
-                            Sobre Comic web</a>
+                            Sobre WebComics</a>
                     </li>
                     <?php
                     if (isset($_SESSION['email'])) {
@@ -608,6 +622,7 @@ if ($userPrivilege == 'user') {
                     <?php
                     }
                     ?>
+                    <li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>
 
 
                     <?php
@@ -666,81 +681,92 @@ if ($userPrivilege == 'user') {
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+
+                    <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
+                        <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
+                        <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
+                    </form>
                     <li class="list-group-item list-group-item-action">
-                        <a class="list-group-item-action active" aria-current="page" href="index.php">Inicio</a>
+                        <a class="list-group-item-action active" aria-current="page" href="index.php"><i class="fa fa-home fa-fw"></i>Inicio</a>
                     </li>
                     <li class="list-group-item list-group-item-action">
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
-                            <a class="list-group-item-action active" href="mi_coleccion.php">Mi colección</a>
-                        <?php
-                        } else {
-                        ?>
-                            <a class="list-group-item-action active" href="#" onclick="no_logueado()">Mi colección</a>
-                        <?php
-                        }
-                        ?>
                     </li>
+                    <li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>
+                <?php
+                        } else {
+                ?>
+                    <li class="nav-item"><a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a></li>
+                <?php
+                        }
+                ?>
+                <?php
+                if (isset($_SESSION['email'])) {
+                    if ($userPrivilege == 'admin') {
+                        echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
+                        echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                        echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                    } else {
+                        echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
+                        echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                    }
+                }
+                ?>
+                <li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="novedades.php"><i class='bi bi-person-circle p-1'></i>Novedades</a>
+                </li>
+                <li class="list-group-item list-group-item-action">
                     <?php
                     if (isset($_SESSION['email'])) {
-                        echo '<li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>';
-                        if ($userPrivilege == 'admin') {
-                            echo "<li><a class='list-group-item-action active' href='admin_panel_usuario.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Administracion</a></li>";
-                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                            echo "<li><a class='list-group-item-action active' href='panel_tickets_admin.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Ver tickets</a></li>";
+                        // Obtener el número de mensajes sin leer
+                        $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
+                        if ($num_solicitudes > 0) {
+                            echo "<span class='material-icons shaking'>notifications</span>";
+                            //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
                         } else {
-                            echo "<li><a class='list-group-item-action active' href='infoPerfil.php' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Mi perfil</a></li>";
-                            echo "<li><button type='button' class='list-group-item-action active' data-bs-toggle='modal' data-bs-target='#crear_ticket' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'><i class='bi bi-person-circle p-1'></i>Crear ticket</button></li>";
+                            echo "<span class='material-icons '>notifications</span>";
                         }
+                        echo "Notificaciones</a>";
                     }
                     ?>
-                    <li class="list-group-item list-group-item-action">
-                        <a class="list-group-item-action active" href="novedades.php">Novedades</a>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            // Obtener el número de mensajes sin leer
-                            $num_solicitudes = obtener_numero_notificaciones_amistad_sin_leer($id_usuario);
+                </li>
+                <li class="list-group-item list-group-item-action">
+                    <?php
+                    if (isset($_SESSION['email'])) {
+                        // Obtener el número de mensajes sin leer
+                        $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
 
-                            // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='list-group-item-action active' href='solicitudes_amistad.php'>";
-                            if ($num_solicitudes > 0) {
-                                echo "<span class='material-icons shaking'>notifications</span>";
-                                //echo "<span class='num_notificaciones'>$num_solicitudes</span>";
-                            } else {
-                                echo "<span class='material-icons '>notifications</span>";
-                            }
-                            echo "</a>";
+                        // Imprimir el enlace con el número de mensajes sin leer
+                        echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
+                        if ($num_mensajes > 0) {
+                            echo "<span class='material-icons shaking'>mark_email_unread</span>";
+                            //echo "<span class='num_mensajes'>$num_mensajes</span>";
+                        } else {
+                            echo "<span class='material-icons'>mark_email_unread</span>";
                         }
-                        ?>
-                    </li>
-                    <li class="list-group-item list-group-item-action">
-                        <?php
-                        if (isset($_SESSION['email'])) {
-                            // Obtener el número de mensajes sin leer
-                            $num_mensajes = obtener_numero_mensajes_sin_leer($id_usuario);
-
-                            // Imprimir el enlace con el número de mensajes sin leer
-                            echo "<a class='list-group-item-action active' href='mensajes_usuario.php'>";
-                            if ($num_mensajes > 0) {
-                                echo "<span class='material-icons shaking'>mark_email_unread</span>";
-                                //echo "<span class='num_mensajes'>$num_mensajes</span>";
-                            } else {
-                                echo "<span class='material-icons'>mark_email_unread</span>";
-                            }
-                            echo "</a>";
-                        }
-                        ?>
-                    </li>
+                        echo "Mensajes</a>";
+                    }
+                    ?>
+                </li>
                 </ul>
 
                 <!-- <div class="d-flex" role="search"> -->
-                <form class="d-flex" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" role="search" onsubmit="searchData(); return false;">
-                    <input type="search" class="form-control me-2" name="search" id="search" placeholder="Buscador" id="search-data" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important' />
-                    <button type="submit" class="btn btn-outline-success" id="search-boton" name="search-boton">Buscar</button>
-                </form>
+
+                <?php
+                echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
+                if (isset($_SESSION['email'])) {
+                    echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
+                    echo '<li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Cerrar sesion</button></a>';
+                    echo '</li>';
+                }
+                ?>
 
                 <script>
                     function searchData() {
@@ -831,175 +857,175 @@ if ($userPrivilege == 'user') {
                 </div>
             </div>
 
-        <script>
-            $(document).ready(function() {
-                $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
-            });
-
-            var procesando_mensaje = false;
-            var mensaje_abierto_id = null;
-
-            function toggleTicketInfo(id) {
-                var header = document.getElementById('mensaje-header-' + id);
-                var info = document.getElementById('mensaje-info-' + id);
-                var arrow = header.querySelector('.arrow');
-                modificar_estado_mensaje(id);
+            <script>
                 $(document).ready(function() {
                     $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
                 });
-                if (mensaje_abierto_id && mensaje_abierto_id !== id) {
-                    var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
-                    var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
-                    var arrowAnterior = headerAnterior.querySelector('.arrow');
 
-                    infoAnterior.style.display = 'none';
-                    arrowAnterior.innerHTML = '&#9654;';
+                var procesando_mensaje = false;
+                var mensaje_abierto_id = null;
+
+                function toggleTicketInfo(id) {
+                    var header = document.getElementById('mensaje-header-' + id);
+                    var info = document.getElementById('mensaje-info-' + id);
+                    var arrow = header.querySelector('.arrow');
+                    modificar_estado_mensaje(id);
+                    $(document).ready(function() {
+                        $("#notificacion_mensajes").load("php/apis/notificacion_mensajes.php");
+                    });
+                    if (mensaje_abierto_id && mensaje_abierto_id !== id) {
+                        var headerAnterior = document.getElementById('mensaje-header-' + mensaje_abierto_id);
+                        var infoAnterior = document.getElementById('mensaje-info-' + mensaje_abierto_id);
+                        var arrowAnterior = headerAnterior.querySelector('.arrow');
+
+                        infoAnterior.style.display = 'none';
+                        arrowAnterior.innerHTML = '&#9654;';
+                    }
+
+                    if (info.style.display === 'block') {
+                        // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
+                        if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
+                            arrow.innerHTML = '&#9660;';
+                            return;
+                        }
+                        // Si no hay mensaje enviado, ocultar el elemento
+                        info.style.display = 'none';
+                        arrow.innerHTML = '&#9654;';
+                        mensaje_abierto_id = null;
+
+                    } else {
+                        // Si el elemento está cerrado, mostrarlo
+                        info.style.display = 'block';
+                        arrow.innerHTML = '&#9660;';
+                        mensaje_abierto_id = id;
+                    }
                 }
 
-                if (info.style.display === 'block') {
-                    // Si el elemento está abierto y hay un mensaje enviado, mantener la clase en block
-                    if (document.querySelector(`#mensaje-info-${id} .mensaje-enviado`)) {
-                        arrow.innerHTML = '&#9660;';
+                // Asignar la función a los eventos de clic de los headers de los tickets
+                if (document.getElementById('mensajes-container')) {
+                    document.getElementById('mensajes-container').addEventListener('click', function(event) {
+                        if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
+                        var arrow = event.target.closest('.arrow');
+                        if (arrow) {
+                            var header = arrow.closest('.mensaje-header');
+                            var id = header.id.replace('mensaje-header-', '');
+                            toggleTicketInfo(id);
+
+                        }
+                    });
+                }
+            </script>
+            <script>
+                function actualizarMensajes(ticket_id, id_usuario) {
+                    $.ajax({
+                        url: "php/apis/tickets_admin.php",
+                        method: 'POST',
+                        data: {
+                            id_usuario_destinatario: ticket_id,
+                            mensaje: ''
+                        },
+                        success: function(data) {
+                            $('#mensaje-info-' + ticket_id).html(data);
+                            $("#mensajes-container").html(data);
+                            $('#mensaje-info-' + ticket_id).css('display', 'block');
+                        }
+                    });
+                }
+                $(document).ready(function() {
+                    actualizarMensajes(0);
+                });
+                // Enviar mensaje mediante AJAX
+                const mandar_mensaje_actualizacion = async (ticket_id) => {
+                    var id_ticket = document.querySelector("#ticket_id_" + ticket_id).value;
+                    var id_usuario = document.querySelector("#user_id_" + ticket_id).value;
+                    var estado = document.querySelector("#estado_" + ticket_id).value;
+                    var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
+
+
+
+                    if (respuesta.trim() === '') {
+                        Swal.fire({
+                            icon: "error",
+                            title: "ERROR.",
+                            text: "No puedes enviar un mensaje vacío.",
+                            footer: "Web Comics"
+                        })
                         return;
                     }
-                    // Si no hay mensaje enviado, ocultar el elemento
-                    info.style.display = 'none';
-                    arrow.innerHTML = '&#9654;';
-                    mensaje_abierto_id = null;
 
-                } else {
-                    // Si el elemento está cerrado, mostrarlo
-                    info.style.display = 'block';
-                    arrow.innerHTML = '&#9660;';
-                    mensaje_abierto_id = id;
+                    //insert to data base in case of everything go correct.
+                    const data = new FormData();
+                    data.append('ticket_id', id_ticket);
+                    data.append("user_id", id_usuario);
+                    data.append("estado", estado);
+                    data.append("mensaje", respuesta);
+
+                    //pass data to php file
+                    var respond = await fetch("php/apis/respon_ticket.php", {
+                        method: 'POST',
+                        body: data
+                    });
+
+                    var result = await respond.json();
+
+                    if (result.success == false) {
+                        document.querySelector('#form_mensaje').reset();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        // Actualizar la lista de mensajes
+                        $('#mensaje_usuario_enviar').val('');
+                        $('#mensaje-info-' + ticket_id).html(result.data);
+                        // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
+                        // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
+                        actualizarMensajes(ticket_id, id_usuario);
+                    }
                 }
-            }
-
-            // Asignar la función a los eventos de clic de los headers de los tickets
-            if (document.getElementById('mensajes-container')) {
-                document.getElementById('mensajes-container').addEventListener('click', function(event) {
-                    if (procesando_mensaje) return; // evitar que se ejecute el evento mientras se procesa un mensaje
-                    var arrow = event.target.closest('.arrow');
-                    if (arrow) {
-                        var header = arrow.closest('.mensaje-header');
-                        var id = header.id.replace('mensaje-header-', '');
-                        toggleTicketInfo(id);
-
-                    }
-                });
-            }
-        </script>
-        <script>
-            function actualizarMensajes(ticket_id, id_usuario) {
-                $.ajax({
-                    url: "php/apis/tickets_admin.php",
-                    method: 'POST',
-                    data: {
-                        id_usuario_destinatario: ticket_id,
-                        mensaje: ''
-                    },
-                    success: function(data) {
-                        $('#mensaje-info-' + ticket_id).html(data);
-                        $("#mensajes-container").html(data);
-                        $('#mensaje-info-' + ticket_id).css('display', 'block');
-                    }
-                });
-            }
-            $(document).ready(function() {
-                actualizarMensajes(0);
-            });
-            // Enviar mensaje mediante AJAX
-            const mandar_mensaje_actualizacion = async (ticket_id) => {
-                var id_ticket = document.querySelector("#ticket_id_" + ticket_id).value;
-                var id_usuario = document.querySelector("#user_id_" + ticket_id).value;
-                var estado = document.querySelector("#estado_" + ticket_id).value;
-                var respuesta = document.querySelector("#respuesta_" + ticket_id).value;
-
-
-
-                if (respuesta.trim() === '') {
-                    Swal.fire({
-                        icon: "error",
-                        title: "ERROR.",
-                        text: "No puedes enviar un mensaje vacío.",
-                        footer: "Web Comics"
-                    })
-                    return;
+            </script>
+            <script>
+                // Función para abrir el modal
+                function openModal(modalId) {
+                    var modal = document.querySelector('.modal-form' + modalId);
+                    modal.style.display = "block";
                 }
 
-                //insert to data base in case of everything go correct.
-                const data = new FormData();
-                data.append('ticket_id', id_ticket);
-                data.append("user_id", id_usuario);
-                data.append("estado", estado);
-                data.append("mensaje", respuesta);
-
-                //pass data to php file
-                var respond = await fetch("php/apis/respon_ticket.php", {
-                    method: 'POST',
-                    body: data
-                });
-
-                var result = await respond.json();
-
-                if (result.success == false) {
-                    document.querySelector('#form_mensaje').reset();
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    // Actualizar la lista de mensajes
-                    $('#mensaje_usuario_enviar').val('');
-                    $('#mensaje-info-' + ticket_id).html(result.data);
-                    // Esperar a que el contenido de mensaje-info-<id_conversacion> haya sido agregado al DOM
-                    // y luego llamar a la función toggleTicketInfo() con el id de conversación correspondiente.
-                    actualizarMensajes(ticket_id, id_usuario);
+                // Función para cerrar el modal
+                function closeModal(modalId) {
+                    var modal = document.getElementById(modalId);
+                    modal.style.display = "none";
                 }
-            }
-        </script>
-        <script>
-            // Función para abrir el modal
-            function openModal(modalId) {
-                var modal = document.querySelector('.modal-form' + modalId);
-                modal.style.display = "block";
-            }
 
-            // Función para cerrar el modal
-            function closeModal(modalId) {
-                var modal = document.getElementById(modalId);
-                modal.style.display = "none";
-            }
-
-            // Botón para abrir el modal
-            var btns = document.querySelectorAll(".btn-open-modal");
-            btns.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    var modalId = btn.dataset.target;
-                    openModal(modalId);
+                // Botón para abrir el modal
+                var btns = document.querySelectorAll(".btn-open-modal");
+                btns.forEach(function(btn) {
+                    btn.addEventListener("click", function() {
+                        var modalId = btn.dataset.target;
+                        openModal(modalId);
+                    });
                 });
-            });
 
-            // Botón para cerrar el modal
-            var closeBtns = document.querySelectorAll(".close-modal");
-            closeBtns.forEach(function(closeBtn) {
-                closeBtn.addEventListener("click", function() {
-                    var modalId = closeBtn.dataset.target;
-                    closeModal(modalId);
+                // Botón para cerrar el modal
+                var closeBtns = document.querySelectorAll(".close-modal");
+                closeBtns.forEach(function(closeBtn) {
+                    closeBtn.addEventListener("click", function() {
+                        var modalId = closeBtn.dataset.target;
+                        closeModal(modalId);
+                    });
                 });
-            });
 
-            // Cerrar el modal al hacer clic en cualquier parte de la pantalla
-            var modals = document.querySelectorAll(".modal");
-            modals.forEach(function(modal) {
-                window.addEventListener("click", function(event) {
-                    if (event.target === modal) {
-                        modal.style.display = "none";
-                    }
+                // Cerrar el modal al hacer clic en cualquier parte de la pantalla
+                var modals = document.querySelectorAll(".modal");
+                modals.forEach(function(modal) {
+                    window.addEventListener("click", function(event) {
+                        if (event.target === modal) {
+                            modal.style.display = "none";
+                        }
+                    });
                 });
-            });
-        </script>
+            </script>
 
-                <div id="footer-lite" class="mt-5">
+            <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">
                         <a href="http://www.example.com/help">Ayuda</a>

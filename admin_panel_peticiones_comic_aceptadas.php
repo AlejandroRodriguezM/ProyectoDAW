@@ -420,8 +420,8 @@ if (isset($_POST['edit'])) {
                             echo '<li>
                             <a class="dropdown-item" href="infoPerfil.php">
                             <i class="fa fa-cog fa-fw"></i>Mi perfil
-                            </a><
-                            /li>';
+                            </a>
+                            </li>';
                             echo '<li>
                             <a class="dropdown-item" href="#">
                             <i class="fa fa-cog fa-fw"></i>Enviar un ticket
@@ -450,7 +450,7 @@ if (isset($_POST['edit'])) {
                         </div>
                         </li>';
                         echo "<hr class='dropdown-divider'>";
-                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                         echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
                     }
                     ?>
@@ -458,7 +458,7 @@ if (isset($_POST['edit'])) {
             </div>
         </div>
 
-        <!--Canvas menu-->
+         <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -509,6 +509,7 @@ if (isset($_POST['edit'])) {
                     <?php
                     }
                     ?>
+                    <li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>
 
 
                     <?php
@@ -580,15 +581,15 @@ if (isset($_POST['edit'])) {
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
+                    </li>
                     <li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>
                 <?php
                         } else {
                 ?>
-                    <a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a>
+                    <li class="nav-item"><a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a></li>
                 <?php
                         }
                 ?>
-                </li>
                 <?php
                 if (isset($_SESSION['email'])) {
                     if ($userPrivilege == 'admin') {
@@ -640,10 +641,12 @@ if (isset($_POST['edit'])) {
                     }
                     ?>
                 </li>
+                </ul>
 
                 <!-- <div class="d-flex" role="search"> -->
 
                 <?php
+                echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                 if (isset($_SESSION['email'])) {
                     echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
                     echo '<li class="list-group-item list-group-item-action">
@@ -651,7 +654,6 @@ if (isset($_POST['edit'])) {
                     echo '</li>';
                 }
                 ?>
-                </ul>
 
                 <script>
                     function searchData() {

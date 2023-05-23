@@ -392,8 +392,8 @@ if (isset($_SESSION['email'])) {
                             echo '<li>
                             <a class="dropdown-item" href="infoPerfil.php">
                             <i class="fa fa-cog fa-fw"></i>Mi perfil
-                            </a><
-                            /li>';
+                            </a>
+                            </li>';
                             echo '<li>
                             <a class="dropdown-item" href="#">
                             <i class="fa fa-cog fa-fw"></i>Enviar un ticket
@@ -422,7 +422,7 @@ if (isset($_SESSION['email'])) {
                         </div>
                         </li>';
                         echo "<hr class='dropdown-divider'>";
-                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php">Sobre WebComics</a></li>';
+                        echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                         echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="logOut.php"><i class="bi bi-person-circle p-1"></i>Iniciar sesión</a></li>';
                     }
                     ?>
@@ -430,7 +430,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-        <!--Canvas menu-->
+         <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -481,6 +481,7 @@ if (isset($_SESSION['email'])) {
                     <?php
                     }
                     ?>
+                    <li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>
 
 
                     <?php
@@ -552,15 +553,15 @@ if (isset($_SESSION['email'])) {
                         <?php
                         if (isset($_SESSION['email'])) {
                         ?>
+                    </li>
                     <li class="nav-item"><a class="list-group-item-action active" href="mi_coleccion.php" style="cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important"><i class="bi bi-newspaper p-1"></i>Mi coleccion</li>
                 <?php
                         } else {
                 ?>
-                    <a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a>
+                    <li class="nav-item"><a class="list-group-item-action active" href="#" onclick="no_logueado()"><i class="bi bi-newspaper p-1"></i>Mi colección</a></li>
                 <?php
                         }
                 ?>
-                </li>
                 <?php
                 if (isset($_SESSION['email'])) {
                     if ($userPrivilege == 'admin') {
@@ -617,6 +618,7 @@ if (isset($_SESSION['email'])) {
                 <!-- <div class="d-flex" role="search"> -->
 
                 <?php
+                echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                 if (isset($_SESSION['email'])) {
                     echo '<div style="border-bottom: 1px solid #e6e6e6;"></div>';
                     echo '<li class="list-group-item list-group-item-action">
@@ -634,7 +636,6 @@ if (isset($_SESSION['email'])) {
                 <!-- </div> -->
             </div>
         </div>
-
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
             <div class="container" style="background-color: #00000000">
@@ -785,94 +786,93 @@ if (isset($_SESSION['email'])) {
             </div>
 
             <!-- <div class="bgimg-2"> -->
-        </div>
-        <script>
-            // Función para mostrar y ocultar la conversación al hacer clic en el ticket
-            function toggleTicketInfo(id) {
-                var header = document.getElementById('ticket-header-' + id);
-                var info = document.getElementById('ticket-info-' + id);
-                var arrow = header.querySelector('.arrow');
-                if (info.style.display === 'block') {
-                    info.style.display = 'none';
-                    arrow.innerHTML = '&#9654;';
-                } else {
-                    info.style.display = 'block';
-                    arrow.innerHTML = '&#9660;';
-                }
-            }
-
-            // Asignar la función a los eventos de clic de los headers de los tickets
-            var headers = document.querySelectorAll('.ticket-header');
-            for (var i = 0; i < headers.length; i++) {
-                headers[i].addEventListener('click', function() {
-                    toggleTicketInfo(this.id.replace('ticket-header-', ''));
-                });
-            }
-        </script>
-        <script>
-            // Función para abrir el modal
-            function openModal(modalId) {
-                var modal = document.querySelector('.modal-form' + modalId);
-                modal.style.display = "block";
-            }
-
-            // Función para cerrar el modal
-            function closeModal(modalId) {
-                var modal = document.getElementById(modalId);
-                modal.style.display = "none";
-            }
-
-            // Botón para abrir el modal
-            var btns = document.querySelectorAll(".btn-open-modal");
-            btns.forEach(function(btn) {
-                btn.addEventListener("click", function() {
-                    var modalId = btn.dataset.target;
-                    openModal(modalId);
-                });
-            });
-
-            // Botón para cerrar el modal
-            var closeBtns = document.querySelectorAll(".close-modal");
-            closeBtns.forEach(function(closeBtn) {
-                closeBtn.addEventListener("click", function() {
-                    var modalId = closeBtn.dataset.target;
-                    closeModal(modalId);
-                });
-            });
-
-            // Cerrar el modal al hacer clic en cualquier parte de la pantalla
-            var modals = document.querySelectorAll(".modal");
-            modals.forEach(function(modal) {
-                window.addEventListener("click", function(event) {
-                    if (event.target === modal) {
-                        modal.style.display = "none";
+            <script>
+                // Función para mostrar y ocultar la conversación al hacer clic en el ticket
+                function toggleTicketInfo(id) {
+                    var header = document.getElementById('ticket-header-' + id);
+                    var info = document.getElementById('ticket-info-' + id);
+                    var arrow = header.querySelector('.arrow');
+                    if (info.style.display === 'block') {
+                        info.style.display = 'none';
+                        arrow.innerHTML = '&#9654;';
+                    } else {
+                        info.style.display = 'block';
+                        arrow.innerHTML = '&#9660;';
                     }
-                });
-            });
-        </script>
-        <div id="footer-lite" class="mt-5">
-            <div class="container">
-                <p class="helpcenter">
-                    <a href="http://www.example.com/help">Ayuda</a>
-                </p>
-                <p class="footer-title">
-                    <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
-                    <span>·</span>
-                    <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
-                    <span>·</span>
-                    <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
-                    <span>·</span>
-                    <a href="about.php" style="color:black">Quiénes somos</a>
-                </p>
-                <!-- add social media with icons -->
-                <p class="social">
-                    <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
-                    <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+                }
 
-                </p>
-                <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                // Asignar la función a los eventos de clic de los headers de los tickets
+                var headers = document.querySelectorAll('.ticket-header');
+                for (var i = 0; i < headers.length; i++) {
+                    headers[i].addEventListener('click', function() {
+                        toggleTicketInfo(this.id.replace('ticket-header-', ''));
+                    });
+                }
+            </script>
+            <script>
+                // Función para abrir el modal
+                function openModal(modalId) {
+                    var modal = document.querySelector('.modal-form' + modalId);
+                    modal.style.display = "block";
+                }
+
+                // Función para cerrar el modal
+                function closeModal(modalId) {
+                    var modal = document.getElementById(modalId);
+                    modal.style.display = "none";
+                }
+
+                // Botón para abrir el modal
+                var btns = document.querySelectorAll(".btn-open-modal");
+                btns.forEach(function(btn) {
+                    btn.addEventListener("click", function() {
+                        var modalId = btn.dataset.target;
+                        openModal(modalId);
+                    });
+                });
+
+                // Botón para cerrar el modal
+                var closeBtns = document.querySelectorAll(".close-modal");
+                closeBtns.forEach(function(closeBtn) {
+                    closeBtn.addEventListener("click", function() {
+                        var modalId = closeBtn.dataset.target;
+                        closeModal(modalId);
+                    });
+                });
+
+                // Cerrar el modal al hacer clic en cualquier parte de la pantalla
+                var modals = document.querySelectorAll(".modal");
+                modals.forEach(function(modal) {
+                    window.addEventListener("click", function(event) {
+                        if (event.target === modal) {
+                            modal.style.display = "none";
+                        }
+                    });
+                });
+            </script>
+            <div id="footer-lite" class="mt-5">
+                <div class="container">
+                    <p class="helpcenter">
+                        <a href="http://www.example.com/help">Ayuda</a>
+                    </p>
+                    <p class="footer-title">
+                        <a href="https://www.hoy.es/condiciones-uso.html?ref=https%3A%2F%2Fwww.google.com%2F" style="color:black">Condiciones de uso</a>
+                        <span>·</span>
+                        <a href="https://policies.google.com/privacy?hl=es" style="color:black">Política de privacidad</a>
+                        <span>·</span>
+                        <a class="cookies" href="https://www.doblemente.com/modelo-de-ejemplo-de-politica-de-cookies/" style="color:black">Mis cookies</a>
+                        <span>·</span>
+                        <a href="about.php" style="color:black">Quiénes somos</a>
+                    </p>
+                    <!-- add social media with icons -->
+                    <p class="social">
+                        <a href="https://github.com/AlejandroRodriguezM"><img src="./assets/img/github.png" alt="Github" width="50" height="50" target="_blank"></a>
+                        <a href="http://www.infojobs.net/alejandro-rodriguez-mena.prf"><img src="https://brand.infojobs.net/downloads/ij-logo_reduced/ij-logo_reduced.svg" alt="infoJobs" width="50" height="50" target="_blank"></a>
+
+                    </p>
+                    <p class="copyright" style="color:black">©2023 Alejandro Rodriguez</p>
+                </div>
             </div>
-        </div>
         </div>
     </main>
 </body>
