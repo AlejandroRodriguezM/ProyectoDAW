@@ -2171,7 +2171,7 @@ function rechazar_solicitud(int $id_remitente, int $id_mi_usuario): bool
 	$id_remitente = htmlspecialchars($id_remitente, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	$id_mi_usuario = htmlspecialchars($id_mi_usuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$consulta = $conection->prepare("UPDATE solicitudes_amistad SET estado_solicitud = 'rechazada' WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
+		$consulta = $conection->prepare("UPDATE solicitudes_amistad SET estado_solicitud = 'en espera' WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
 		$consulta->execute([$id_remitente, $id_mi_usuario]);
 		$rechazado = true;
 	} catch (PDOException $e) {
@@ -2363,7 +2363,7 @@ function bloquear_usuario(int $id_destinatario, int $id_solicitante): bool
 		}
 
 		// Eliminar las solicitudes de amistad entre los usuarios
-		$consulta5 = $conection->prepare("DELETE FROM solicitudes_amistad WHERE id_usuario_solicitante = ? AND id_usuario_destinatario = ?");
+		$consulta5 = $conection->prepare("DELETE FROM solicitudes_amistad WHERE id_usuario_destinatario = ? AND id_usuario_solicitante = ?");
 		$consulta5->execute(array($id_solicitante, $id_destinatario));
 
 		$bloqueado = true;
@@ -2770,7 +2770,7 @@ function enviar_solicitud_datos_comic($nombre_comic, $nombre_variante, $numero, 
 	$portada_comic = htmlspecialchars($portada_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		$consulta = $conection->prepare("INSERT INTO peticiones_nuevos_comics (nomComic,nomVariante,numComic,Formato,nomEditorial,date_published,nomGuionista,Procedencia,nomDibujante,cover) VALUES (?,?,?,?,?,?,?,?,?,?)");
-		if ($consulta->execute(array($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $dibujante, $portada_comic))) {
+		if ($consulta->execute(array($nombre_comic, $nombre_variante, $numero, $formato, $editorial, $fecha, $guionista, $procedencia, $dibujante, ""))) {
 			$id_comic = $conection->lastInsertId();
 			if (enviar_solicitud_descripcion_comic($id_comic, $descipcion_comic, $id_usuario)) {
 				$estado = true;

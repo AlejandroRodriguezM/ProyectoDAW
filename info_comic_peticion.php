@@ -974,7 +974,7 @@ if (isset($_GET['IDcomic'])) {
                                             <tbody>
                                                 <tr>
                                                     <td><label class='comic-label'>Nombre del comic:</label></td>
-                                                    <td><span class='comic-value'><a href='search_data.php?search=$nombre'><?php echo $nombre_comic ?></a></span></td>
+                                                    <td><span class='comic-value'><?php echo $nombre_comic ?></span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><label class='comic-label'>Numero:</label></td>
@@ -987,7 +987,7 @@ if (isset($_GET['IDcomic'])) {
                                                             <?php
                                                             $variantes = explode("-", $variante_comic);
                                                             foreach ($variantes as $variante) {
-                                                                echo "<li><a href='search_data.php?search=$variante'>$variante</a></li>";
+                                                                echo "<li>$variante</li>";
                                                             }
                                                             ?>
                                                         </span>
@@ -995,15 +995,15 @@ if (isset($_GET['IDcomic'])) {
                                                 </tr>
                                                 <tr>
                                                     <td><label class='comic-label'>Formato:</label></td>
-                                                    <td><span class='comic-value'><a href='search_data.php?search=$formato'><?php echo $formato_comic ?></a></span></td>
+                                                    <td><span class='comic-value'><?php echo $formato_comic ?></span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><label class='comic-label'>Fecha de creacion:</label></td>
-                                                    <td><span class='comic-value'><a href='search_data.php?search=$fechaCreacion'><?php echo $fecha_comic ?></a></span></td>
+                                                    <td><span class='comic-value'><?php echo $fecha_comic ?></span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><label class='comic-label'>Editorial:</label></td>
-                                                    <td><span class='comic-value'><a href='search_data.php?search=$editorial'><?php echo $editorial_comic ?></a></span></td>
+                                                    <td><span class='comic-value'><?php echo $editorial_comic ?></span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><label class='comic-label'>Autor:</label></td>
@@ -1012,7 +1012,7 @@ if (isset($_GET['IDcomic'])) {
                                                             <?php
                                                             $autores = explode("-", $guionista_comic);
                                                             foreach ($autores as $autor) {
-                                                                echo "<li><a href='search_data.php?search=$autor'>$autor</a></li>";
+                                                                echo "<li>$autor</li>";
                                                             }
                                                             ?>
                                                         </span>
@@ -1025,7 +1025,7 @@ if (isset($_GET['IDcomic'])) {
                                                             <?php
                                                             $dibujantes = explode("-", $dibujante_comic);
                                                             foreach ($dibujantes as $dibujante) {
-                                                                echo "<li><a href='search_data.php?search=$dibujante'>$dibujante</a></li>";
+                                                                echo "<li>$dibujante</li>";
                                                             }
                                                             ?>
                                                         </span>
@@ -1033,7 +1033,7 @@ if (isset($_GET['IDcomic'])) {
                                                 </tr>
                                                 <tr>
                                                     <td><label class='comic-label'>Procedencia:</label></td>
-                                                    <td><span class='comic-value'><a href='search_data.php?search=$procedencia'><?php echo $procedencia_comic ?></a></span></td>
+                                                    <td><span class='comic-value'><?php echo $procedencia_comic ?></span></td>
                                                 </tr>
                                             </tbody>
                                         </table>

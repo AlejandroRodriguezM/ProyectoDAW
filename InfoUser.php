@@ -517,7 +517,7 @@ if (isset($_GET['userName'])) {
             </div>
         </div>
 
-         <!--Canvas menu-->
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -701,9 +701,6 @@ if (isset($_GET['userName'])) {
                     ?>
                 </li>
                 </ul>
-
-                <!-- <div class="d-flex" role="search"> -->
-
                 <?php
                 echo '<li class="list-group-item list-group-item-action"><a class="list-group-item-action active" href="about.php"><i class="bi bi-person-circle p-1"></i>Sobre WebComics</a></li>';
                 if (isset($_SESSION['email'])) {
@@ -723,6 +720,81 @@ if (isset($_GET['userName'])) {
                 <!-- </div> -->
             </div>
         </div>
+
+        <?php
+
+        if (!comprobar_bloqueo($id_otros_usuario, $id_usuario)) {
+        ?>
+            <div id="mensaje_privado" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <form method="post" id="form_ticket" onsubmit="return false;">
+
+                                <h4 class="modal-title">Mensaje para usuario <?php echo $nombre_otro_usuario ?></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Mensaje</label>
+                                <textarea class="form-control" id="mensaje_usuario_enviar" style="resize:none;"></textarea>
+                                <?php
+                                if (isset($_SESSION['email'])) {
+                                    echo "<input type='hidden' id='id_usuario_remitente' value='$id_usuario'>";
+                                    echo "<input type='hidden' id='id_usuario_destinatario' value='$id_otros_usuario'>";
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                            <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_mensaje()">
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php
+        }
+        ?>
+        <div id="denunciar_usuario" class="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form method="post" id="form_ticket" onsubmit="return false;">
+
+                            <h4 class="modal-title">Denunciar usuario</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Motivo de la denuncia</label>
+                            <select class="form-control" id="motivo_denuncia">
+                                <option value="">Selecciona un motivo</option>
+                                <option value="acoso">Acoso</option>
+                                <option value="spam">Spam</option>
+                                <option value="contenido inapropiado">Contenido inapropiado</option>
+                                <option value="insultos">Insultos</option>
+                                <option value="otro">Otro motivo</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Añade mas contexto</label>
+                            <textarea class="form-control" id="contexto_denuncia_usuario" style="resize:none;"></textarea>
+
+                            <?php
+                            echo "<input type='hidden' id='id_usuario_denunciante' value='$id_usuario'>";
+                            echo "<input type='hidden' id='id_usuario_denunciado' value='$id_otros_usuario'>";
+                            ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_denuncia()">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
             <div class="container" style="background-color: #00000000">
@@ -789,8 +861,10 @@ if (isset($_GET['userName'])) {
                                                 <div class="mb-3 d-flex flex-wrap justify-content-between align-items-center">
                                                     <div class="col-12 col-sm-4 col-md-2 mb-3 mb-sm-0">
 
+
                                                         <?php
                                                         if (isset($_SESSION['email'])) {
+                                                            echo "<div class='btn-group'>";
                                                             // Verificar si el usuario actual está bloqueado por el usuario que está viendo el perfil
                                                             if (comprobar_bloqueo($id_usuario, $id_otros_usuario)) {
                                                                 echo "<button class='btn btn-danger solicitud_enviada' onclick='' style='float:right;margin-right:10px'>Estás bloqueado</button>";
@@ -803,14 +877,16 @@ if (isset($_GET['userName'])) {
                                                                 } elseif (!comprobar_bloqueo($id_otros_usuario, $id_usuario) && estado_solicitud($id_otros_usuario, $id_usuario) == 'en espera') {
                                                                     echo "<button class='btn btn-secondary solicitud_enviada cancelar' onclick='cancelar_solicitud($id_otros_usuario,$id_usuario)' style='float:right'><span>Solicitud enviada</span></button>";
                                                                 } else {
-                                                                    if (estado_solicitud($id_usuario, $id_otros_usuario) == 'en espera') {
-                                                                        echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_otros_usuario,$id_usuario)' style='float:right'><span>Rechazar solicitud</span></button>";
-                                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_otros_usuario,$id_usuario)' style='float:right;margin-right:10px'><span>Aceptar solicitud</span></button>";
-                                                                    } else if (!comprobar_bloqueo($id_otros_usuario, $id_usuario)) {
-                                                                        echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_otros_usuario,$id_usuario)' style='float:right;margin-right:10px'>Enviar solicitud</button>";
+                                                                    if (!comprobar_bloqueo($id_otros_usuario, $id_usuario)) {
+                                                                        if (estado_solicitud($id_usuario, $id_otros_usuario) == 'en espera') {
+                                                                            echo "<button class='btn btn-danger solicitud_enviada' onclick='rechazar_solicitud($id_otros_usuario,$id_usuario)' style='float:right'><span>Rechazar solicitud</span></button>";
+                                                                            echo "<button class='btn btn-primary solicitud_enviada' onclick='aceptar_solicitud($id_otros_usuario,$id_usuario)' style='float:right;'><span>Aceptar solicitud</span></button>";
+                                                                        } else if (!comprobar_bloqueo($id_otros_usuario, $id_usuario)) {
+                                                                            echo "<button class='btn btn-primary solicitud_enviada' onclick='enviar_solicitud($id_otros_usuario,$id_usuario)' style='float:right;'>Enviar solicitud</button>";
+                                                                        }
                                                                     }
                                                                 }
-                                                                echo "</div>";
+
                                                                 // Código para bloquear o desbloquear al usuario
                                                                 if (!comprobar_bloqueo($id_otros_usuario, $id_usuario)) {
                                                                     echo "<button class='btn btn-danger solicitud_enviada' onclick='bloquear_usuario($id_usuario,$id_otros_usuario)' style='float:right;margin-right:10px'><span>Bloquear usuario</span></button>";
@@ -818,8 +894,10 @@ if (isset($_GET['userName'])) {
                                                                     echo "<button class='btn btn-warning solicitud_enviada' onclick='desbloquear_usuario($id_usuario,$id_otros_usuario)' style='float:right;margin-right:10px'><span>Desbloquear usuario</span></button>";
                                                                 }
                                                             }
-                                                            echo "<button type='button' class='btn btn-warning solicitud_enviada' data-bs-toggle='modal' data-bs-target='#denunciar_usuario' style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important;float:right;margin-right:10px'><span>Denunciar usuario</span></button>";
+
+                                                            echo "<button class='btn btn-warning solicitud_enviada' data-bs-toggle='modal' data-bs-target='#denunciar_usuario' style='float:right;margin-right:10px'><span>Denunciar usuario</span></button>";
                                                         }
+                                                        echo "</div>";
                                                         ?>
                                                     </div>
 

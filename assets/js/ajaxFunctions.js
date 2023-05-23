@@ -877,6 +877,12 @@ const mandar_mensaje = async () => {
     var result = await respond.json();
 
     if (result.success == true) {
+        Swal.fire({
+            icon: "error",
+            title: "GREAT",
+            text: result.message,
+            footer: "Web Comics"
+        })
         document.querySelector('#form_ticket').reset();
         setTimeout(() => {
             window.location.reload();
@@ -884,7 +890,7 @@ const mandar_mensaje = async () => {
     } else {
         Swal.fire({
             icon: "error",
-            title: "ERROR.",
+            title: "ERROR",
             text: result.message,
             footer: "Web Comics"
         })
