@@ -1,23 +1,25 @@
 <?php
 session_start();
 include_once 'php/inc/header.inc.php';
+
+
 if (isset($_SESSION['email'])) {
     $email = $_SESSION['email'];
-    $picture = pictureProfile($email);
     guardar_ultima_conexion($email);
     $userData = obtener_datos_usuario($email);
-    $userName = $userData['userName'];
     $userPrivilege = $userData['privilege'];
     $id_usuario = $userData['IDuser'];
+    $userName = $userData['userName'];
     $numero_comics = get_total_guardados($id_usuario);
-    if (!checkStatus($email)) {
-        header("Location: index.php");
+    $picture = pictureProfile($email);
+    if (checkStatus($email)) {
+        header("Location: usuario_bloqueado.php");
     }
     if (!comprobar_activacion($userName)) {
         header("Location: usuario_no_activado.php");
     }
 }
-// //echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
+//echo "<input type='hidden' id='num_comics' value='$numero_comics'>";
 
 ?>
 <!DOCTYPE html>
@@ -34,137 +36,188 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./assets/style/bandeja_comics.css">
     <!-- <link rel="stylesheet" href="./assets/style/footer_style.css"> -->
     <link rel="stylesheet" href="./assets/style/novedades.css">
-    <!-- <link rel="stylesheet" href="./assets/style/parallax.css"> -->
-    <!-- <link rel="stylesheet" href="./assets/style/media_recomendaciones.css"> -->
-    <link rel="stylesheet" href="./assets/style/media_videos.css">
+
     <!-- <link rel="stylesheet" href="./assets/style/media_barra_principal.css"> -->
     <link rel="stylesheet" href="./assets/style/sesion_caducada.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-
+    <script src="./assets/js/ajaxFunctions.js"></script>
+    <script src="./assets/js/sweetalert2.all.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./assets/style/iconos_notificaciones.css">
 
     <script src="./assets/js/funciones_utilidades.js"></script>
-    <script src="./assets/js/ajaxFunctions.js"></script>
-    <script src="./assets/js/sweetalert2.all.min.js"></script>
     <script src="./assets/js/temporizador.js"></script>
-
-
-    <title>Usuario bloqueado</title>
+    <title>Puntuaciones de comics</title>
     <style>
-        .row {
+        .rating {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: row-reverse;
+            /* Cambiado de row a row-reverse */
+            align-items: center;
         }
 
-        #wrapper.home div.comments {
-            padding-right: 20px;
-            line-height: 140%;
+        .rating input {
+            display: none;
         }
 
-        .link-grey:hover {
-            color: #00913b;
-        }
-
-        .last-pubs2 {
-            position: relative;
-            padding: 18px;
-            /* background-color: #fff; */
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .ver-mas-btn {
-            position: absolute;
-            bottom: 260px;
-            left: 10px;
-            background-color: #3498DB;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .ver-mas-btn:hover {
-            background-color: #2980B9;
-            cursor: pointer;
-        }
-
-        .recargar-mas-btn {
-            position: absolute;
-            bottom: 260px;
-            left: 70px;
-            background-color: #3498DB;
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .recargar-mas-btn:hover {
-            background-color: #2980B9;
-            cursor: pointer;
-        }
-
-        .desactivate {
-            background-color: white !important;
-            color: #00c9b7;
-            border: none;
-            padding: 0;
-            text-align: center;
-            text-decoration: none;
+        .rating label {
             display: inline-block;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            padding: 0;
+            font-size: 20px;
+            line-height: 20px;
+            text-align: center;
+            color: #ccc;
+            transition: color 0.3s;
+        }
+
+        .rating label.active {
+            color: #ff9f1c;
+        }
+
+        .rating label:hover,
+        .rating label:hover~label,
+        .rating input:checked~label {
+            color: #ff9f1c;
+        }
+
+        /* Estilo para las estrellas generadas por PHP */
+
+        .rating-php {
+            display: flex;
+            flex-direction: row-reverse;
+            /* Cambiado de row a row-reverse */
+            align-items: center;
+        }
+
+        .rating-php input {
+            display: none;
+        }
+
+        .rating-php label {
+            font-size: 20px;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            color: #ccc;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        .rating-php label:hover,
+        .rating-php label:hover~label,
+        .rating-php input:checked~label {
+            color: #ff9f1c;
+        }
+
+        .rating-php input:checked+label {
+            color: #ff9f1c;
+        }
+
+        .custom-table {
+            width: 300px;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        .custom-table th,
+        .custom-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .custom-table th {
+            background-color: #ddd;
+        }
+
+        .expand-row {
+            height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .custom-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        input[name='buscador_navegacion'] {
+            width: 300px;
+            height: 35px;
+            padding: 5px;
             font-size: 16px;
             border-radius: 5px;
-            width: 150px;
-            height: 50px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+            margin-left: 10px;
         }
 
-        .activate {
+        .side-bar {
+            position: fixed;
+            margin-top: -30px;
+            margin-left: 20px;
+            color: black;
+        }
+
+        .view-account {
+            position: fixed !important;
+            top: 50px;
+            z-index: 100;
+            margin-top: 30px;
+        }
+
+        .navigation-buttons button,
+        .navigation-buttons_agregar button {
+            background-color: #4CAF50;
+            /* Fondo verde */
             color: white;
-            background-color: #00c9b7 !important;
-            display: block;
-            position: relative;
-            margin-top: 6px;
-            width: 100%;
-            height: 34px;
+            /* Letras blancas */
+            border: none;
+            /* Sin borde */
+            padding: 10px 16px;
+            /* Espacio alrededor del texto */
+            font-size: 16px;
+            /* Tamaño de fuente */
+            cursor: pointer;
+            /* Cambia el cursor al pasar sobre el botón */
+            margin-right: 10px;
+            /* Margen entre botones */
+        }
+
+        button.nav-link.dropdown-toggle {
+            border: none;
             background-color: transparent;
-            border: solid 1px #00c9b7;
-            border-radius: 4px;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
         }
 
-        .activate>.sp-icon {
-            background-image: url('assets/img/tick_white.png') !important;
-            background-repeat: no-repeat !important;
-            background-position: center !important;
-            background-size: 20px !important;
+        button.nav-link.dropdown-toggle:hover {
+            color: #ccc;
         }
 
-        .tweet-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin: 0 auto;
+        button.nav-link.dropdown-toggle {
+            border: none;
+            background-color: transparent;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
         }
 
-        .tweet-embed {
-            margin-bottom: 20px;
-
-
+        button.nav-link.dropdown-toggle:hover {
+            color: #ccc;
         }
 
         body {
@@ -180,9 +233,10 @@ if (isset($_SESSION['email'])) {
             height: 100% !important;
         }
 
+        /* Estilos generales para el footer */
         #footer-lite {
             background-color: #f5f5f5;
-            padding: 5px 0;
+            padding: 20px 0;
             text-align: center;
         }
 
@@ -228,16 +282,11 @@ if (isset($_SESSION['email'])) {
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="background-color: #343a40 !important;cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important">
             <div class="container-fluid" style="background-color: #343a40;">
 
-                <!-- <a data-bs-toggle='offcanvas' data-bs-target='#offcanvasNavbarDark' aria-controls='offcanvasNavbarDark' href='#offcanvasExample' role='button' style='background-color: transparent;'>
-                    <button class="navbar-toggler navbar-toggler-sm ms-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon navbar-dark"></span>
-                    </button>
-                </a> -->
-
                 <button class="navbar-toggler navbar-toggler-sm ms-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                         <li class="nav-item">
@@ -253,7 +302,6 @@ if (isset($_SESSION['email'])) {
                                 </strong>
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <?php
                             if (isset($_SESSION['email'])) {
@@ -360,8 +408,6 @@ if (isset($_SESSION['email'])) {
                             }
                         });
                     </script>
-
-
                     <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenuButton">
                         <?php
                         if (isset($_SESSION['email'])) {
@@ -449,7 +495,7 @@ if (isset($_SESSION['email'])) {
                         </div>
                         <div class="modal-footer">
                             <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-                            <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket_bloqueo()">
+                            <input type="submit" class="btn btn-info" value="Enviar ticket" onclick="mandar_ticket()">
                         </div>
                         </form>
                     </div>
@@ -463,8 +509,8 @@ if (isset($_SESSION['email'])) {
             Creado por Alejandro Rodriguez ©2023
         </div>
 
-                <!--Canvas imagen de perfil-->
-                <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
+        <!--Canvas imagen de perfil-->
+        <div class="offcanvas offcanvas-end offcanvas-static text-bg-dark w-50" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel" aria-modal="true" role="dialog">
             <div class="offcanvas-header">
                 <?php
                 if (isset($_SESSION['email'])) {
@@ -541,7 +587,7 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
 
-         <!--Canvas menu-->
+        <!--Canvas menu-->
         <div class="offcanvas offcanvas-start text-bg-dark w-20" data-bs-backdrop="static" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvas-menu-Label">
             <div class="offcanvas-header">
                 <?php
@@ -752,155 +798,72 @@ if (isset($_SESSION['email'])) {
         </div>
         <div class="bg-image bg-attachment-fixed" style="background-image: url('assets/img/img_parallax.jpg');opacity: 0.8;">
             <br>
-            <div class="container mt-4">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="carousel-publi" class="carousel slide" data-bs-ride="false">
-                            <!-- Indicators/dots -->
-                            <!-- The slideshow/carousel -->
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <a href='https://www.panini.es/shp_esp_es/comics/europeo.html' target="_blank">
-                                        <img src="assets/img/banner/panini.jpg" alt="Pagina de comics de panini" class="d-block w-100">
-                                    </a>
-                                </div>
-                                <div class="carousel-item">
-                                    <a href='https://www.radarcomics.com/es/' target="_blank">
-                                        <img src="assets/img/banner/radar.jpg" alt="Pagina de comics de radar comics" class="d-block w-100">
-                                    </a>
-                                </div>
-                                <div class="carousel-item">
-                                    <a href='https://www.whakoom.com/' target="_blank">
-                                        <img src="assets/img/banner/whakoom.jpg" alt="Otra pagina de gestion de comics Whakoom" class="d-block w-100">
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Left and right controls/icons -->
-                            <button class="carousel-control-prev carousel-control-no-hover" type="button" data-bs-target="#carousel-publi" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon"></span>
-                            </button>
-                            <button class="carousel-control-next carousel-control-no-hover" type="button" data-bs-target="#carousel-publi" data-bs-slide="next">
-                                <span class="carousel-control-next-icon"></span>
-                            </button>
-                        </div>
+            <!-- <div class="caption"> -->
+
+            <div style="display: flex; justify-content: center;">
+                <div class="container mt-4">
+                    <div class='filtrado_comics'>
+                        <!-- Aquí irían los acordeones -->
                     </div>
                 </div>
             </div>
 
-
-            <div class="container mt-5">
-                <div class="d-flex justify-content-center">
-                    <div class="last-pubs2 comics">
-                    </div>
-                </div>
-            </div>
-
-            <div class="container mt-5">
-                <div class="d-flex justify-content-center">
-                    <div class="last-pubs2 col-md-8">
-                        <div class="headings ">
-                            <div class="titulo">
-                                <h2 style="color: black">Opiniones de los usuarios</h2>
-                            </div>
+            <div style="display: flex; justify-content: center;">
+                <div class="container mt-5">
+                    <div class="last-pubs">
+                        <br>
+                        <div class="titulo" style="border-radius:10px">
+                            <h2 style='text-align: center'>Comics mas valorados</h2>
                         </div>
-
-                        <?php
-                        $opiniones = mostrar_opiniones_pagina();
-                        if (numero_opiniones_pagina() > 0) {
-                            while ($data_opinion = $opiniones->fetch(PDO::FETCH_ASSOC)) {
-
-                                $id_opinion = $data_opinion['id_opinion'];
-                                $id_usuario = $data_opinion['id_user'];
-                                $opinion = $data_opinion['comentario'];
-                                $fecha_opinion = $data_opinion['fecha_comentario'];
-                                $data_user = obtener_datos_usuario($id_usuario);
-                                $foto_perfil = $data_user['userPicture'];
-                                $nombre_user = $data_user['userName'];
-                                $email_user = $data_user['email'];
-
-                                echo '<div class="card p-4 mt-1">
-                                        <div class="d-flex justify-content-between align-items-center">';
-                        ?>
-                                <a href="infoUser.php?userName=<?php echo $email_user ?>">
-                                    <?php
-                                    echo '<img src="' . $foto_perfil . '" width="50" height="50" class="rounded-circle mr-3">
-                                        </a>
-                                        <div class="w-100">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="d-flex flex-row align-items-center">
-                                                    <span class="mr-2" style="font-weight:bold;;margin-left:10px">Nombre de usuario: ' . $nombre_user . '</span>
-                                                </div>
-                                                <small>' . $fecha_opinion . '</small>
-                                            </div>';
-                                    if (isset($_SESSION['email'])) {
-                                        if ($userPrivilege == 'admin') {
-                                    ?>
-                                            <button type="button" class="btn btn-danger btn-sm float-end" style="display: block;" onclick="eliminarComentario('<?php echo $id_opinion ?>')">Eliminar</button>
-                            <?php
-                                        }
-                                    }
-                                    echo '<p class="text-justify comment-text mb-0" style="margin-top:5px;margin-left:10px">' . $opinion . '</p>
-                                                    <div class="d-flex flex-row align-items-center mr-2" id="rating">
-                                                        <div class="rating-lectura" style="margin-left:5px">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>';
-                                }
-                            } else {
-                                echo '<div class="card p-3 mt-2"><div class="d-flex justify-content-between align-items-center">';
-                                echo '<div class="user d-flex flex-row align-items-center"><span class="font-weight-bold text-primary">No hay opiniones</span></div>';
-                                echo '</div></div>';
-                            }
-                            ?>
+                        <br>
                     </div>
                 </div>
             </div>
 
             <script>
-                var resizeTimer;
+                var limit = 24;
+                var offset = 0;
+                var totalComics = 0;
+                var checkboxChecked = null;
 
-                function comics_recomendados() {
-                    // Obtener ancho de la ventana y calcular el número de cómics que se mostrarán
-                    var width = $(window).width();
-                    var num_comics = Math.max(3, Math.min(8, Math.floor(width / 150))); // Suponiendo que cada cómic tiene un ancho de 300px y se muestra un máximo de 8 cómics
+                $('input[type=checkbox]').on('change', function() {
+                    if ($(this).prop('checked') != true) {
+                        checkboxChecked = null;
+                    }
+                });
+
+                $(document).ready(function() {
+                    loadComics(checkboxChecked);
+                });
+
+                function loadComics(offset = 0) {
+                    var selectedCheckboxes = $("input[type='checkbox']:checked").map(function() {
+                        return encodeURIComponent(this.value);
+                    }).get();
 
                     var data = {
-                        num_comics: num_comics
+                        limit: limit,
+                        offset: offset,
                     };
+
+                    if (selectedCheckboxes.length > 0) {
+                        data.checkboxChecked = selectedCheckboxes.join(",");
+                    }
+
                     $.ajax({
-                        url: "php/apis/recomendaciones_comics.php",
+                        url: "php/apis/comics_valorados.php",
                         data: data,
                         success: function(data) {
                             totalComics = $(data).filter("#total-comics").val();
-                            $('.comics').html('');
-                            $(data).appendTo('.comics');
+                            if (offset + limit >= totalComics) {
+                                $("#load-more-comics").hide();
+                            }
+                            $('<div class="new-comic-list"><ul class="v2-cover-list" id="comics-list">' + data + '</ul></div>').appendTo('.last-pubs');
                         }
                     });
                 }
-
-                comics_recomendados();
-                // Actualiza los comics recomendados cuando cambia el tamaño de la pantalla
-                $(window).on('resize', function() {
-                    clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(comics_recomendados, 100);
-                });
-
-                var myOffcanvas1 = document.getElementById('offcanvasExample')
-                var myOffcanvas1 = new bootstrap.Offcanvas(myOffcanvas1)
-
-                var myOffcanvas2 = document.getElementById('offcanvasNavbarDark')
-                var myOffcanvas2 = new bootstrap.Offcanvas(myOffcanvas2)
+                actualizar_filtrado_completo()
             </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var miModal = new bootstrap.Modal(document.getElementById("crear_ticket"));
-                miModal.show();
-            });
-        </script>
-
-
             <div id="footer-lite" class="mt-5">
                 <div class="container">
                     <p class="helpcenter">
@@ -926,7 +889,6 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
     </main>
-
 </body>
 
 </html>

@@ -290,6 +290,11 @@ if ($userPrivilege == 'admin') {
                         <li class="nav-item">
                             <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                         </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="valoracion_comics.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mas populares</a>
+                        </li>
                         <li class="nav-item">
                             <?php
                             if (isset($_SESSION['email'])) {
@@ -696,6 +701,9 @@ if ($userPrivilege == 'admin') {
                     }
                 }
                 ?>
+                <li class="list-group-item list-group-item-action">
+                    <a class="list-group-item-action active" href="valoracion_comics.php"><i class='bi bi-person-circle p-1'></i>Mas populares</a>
+                </li>
                 <li class="list-group-item list-group-item-action">
                     <a class="list-group-item-action active" href="novedades.php"><i class='bi bi-person-circle p-1'></i>Novedades</a>
                 </li>

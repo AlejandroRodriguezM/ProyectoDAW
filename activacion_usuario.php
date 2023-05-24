@@ -287,6 +287,11 @@ if (isset($_SESSION['email'])) {
                         <li class="nav-item">
                             <a class="nav-link" href="novedades.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Novedades</a>
                         </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="valoracion_comics.php" style='cursor:url(https://cdn.custom-cursor.com/db/cursor/32/Infinity_Gauntlet_Cursor.png) , default!important'>Mas populares</a>
+                        </li>
                         <li class="nav-item">
                             <?php
                             if (isset($_SESSION['email'])) {

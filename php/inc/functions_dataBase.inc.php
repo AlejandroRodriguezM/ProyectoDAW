@@ -1215,6 +1215,29 @@ function return_comic_published($limit, $offset): PDOStatement
 	return $stmt;
 }
 
+function return_comic_valorados($limit, $offset): PDOStatement
+{
+	global $conection;
+	try {
+		$query = "SELECT IDcomic, numComic, nomComic, nomVariante, date_published, Cover, valoracion
+		FROM comics
+		WHERE date_published IS NOT NULL
+		ORDER BY valoracion DESC
+		LIMIT :limit
+		OFFSET :offset";
+
+		$stmt = $conection->prepare($query);
+
+		$stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+		$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+
+		$stmt->execute();
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $stmt;
+}
+
 /**
  * Devuelve un comic que coincida con la palabra clave y mediante unos limites dados
  *
@@ -1412,7 +1435,24 @@ function agregar_opinion(int $id_user, int $id_comic, string $opinion, int $punt
 
 	try {
 		$consulta = $conection->prepare("INSERT INTO opiniones_comics(id_comic,id_usuario,opinion,puntuacion,fecha_comentario) VALUES (?,?,?,?,?)");
+		actualizar_valor_comic($id_comic);
 		if ($consulta->execute(array($id_comic, $id_user, $opinion, $puntuacion, date("Y-m-d")))) {
+			$agregado = true;
+		}
+	} catch (PDOException $e) {
+		echo "Error: " . $e->getMessage();
+	}
+	return $agregado;
+}
+
+function actualizar_valor_comic($id_comic){
+	global $conection;
+	$agregado = false;
+	$id_comic = htmlspecialchars($id_comic, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+	try {
+		$valor_comic = valoracion_media($id_comic);
+		$consulta = $conection->prepare("UPDATE comics SET valoracion = ? where IDcomic = ?");
+		if ($consulta->execute(array($valor_comic, $id_comic))) {
 			$agregado = true;
 		}
 	} catch (PDOException $e) {
