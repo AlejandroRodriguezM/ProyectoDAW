@@ -3223,7 +3223,6 @@ function comprobar_codigo_alta(String $codigo): bool
 {
 	global $conection;
 	$estado = false;
-	$codigo = htmlspecialchars($codigo, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
 		$consulta = $conection->prepare("SELECT userName FROM users WHERE id_activacion = ?");
 		if ($consulta->execute([$codigo])) {
@@ -3231,7 +3230,6 @@ function comprobar_codigo_alta(String $codigo): bool
 			if (count($resultados) > 0) {
 				$estado = true;
 				activar_usuario($codigo);
-				eliminar_codigo($codigo);
 			}
 		}
 	} catch (PDOException $e) {
@@ -3357,11 +3355,11 @@ function actualizar_password(string $id_activacion, string $password): bool
 {
 	global $conection;
 	$estado = false;
-	$id_activacion = htmlspecialchars($id_activacion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-	$password_hash = htmlspecialchars($password, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	try {
-		$consulta = $conection->prepare("UPDATE users SET password = ? WHERE id_activacion = ?");
-		if ($consulta->execute([$password_hash, $id_activacion])) {
+		$consulta = $conection->prepare("UPDATE users SET password = :password WHERE id_activacion = :id_activacion");
+		$consulta->bindParam(':password', $password, PDO::PARAM_STR);
+		$consulta->bindParam(':id_activacion', $id_activacion, PDO::PARAM_STR);
+		if ($consulta->execute()) {
 			$estado = true;
 		}
 	} catch (PDOException $e) {

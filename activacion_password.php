@@ -107,11 +107,12 @@ if (isset($_GET['id_activacion'])) {
                         <div class="bg-white p-4 rounded-lg shadow-sm no-opacity" style="background-color: white !important;border-radius:15px">
 
                             <div class="row justify-content-center col-lg-7 mx-auto">
-                                    <div class="logo-container">
+                                <div class="logo-container">
                                     <a href="login.php">
                                         <img src="./assets/img/logoWeb.png" alt="logo web">
                                     </a>
-                                </div>                                <h3 class="mt-2">Nueva contraseña</h3>
+                                </div>
+                                <h3 class="mt-2">Nueva contraseña</h3>
                                 <form id="form_new_pass" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                     <div class="mb-3 text-center">
                                         <label for="password" class="form-label w-100">Contraseña</label>

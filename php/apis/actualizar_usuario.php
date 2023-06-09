@@ -16,11 +16,11 @@ if ($_POST) {
         $image = $row['userPicture'];
     }
     $userName = $_POST['nameUser'];
-    $oldUserName = $row['nameUser'];
+    $oldUserName = $row['userName'];
     $emailOld = $_SESSION['email'];
     $password = password_hash($_POST['pass'], PASSWORD_DEFAULT); // Genera un hash de la contraseña proporcionada.
     if ($userName == $oldUserName) {
-        $userName = $row['nameUser'];
+        $userName = $row['userName'];
     }
     $id = $row['IDuser'];
     $infoUser = $_POST['field'];

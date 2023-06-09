@@ -9,7 +9,6 @@ if ($_POST) {
     $codigo_id = $_POST['id_activacion'];
     $pass = $_POST['pass'];
     $password = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-
     // Actualizar la contraseña del usuario
     if (actualizar_password($codigo_id, $password)) {
         eliminar_codigo($codigo_id);

@@ -491,7 +491,6 @@ const new_password = async () => {
             text: result.message,
             footer: "Web Comics"
         })
-        document.querySelector('#form_new_pass').reset();
         setTimeout(() => {
             window.location.href = "login.php";
         }, 10000);
@@ -502,6 +501,9 @@ const new_password = async () => {
             text: result.message,
             footer: "Web Comics"
         })
+        setTimeout(() => {
+            window.location.href = "login.php";
+        }, 10000);
     }
 }
 

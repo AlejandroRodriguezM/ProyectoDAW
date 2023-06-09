@@ -697,9 +697,6 @@ if (isset($_SESSION['email'])) {
                     <a class="list-group-item-action active" href="valoracion_comics.php"><i class='bi bi-person-circle p-1'></i>Mas populares</a>
                 </li>
                 <li class="list-group-item list-group-item-action">
-                    <a class="list-group-item-action active" href="valoracion_comics.php"><i class='bi bi-person-circle p-1'></i>Mas populares</a>
-                </li>
-                <li class="list-group-item list-group-item-action">
                     <a class="list-group-item-action active" href="novedades.php"><i class='bi bi-person-circle p-1'></i>Novedades</a>
                 </li>
                 <li class="list-group-item list-group-item-action">
