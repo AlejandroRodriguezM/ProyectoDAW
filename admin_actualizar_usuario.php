@@ -10,7 +10,10 @@ if (isset($_SESSION['email'])) {
     $userPrivilege = $userData['privilege'];
     $userName = $userData['userName'];
     $id_admin = $userData['IDuser'];
-
+    $tipo_perfil = $userData['tipo_perfil'];
+    $infoUser = getInfoAboutUser($id_admin);
+    $fechaCreacion = $infoUser['fechaCreacion'];
+    $sobreUser = $infoUser['infoUser'];
     if ($userPrivilege == 'admin') {
         $id_usuario = $userData['IDuser'];
         $numero_comics = get_total_guardados($id_usuario);
@@ -25,6 +28,25 @@ if (isset($_SESSION['email'])) {
     }
 } else {
     header('Location: logOut.php');
+}
+
+if (isset($_GET['id_usuario'])) {
+    $id_usuario = $_GET['id_usuario'];
+    $dataUser = obtener_datos_usuario($id_usuario);
+    $email_usuario = $dataUser['email'];
+    $nombre_usuario = $dataUser['userName'];
+    $privilege_usuario = $dataUser['privilege'];
+    $imagen_perfil_usuario = $dataUser['userPicture'];
+    $estado_cuenta_usuario = $dataUser['accountStatus'];
+    $privacidad_usuario = $dataUser['tipo_perfil'];
+
+    $infoUser = getInfoAboutUser($id_usuario);
+    $fechaCreacion = $infoUser['fechaCreacion'];
+    $sobreUser = $infoUser['infoUser'];
+    $nombre = $infoUser['nombreUser'];
+    $apellidos = $infoUser['apellidoUser'];
+} else {
+    header('Location: admin_panel_usuario.php');
 }
 ?>
 <!DOCTYPE html>
